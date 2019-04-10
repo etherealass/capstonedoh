@@ -10,10 +10,15 @@
         </ol>
 
         <!-- Icon Cards-->
-       <div class="container">
+    <div class="container">
     <div class="card card-register mx-auto mt-4">
       <div class="card-header">Create User Role</div>
       <div class="card-body">
+      @if ($errors->any())
+        @foreach ($errors->all() as $error)
+         <div class="alert alert-danger">{{$error}}</div>
+        @endforeach
+      @endif
         <form action="{{URL::to('/register_role')}}" method="post">
           {{csrf_field()}}
           <div class="form-group">

@@ -70,14 +70,22 @@ body {
   background-color: #fff;
 }
 
-.loader {
-  postion: fixed;
-  left: 0px;
-  top: 0px;
-  width: 100%;
-  height: 100%;
-  z-index: 9999;
-  background: url('images/page-loader.gif') 50% 50% no-repeat rgb(249,249,249);
+#loading {
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      background: #fff url('images/loading_black.gif') no-repeat center center;
+      z-index: 9999;
+    }
+
+.scrollAble {
+  height:150px;
+  overflow-y: scroll;
+}
+
+.scrollAble2 {
+  height:500px;
+  overflow-y: scroll;
 }
 
 [tabindex="-1"]:focus {
@@ -103,6 +111,41 @@ p {
 
 a {
       text-decoration:none;
+}
+
+.tab {
+  overflow: hidden;
+  border: 1px solid #ccc;
+  background-color: #f1f1f1;
+}
+
+/* Style the buttons that are used to open the tab content */
+.tab button {
+  background-color: inherit;
+  float: left;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  padding: 14px 16px;
+  transition: 0.3s;
+}
+
+/* Change background color of buttons on hover */
+.tab button:hover {
+  background-color: #ddd;
+}
+
+/* Create an active/current tablink class */
+.tab button.active {
+  background-color: #ccc;
+}
+
+/* Style the tab content */
+.tabcontent {
+  display: none;
+  padding: 6px 12px;
+  border: 1px solid #ccc;
+  border-top: none;
 }
 
 abbr[title],
@@ -3289,7 +3332,7 @@ input[type="button"].btn-block {
 }
 
 .dropdown-menu {
-  position: absolute;
+  position: fixed;
   top: 100%;
   left: 0;
   z-index: 1000;
@@ -4410,7 +4453,7 @@ input[type="button"].btn-block {
 }
 
 .nav-pills .nav-link {
-  border-radius: 0.25rem;
+
 }
 
 .nav-pills .nav-link.active,
@@ -6135,7 +6178,8 @@ a.close.disabled {
 
 @media (min-width: 576px) {
   .modal-dialog {
-    max-width: 500px;
+    width: 500px;
+    max-width: 1000px;
     margin: 1.75rem auto;
   }
   .modal-dialog-centered {
@@ -6149,16 +6193,16 @@ a.close.disabled {
   }
 }
 
-@media (min-width: 992px) {
+@media (min-width: 500px) {
   .modal-lg,
   .modal-xl {
-    max-width: 800px;
+    max-width: 1500px;
   }
 }
 
-@media (min-width: 1200px) {
+@media (min-width: 500px) {
   .modal-xl {
-    max-width: 1140px;
+    max-width: 1200px;
   }
 }
 
@@ -8239,6 +8283,13 @@ button.bg-dark:focus {
 
 .h-75 {
   height: 75% !important;
+}
+.h-65 {
+  height: 65% !important;
+}
+
+.h-85 {
+  height: 85% !important;
 }
 
 .h-100 {
@@ -10335,6 +10386,8 @@ a.text-dark:hover, a.text-dark:focus {
   }
   thead {
     display: table-header-group;
+     position: -webkit-sticky !important;
+  position: sticky !important;
   }
   tr,
   img {
