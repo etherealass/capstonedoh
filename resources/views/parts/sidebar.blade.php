@@ -64,6 +64,16 @@
           <a class="dropdown-item" href="{{URL::to('/showpatients/'.$dis)}}">Dismissed</a>
         </div>
       </li>
+       <li class="nav-item">
+        <a class="nav-link" href="{{URL::to('/show_services')}}"> 
+          <i class="fas fa-fw fa-user"></i>         
+          <span>Services</span></a>
+      <li class="nav-item">
+        <a class="nav-link" href="{{URL::to('/showIntervention')}}">
+          <i class="fas fa-fw fa-user"></i>
+          <span>Intervention</span></a>
+      </li>
+      
       <li class="nav-item">
         <a class="nav-link" href="{{URL::to('/showCalendar')}}">
           <i class="fas fa-fw fa-calendar"></i>

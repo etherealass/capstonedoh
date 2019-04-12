@@ -4,6 +4,8 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
+use App\Departments;
+use App\Visit_interven;
 
 class Patients extends Model
 { 
@@ -23,5 +25,18 @@ class Patients extends Model
     {
         return $this->belongsTo('App\Address','address_id');
     }
+
+    public function deps()
+    {
+        return $this->belongsTo('Departments::class');
+    }
+
+    public function interven()
+    {
+        return $this->hasMany(Visit_interven::class,'patient_id');
+
+
+    }
+
 
 }

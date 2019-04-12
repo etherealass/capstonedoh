@@ -18,10 +18,11 @@
           </div>
           <div class="col-md-9" style="height: 49rem;margin-top: 0px">
             <div class="card border-dark mb-3 text-black o-hidden h-100">
-              <div class="card-header" style="background-color: #e9ecef"><h6>Calendar</h6> </div>
+              <div class="card-header" style="background-color: #e9ecef"><h6>My Events</h6> </div>
             <div id='calendar'></div>
           </div>
         </div>
       </div>
 
 @endsection
+

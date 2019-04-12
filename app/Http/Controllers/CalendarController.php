@@ -17,10 +17,13 @@ use App\Departments;
 use App\Events;
 use App\Patients;
 use App\Interventions;
+use App\Patient_Event_List;
 use App\Transfer_Requests;
 use App\Graduate_Requests;
 use Notifications;
 use App\Charts\PatientChart;
+use App\EventAssignee;
+use Carbon\Carbon;
 use Hash;
 use Charts;
 use Session;
@@ -33,11 +36,13 @@ class CalendarController extends Controller
 
        $roles = User_roles::all();
        $deps = Departments::all();
+       $graduate = Graduate_Requests::all();
+
        $users = Users::find(Auth::user()->id);
        $transfer = Transfer_Requests::all();
       
 
-       return view('calendar.viewCalendar')->with('roles',$roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer);;
+       return view('calendar.viewCalendar')->with('roles',$roles)->with('deps',$deps)->with('users',$users)->with('graduate',$graduate)->with('transfer',$transfer);;
 
    }
 
@@ -48,6 +53,285 @@ class CalendarController extends Controller
           return response()->json($events);
 
    }
+
+   
+
+    
+   public function create_event($date){
+
+       $roles = User_roles::all();
+       $deps = Departments::all();
+       $transfer = Transfer_Requests::all();
+       $interven = Interventions::all();
+       $users = Users::find(Auth::user()->id);
+        $graduate = Graduate_Requests::all();
+
+        $assignee  = Users::all()->groupBy('roles');
+       $dep = $users->department;
+
+
+        
+
+          $patients = Patients::where('department_id', $dep)->with('departments')->get();
+
+
+
+       if($dep == 2 || $dep == 3){
+
+              $patients = Patients::where('department_id','=',2)->orWhere('department_id', '=' , 3)->with('departments')->get();
+
+            
+        }else if(!$dep){
+
+                 $patients = Patients::all();
+
+        }
+
+       return view('calendar.createEvent')->with('roles',$roles)->with('deps',$deps)->with('interven', $interven)->with('patients', $patients)->with('users',$users)->with('transfer',$transfer)->with('graduate',$graduate)->with('date', $date)->with('assignee', $assignee);
+      
+    }
+
+    public function add_event(Request $request){
+
+        $evt = rand();
+        $input = $request->all();
+        $graduate = Graduate_Requests::all();
+
+        $depts = $request->input('dept');
+
+       if($request->input('dept') == 1){
+
+            $color = '#32CD32';
+        }else if($request->input('dept') == 2 || $request->input('dept') == 3){
+
+            $color = '';
+        }else{
+
+          $color = '#800080';
+        }
+
+       $assignee = $request->input('nameid');
+
+        $patients = $request->input('checkitem');
+
+        $event = new Events([
+        'evt_id' => $evt,
+        'title' => $request->input('title'),
+        'venue' => $request->input('venue'),
+        'department_id' => $depts,
+        'start' => $request->input('start_date')." ".date("H:m:s", strtotime($request->input('start_time'))),
+        'end' => $request->input('end_date')." ".date("H:m:s", strtotime($request->input('end_time'))),
+        'start_date' => $request->input('start_date'),
+        'end_date' => $request->input('end_date'),
+        'start_time' => $request->input('start_time'),
+        'end_time' => $request->input('end_time'),
+        'status' => 1,
+        'color' => $color
+
+        ]);
+
+
+      $event->save();
+
+      $eventz = Events::where('evt_id',$evt)->get();
+
+      foreach ($eventz as $ev) 
+      {
+        $eventid = $ev->id;
+      }
+
+
+        foreach($request->input('checkitem') as $pat)
+        {
+
+
+            $patient_event = new Patient_Event_List([
+
+                'event_id' =>  $eventid,
+                'patient_id' => $pat,
+                'status' => 1
+
+            ]);
+            $patient_event->save();
+        }
+
+
+        foreach($request->input('nameid') as $assinee) {
+
+              $event_assignee = new EventAssignee([
+
+                'event_id' =>  $eventid,
+                'assignee_id' => $assinee
+
+            ]);
+
+            $event_assignee->save();
+
+
+        }
+
+      Session::flash('alert-class', 'success'); 
+      flash('Schedule Created', '')->overlay();
+
+        $roles = User_roles::all();
+        $deps = Departments::all();
+        $transfer = Transfer_Requests::all();
+ 
+
+        $users = Users::find(Auth::user()->id);
+
+        return view('superadmin.chooseuser')->with('roles',$roles)->with('deps',$deps)->with('users',$users)->with('graduate',$graduate)->with('transfer',$transfer);
+
+    }
+
+    public function viewevent($id)
+    {
+       $pid = 0;
+        date_default_timezone_set('Asia/Macau');
+        $evt = Events::find($id);
+        $graduate = Graduate_Requests::all();
+
+        $roles = User_roles::all();
+        $deps = Departments::all();
+        $interven = Interventions::all();
+        $users = Users::find(Auth::user()->id);
+        $transfer = Transfer_Requests::all();
+
+        $evt_id = $evt->id;
+        $dept = $evt->department_id;
+
+        $event_patient = Patient_Event_List::where('event_id', $evt_id)->with('events')->with('patients')->get();
+        $eventPatientIds = array_map(function($p) { return $p['patient_id']; }, $event_patient->toArray());
+
+        $start = Carbon::parse($evt->start_date);
+        $end = Carbon::parse($evt->end_date);
+
+        $isEventExpired = false;
+        $isEventCancelled = false;
+        $isPatientRemove = false;
+
+        $mytime = Carbon::today()->timezone('Asia/Macau');
+
+        $date = date('y-m-d');  
+
+
+
+        if($mytime->lte($end) && $mytime->gte($start) && ($evt->status != 2) ){
+            $isEventExpired = true;
+
+        }
+
+        if($mytime->lte($start) && ($evt->status != 2) ){
+
+           $isEventCancelled = true;
+
+        }
+        if($mytime->lte($end) && ($evt->status != 2)){
+
+           $isPatientRemove = true;
+                 
+
+        }
+
+        $patients = Patients::where('department_id', $dept)->whereNotIn('id', $eventPatientIds)->with('departments')->whereNotIn('id', $eventPatientIds)->get();
+
+       if($dept == 2 || $dept == 3){
+
+              $patients = Patients::whereNotIn('id', $eventPatientIds)->whereIn('department_id',[2,3])->get();
+
+            
+        }else if(!$dept){
+
+            $patients = Patients::whereNotIn('id', $eventPatientIds)->get();
+
+        }
+
+
+
+        return view('calendar.viewEvent')->with('roles' , $roles)->with('deps',$deps)->with('evt' ,$evt)->with('users',$users)->with('pats', $event_patient)->with('intv', $interven)->with('transfer',$transfer)->with('isEventExpired', $isEventExpired)->with('isEventCancelled', $isEventCancelled)->with('graduate',$graduate)->with('isPatientRemove', $isPatientRemove)->with('patients', $patients);
+
+
+    }
+
+
+    public function updateEvent($id){
+
+        $evt = Events::find($id);
+       $graduate = Graduate_Requests::all();
+
+        $evt_id = $evt->id;
+
+
+        $updatedetails = array(
+
+            'status' => 2,
+            'color'  => '#F08080'
+        );
+        $evt->update($updatedetails);
+
+        $evt->status = 2;
+        $evt->save();
+
+        $roles = User_roles::all();
+        $deps = Departments::all();
+        $interven = Interventions::where('parent', 0)->get();
+        $transfer = Transfer_Requests::all();
+        $event_patient = Patient_Event_List::where('event_id', $evt_id)->with('events')->with('patients')->get();
+
+
+        $start = Carbon::parse($evt->start);
+        $end = Carbon::parse($evt->end);
+
+        $isEventExpired = false;
+        $isEventCancelled = false;
+        $isPatientRemove = false;
+
+        $mytime = Carbon::today();
+
+
+        if($mytime->lte($end) && $mytime->gte($start) && ($evt->status != 2) ){
+            $isEventExpired = true;
+
+        }
+
+        if($mytime->lte($start) && ($evt->status != 2) ){
+
+           $isEventCancelled = true;
+
+        }
+        if($mytime->lte($end) && ($evt->status != 2)){
+
+           $isPatientRemove = true;
+
+        }
+      
+        $users = Users::find(Auth::user()->id);
+
+        return view('calendar.viewEvent')->with('roles' , $roles)->with('deps',$deps)->with('evt' ,$evt)->with('users',$users)->with('pats', $event_patient)->with('intv', $interven)->with('transfer',$transfer)->with('isEventExpired', $isEventExpired)->with('isEventCancelled', $isEventCancelled)->with('isPatientRemove', $isPatientRemove);
+
+
+    }
+
+    public function getcount_Deps2()
+   {
+          $deps = Patients::where('department_id',2)->where('status','Enrolled')->get();
+
+          $depz = count($deps);
+
+          return response()->json($depz);
+
+   }
+
+    public function getcount_Deps3()
+   {
+          $deps = Patients::where('department_id',3)->where('status','Enrolled')->get();
+
+          $depz = count($deps);
+
+          return response()->json($depz);
+
+   }
+
 
    public function get_Deps1()
    {
@@ -104,90 +388,5 @@ public function chart()
 
     }
 
-   // public function chart()
-   // {
-    //  $users = Patients::where(DB::raw("(DATE_FORMAT(created_at,'%m'))"),date('m'))
-     //       ->get();
-      //  $chart = Charts::database($users, 'bar', 'highcharts')
-       //     ->title("Monthly new Register Users")
-        //    ->elementLabel("Total Users")
-         //   ->dimensions(1000, 500)
-          //  ->responsive(false)
-           // ->groupByMonth(date('Y'), true);
-           // 
-        //return view('chart',compact('chart'));
-    //}
-
-    public function getcount_Deps2()
-   {
-          $deps = Patients::where('department_id',2)->where('status','Enrolled')->get();
-
-          $depz = count($deps);
-
-          return response()->json($depz);
-
-   }
-
-    public function getcount_Deps3()
-   {
-          $deps = Patients::where('department_id',3)->where('status','Enrolled')->get();
-
-          $depz = count($deps);
-
-          return response()->json($depz);
-
-   }
-
-    public function create_event(){
-
-       $roles = User_roles::all();
-       $deps = Departments::all();
-       $patients = Patients::all();
-       $interven = Interventions::all();
-       $users = Users::find(Auth::user()->id);
-      // $pat = Patients::select(DB::raw("CONCAT('fname','lname') AS display_name"),'id')->get()->pluck('display_name','id');
-
-
-
-       return view('calendar.createEvent')->with('roles',$roles)->with('deps',$deps)->with('interven', $interven)->with('patients', $patients)->with('users',$users);
-      
-    }
-
-    public function add_event(Request $request){
-
-        $input = $request->all();    
-
-        //$patients = $request->input('patient-select');
-
-        $event = new Events([
-        'title' => $request->input('title'),
-        'venue' => $request->input('venue'),
-        'start' => $request->input('event_date')." ".date("H:m:s", strtotime($request->input('start_time'))),
-        'end' => $request->input('event_date')." ".date("H:m:s", strtotime($request->input('end_time')))
-        ]);
-
-      $event->save();
-
-      Session::flash('alert-class', 'success'); 
-      flash('Schedule Created', '')->overlay();
-
-        $roles = User_roles::all();
-        $deps = Departments::all();
-        $users = Users::find(Auth::user()->id);
-
-        return view('superadmin.chooseuser')->with('roles',$roles)->with('deps',$deps)->with('users',$users);
-
-    }
-
-    public function viewevent($id)
-    {
-        $evt = Events::where('id',$id)->get();
-        $roles = User_roles::all(); 
-        $deps = Departments::all();
-        $users = Users::find(Auth::user()->id);
-
-        return view('superadmin.viewpatient')->with('roles' , $roles)->with('deps',$deps)->with('evt' ,$evt)->with('users',$users);
-
-    }
 
 }

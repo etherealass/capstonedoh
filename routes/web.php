@@ -28,6 +28,8 @@ Route::view('/login', "login");
 
 Route::get('/logout', "LoginController@logout");
 
+
+
 Route::group(['middleware' =>'auth'], function()
 {
 	 Route::get('/profile', [
@@ -78,40 +80,85 @@ Route::group(['middleware' =>'auth'], function()
 	Route::get('/getcountDeps3', ['as'=>'getcountDeps3',
     'uses'=>'CalendarController@getcount_Deps3'
 
-	]);      
-	 Route::any('/chooseuser', "UserController@chooseuser_role");
+	]); 
 
-	 Route::any('/createuserrole', "UserController@createuserrole");
 
-	 Route::get('/create_user/{id}', "UserController@create_user");
-
-	 Route::any('/create_dep', "UserController@postcreate_dep");
-
-	 Route::any('/create_depnow', "UserController@create_depnow");
-
-	 Route::post('/register_role', "RegisterController@register_role");
-
-	 Route::post('/register_dep', "RegisterController@register_dep");
-
-	 Route::post('/registernow', "RegisterController@registernow");
-
-	 Route::post('/deletenow', "UserController@deletenow");
-
-	 Route::post('/updatenow', "UserController@updatenow");
-
-	 Route::post('/deleteuser', "UserController@deleteuser");
-
-	 Route::get('/showdep_users/{did}/{rid}', "ViewController@showdepuser");
-
-	 Route::any('/addpatient', "PatientController@addpatient");
-
-	 Route::post('/refer', "PatientController@refer");
-
-	 Route::any('/create_event', "CalendarController@create_event");
+	 Route::any('/create_event/{date}', "CalendarController@create_event");
 
 	 Route::any('/add_event', "CalendarController@add_event");
 
 	 Route::get('/view_event/{id}', "CalendarController@viewevent");
+
+	 Route::get('/cancel_event/{id}', "CalendarController@updateEvent");
+
+	 Route::get('/bar', 'CalendarController@chart');
+
+
+
+
+
+	 Route::post('/update_employeenow',"EmployeeController@update_employeenow");
+
+	 Route::post('/delete_employee', "EmployeeController@delete_employeenow");
+
+
+
+
+	 Route::delete('/delete/patient/{id}', "EventController@delete_patient_event");
+
+	 Route::any('/view/addpatient', "EventController@view_add_patient");
+
+	 Route::get('/view/vieweventattended', "EventController@view_event_attended");
+	 
+	 Route::post('/patient/attendIntervention', "EventController@patient_attend_intervention");
+
+	Route::post('/event_save_edit', "EventController@event_save_edit");
+
+
+
+
+	  Route::any('/add_intervention', "InterventionController@addintervention");
+
+	 Route::any('/showIntervention', "InterventionController@showintervention");
+	 
+	 Route::any('/create_intervention', "InterventionController@create_intervention");
+
+	 Route::any('/viewIntervention/{id}', "InterventionController@viewIntervention");
+
+	 Route::any('/patient/intervention', "InterventionController@patientInterven");
+
+
+
+	 Route::get('/markAsRead', "NotificationsController@markAsRead");
+
+
+
+
+	 Route::any('/add_a_city',"OthersController@add_a_city");
+
+	 Route::post('/add_city',"OthersController@addcity");
+
+	 Route::post('/delete_city',"OthersController@deletecity");
+
+	 Route::any('/add_a_casetype',"OthersController@add_a_casetype");
+
+	 Route::post('/add_casetype',"OthersController@add_casetype");
+
+	 Route::post('/delete_case',"OthersController@delete_case");
+
+	 Route::any('/add_a_reason',"OthersController@add_a_reason");
+
+	 Route::post('/add_reason',"OthersController@add_reason");
+
+	 Route::post('/delete_reason',"OthersController@deletereason");
+
+
+
+
+
+	 Route::any('/addpatient', "PatientController@addpatient");
+
+	 Route::post('/refer', "PatientController@refer");
 
 	 Route::any('/showpatients/{stat}', "PatientController@showpatient");
 
@@ -137,55 +184,11 @@ Route::group(['middleware' =>'auth'], function()
 
 	 Route::post('/deletepatient', "PatientController@flagdelete");
 
-	 Route::get('/markAsRead', "NotificationsController@markAsRead");
-
 	 Route::post('/patientTransfer', "PatientController@transferPatient");
 
 	 Route::get('/transfer_patient_now/{id}/{did}/{tid}/{pid}',"PatientController@patientTransfer");
 
-	 Route::any('/showemployees',"ViewController@showemployees");
-
-	 Route::any('/newemployee',"RegisterController@newemployee");
-
-	 Route::post('/create_employee',"RegisterController@create_employee");
-
-	 Route::post('/update_employeenow',"EmployeeController@update_employeenow");
-
-	 Route::post('/delete_employee', "EmployeeController@delete_employeenow");
-
-	 Route::any('/logs', "ViewController@showlogs");
-
 	 Route::post('/patientDismiss',"PatientController@dismiss_patient");
-
-	 Route::any('/show_case_types', "ViewController@show_case_types");
-
-	 Route::any('/show_cities', "ViewController@show_cities");
-
-	 Route::any('/show_jails', "ViewController@show_jails");
-
-	 Route::any('/show_dismiss_reason', "ViewController@show_dismiss_reason");
-
-	 Route::any('/add_a_city',"OthersController@add_a_city");
-
-	 Route::post('/add_city',"OthersController@addcity");
-
-	 Route::post('/delete_city',"OthersController@deletecity");
-
-	 Route::any('/add_a_casetype',"OthersController@add_a_casetype");
-
-	 Route::post('/add_casetype',"OthersController@add_casetype");
-
-	 Route::post('/delete_case',"OthersController@delete_case");
-
-	 Route::any('/add_a_reason',"OthersController@add_a_reason");
-
-	 Route::post('/add_reason',"OthersController@add_reason");
-
-	 Route::post('/delete_reason',"OthersController@deletereason");
-
-	 Route::any('/sampleform/{id}',"ViewController@sampleform");
-
-	 Route::any('/samplecsv',"ViewController@samplecsv");
 
 	 Route::post('/graduate_patient',"PatientController@graduate_patient");
 
@@ -198,7 +201,84 @@ Route::group(['middleware' =>'auth'], function()
 	 Route::post('/reenroll_patient',"PatientController@reenroll_patient");
 
 	 Route::post('/add_notes',"PatientController@doctor_notes");
+	 
 
-	 Route::get('/bar', 'CalendarController@chart');
 
+
+
+	 Route::post('/refers', "ReferController@createRefer");
+
+	Route::get('/refers/{id}', "ReferController@getRefer");
+
+	Route::put('/refers/{id?}', "ReferController@putRefer"); 
+
+
+
+
+
+	 Route::post('/register_role', "RegisterController@register_role");
+
+	 Route::post('/register_dep', "RegisterController@register_dep");
+
+	 Route::post('/registernow', "RegisterController@registernow");
+
+	 Route::any('/newemployee',"RegisterController@newemployee");
+
+	 Route::post('/create_employee',"RegisterController@create_employee");
+
+
+
+
+	  Route::get('/create_service', "ServiceController@create_service");
+
+	 Route::any('/show_services', "ServiceController@show_services");
+
+	 Route::post('/add_service', "ServiceController@add_service");
+
+
+
+
+
+	 Route::any('/chooseuser', "UserController@chooseuser_role");
+
+	 Route::any('/createuserrole', "UserController@createuserrole");
+
+	 Route::get('/create_user/{id}', "UserController@create_user");
+
+	 Route::any('/create_dep', "UserController@postcreate_dep");
+
+	 Route::any('/create_depnow', "UserController@create_depnow");
+
+	 Route::post('/deletenow', "UserController@deletenow");
+
+	 Route::post('/updatenow', "UserController@updatenow");
+
+	 Route::post('/deleteuser', "UserController@deleteuser");
+
+
+
+
+
+	 Route::get('/showdep_users/{did}/{rid}', "ViewController@showdepuser");
+
+	 Route::any('/showemployees',"ViewController@showemployees");
+
+	 Route::any('/logs', "ViewController@showlogs");
+
+	 Route::any('/show_case_types', "ViewController@show_case_types");
+
+	 Route::any('/show_cities', "ViewController@show_cities");
+
+	 Route::any('/show_jails', "ViewController@show_jails");
+
+	 Route::any('/show_dismiss_reason', "ViewController@show_dismiss_reason");
+
+	 Route::any('/sampleform/{id}',"ViewController@sampleform");
+
+	 Route::any('/samplecsv',"ViewController@samplecsv");
+
+
+
+
+	 
 });

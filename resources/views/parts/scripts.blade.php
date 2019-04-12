@@ -1,18 +1,24 @@
+
+
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
   <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
   <script src="http://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.2/modernizr.js"></script>
-
+  <script src="{{asset('vendor/fullcalendar/lib/jquery-ui.min.js')}}"></script>
+  <script src="{{asset('vendor/fullcalendar/lib/moment.min.js')}}"></script>
   <script src="{{asset('vendor/jquery/jquery.min.js')}}"></script>
+    <script src="{{asset('vendor/fullcalendar/fullcalendar.min.js')}}"></script>
+
+    <script src="{{asset('vendor/bootstrap-select/dist/js/bootstrap-select.js')}}"></script>
+
+
   <script src="{{asset('vendor/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
 
   <!-- Core plugin JavaScript-->
   <script src="{{asset('vendor/jquery-easing/jquery.easing.min.js')}}"></script>
 
-  <script src="{{asset('vendor/fullcalendar/lib/jquery-ui.min.js')}}"></script>
-  <script src="{{asset('vendor/fullcalendar/lib/moment.min.js')}}"></script>
+  
   <script src="{{asset('vendor/multi-select/js/jquery.multi-select.js')}}"></script>
 
-  <script src="{{asset('vendor/fullcalendar/fullcalendar.min.js')}}"></script>
  
   <!-- Page level plugin JavaScript-->
   <script src="{{asset('vendor/chart.js/Chart.min.js')}}"></script>
@@ -27,6 +33,9 @@
 
 
   <script src="{{asset('js/cbpFWTabs.js')}}"></script>
+
+    @yield('script')
+
     <script>
       (function() {
 
@@ -47,66 +56,7 @@
     });
 </script>
 
-  <script type="text/javascript">
-
-  $(function () {
-
-    var evt = [];
-     $.ajax({ 
-          url:"{{URL::route('getEvent')}}",
-          type:"GET",
-          dataType:"JSON",
-          async:false
-    }).done(function(r){
-
-          evt = r;
-    });
-  
-        
-
-      $("#calendar").fullCalendar({
-      header: {
-        left: 'prev,next today',
-        center: 'title',
-        right: 'month,agendaWeek,agendaDay,listWeek'
-      },
-
-      minTime: "06:00:00",
-      maxTime: "20:00:00",
-      events: evt,
-      textColor: 'white',
-
-      dayClick: function(date, jsEvent, view, resourceObj) {
-
-
-               var r = confirm('Do you want to plot on this date ' + date.format());
-
-                if(r== true){
-
-                   var base = '{{ URL::to('/create_event') }}';
-
-                  window.location.href=base;
-                }
-        
-        },
-
-      
-       eventClick: function(calEvent, jsEvent, view) {
-
-          var er = confirm('Do you want to plot on this date ');
-       }
-
-    });
-
-
-
-
-      })
-
-</script>
-  
-  <script> 
-  
+  <script type="text/javascript">  
   $('#editModal').on('show.bs.modal', function (event) {
 
     var button = $(event.relatedTarget)

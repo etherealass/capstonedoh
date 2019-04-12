@@ -8,9 +8,29 @@
       background-color: #343a40;
       color:white;
       }
+      table, th, td {
+          border: 1px solid lightgray;
+          border-collapse: collapse;
+        }
+        th, td {
+          padding: 7px;
+          text-align: left;  
+
+        }
+
+        .myinput {
+            border: 0;
+        }
 
 </style>
+<?php 
 
+$month = date('m');
+$day = date('d');
+$year = date('Y');
+
+$today = $year . '-' . $month . '-' . $day;
+?>
         <!-- Breadcrumbs-->
     @if($pid)
       @if($stat == 1)
@@ -302,7 +322,9 @@
                      </div>
                 </fieldset>
                 </div>
-                <div class="tab-pane fade" id="v-pills-intake" role="tabpanel" aria-labelledby="v-pills-intake-tab">
+
+
+        <div class="tab-pane fade" id="v-pills-intake" role="tabpanel" aria-labelledby="v-pills-intake-tab">
           <fieldset style="margin-bottom: 10px;margin-left: 0px;border:solid thin gray;border-radius: 10px">
             <legend style="color:white;text-indent: 20px;width:900px;margin-bottom: 10px;border-radius: 5px" class="bg bg-dark">Intake Form </legend>
               <div class="container scrollAble2" style="margin-top: 30px">
@@ -526,6 +548,8 @@
     </div>
   </fieldset>
         </div>
+
+        
          <div class="tab-pane fade" id="v-pills-dde" role="tabpanel" aria-labelledby="v-pills-dde-tab">
           <fieldset style="margin-bottom: 30px;margin-left: 0px;border:solid thin gray;border-radius: 10px">
             <legend style="color:white;text-indent: 20px;width:900px;margin-bottom: 20px;border-radius: 5px" class="bg bg-dark">Drug Dependency Examination Report</legend>
@@ -865,6 +889,8 @@
              <ul class="sidebar navbar-nav" style="background-color:white;border-radius: 5rem;">
               <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical" style="border-radius: 5rem">
                 <li class="nav-item active"  id="v-pills-home-tab" data-toggle="pill" href="#v-pills-home" role="tab" aria-controls="v-pills-home" aria-selected="true" style="margin-top: 10px;border-radius: 10px">
+
+
                   <a class="nav-link active bg-dark" id="v-pills-home-tab" data-toggle="pill" href="#v-pills-home" role="tab" aria-controls="v-pills-home" aria-selected="true" style="color:white;margin-bottom: 5px;height: 45px;text-align: center;border-radius: 5px"><h6><span>Information</span></h6></a>
                 </li>
                 <li class="nav-item" id="v-pills-profile-tab" data-toggle="pill" href="#v-pills-profile" role="tab" aria-controls="v-pills-profile" aria-selected="false" style="">
@@ -885,12 +911,18 @@
                 <li class="nav-item" id="v-pills-doctornote-tab" data-toggle="pill" href="#v-pills-doctornote" role="tab" aria-controls="v-pills-doctornote" aria-selected="false">
                   <a class="nav-link bg-dark" id="v-pills-doctornote-tab" data-toggle="pill" href="#v-pills-doctornote" role="tab" aria-controls="v-pills-doctornote" aria-selected="false" style="color:white;margin-bottom: 5px;height: 65px;text-align: center;border-radius: 5px"><h6><span>Doctor's Progress Notes</span></h6></a>
                 </li>
+                <li class="nav-item" id="v-pills-patientnote-tab" data-toggle="pill" href="#v-pills-patientnote" role="tab" aria-controls="v-pills-patientnote" aria-selected="false">
+                  <a class="nav-link bg-dark" id="v-pills-patientnote-tab" data-toggle="pill" href="#v-pills-patientnote" role="tab" aria-controls="v-pills-note" aria-selected="false" style="color:white;margin-bottom: 5px;height: 65px;text-align: center;border-radius: 5px"><h6><span>Patients Notes</span></h6></a>
+                </li>
             </ul>
             </div>
           </div>
             <div class="col-md-9" style="margin-top: 10px">
               <div class="tab-content" id="v-pills-tabContent" >
                 <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">
+                <div class='row'>
+                  <a style="color:white; width:1007px;"><button class="btn btn-dark btn-block" id="add_service" name="add_service" style="height: 50px; width:200px;float: right;margin-top: 0px;margin-left: 0px;margin-bottom: 30px;margin-right: 10px">Check up</button></a>
+                </div>
                    <fieldset style="margin-bottom: 30px;margin-left: 0px;border:solid thin gray;border-radius: 10px">
                        <legend style="color:white;text-indent: 20px;width:900px;margin-bottom: 20px;border-radius: 5px" class="bg bg-dark">Personal Information</legend>
                     <div class="container" style="margin-left: 0px">
@@ -1528,6 +1560,11 @@
     </div>
         </fieldset>
     </div>
+
+          @include('refer.tabform')
+          @include('refer.patientnote')
+
+
         </div>
       </div>
     </div>
@@ -1573,4 +1610,222 @@
     </div>
 </div>
   
+@endsection
+
+@section('script')
+<script>
+      
+  $(document).ready(function () {
+    ////----- Open the modal to CREATE a link -----////
+    $('#add-patient-refer').click(function () {
+        $('#btn-save').val("add");
+        $('#modalFormData').trigger("reset");
+        $('#linkEditorModal').modal('show');
+    });
+
+    $('#addNurseNotes').click(function () {
+
+        alert('sampleonly');
+
+        $('#NurseNotesFormData').trigger("reset");
+        $('#NurseNotesModal').modal('show');
+    
+
+    });
+
+    $('#add_service').click(function () {
+
+        $('#AddServiceFormData').trigger("reset");
+        $('#AddServiceNotesModal').modal('show');
+    
+    });
+
+    $('#addDoctortNotes').click(function () {
+
+        $('#AddDoctorFormData').trigger("reset");
+        $('#AddDoctorNotesModal').modal('show');
+    
+    });
+
+
+
+
+
+//Accept Referral REFERAL 
+$('.accept_patient_referal').click(function (e) {
+
+           var result = confirm('Your are about to accept this referal. Would you like to continue?');
+    
+            if(result = true){
+
+              var d = new Date();
+
+              var month = d.getMonth()+1;
+              var day = d.getDate();
+
+              var output = (month<10 ? '0' : '') + month + '/' +
+                            (day<10 ? '0' : '') + day + '/' +
+                             d.getFullYear();
+
+                var refer_id = $(this).val();
+
+
+              $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+            });
+               e.preventDefault();
+              var formData = {
+
+                    ref_slip_return:  output,
+                    accepted_by: $('#user_accepted').val(),
+
+              };
+
+
+            }
+
+            $.ajax({
+            type: "PUT",
+            url: '{{URL::to("/refers")}}'+ '/' + refer_id,
+            data: formData,
+            dataType: 'json',
+            success: function (data) {
+                  var link = '<tr id="refer' + data.id + '"><td>' + data.ref_date + '</td><td>' + data.ref_at + '</td><td>' + data.ref_reason + '</td><td>' + data.ref_by + '</td>';
+                link += '<td><button class="btn btn-info view-link" value="' + data.id + '">View</button>';
+                link += '<button class="btn btn-light print-link" id="btn-print" name ="btn-print" value="' + data.id + '">Print</button></td>';
+               
+                    $("#refer" + refer_id).replaceWith(link);
+            },
+           error: function (data) {
+                console.log('Error:', data);
+            }
+          });
+        
+});
+
+$('body').on('click', '.view-refer-patient-modal', function () {
+
+          var view_id = $(this).val();
+
+           $.get('{{URL::to("/refers")}}' + '/' + view_id, function (data) {
+
+            console.log(data);
+
+            $('#id').val(data[0].id);
+            $('#refDate').val(data[0].ref_date);
+            $('#reason2').val(data[0].ref_reason);
+            $('#refAt2').val(data[0].ref_at);
+            $('#refby22').val(data[0].users.fname+' '+data[0].users.lname);
+            $('#refby2').val(data[0].ref_by);
+            $('#contact2').val(data[0].contact_person);
+            $('#ref_recom2').val(data[0].recommen);
+            $('#refDateback2').val(data[0].ref_back_date);
+            $('#refbyback2').val(data[0].ref_back_by);
+            $('#returnDate').val(data[0].ref_slip_return);
+            $('#accepted_by2').val(data[0].accepted_by.fname+' '+data[0].accepted_by.lname);
+
+            $('#viewModal').modal('show');
+            
+        })
+
+
+});
+
+$('body').on('click', '.edit-refer-modal', function () {
+        var refer_id = $(this).val();
+
+        $.get('{{URL::to("/refers")}}' + '/' + refer_id, function (data) {
+
+            $('#id').val(data[0].id);
+            $('#refDate').val(data[0].ref_date);
+            $('#reason').val(data[0].ref_reason);
+            $('#refAt').val(data[0].ref_at);
+            $('#refby2').val(data[0].users.fname+' '+data[0].users.lname);
+            $('#refby').val(data[0].ref_by);
+            $('#contactPer').val(data[0].contact_person);
+            $('#ref_recom').val(data[0].recommen);
+            $('#refDateback').val(data[0].ref_back_date);
+            $('#refbyback').val(data[0].ref_back_by);
+            $('#returnDate').val(data[0].ref_slip_return);
+            $('#btn-save').val("update");
+            $('#linkEditorModal').modal('show');
+            
+        })
+});
+
+
+
+
+$("#btn-save").click(function (e) {
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+            
+        });
+        e.preventDefault();
+         var formData = {
+            patient_id: $('#patient_id').val(),
+            ref_date:  $('#refDate').val(),
+            ref_at: $('#refAt').val(),
+            ref_reason:  $('#reason').val(),
+            ref_by:  $('#refby').val(),
+            recommen:  $('#ref_recom').val(),
+            contact_person:  $('#contactPer').val(),
+            ref_back_date:  $('#refDateback').val(),
+            ref_back_by:  $('#refbyback').val(),
+            ref_slip_return:  $('#returnDate').val(),
+
+        };
+
+        console.log(formData);
+       var state = $('#btn-save').val();
+
+       var type = "POST";
+        var id = $('#id').val();
+        var ajaxurl = '{{URL::to("/refers")}}';
+        if (state == "update") {
+            type = "PUT";
+            ajaxurl = '{{URL::to("/refers")}}'+ '/' + id;
+            console.log(ajaxurl);
+        }
+        $.ajax({
+            type: type,
+            url: ajaxurl,
+            data: formData,
+            dataType: 'json',
+            success: function (data) {
+                var link = '<tr id="refer' + data.id + '"><td>' + data.ref_date + '</td><td>' + data.ref_at + '</td><td>' + data.ref_reason + '</td><td>' + data.ref_by + '</td>';
+                link += '<td><button class="btn btn-info edit-refer-modal" value="' + data.id + '">Edit</button>';
+                link += '<button class="btn btn-secondary accept_patient_referal" id="btn-accept" name ="btn-accept" value="' + data.id + '">Accept</button>';
+                 link += '<button class="btn btn-light print-link" id="btn-ptint" name ="btn-print" value="' + data.id + '">Print</button>';
+                
+                if (state == "add") {
+                    $('#links-list').append(link);
+                } else {
+                    $("#refer" + id).replaceWith(link);
+                }
+    
+                $('#modalFormData').trigger("reset");
+                $('#linkEditorModal').modal('hide')
+        },
+           error: function (data) {
+                console.log('Error:', data);
+            }
+
+        });
+      });
+
+  })
+
+//   function getDate(){
+//     var today = new Date();
+
+// document.getElementById("date").value = today.getFullYear() + '-' + ('0' + (today.getMonth() + 1)).slice(-2) + '-' + ('0' + today.getDate()).slice(-2);
+
+
+// }
+  </script>
 @endsection
