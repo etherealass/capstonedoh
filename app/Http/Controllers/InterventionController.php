@@ -15,7 +15,6 @@ use App\User_roles;
 use App\Interventions;
 use App\Departments;
 use App\Transfer_Requests;
-use App\IntervenDept;
 use Session;
 
 
@@ -28,13 +27,13 @@ class InterventionController extends Controller
         
         $roles = User_roles::all();
         $deps = Departments::all();
-        $inter = Interventions::all();
+        $inter = Interventions::where('parent', 0)->get();
         $users = Users::find(Auth::user()->id);
         $transfer = Transfer_Requests::all();
 
 
         if(Auth::user()->user_role()->first()->name == 'Superadmin'){
-            return view('intervention.viewIntervention')->with('roles',$roles)->with('deps',$deps)->with('inter', $inter)->with('users',$users)->with('transfer',$transfer);
+            return view('intervention.showintervention')->with('roles',$roles)->with('deps',$deps)->with('inter', $inter)->with('users',$users)->with('transfer',$transfer);
         }
         else{
             return abort(404);
@@ -51,8 +50,9 @@ class InterventionController extends Controller
         $users = Users::find(Auth::user()->id);
         $transfer = Transfer_Requests::all();
 
+     //   $inter = Interventions::all();
 
-        $inter = Interventions::all();
+        $inter = Interventions::where('parent', 0)->get();
 
         if(Auth::user()->user_role()->first()->name == 'Superadmin'){
             return view('intervention.addIntervention')->with('roles',$roles)->with('deps',$deps)->with('inter', $inter)->with('users',$users)->with('transfer',$transfer);
@@ -68,30 +68,21 @@ class InterventionController extends Controller
 
         $roles = User_roles::all();
         $deps = Departments::all();
-        $inter = Interventions::all();
+        $inter = Interventions::where('parent', 0)->get();
         $users = Users::find(Auth::user()->id);
 
         $transfer = Transfer_Requests::all();
 
           $input = $request->all(); 
 
-          $intervention = Interventions::create($request->except('_token'));
 
-          if ($intervention->save()) {
+              $interven = new Interventions([
+                'parent' => $request->input('parent'),
+                'interven_name' => $request->input('name'),
+                'descrp' => $request->input('descrpt'),
+                ]);
 
-             $department = [];
-             foreach($request->department as $val) {
-              $d = new IntervenDept;
-              $d->department_id = $val;
-              $department[] = $d;
-            }
-
-          }
-
-
-        $department = $intervention->interven()->saveMany($department);
-
-
+      $interven->save();
       Session::flash('alert-class', 'success'); 
       flash('Intervention Created', '')->overlay();
 
@@ -111,16 +102,18 @@ class InterventionController extends Controller
       public function viewIntervention($id)
      { 
 
-      
+
         $roles = User_roles::all();
         $deps = Departments::all();
-        $inter = Interventions::where('parent', 0)->get();
+        $intersx = Interventions::find($id);
+
+        $inter = Interventions::where('parent', $id)->get();
         $users = Users::find(Auth::user()->id);
 
         $transfer = Transfer_Requests::all();
 
           if(Auth::user()->user_role()->first()->name == 'Superadmin'){
-           return view('intervention.showintervention')->with('roles',$roles)->with('deps',$deps)->with('inter', $inter)->with('users',$users)->with('transfer',$transfer);
+           return view('intervention.viewIntervention')->with('interven', $intersx)->with('roles',$roles)->with('deps',$deps)->with('inter', $inter)->with('users',$users)->with('transfer',$transfer);
         }
          
          

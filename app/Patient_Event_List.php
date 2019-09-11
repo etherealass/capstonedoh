@@ -9,7 +9,7 @@ class Patient_Event_List extends Model
     //
         public $table = "patient_event_lists";
 
-    protected $fillable = ['id','event_id','patient_id','status'];
+    protected $fillable = ['id','date','event_id','patient_id','status'];
 
 
      public function events()

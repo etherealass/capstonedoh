@@ -11,7 +11,7 @@ use App\Interventions;
 class Visit_interven extends Model
 {
     protected $fillable = [
-        'patient_id','interven_id','event_id','remarks'
+        'id','patient_id','interven_id','event_id','remarks','child_interven_id', 'created_by', 'date'
     ];
 
      public function patient()
@@ -23,6 +23,12 @@ class Visit_interven extends Model
     {
        return $this->belongsTo('App\Interventions','interven_id');
     }
+
+      public function childintervention()
+    {
+       return $this->belongsTo('App\Interventions','child_interven_id');
+    }
+
 
      public function events()
     {

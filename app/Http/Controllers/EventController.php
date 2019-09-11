@@ -24,7 +24,7 @@ use App\Visit_interven;
 use Hash;
 use Session;
 use PDF;
-use Carbon;
+use Carbon\Carbon;
 use Response;
 
 
@@ -57,40 +57,35 @@ class EventController extends Controller
     public function patient_attend_intervention(Request $request){
 
             $data = $request->all();
-
-             //$data= str_split($data);
-
-//var_dump($data); exit;
+        
+               // var_dump($data); exit;
              foreach ($data as $record) {
                 if (!$record['isChecked'] && $record['rec_id']) {
                     //find record and delete
+                    $rec = Visit_interven::find($record['rec_id']);
+                    $rec->delete();
                 } else {
                     if ($record['isChecked'] && empty($record['rec_id'])) {
                         $rec = new Visit_interven;
                     } else if ($record['isChecked'] && $record['rec_id']) {
-                        $rec = Visit_interven::findOne($record['rec_id']);
+                        $rec = Visit_interven::find($record['rec_id']);
+
+
                     }
 
+                    $rec->patient_event = 
                     $rec->patient_id = $record['patient_id'];
                     $rec->interven_id = $record['interven_id'];
                     $rec->event_id = $record['event_id'];
                     $rec->remarks = $record['remarks'];
-
+                    $rec->child_interven_id = 10;
+                    $rec->created_by = 3;
                     $rec->save();
                 }
-
-                
-                
             }
              
          return Response::json($rec);
         
-    }
-
-    public function event_save_edit(Request $request){
-
-                var_dump('sample');
-
     }
 
     public function view_event_attended() {

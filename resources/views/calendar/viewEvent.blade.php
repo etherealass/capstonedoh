@@ -35,6 +35,8 @@ select
     font: 14px Arial, Helvetica, sans-serif;
     color: #666;
 }
+
+.bootstrap-select.btn-group {width: auto !important;}
 </style>
 
 @endsection
@@ -119,11 +121,11 @@ select
                                              <td height="20"><a>{{ $patients->patients->contact}}</a></td>
                                              <td>
                                             @if($isEventExpired)
-                                            <button class="btn btn-info  open-modal" value="{{$patients->patient_id}}"><i class="far fa-calendar-check" aria-hidden="true"></i></button>
+                                            <button class="btn btn-info  open-modal" value="{{$patients->patient_id}}" data-id="{{$patients->id}}"><i class="far fa-calendar-check" aria-hidden="true"></i></button>
                                             @endif
 
                                               @if($isPatientRemove)
-                                            <button class="btn btn-danger delete_link" value="{{$patients->id}}"><i class="fa fa-times" aria-hidden="true"></i></button>
+                                            <button class="btn btn-danger delete_link" value="{{$patients->id}}" data-name="{{ $patients->patients->lname }}, {{ $patients->patients->fname }}"><i class="fa fa-times" aria-hidden="true"></i></button>
                                             @endif
                                               </td>
 
@@ -152,8 +154,24 @@ select
                                   <div>
                                     <input type="hidden" name="rec_id_{{$interven->id}}" id="rec_id_{{$interven->id}}" value="">
                                     <div class="checkboxs" id="checkboxes_{{$interven->id}}">
-                                      <label><input type="checkbox" class="checkitems" id="checkitem[]" name="checkitem[]" style="zoom:1.5;font-size: 28px"  value="{{$interven->id}}">{{$interven->interven_name}}</label>
+                                      <label><input type="checkbox" class="checkitems" id="checkitem[]" name="checkitem[]" style="zoom:1.5;font-size: 28px;"  value="{{$interven->id}}">{{$interven->interven_name}}</label>
                                     </div>
+
+                                  @foreach($childIntervens->groupby('parent') as  $name => $member)
+
+                                    @if($name  == $interven->id)
+
+                                <div class="form-label-group select1" id="select_{{$interven->id}}" name="select_{{$interven->id}}"  style="display: none;">
+
+                                  <select class="form-control col-md-6" id="childInterven_{{$interven->id}}"  name="childInterven_{{$interven->id}}" style=" margin-bottom: 10px">
+                                    @foreach($member as $item)
+                                      <option value="{{ $item['id']}}">{{  $item['interven_name'] }}</option>
+                                          @endforeach
+                                    </select>
+                                  </div>
+                                    @endif
+
+                                  @endforeach
                                     <div class="form-label-group textboxes" id="textboxes_{{$interven->id}}" style="display: none;">
                                         <input style="margin-left:0px" type="text" class="form-control" placeholder="Remarks" name="remarks_{{$interven->id}}" id="remarks_{{$interven->id}}">
                                      </div>
@@ -168,6 +186,8 @@ select
                             </button>
                             <input type="hidden" id="evts_id" name="evts_id" value="">
                             <input type="hidden" id="patient_interven_id" name="patient_interven_id" value="">
+                            <input type="hidden" id="patient_interven_id" name="patient_interven_id" value="">
+
 
                         </div>
                     </div>
@@ -266,6 +286,12 @@ select
 
   $(".selectpicker").selectpicker();
 
+   $('#linkEditor').on('hidden.bs.modal', function () {
+        //$(this).removeData('bs.modal');
+        console.log('hide');
+        $(this).find('form').trigger("reset")
+      });
+
           $('body').on('click', '.open-modal', function () {
               var evt_id = $('#event_id').val();
               $('#evts_id').val(evt_id);
@@ -275,9 +301,8 @@ select
               $('#linkEditor').modal('show');
 
           var type = "GET";
-        var ajaxurl = '{{URL::to("/view/vieweventattended")}}';
-
-        var data = [{'event_id': evt_id, 'patient_id': $(this).val()}]
+          var ajaxurl = '{{URL::to("/view/vieweventattended")}}';
+          var data = [{'event_id': evt_id, 'patient_id': $(this).val()}]
               $.ajax({
                 contentType: "application/json; charset=utf-8",
                 type: type,
@@ -285,19 +310,24 @@ select
                 data: {'event_id': evt_id, 'patient_id': $(this).val()},
                // dataType: 'json',
                 success: function (data) {
-                  console.log(data);
-                  for(var a=0; a<data.length; a++) {
-                    var interven_id = data[a]['interven_id'];
-                    var remarks = data[a]['remarks'];
-                    var id = data[a]['id'];
+                 
+                  if (data.length > 0){ console.log(data);
+                    for(var a=0; a<data.length; a++) {
+                      var interven_id = data[a]['interven_id'];
+                      var remarks = data[a]['remarks'];
+                      var id = data[a]['id'];
 
-                    console.log(interven_id);
-                    $("input[value=" + interven_id + "]").click();
-                    $("input[name=remarks_" + interven_id + "]").val(remarks);
-                    $("input[name=rec_id_" + interven_id + "]").val(id);
-                  }
+                      //console.log(interven_id);
+                      $("input[value=" + interven_id + "]").click();
+                      $("input[name=remarks_" + interven_id + "]").val(remarks);
+                      $("input[name=rec_id_" + interven_id + "]").val(id);
+                    }
 
+                      //
+                  } else{
+                    $('#modalFormData').trigger("reset");
                     $('#linkEditor').modal('show');
+                  }
                    
                 },
                error: function (data) {
@@ -310,8 +340,6 @@ select
 
            $('body').on('click', '.edit-event', function () {
 
-            //  $('#btn-save').val("add");
-             // $('#modalFormData2').trigger("reset");
               $('#EventEditor').modal('show');
           });
 
@@ -336,6 +364,8 @@ select
      $('#linkEditor').on('hidden.bs.modal', function () {
 
               $('.textboxes').hide();
+              $('.select1').hide();
+
 
   
     })
@@ -351,15 +381,20 @@ select
         e.preventDefault();
       var patient_inter = $('#patient_interven_id').val();
       var events = $('#evts_id').val();
+      
+
+      var details = {};
 
       var eventArr = [];
+
+      console.log()
         var length = $("input[type=checkbox]").each(function(){
               var isChecked = $(this).is(':checked');
-       console.log(isChecked);
               var event = {};
               var value = $(this).val();
               event['isChecked'] = isChecked;
               event['rec_id'] = $('#rec_id_'+value).val();
+              event['child_interven_id'] =  $('#childInterven_'+value).val();;
               event['patient_id'] = patient_inter;
               event['interven_id'] = value;
               event['event_id'] = events;
@@ -368,27 +403,27 @@ select
               eventArr.push(event);
         });
 
-        var type = "POST";
-        var ajaxurl = '{{URL::to("/patient/attendIntervention")}}';
 
 
-          console.log(eventArr);
-         $.ajax({
-            contentType: "application/json; charset=utf-8",
-            type: type,
-            url: ajaxurl,
-            data: JSON.stringify(eventArr),
-           // dataType: 'json',
-            success: function (data) {
-                $('#modalFormData').trigger("reset");
-                $('#linkEditor').modal('hide');
+       // var type = "POST";
+       //  var ajaxurl = '{{URL::to("/patient/attendIntervention")}}';
+       //   $.ajax({
+       //      contentType: "application/json; charset=utf-8",
+       //      type: type,
+       //      url: ajaxurl,
+       //      data: JSON.stringify(eventArr),
+       //      success: function (data) {
+       //          $('#modalFormData').trigger("reset");
+       //          $('#linkEditor').modal('hide');
+
+
                
-            },
-           error: function (data) {
-                console.log('Error:', data);
-            }
+       //      },
+       //     error: function (data) {
+       //          console.log('Error:', data);
+       //      }
 
-        });
+       //  });
 
 
 
@@ -456,11 +491,10 @@ select
 
 
     $('.delete_link').click(function () {
-
     var result = confirm('Your are about to remove this patient in the list. Would you like to continue?');
-    
+    // "<li><a role="option" class="dropdown-item" aria-disabled="false" tabindex="0" aria-selected="false"><span class="text">Tinapay, Mikay</span></a></li>"
     if(result == true){
-
+        var patient_name = $(this).data('name');
         var patient_id = $(this).val();
           
            $.ajaxSetup({
@@ -469,12 +503,25 @@ select
             }
         });
 
-        ajaxurl = '{{URL::to("delete/patient")}}'+ '/' + patient_id;
+// console.log(patient_name);
+// $('button.dropdown-toggle').click();
+
+// $('#patientList').append('<option value="' + patient_id + '">' + patient_name + '</option>');
+
+// $('#patientList').siblings('.dropdown-menu').find('ul.dropdown-menu.inner.show').append('<li><a role="option" class="dropdown-item" aria-disabled="false" tabindex="0" aria-selected="false"><span class="text">' + patient_name + '</span></a></li>');
+//  //$('#patientList').trigger('click');
+           
+       ajaxurl = '{{URL::to("delete/patient")}}'+ '/' + patient_id;
         $.ajax({
             type: "DELETE",
             url: ajaxurl,
             success: function (data) {
                 $("#patient" +  patient_id).remove();
+
+                location.reload();
+                // console.log("delete");
+                // $('#patientList').siblings('.dropdown-menu').find('ul.dropdown-menu.inner.show').append('<li><a role="option" class="dropdown-item" aria-disabled="false" tabindex="0" aria-selected="false"><span class="text">' + patient_name + '</span></a></li>');
+
             },
             error: function (data) {
                 console.log('Error:', data);
@@ -490,8 +537,11 @@ select
             var id = $(this).val();
             if ($(this).is(':checked')) {
               $("#textboxes_" + id).show();
+              $("#select_" + id).show();
+
             } else {
               $("#textboxes_" + id).hide();
+               $("#select_" + id).hide();
             }
         
            })

@@ -12,7 +12,9 @@
   color: #fff;
 }
 
+.bootstrap-select.btn-group {width: auto !important;}
 
+.bootstrap-select.btn-group .dropdown-toggle .filter-option { white-space: normal; }
    </style>
 
 @endsection
@@ -86,12 +88,7 @@
                                     <input type="time" id="end_time" class="form-control" placeholder="End Time" name="end_time" value="12:00">
                                   </div>
                                 </div>
-                                <div class="col-md-5">
-                                  <div class="form-label-group">
-                                   <!-- <h6>Department</h6>-->
-                                    <input type="number" id="dept" class="form-control" placeholder="End Time" name="dept" value="{{$users->department}}" hidden="hidden">
-                                  </div>
-                                </div>
+                                
                              </div>
                           </div>
                         </div>
@@ -101,17 +98,36 @@
                               <div class="col-md-11">
                                   <div class="form-label-group">
                                     <h6>Assignee</h6>
-                                      <select id="nameid[]" class="selectpicker form-control" style="font-size: 18px; width: 500px;height: 100px" name="nameid[]" multiple="multiple">
-                                        @foreach($assignee as $role => $assign)
-                                            <optgroup label="{{$role}}">
-                                          @foreach($assign as $assgnee)
-                                            <option value="{{$assgnee->id}}">{{$assgnee->fname}} {{$assgnee->lname}}</option>>
+                                      <select id="nameid[]" class="selectpicker show-menu-arrow form-control" width="300" style="font-size: 18px; width: 300px;overflow: hidden;" name="nameid[]" multiple="multiple">
+                                        @foreach($assignee->groupby('role') as $assign => $user)
+
+                                        @foreach($roles as $role)
+                                        @if($assign == $role->id)
+                                            <optgroup label="{{$role->name}}">
+                                          @foreach($user as $assgnee)
+                                            <option value="{{$assgnee['id']}}">{{$assgnee['fname']}} {{$assgnee['lname']}}</option>
                                           @endforeach
                                         </optgroup>
+                                        @endif
+                                        @endforeach
                                         @endforeach
                                     </select>
                                   </div>
                               </div>
+                            </div>
+                              <div class="form-row">
+
+                              <div class="col-md-11">
+                                  <div class="form-label-group" style="margin-top: 25px">
+                                    <h6>Department</h6>
+                                    <select id="department" class="form-control" style="font-size: 18px;" name="department">
+                                        @foreach($deps as $department)
+                                        
+                                            <option value="{{$department->id}}">{{$department->department_name}}</option>
+                                        @endforeach
+                                    </select>
+                                  </div>
+                                </div>
                             </div>
                           </div>
                         </div>
@@ -182,6 +198,12 @@
 
        $(document).ready(function () {
 
+        
+
+        $(".picker").selectpicker({
+      style: 'btn-info',
+      size: 4
+  });
         $('#checkall').on('click', function(e) {
          if($(this).is(':checked',true))  
          {

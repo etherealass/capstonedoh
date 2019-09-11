@@ -16,6 +16,6 @@ class Display extends Model
 
     public function services()
 	{
-	  return $this->belongsTo('Services::class');
+	  return $this->belongsTo('App\Services', 'service_id');
 	}
 }

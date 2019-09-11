@@ -9,7 +9,7 @@ use App\Visit_interven;
 class Interventions extends Model
 {
  
-    protected $fillable = ['id','interven_name','descrp'];
+    protected $fillable = ['id','parent','interven_name','descrp'];
 
      public function interven()
     {

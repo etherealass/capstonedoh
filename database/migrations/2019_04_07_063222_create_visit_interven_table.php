@@ -15,12 +15,18 @@ class CreateVisitIntervenTable extends Migration
     {
         Schema::create('visit_intervens', function (Blueprint $table) {
             $table->increments('id');
+            $table->integer('patient_event')->unsigned();
+            $table->foreign('patient_event')->references('id')->on('patient_event_lists');
             $table->integer('patient_id')->unsigned();
             $table->foreign('patient_id')->references('id')->on('patients');
             $table->integer('interven_id')->unsigned();
             $table->foreign('interven_id')->references('id')->on('interventions');
+            $table->integer('child_interven_id')->unsigned()->nullable();
+            $table->foreign('child_interven_id')->references('id')->on('interventions');
             $table->integer('event_id')->unsigned();
             $table->foreign('event_id')->references('id')->on('events');
+            $table->integer('created_by')->unsigned();
+            $table->foreign('created_by')->references('id')->on('users');
             $table->string('remarks')->nullable();
             $table->timestamps();
         });

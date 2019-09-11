@@ -36,6 +36,7 @@ use App\Doctors_Progress_Notes;
 use App\Refers;
 use App\Patient_Event_List;
 use App\Services;
+use App\Display;
 use Notification;
 use Hash;
 use Session;
@@ -104,23 +105,23 @@ class PatientController extends Controller
         $refer = Refers::where('patient_id', $id)->get();
         $event_patient = Patient_Event_List::where('patient_id', $id)->with('events')->with('patients')->get();
 
-        $services = Services::all();
+        $services = Display::with('services')->get();
 
 
 
         $notif = DB::table('notifications')->where('notifiable_id',Auth::user()->id)->update(['read_at' => date('Y-m-d')]);
 
         if(Auth::user()->user_role()->first()->name == 'Superadmin'){
-            return view('superadmin.viewpatient')->with('roles' , $roles)->with('deps',$deps)->with('pat' ,$pat)->with('users',$users)->with('pid',$pid)->with('transfer',$transfer)->with('history',$history)->with('reasons',$reasons)->with('graduate',$graduate)->with('refers', $refer)->with('notes',$notes)->with('patos',$patos)->with('service',$services);
+            return view('superadmin.viewpatient')->with('roles' , $roles)->with('deps',$deps)->with('pat' ,$pat)->with('users',$users)->with('pid',$pid)->with('transfer',$transfer)->with('history',$history)->with('reasons',$reasons)->with('graduate',$graduate)->with('refers', $refer)->with('notes',$notes)->with('patos',$patos)->with('service',$services)->with('visits', $event_patient);
         }
         else if(Auth::user()->user_role()->first()->name == 'Admin'){
-            return view('admin.viewpatient')->with('roles' , $roles)->with('deps',$deps)->with('pat' ,$pat)->with('users',$users)->with('pid',$pid)->with('transfer',$transfer)->with('history',$history)->with('reasons',$reasons)->with('graduate',$graduate)->with('refers', $refer)->with('notes',$notes)->with('patos',$patos)->with('service',$services);
+            return view('admin.viewpatient')->with('roles' , $roles)->with('deps',$deps)->with('pat' ,$pat)->with('users',$users)->with('pid',$pid)->with('transfer',$transfer)->with('history',$history)->with('reasons',$reasons)->with('graduate',$graduate)->with('refers', $refer)->with('notes',$notes)->with('patos',$patos)->with('service',$services)->with('visits', $event_patient);
         }
         else if(Auth::user()->user_role()->first()->name == 'Social Worker'){
-            return view('socialworker.viewpatient')->with('roles' , $roles)->with('deps',$deps)->with('pat' ,$pat)->with('users',$users)->with('pid',$pid)->with('transfer',$transfer)->with('history',$history)->with('reasons',$reasons)->with('graduate',$graduate)->with('refers', $refer)->with('notes',$notes)->with('patos',$patos)->with('service',$services);
+            return view('socialworker.viewpatient')->with('roles' , $roles)->with('deps',$deps)->with('pat' ,$pat)->with('users',$users)->with('pid',$pid)->with('transfer',$transfer)->with('history',$history)->with('reasons',$reasons)->with('graduate',$graduate)->with('refers', $refer)->with('notes',$notes)->with('patos',$patos)->with('service',$services)->with('visits', $event_patient);
         }
         else if(Auth::user()->user_role()->first()->name == 'Doctor'){
-            return view('doctor.viewpatient')->with('roles' , $roles)->with('deps',$deps)->with('pat' ,$pat)->with('users',$users)->with('pid',$pid)->with('transfer',$transfer)->with('history',$history)->with('reasons',$reasons)->with('graduate',$graduate)->with('refers', $refer)->with('notes',$notes)->with('patos',$patos)->with('service',$services);
+            return view('doctor.viewpatient')->with('roles' , $roles)->with('deps',$deps)->with('pat' ,$pat)->with('users',$users)->with('pid',$pid)->with('transfer',$transfer)->with('history',$history)->with('reasons',$reasons)->with('graduate',$graduate)->with('refers', $refer)->with('notes',$notes)->with('patos',$patos)->with('service',$services)->with('visits', $event_patient);
         }
 
     }

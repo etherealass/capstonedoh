@@ -1625,8 +1625,6 @@ $today = $year . '-' . $month . '-' . $day;
 
     $('#addNurseNotes').click(function () {
 
-        alert('sampleonly');
-
         $('#NurseNotesFormData').trigger("reset");
         $('#NurseNotesModal').modal('show');
     
@@ -1647,7 +1645,25 @@ $today = $year . '-' . $month . '-' . $day;
     
     });
 
+ $('#addDentalNotes').click(function () {
 
+        $('#AddDentalFormData').trigger("reset");
+        $('#AddDentalNotesModal').modal('show');
+    
+  });
+
+  $('#addPyschiatristNotes').click(function () {
+
+        $('#AddPsychiatristFormData').trigger("reset");
+        $('#AddPsychiatristNotesModal').modal('show');
+    
+  });
+$('#addSocialWorkerNotes').click(function () {
+
+        $('#AddSocialWorkerFormData').trigger("reset");
+        $('#AddSocialWorkerNotesModal').modal('show');
+    
+  });
 
 
 

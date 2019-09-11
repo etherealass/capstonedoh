@@ -15,7 +15,8 @@ class CreatePatientEventListsTable extends Migration
     {
         Schema::create('patient_event_lists', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('event_id')->unsigned();
+            $table->date('date')->nullable();
+            $table->integer('event_id')->unsigned()->nullable();
             $table->foreign('event_id')->references('id')->on('events');
             $table->integer('patient_id')->unsigned();
             $table->foreign('patient_id')->references('id')->on('patients');

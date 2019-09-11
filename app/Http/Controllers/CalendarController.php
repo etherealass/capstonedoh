@@ -64,9 +64,9 @@ class CalendarController extends Controller
        $transfer = Transfer_Requests::all();
        $interven = Interventions::all();
        $users = Users::find(Auth::user()->id);
-        $graduate = Graduate_Requests::all();
+       $graduate = Graduate_Requests::all();
 
-        $assignee  = Users::all()->groupBy('roles');
+       $assignee  = Users::with('user_roles')->get();
        $dep = $users->department;
 
 
@@ -114,6 +114,10 @@ class CalendarController extends Controller
 
         $patients = $request->input('checkitem');
 
+        $date =  $request->input('start_date');
+
+
+
         $event = new Events([
         'evt_id' => $evt,
         'title' => $request->input('title'),
@@ -147,6 +151,7 @@ class CalendarController extends Controller
 
             $patient_event = new Patient_Event_List([
 
+                'date' => $date,
                 'event_id' =>  $eventid,
                 'patient_id' => $pat,
                 'status' => 1
@@ -193,7 +198,9 @@ class CalendarController extends Controller
 
         $roles = User_roles::all();
         $deps = Departments::all();
-        $interven = Interventions::all();
+        $interven = Interventions::where('parent', 0)->get();
+        $childInterven = Interventions::where('parent', '!=', 0)->get();
+
         $users = Users::find(Auth::user()->id);
         $transfer = Transfer_Requests::all();
 
@@ -248,7 +255,7 @@ class CalendarController extends Controller
 
 
 
-        return view('calendar.viewEvent')->with('roles' , $roles)->with('deps',$deps)->with('evt' ,$evt)->with('users',$users)->with('pats', $event_patient)->with('intv', $interven)->with('transfer',$transfer)->with('isEventExpired', $isEventExpired)->with('isEventCancelled', $isEventCancelled)->with('graduate',$graduate)->with('isPatientRemove', $isPatientRemove)->with('patients', $patients);
+        return view('calendar.viewEvent')->with('roles' , $roles)->with('deps',$deps)->with('evt' ,$evt)->with('users',$users)->with('pats', $event_patient)->with('intv', $interven)->with('transfer',$transfer)->with('isEventExpired', $isEventExpired)->with('isEventCancelled', $isEventCancelled)->with('graduate',$graduate)->with('isPatientRemove', $isPatientRemove)->with('patients', $patients)->with('childIntervens', $childInterven);
 
 
     }
@@ -352,7 +359,7 @@ class CalendarController extends Controller
    }
 
 
-public function chart()
+  public function chart()
     {
 
       $roles = User_roles::all();
