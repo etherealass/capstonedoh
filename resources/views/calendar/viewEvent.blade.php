@@ -403,31 +403,25 @@ select
               eventArr.push(event);
         });
 
-
-
-       // var type = "POST";
-       //  var ajaxurl = '{{URL::to("/patient/attendIntervention")}}';
-       //   $.ajax({
-       //      contentType: "application/json; charset=utf-8",
-       //      type: type,
-       //      url: ajaxurl,
-       //      data: JSON.stringify(eventArr),
-       //      success: function (data) {
-       //          $('#modalFormData').trigger("reset");
-       //          $('#linkEditor').modal('hide');
-
-
+       var type = "POST";
+        var ajaxurl = '{{URL::to("/patient/attendIntervention")}}';
+         $.ajax({
+            contentType: "application/json; charset=utf-8",
+            type: type,
+            url: ajaxurl,
+            data: JSON.stringify(eventArr),
+            success: function (data) {
+                $('#modalFormData').trigger("reset");
+                $('#linkEditor').modal('hide');
                
-       //      },
-       //     error: function (data) {
-       //          console.log('Error:', data);
-       //      }
+            },
+           error: function (data) {
+                console.log('Error:', data);
+            }
 
-       //  });
+        });
 
-
-
-    })
+    });
 
      $('.add_patient').click(function(e){
 

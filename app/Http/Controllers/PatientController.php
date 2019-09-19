@@ -27,6 +27,7 @@ use App\Patient_Information;
 use App\Transfer_Requests;
 use App\Graduate_Requests;
 use App\Patient_History;
+use App\Interventions;
 use App\Cities;
 use App\Case_Type;
 use App\Logs;
@@ -37,6 +38,7 @@ use App\Refers;
 use App\Patient_Event_List;
 use App\Services;
 use App\Display;
+use App\ProgressNotes;
 use Notification;
 use Hash;
 use Session;
@@ -106,22 +108,25 @@ class PatientController extends Controller
         $event_patient = Patient_Event_List::where('patient_id', $id)->with('events')->with('patients')->get();
 
         $services = Display::with('services')->get();
+        $patient_note = ProgressNotes::where('patient_id', $id)->with('servicex')->with('userx')->get();
+        $interven = Interventions::where('parent', 0)->get();
+        $childInterven = Interventions::where('parent', '!=', 0)->get();
 
 
 
         $notif = DB::table('notifications')->where('notifiable_id',Auth::user()->id)->update(['read_at' => date('Y-m-d')]);
 
         if(Auth::user()->user_role()->first()->name == 'Superadmin'){
-            return view('superadmin.viewpatient')->with('roles' , $roles)->with('deps',$deps)->with('pat' ,$pat)->with('users',$users)->with('pid',$pid)->with('transfer',$transfer)->with('history',$history)->with('reasons',$reasons)->with('graduate',$graduate)->with('refers', $refer)->with('notes',$notes)->with('patos',$patos)->with('service',$services)->with('visits', $event_patient);
+            return view('superadmin.viewpatient')->with('roles' , $roles)->with('deps',$deps)->with('pat' ,$pat)->with('users',$users)->with('pid',$pid)->with('transfer',$transfer)->with('history',$history)->with('reasons',$reasons)->with('graduate',$graduate)->with('refers', $refer)->with('notes',$notes)->with('patos',$patos)->with('service',$services)->with('visits', $event_patient)->with('patient_notes', $patient_note)->with('intv', $interven)->with('childIntervens', $childInterven);
         }
         else if(Auth::user()->user_role()->first()->name == 'Admin'){
-            return view('admin.viewpatient')->with('roles' , $roles)->with('deps',$deps)->with('pat' ,$pat)->with('users',$users)->with('pid',$pid)->with('transfer',$transfer)->with('history',$history)->with('reasons',$reasons)->with('graduate',$graduate)->with('refers', $refer)->with('notes',$notes)->with('patos',$patos)->with('service',$services)->with('visits', $event_patient);
+            return view('admin.viewpatient')->with('roles' , $roles)->with('deps',$deps)->with('pat' ,$pat)->with('users',$users)->with('pid',$pid)->with('transfer',$transfer)->with('history',$history)->with('reasons',$reasons)->with('graduate',$graduate)->with('refers', $refer)->with('notes',$notes)->with('patos',$patos)->with('service',$services)->with('visits', $event_patient)->with('patient_notes', $patient_note)->with('intv', $interven)->with('childIntervens', $childInterven);
         }
         else if(Auth::user()->user_role()->first()->name == 'Social Worker'){
-            return view('socialworker.viewpatient')->with('roles' , $roles)->with('deps',$deps)->with('pat' ,$pat)->with('users',$users)->with('pid',$pid)->with('transfer',$transfer)->with('history',$history)->with('reasons',$reasons)->with('graduate',$graduate)->with('refers', $refer)->with('notes',$notes)->with('patos',$patos)->with('service',$services)->with('visits', $event_patient);
+            return view('socialworker.viewpatient')->with('roles' , $roles)->with('deps',$deps)->with('pat' ,$pat)->with('users',$users)->with('pid',$pid)->with('transfer',$transfer)->with('history',$history)->with('reasons',$reasons)->with('graduate',$graduate)->with('refers', $refer)->with('notes',$notes)->with('patos',$patos)->with('service',$services)->with('visits', $event_patient)->with('patient_notes', $patient_note)->with('intv', $interven)->with('childIntervens', $childInterven);
         }
         else if(Auth::user()->user_role()->first()->name == 'Doctor'){
-            return view('doctor.viewpatient')->with('roles' , $roles)->with('deps',$deps)->with('pat' ,$pat)->with('users',$users)->with('pid',$pid)->with('transfer',$transfer)->with('history',$history)->with('reasons',$reasons)->with('graduate',$graduate)->with('refers', $refer)->with('notes',$notes)->with('patos',$patos)->with('service',$services)->with('visits', $event_patient);
+            return view('doctor.viewpatient')->with('roles' , $roles)->with('deps',$deps)->with('pat' ,$pat)->with('users',$users)->with('pid',$pid)->with('transfer',$transfer)->with('history',$history)->with('reasons',$reasons)->with('graduate',$graduate)->with('refers', $refer)->with('notes',$notes)->with('patos',$patos)->with('service',$services)->with('visits', $event_patient)->with('patient_notes', $patient_note)->with('intv', $interven)->with('childIntervens', $childInterven);
         }
 
     }
@@ -140,19 +145,22 @@ class PatientController extends Controller
         $reasons = Dismissal_Reason::all();
         $history = Patient_History::where('patient_id',$id)->get();
         $notes = Doctors_Progress_Notes::where('patient_id',$id)->get();
+        $patient_note = ProgressNotes::where('patient_id', $id)->get();
+        $interven = Interventions::where('parent', 0)->get();
+        $childInterven = Interventions::where('parent', '!=', 0)->get();
 
 
         if(Auth::user()->user_role()->first()->name == 'Superadmin'){
-            return view('superadmin.viewpatient')->with('roles' , $roles)->with('deps',$deps)->with('pat' ,$pat)->with('users',$users)->with('pid',$pid)->with('transfers',$transfers)->with('transfer',$transfer)->with('history',$history)->with('stat',$stat)->with('graduate',$graduate)->with('reasons',$reasons)->with('patos',$patos)->with('notes',$notes);
+            return view('superadmin.viewpatient')->with('roles' , $roles)->with('deps',$deps)->with('pat' ,$pat)->with('users',$users)->with('pid',$pid)->with('transfers',$transfers)->with('transfer',$transfer)->with('history',$history)->with('stat',$stat)->with('graduate',$graduate)->with('reasons',$reasons)->with('patos',$patos)->with('notes',$notes)->with('patient_notes', $patient_note)->with('intv', $interven)->with('childIntervens', $childInterven);
         }
         else if(Auth::user()->user_role()->first()->name == 'Admin'){
-            return view('admin.viewpatient')->with('roles' , $roles)->with('deps',$deps)->with('pat' ,$pat)->with('users',$users)->with('pid',$pid)->with('transfers',$transfers)->with('transfer',$transfer)->with('history',$history)->with('stat',$stat)->with('graduate',$graduate)->with('reasons',$reasons)->with('patos',$patos)->with('notes',$notes);
+            return view('admin.viewpatient')->with('roles' , $roles)->with('deps',$deps)->with('pat' ,$pat)->with('users',$users)->with('pid',$pid)->with('transfers',$transfers)->with('transfer',$transfer)->with('history',$history)->with('stat',$stat)->with('graduate',$graduate)->with('reasons',$reasons)->with('patos',$patos)->with('notes',$notes)->with('patient_notes', $patient_note)->with('intv', $interven)->with('childIntervens', $childInterven);
         }
         else if(Auth::user()->user_role()->first()->name == 'Social Worker'){
-            return view('socialworker.viewpatient')->with('roles' , $roles)->with('deps',$deps)->with('pat' ,$pat)->with('users',$users)->with('pid',$pid)->with('transfers',$transfers)->with('transfer',$transfer)->with('history',$history)->with('stat',$stat)->with('graduate',$graduate)->with('reasons',$reasons)->with('patos',$patos)->with('notes',$notes);
+            return view('socialworker.viewpatient')->with('roles' , $roles)->with('deps',$deps)->with('pat' ,$pat)->with('users',$users)->with('pid',$pid)->with('transfers',$transfers)->with('transfer',$transfer)->with('history',$history)->with('stat',$stat)->with('graduate',$graduate)->with('reasons',$reasons)->with('patos',$patos)->with('notes',$notes)->with('patient_notes', $patient_note)->with('intv', $interven)->with('childIntervens', $childInterven);
         }
         else if(Auth::user()->user_role()->first()->name == 'Doctor'){
-            return view('doctor.viewpatient')->with('roles' , $roles)->with('deps',$deps)->with('pat' ,$pat)->with('users',$users)->with('pid',$pid)->with('transfer',$transfer)->with('history',$history)->with('reasons',$reasons)->with('graduate',$graduate)->with('patos',$patos)->with('notes',$notes);
+            return view('doctor.viewpatient')->with('roles' , $roles)->with('deps',$deps)->with('pat' ,$pat)->with('users',$users)->with('pid',$pid)->with('transfer',$transfer)->with('history',$history)->with('reasons',$reasons)->with('graduate',$graduate)->with('patos',$patos)->with('notes',$notes)->with('patient_notes', $patient_note)->with('intv', $interven)->with('childIntervens', $childInterven);
         }
     }
 
@@ -171,21 +179,23 @@ class PatientController extends Controller
         $reasons = Dismissal_Reason::all();
         $history = Patient_History::where('patient_id',$id)->get();
         $notes = Doctors_Progress_Notes::where('patient_id',$id)->get();
-
+        $patient_note = ProgressNotes::where('patient_id', $id)->get();
+                $interven = Interventions::where('parent', 0)->get();
+        $childInterven = Interventions::where('parent', '!=', 0)->get();
 
         if(Auth::user()->user_role()->first()->name == 'Superadmin'){
-            return view('superadmin.viewpatient')->with('roles' , $roles)->with('deps',$deps)->with('pat' ,$pat)->with('users',$users)->with('pid',$pid)->with('transfers',$transfers)->with('transfer',$transfer)->with('history',$history)->with('stat',$stat)->with('graduates',$graduates)->with('gid',$gid)->with('graduate',$graduate)->with('reasons',$reasons)->with('patos',$patos)->with('notes',$notes);
+            return view('superadmin.viewpatient')->with('roles' , $roles)->with('deps',$deps)->with('pat' ,$pat)->with('users',$users)->with('pid',$pid)->with('transfers',$transfers)->with('transfer',$transfer)->with('history',$history)->with('stat',$stat)->with('graduates',$graduates)->with('gid',$gid)->with('graduate',$graduate)->with('reasons',$reasons)->with('patos',$patos)->with('notes',$notes)->with('patient_notes', $patient_note)->with('intv', $interven)->with('childIntervens', $childInterven);
         }
         else if(Auth::user()->user_role()->first()->name == 'Admin'){
-            return view('admin.viewpatient')->with('roles' , $roles)->with('deps',$deps)->with('pat' ,$pat)->with('users',$users)->with('pid',$pid)->with('transfers',$transfers)->with('transfer',$transfer)->with('history',$history)->with('graduate',$graduate)->with('reasons',$reasons)->with('patos',$patos)->with('notes',$notes);
+            return view('admin.viewpatient')->with('roles' , $roles)->with('deps',$deps)->with('pat' ,$pat)->with('users',$users)->with('pid',$pid)->with('transfers',$transfers)->with('transfer',$transfer)->with('history',$history)->with('graduate',$graduate)->with('reasons',$reasons)->with('patos',$patos)->with('notes',$notes)->with('patient_notes', $patient_note)->with('intv', $interven)->with('childIntervens', $childInterven);
         }
         else if(Auth::user()->user_role()->first()->name == 'Social Worker'){
-            return view('socialworker.viewpatient')->with('roles' , $roles)->with('deps',$deps)->with('pat' ,$pat)->with('users',$users)->with('pid',$pid)->with('transfers',$transfers)->with('transfer',$transfer)->with('history',$history)->with('graduate',$graduate)->with('reasons',$reasons)->with('patos',$patos)->with('notes',$notes);
+            return view('socialworker.viewpatient')->with('roles' , $roles)->with('deps',$deps)->with('pat' ,$pat)->with('users',$users)->with('pid',$pid)->with('transfers',$transfers)->with('transfer',$transfer)->with('history',$history)->with('graduate',$graduate)->with('reasons',$reasons)->with('patos',$patos)->with('notes',$notes)->with('patient_notes', $patient_note)->with('intv', $interven)->with('childIntervens', $childInterven);
         }
         else if(Auth::user()->user_role()->first()->name == 'Doctor'){
-            return view('doctor.viewpatient')->with('roles' , $roles)->with('deps',$deps)->with('pat' ,$pat)->with('users',$users)->with('pid',$pid)->with('transfer',$transfer)->with('history',$history)->with('reasons',$reasons)->with('graduate',$graduate)->with('patos',$patos)->with('notes',$notes);
+            return view('doctor.viewpatient')->with('roles' , $roles)->with('deps',$deps)->with('pat' ,$pat)->with('users',$users)->with('pid',$pid)->with('transfer',$transfer)->with('history',$history)->with('reasons',$reasons)->with('graduate',$graduate)->with('patos',$patos)->with('notes',$notes)->with('patient_notes', $patient_note)->with('intv', $interven)->with('childIntervens', $childInterven);
         }
-    }
+}
 
     public function viewpatientz($id,$nid)
     {
@@ -200,20 +210,23 @@ class PatientController extends Controller
         $reasons = Dismissal_Reason::all();
         $history = Patient_History::where('patient_id',$id)->get();
         $notes = Doctors_Progress_Notes::where('patient_id',$id)->get();
-
+        $patient_note = ProgressNotes::where('patient_id', $id)->get();
         $notif = DB::table('notifications')->where('id',$nid)->update(['read_at' => date('Y-m-d')]);
+        $interven = Interventions::where('parent', 0)->get();
+        $childInterven = Interventions::where('parent', '!=', 0)->get();
 
+        
         if(Auth::user()->user_role()->first()->name == 'Superadmin'){
-            return view('superadmin.viewpatient')->with('roles' , $roles)->with('deps',$deps)->with('pat' ,$pat)->with('users',$users)->with('pid',$pid)->with('transfer',$transfer)->with('history',$history)->with('graduate',$graduate)->with('reasons',$reasons)->with('patos',$patos)->with('notes',$notes);
+            return view('superadmin.viewpatient')->with('roles' , $roles)->with('deps',$deps)->with('pat' ,$pat)->with('users',$users)->with('pid',$pid)->with('transfer',$transfer)->with('history',$history)->with('graduate',$graduate)->with('reasons',$reasons)->with('patos',$patos)->with('notes',$notes)->with('patient_notes', $patient_note)->with('intv', $interven)->with('childIntervens', $childInterven);
         }
         else if(Auth::user()->user_role()->first()->name == 'Admin'){
-            return view('admin.viewpatient')->with('roles' , $roles)->with('deps',$deps)->with('pat' ,$pat)->with('users',$users)->with('pid',$pid)->with('transfer',$transfer)->with('history',$history)->with('graduate',$graduate)->with('reasons',$reasons)->with('patos',$patos)->with('notes',$notes);
+            return view('admin.viewpatient')->with('roles' , $roles)->with('deps',$deps)->with('pat' ,$pat)->with('users',$users)->with('pid',$pid)->with('transfer',$transfer)->with('history',$history)->with('graduate',$graduate)->with('reasons',$reasons)->with('patos',$patos)->with('notes',$notes)->with('patient_notes', $patient_note)->with('intv', $interven)->with('childIntervens', $childInterven);
         }
         else if(Auth::user()->user_role()->first()->name == 'Social Worker'){
-            return view('socialworker.viewpatient')->with('roles' , $roles)->with('deps',$deps)->with('pat' ,$pat)->with('users',$users)->with('pid',$pid)->with('transfer',$transfer)->with('history',$history)->with('graduate',$graduate)->with('reasons',$reasons)->with('patos',$patos)->with('notes',$notes);
+            return view('socialworker.viewpatient')->with('roles' , $roles)->with('deps',$deps)->with('pat' ,$pat)->with('users',$users)->with('pid',$pid)->with('transfer',$transfer)->with('history',$history)->with('graduate',$graduate)->with('reasons',$reasons)->with('patos',$patos)->with('notes',$notes)->with('patient_notes', $patient_note)->with('intv', $interven)->with('childIntervens', $childInterven);
         }
         else if(Auth::user()->user_role()->first()->name == 'Doctor'){
-            return view('doctor.viewpatient')->with('roles' , $roles)->with('deps',$deps)->with('pat' ,$pat)->with('users',$users)->with('pid',$pid)->with('transfer',$transfer)->with('history',$history)->with('reasons',$reasons)->with('graduate',$graduate)->with('patos',$patos)->with('notes',$notes);
+            return view('doctor.viewpatient')->with('roles' , $roles)->with('deps',$deps)->with('pat' ,$pat)->with('users',$users)->with('pid',$pid)->with('transfer',$transfer)->with('history',$history)->with('reasons',$reasons)->with('graduate',$graduate)->with('patos',$patos)->with('notes',$notes)->with('patient_notes', $patient_note)->with('intv', $interven)->with('childIntervens', $childInterven);
         }
     }
 

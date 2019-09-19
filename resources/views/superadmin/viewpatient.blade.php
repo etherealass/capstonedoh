@@ -1617,6 +1617,126 @@ $today = $year . '-' . $month . '-' . $day;
       
   $(document).ready(function () {
     ////----- Open the modal to CREATE a link -----////
+
+    $('body').on('click', '.open_modal', function () {
+             
+              $('#modalFormData').trigger("reset");
+              $('#linkEditor').modal('show');
+
+               var evt_id = $('#event_id').val();
+              $('#evts_id').val(evt_id);
+              $('#patient_interven_id').val($(this).val());
+              $('#btn-save').val("add");
+
+
+          var type = "GET";
+          var ajaxurl = '{{URL::to("/view/vieweventattended")}}';
+          var data = [{'event_id': evt_id, 'patient_id': $(this).val()}]
+              $.ajax({
+                contentType: "application/json; charset=utf-8",
+                type: type,
+                url: ajaxurl,
+                data: {'event_id': evt_id, 'patient_id': $(this).val()},
+               // dataType: 'json',
+                success: function (data) {
+                 
+                  if (data.length > 0){ console.log(data);
+                    for(var a=0; a<data.length; a++) {
+                      var interven_id = data[a]['interven_id'];
+                      var remarks = data[a]['remarks'];
+                      var id = data[a]['id'];
+
+                      //console.log(interven_id);
+                      $("input[value=" + interven_id + "]").click();
+                      $("input[name=remarks_" + interven_id + "]").val(remarks);
+                      $("input[name=rec_id_" + interven_id + "]").val(id);
+                    }
+
+                      //
+                  } else{
+                    $('#modalFormData').trigger("reset");
+                    $('#linkEditor').modal('show');
+                  }
+                   
+                },
+               error: function (data) {
+                    console.log('Error:', data);
+                }
+
+            });
+    
+    });
+
+      $("input[type='checkbox']").click(function (e) {
+            var id = $(this).val();
+            if ($(this).is(':checked')) {
+              $("#textboxes_" + id).show();
+              $("#select_" + id).show();
+
+            } else {
+              $("#textboxes_" + id).hide();
+               $("#select_" + id).hide();
+            }
+        
+           })
+      
+
+     $('#btn-attended').click(function(e){
+
+         $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+            
+        });
+        e.preventDefault();
+      var patient_inter = $('#patient_interven_id').val();
+      var events = $('#evts_id').val();
+      
+
+      var details = {};
+
+      var eventArr = [];
+
+      console.log()
+        var length = $("input[type=checkbox]").each(function(){
+              var isChecked = $(this).is(':checked');
+              var event = {};
+              var value = $(this).val();
+              event['isChecked'] = isChecked;
+              event['rec_id'] = $('#rec_id_'+value).val();
+              event['child_interven_id'] =  $('#childInterven_'+value).val();;
+              event['patient_id'] = patient_inter;
+              event['interven_id'] = value;
+              event['event_id'] = events;
+              event['remarks'] = $('#remarks_'+value).val();
+
+              eventArr.push(event);
+        });
+
+       var type = "POST";
+        var ajaxurl = '{{URL::to("/patient/attendIntervention")}}';
+         $.ajax({
+            contentType: "application/json; charset=utf-8",
+            type: type,
+            url: ajaxurl,
+            data: JSON.stringify(eventArr),
+            success: function (data) {
+                $('#modalFormData').trigger("reset");
+                $('#linkEditor').modal('hide');
+               
+            },
+           error: function (data) {
+                console.log('Error:', data);
+            }
+
+        });
+
+    });
+
+
+   
+
     $('#add-patient-refer').click(function () {
         $('#btn-save').val("add");
         $('#modalFormData').trigger("reset");
@@ -1658,6 +1778,8 @@ $today = $year . '-' . $month . '-' . $day;
         $('#AddPsychiatristNotesModal').modal('show');
     
   });
+
+
 $('#addSocialWorkerNotes').click(function () {
 
         $('#AddSocialWorkerFormData').trigger("reset");
@@ -1666,7 +1788,209 @@ $('#addSocialWorkerNotes').click(function () {
   });
 
 
+$("#btn-save-socialworker").click(function (e) {
+   
 
+ $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+            
+        });
+
+     var today = new Date();
+    var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+    var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+    var dateTime = date+' '+time;
+
+      e.preventDefault();
+         var formData = {
+            progress_id: "sample",
+            patient_id: $('#patient_id').val(),
+            date_time: dateTime,
+            service_id: $('#patientList').val(),
+            note_by: $('#note_by').val(),
+            notes: $('#notes').val(),
+            role_type: "socialworker"
+        };
+
+
+        var type = "POST";
+        var id = $('#id').val();
+        var ajaxurl = '{{URL::to("/addsocialworkernotes")}}';
+
+
+     $.ajax({
+            type: type,
+            url: ajaxurl,
+            data: formData,
+            dataType: 'json',
+            success: function (data) {
+               
+
+                $('#modalFormData').trigger("reset");
+                $('#linkEditorModal').modal('hide')
+        },
+           error: function (data) {
+                console.log('Error:', data);
+            }
+
+        });
+
+});
+
+$("#btn-save-psychiatristnotes").click(function (e) {
+   
+
+ $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+            
+        });
+
+     var today = new Date();
+    var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+    var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+    var dateTime = date+' '+time;
+
+      e.preventDefault();
+         var formData = {
+            progress_id: "sample",
+            patient_id: $('#patient_id').val(),
+            date_time: dateTime,
+            service_id: $('#patientList').val(),
+            note_by: $('#note_by').val(),
+            notes: $('#notes2').val(),
+            role_type: "psychiatrist"
+        };
+
+
+        var type = "POST";
+        var id = $('#id').val();
+        var ajaxurl = '{{URL::to("/addsocialworkernotes")}}';
+
+
+     $.ajax({
+            type: type,
+            url: ajaxurl,
+            data: formData,
+            dataType: 'json',
+            success: function (data) {
+               
+
+                $('#modalFormData').trigger("reset");
+                $('#linkEditorModal').modal('hide')
+        },
+           error: function (data) {
+                console.log('Error:', data);
+            }
+
+        });
+
+});
+
+$("#btn-save-doctornotes").click(function (e) {
+   
+
+ $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+            
+        });
+
+     var today = new Date();
+    var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+    var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+    var dateTime = date+' '+time;
+
+      e.preventDefault();
+         var formData = {
+            progress_id: "sample",
+            patient_id: $('#patient_id').val(),
+            date_time: dateTime,
+            service_id: $('#patientList').val(),
+            note_by: $('#note_by').val(),
+            notes: $('#notes').val(),
+            role_type: "doctor"
+        };
+
+
+        var type = "POST";
+        var id = $('#id').val();
+        var ajaxurl = '{{URL::to("/addsocialworkernotes")}}';
+
+
+     $.ajax({
+            type: type,
+            url: ajaxurl,
+            data: formData,
+            dataType: 'json',
+            success: function (data) {
+               
+
+                $('#modalFormData').trigger("reset");
+                $('#linkEditorModal').modal('hide')
+        },
+           error: function (data) {
+                console.log('Error:', data);
+            }
+
+        });
+
+});
+
+$("#btn-save-doctornotes").click(function (e) {
+   
+
+ $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+            
+        });
+
+     var today = new Date();
+    var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+    var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+    var dateTime = date+' '+time;
+
+      e.preventDefault();
+         var formData = {
+            progress_id: "sample",
+            patient_id: $('#patient_id').val(),
+            date_time: dateTime,
+            service_id: $('#patientList').val(),
+            note_by: $('#note_by').val(),
+            notes: $('#notes').val(),
+            role_type: "doctor"
+        };
+
+
+        var type = "POST";
+        var id = $('#id').val();
+        var ajaxurl = '{{URL::to("/addsocialworkernotes")}}';
+
+
+     $.ajax({
+            type: type,
+            url: ajaxurl,
+            data: formData,
+            dataType: 'json',
+            success: function (data) {
+               
+
+                $('#modalFormData').trigger("reset");
+                $('#linkEditorModal').modal('hide')
+        },
+           error: function (data) {
+                console.log('Error:', data);
+            }
+
+        });
+
+});
 //Accept Referral REFERAL 
 $('.accept_patient_referal').click(function (e) {
 
@@ -1836,12 +2160,6 @@ $("#btn-save").click(function (e) {
 
   })
 
-//   function getDate(){
-//     var today = new Date();
 
-// document.getElementById("date").value = today.getFullYear() + '-' + ('0' + (today.getMonth() + 1)).slice(-2) + '-' + ('0' + today.getDate()).slice(-2);
-
-
-// }
   </script>
 @endsection

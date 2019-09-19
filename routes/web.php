@@ -215,6 +215,7 @@ Route::group(['middleware' =>'auth'], function()
 	Route::put('/refers/{id?}', "ReferController@putRefer"); 
 
 
+	Route::post('/addsocialworkernotes', "ReferController@addsocialworkernotes");
 
 
 

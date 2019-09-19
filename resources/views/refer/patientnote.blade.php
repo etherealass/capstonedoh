@@ -12,7 +12,7 @@ section .section-title {
     text-transform: uppercase;
 }
 #tabs{
-	background: #007b5e;
+  background: #007b5e;
     color: #eee;
 }
 #tabs h6.section-title{
@@ -38,22 +38,22 @@ section .section-title {
 @endsection
 
   <div class="tab-pane fade" id="v-pills-patientnote" role="tabpanel" aria-labelledby="v-pills-patientnote-tab">
- 	
-  		<div class="row">
-			<div style="width: 100%">
-				<nav>
-					<div class="nav nav-tabs nav-fill" id="nav-tab" role="tablist">
-						<a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true"><i class="fa fa-user-md" style="font-size:32px;"></i></a>
-						<a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false"><i class="fas fa-user-nurse"  style="font-size:32px;"></i></a>
-						<a class="nav-item nav-link" id="nav-contact-tab" data-toggle="tab" href="#nav-contact" role="tab" aria-controls="nav-contact" aria-selected="false"><i class="fas fa-tooth" style="font-size:32px;"></i></a>
-						<a class="nav-item nav-link" id="nav-about-tab" data-toggle="tab" href="#nav-about" role="tab" aria-controls="nav-about" aria-selected="false"><i class="fas fa-brain"  style="font-size:32px;"></i></a>
-						<a class="nav-item nav-link" id="nav-social-worker-tab" data-toggle="tab" href="#nav-social-worker" role="tab" aria-controls="nav-social-worker" aria-selected="false"><i class="fas fa-user-check" style="font-size:32px;"></i></a>
-					</div>
-				</nav>
-				<div class="tab-content py-3 px-3 px-sm-0" id="nav-tabContent">
+  
+      <div class="row">
+      <div style="width: 100%">
+        <nav>
+          <div class="nav nav-tabs nav-fill" id="nav-tab" role="tablist">
+            <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true"><i class="fa fa-user-md" style="font-size:32px;"></i></a>
+            <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false"><i class="fas fa-user-nurse"  style="font-size:32px;"></i></a>
+            <a class="nav-item nav-link" id="nav-contact-tab" data-toggle="tab" href="#nav-contact" role="tab" aria-controls="nav-contact" aria-selected="false"><i class="fas fa-tooth" style="font-size:32px;"></i></a>
+            <a class="nav-item nav-link" id="nav-about-tab" data-toggle="tab" href="#nav-about" role="tab" aria-controls="nav-about" aria-selected="false"><i class="fas fa-brain"  style="font-size:32px;"></i></a>
+            <a class="nav-item nav-link" id="nav-social-worker-tab" data-toggle="tab" href="#nav-social-worker" role="tab" aria-controls="nav-social-worker" aria-selected="false"><i class="fas fa-user-check" style="font-size:32px;"></i></a>
+          </div>
+        </nav>
+        <div class="tab-content py-3 px-3 px-sm-0" id="nav-tabContent">
 
   <!--DOCTOR-->
-					<div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+          <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
              <div class="container">
 
                 <div style="float:right;margin-bottom: 10px;margin-right: 10px;margin-top: 10px"><a data-patientid="{{$pats->id}}" data-doctorid="{{Auth::user()->id}}" data-toggle="modal" data-target="addDoctortNotes"><button id="addDoctortNotes" name="addDoctortNotes" class="btn btn-success"><i class="fas fa-fw fa fa-plus"></i></button></a></div>
@@ -70,39 +70,62 @@ section .section-title {
                             </tr>
                             </thead>
                           <tbody>
+                           @foreach ($patient_notes as $patient_note)
+                             @if($patient_note->role_type == "doctor")
+                              <tr id="{{$patient_note->id}}">
+                                    <td>{{$patient_note->date_time}}</td>
+                                    <td>{{$patient_note->servicex->name}}</td>
+                                    <td>{{$patient_note->notes}}</td>
+                                    <td>{{$patient_note->userx->lname}}, {{$patient_note->userx->fname}}</td>
+                                    <td>{{$patient_note->note_by}}</td>
+                                </tr>
+
+                             @endif
+                          @endforeach
                           </tbody>
                         </table>
                      </div>
-             </div>					 
-					</div>
+             </div>          
+          </div>
 
   <!--nurse-->
-					<div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
-					   <div class="container">
+          <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
+             <div class="container">
 
-    						<div style="float:right;margin-bottom: 10px;margin-right: 10px;margin-top: 10px"><a data-patientid="{{$pats->id}}" data-doctorid="{{Auth::user()->id}}" data-toggle="modal" data-target="addNurseNotes"><button id="addNurseNotes" name="addNurseNotes" class="btn btn-success"><i class="fas fa-fw fa fa-plus"></i></button></a></div>
+                <div style="float:right;margin-bottom: 10px;margin-right: 10px;margin-top: 10px"><a data-patientid="{{$pats->id}}" data-doctorid="{{Auth::user()->id}}" data-toggle="modal" data-target="addNurseNotes"><button id="addNurseNotes" name="addNurseNotes" class="btn btn-success"><i class="fas fa-fw fa fa-plus"></i></button></a></div>
 
-					       <div class="table-responsive scrollAble2">
-                  		 <table class="table table-bordered"  width="100%" style="font-size: 12px">
+                 <div class="table-responsive scrollAble2">
+                       <table class="table table-bordered"  width="100%" style="font-size: 12px">
                             <thead>
-                             <tr>
+                              <tr>
                                <th width="15%">Date/Time</th>
                                <th width="15%">Service Type</th>
-
                                <th>Notes</th>
                                <th width="15%">By</th>
                                <th width="10%">Action</th>
                             </tr>
                             </thead>
                           <tbody>
+                              @foreach ($patient_notes as $patient_note)
+                             @if($patient_note->role_type == "psychiatrist")
+                              <tr id="{{$patient_note->id}}">
+                                    <td>{{$patient_note->date_time}}</td>
+                                    <td>{{$patient_note->servicex->name}}</td>
+                                    <td>{{$patient_note->notes}}</td>
+                                    <td>{{$patient_note->userx->lname}}, {{$patient_note->userx->fname}}</td>
+                                    <td>{{$patient_note->note_by}}</td>
+                                </tr>
+                             @endif
+                          @endforeach
+
                           </tbody>
                         </table>
                      </div>
              </div>
-					</div>
+          </div>
 
     <!--Dental-->
-					<div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">
+          <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">
              <div class="container">
 
                 <div style="float:right;margin-bottom: 10px;margin-right: 10px;margin-top: 10px"><a data-patientid="{{$pats->id}}" data-doctorid="{{Auth::user()->id}}" data-toggle="modal" data-target="addDentalNotes"><button id="addDentalNotes" name="addDentalNotes" class="btn btn-success"><i class="fas fa-fw fa fa-plus"></i></button></a></div>
@@ -124,11 +147,11 @@ section .section-title {
                         </table>
                      </div>
              </div>          
-					
-					</div>
+          
+          </div>
 
 
-					<div class="tab-pane fade" id="nav-about" role="tabpanel" aria-labelledby="nav-about-tab">
+          <div class="tab-pane fade" id="nav-about" role="tabpanel" aria-labelledby="nav-about-tab">
                  <div class="container">
 
                 <div style="float:right;margin-bottom: 10px;margin-right: 10px;margin-top: 10px"><a data-patientid="{{$pats->id}}" data-doctorid="{{Auth::user()->id}}" data-toggle="modal" data-target="addPyschiatristNotes"><button id="addPyschiatristNotes" name="addPsychiatristNotes" class="btn btn-success"><i class="fas fa-fw fa fa-plus"></i></button></a></div>
@@ -137,18 +160,31 @@ section .section-title {
                        <table class="table table-bordered"  width="100%" style="font-size: 12px">
                             <thead>
                              <tr>
-                               <th width="20%">Date/Time</th>
-                               <th width="20%">Service Type</th>
+                               <th width="15%">Date/Time</th>
+                               <th width="15%">Service Type</th>
                                <th>Notes</th>
-                               <th width="20%">By</th>
+                               <th width="15%">By</th>
+                               <th width="10%">Action</th>
                             </tr>
                             </thead>
                           <tbody>
+                              @foreach ($patient_notes as $patient_note)
+                             @if($patient_note->role_type == "psychiatrist")
+                              <tr id="{{$patient_note->id}}">
+                                    <td>{{$patient_note->date_time}}</td>
+                                    <td>{{$patient_note->servicex->name}}</td>
+                                    <td>{{$patient_note->notes}}</td>
+                                    <td>{{$patient_note->userx->lname}}, {{$patient_note->userx->fname}}</td>
+                                    <td>{{$patient_note->note_by}}</td>
+                                </tr>
+
+                             @endif
+                          @endforeach
                           </tbody>
                         </table>
                      </div>
              </div>
-					</div>
+          </div>
 
           <div class="tab-pane fade" id="nav-social-worker" role="tabpanel" aria-labelledby="nav-social-worker-tab">
                  <div class="container">
@@ -167,15 +203,27 @@ section .section-title {
                             </tr>
                             </thead>
                           <tbody>
+                              @foreach ($patient_notes as $patient_note)
+                             @if($patient_note->role_type =="socialworker")
+                              <tr id="{{$patient_note->id}}">
+                                    <td>{{$patient_note->date_time}}</td>
+                                    <td>{{$patient_note->servicex->name}}</td>
+                                    <td>{{$patient_note->notes}}</td>
+                                    <td>{{$patient_note->userx->lname}}, {{$patient_note->userx->fname}}</td>
+                                    <td>{{$patient_note->note_by}}</td>
+                                </tr>
+
+                             @endif
+                          @endforeach
                           </tbody>
                         </table>
                      </div>
              </div>
           </div>
-				</div>
-			
-			</div>
-		</div>
+        </div>
+      
+      </div>
+    </div>
 
  </div>
 
@@ -250,8 +298,12 @@ section .section-title {
 
                               </div>
                               <div class="modal-footer">
-                                  <button type="button" class="btn btn-primary" id="btn-save" name ="btn-save" value="add">Save changes
+                                  <button type="button" class="btn btn-primary" id="btn-save-nursenotes" name ="btn-save-nursenotes" value="add">Save changes
                                   </button>
+                                    <input type="hidden" id="id" name="id" value="0">
+                                    <input type="hidden" id="patient_id" name="patient_id" value="{{$pats->id}}">
+                                    <input type="hidden" id="note_by" name="note_by" value="{{Auth::user()->id}}">
+                                    <input type="hidden" id="creator_role" name="creator_role" value="doctor">
 
                            </form>
 
@@ -261,7 +313,7 @@ section .section-title {
   </div>
 
 <!--Modal for the Check up button-->
-   <div class="modal fade" id="AddServiceNotesModal" aria-hidden="true" >
+<!--   <div class="modal fade" id="AddServiceNotesModal" aria-hidden="true" >
           <div class="modal-dialog">
                   <div class="modal-content" style="width:800px" >
                               <div class="modal-header" style="width:800px">
@@ -288,20 +340,26 @@ section .section-title {
                               </div>
                             </form>
                               <div class="modal-footer">
-                                  <button type="button" class="btn btn-primary" id="btn-save" name ="btn-save" value="add">Save changes
+                                  <button type="button" class="btn btn-primary" id="btn-save-patientnotes" name ="btn-save-patientnotes" value="add">Save changes
                                   </button>
+                                  <input type="hidden" id="id" name="id" value="0">
+                                  <input type="hidden" id="patient_id" name="patient_id" value="{{$pats->id}}">
+                                  <input type="hidden" id="note_by" name="note_by" value="{{Auth::user()->id}}">
+
+                                  <input type="hidden" id="creator_role" name="creator_role" value="doctor">
+
 
 
                               </div>
                   </div>
           </div>
-  </div>
+  </div>-->
 
  <div class="modal fade" id="AddDoctorNotesModal" aria-hidden="true" >
           <div class="modal-dialog">
                   <div class="modal-content" style="width:800px" >
                               <div class="modal-header" style="width:800px">
-                                  <h4 class="modal-title" id="AddDoctorNotesModal">Add Medical Service</h4>
+                                  <h4 class="modal-title" id="AddDoctorNotesModal">Add Doctor Service</h4>
                               </div>
                               <form id="AddDoctorFormData" name="AddDoctorFormData" class="form-horizontal" novalidate="">
                                     
@@ -320,7 +378,7 @@ section .section-title {
 
                                   <div class="form-group">
                                         <h6>Notes</h6>
-                                           <textarea style="margin-left:0px;height: 150px;width:760px;margin-bottom: 10px" type="text" id="note" class="form-control" placeholder="Note" name="note" required="required"></textarea>
+                                           <textarea style="margin-left:0px;height: 150px;width:760px;margin-bottom: 10px" type="text" id="notes" class="form-control" placeholder="Note" name="notes" required="required"></textarea>
                                   </div>
 
 
@@ -328,8 +386,12 @@ section .section-title {
                               </div>
                             </form>
                               <div class="modal-footer">
-                                  <button type="button" class="btn btn-primary" id="btn-save" name ="btn-save" value="add">Save changes
+                                  <button type="button" class="btn btn-primary" id="btn-save-doctornotes" name ="btn-save-doctornotes" value="add">Save changes
                                   </button>
+                                 <input type="hidden" id="id" name="id" value="0">
+                                  <input type="hidden" id="patient_id" name="patient_id" value="{{$pats->id}}">
+                                  <input type="hidden" id="note_by" name="note_by" value="{{Auth::user()->id}}">
+                                  <input type="hidden" id="creator_role" name="creator_role" value="doctor">
 
 
                               </div>
@@ -401,7 +463,7 @@ section .section-title {
 
                                   <div class="form-group">
                                         <h6>Notes</h6>
-                                           <textarea style="margin-left:0px;height: 150px;width:760px;margin-bottom: 10px" type="text" id="note" class="form-control" placeholder="Note" name="note" required="required"></textarea>
+                                           <textarea style="margin-left:0px;height: 150px;width:760px;margin-bottom: 10px" type="text" id="notes" class="form-control" placeholder="Note" name="notes" required="required"></textarea>
                                   </div>
 
 
@@ -413,7 +475,7 @@ section .section-title {
                                   </button>
                                   <input type="hidden" id="id" name="id" value="0">
                                   <input type="hidden" id="patient_id" name="patient_id" value="{{$pats->id}}">
-                                  <input type="hidden" id="user_accepted" name="user_accepted" value="{{Auth::user()->id}}">
+                                  <input type="hidden" id="note_by" name="note_by" value="{{Auth::user()->id}}">
                                   <input type="hidden" id="creator_role" name="creator_role" value="social_worker">
 
 
@@ -446,7 +508,7 @@ section .section-title {
 
                                   <div class="form-group">
                                         <h6>Notes</h6>
-                                           <textarea style="margin-left:0px;height: 150px;width:760px;margin-bottom: 10px" type="text" id="note" class="form-control" placeholder="Note" name="note" required="required"></textarea>
+                                           <textarea style="margin-left:0px;height: 150px;width:760px;margin-bottom: 10px" type="text" id="notes2" class="form-control" placeholder="Note" name="notes2" required="required"></textarea>
                                   </div>
 
 
@@ -454,8 +516,13 @@ section .section-title {
                               </div>
                             </form>
                               <div class="modal-footer">
-                                  <button type="button" class="btn btn-primary" id="btn-save" name ="btn-save" value="add">Save changes
+                                  <button type="button" class="btn btn-primary" id="btn-save-psychiatristnotes" name ="btn-save-psychiatristnotes" value="add">Save changes
                                   </button>
+                                  <input type="hidden" id="id" name="id" value="0">
+                                  <input type="hidden" id="patient_id" name="patient_id" value="{{$pats->id}}">
+                                  <input type="hidden" id="note_by" name="note_by" value="{{Auth::user()->id}}">
+                                  <input type="hidden" id="creator_role" name="creator_role" value="social_worker">
+
 
 
                               </div>

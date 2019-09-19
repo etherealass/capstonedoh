@@ -18,19 +18,32 @@ use App\Departments;
 use App\Events;
 use App\Patients;
 use App\Refers;
+use App\ProgressNotes;
+
 use Hash;
 use Session;
 
 class ReferController extends Controller
 {
-	public function createRefer(Request $request)
+    public function createRefer(Request $request)
     {
 
 
-    	 $refer = Refers::create($request->all());
-    	 return Response::json($refer);
+         $refer = Refers::create($request->all());
+         return Response::json($refer);
 
     }
+
+    public function addsocialworkernotes(Request $request)
+    {
+
+
+         $socialworker = ProgressNotes::create($request->all());
+         return Response::json($socialworker);
+
+    }
+
+
 
 
     public function getRefer($id) {
@@ -52,7 +65,7 @@ class ReferController extends Controller
 
             return Response::json($data);
 
-	}
+    }
 
     function putRefer(Request $request, $id) {
 
@@ -87,6 +100,7 @@ class ReferController extends Controller
 
 
     }
-		  
+          
 
 }
+        

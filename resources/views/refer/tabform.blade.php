@@ -243,8 +243,8 @@
                          
                         <div class="col-xl-2 col-sm-3 mb-5" style="height: 5rem;margin-top: 2px">
                         <div class="card border-dark mb-3 text-black o-hidden h-100">
-                          <div class="card-body">
-                           <a href="#"><p style="font-size: 12px;margin-top: 2px">{{$pat_visit->date}}</p></a>
+                          <div class="card-body open_modal">
+                           <a href="#"><p style="font-size: 12px;margin-top: 2px">{{$pat_visit->date}}<br> {{$pat_visit->events->title}}</p></a>
                           <div class="mr-5"></div>
                           </div>
                         </div>
@@ -253,3 +253,56 @@
                       </div>          
 
   </div>
+
+    <div class="modal fade" id="linkEditor" aria-hidden="true" >
+                <div class="modal-dialog">
+                    <div class="modal-content"  style="width:980px;">
+                        <div class="modal-header">
+                            <h4 class="modal-title" id="linkEditorModalLabel">Add Intervention the Patient Attended</h4>
+                        </div>
+                        <div class="modal-body">
+                            <form id="linkeditor_Data" name="linkeditor_Data" class="form-horizontal" novalidate="">
+
+                                @foreach($intv as $interven)
+                                  <div>
+                                    <input type="hidden" name="rec_id_{{$interven->id}}" id="rec_id_{{$interven->id}}" value="">
+                                    <div class="checkboxs" id="checkboxes_{{$interven->id}}">
+                                      <label><input type="checkbox" class="checkitems" id="checkitem[]" name="checkitem[]" style="zoom:1.5;font-size: 28px;"  value="{{$interven->id}}">{{$interven->interven_name}}</label>
+                                    </div>
+
+                                  @foreach($childIntervens->groupby('parent') as  $name => $member)
+
+                                    @if($name  == $interven->id)
+
+                                <div class="form-label-group select1" id="select_{{$interven->id}}" name="select_{{$interven->id}}"  style="display: none;">
+
+                                  <select class="form-control col-md-6" id="childInterven_{{$interven->id}}"  name="childInterven_{{$interven->id}}" style=" margin-bottom: 10px">
+                                    @foreach($member as $item)
+                                      <option value="{{ $item['id']}}">{{  $item['interven_name'] }}</option>
+                                          @endforeach
+                                    </select>
+                                  </div>
+                                    @endif
+
+                                  @endforeach
+                                    <div class="form-label-group textboxes" id="textboxes_{{$interven->id}}" style="display: none;">
+                                        <input style="margin-left:0px" type="text" class="form-control" placeholder="Remarks" name="remarks_{{$interven->id}}" id="remarks_{{$interven->id}}">
+                                     </div>
+                                   </br>
+                                  </div>
+                                @endforeach
+                                  
+                          </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-primary"  id="btn-attended" name ="btn-attended" value="add">Save changes
+                            </button>
+                            <input type="hidden" id="evts_id" name="evts_id" value="">
+                            <input type="hidden" id="patient_interven_id" name="patient_interven_id" value="">
+                            <input type="hidden" id="patient_interven_id" name="patient_interven_id" value="">
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
