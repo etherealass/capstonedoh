@@ -23,7 +23,7 @@ class UserController extends Controller
 {
 	public function chooseuser_role()
 	{
-		$roles = User_roles::all();
+		$roles = User_roles::where('parent',0)->get();
 		$deps = Departments::all();
 		$users = Users::find(Auth::user()->id);
 		$transfer = Transfer_Requests::all();
@@ -48,16 +48,27 @@ class UserController extends Controller
 		$users = Users::find(Auth::user()->id);
 		$transfer = Transfer_Requests::all();
 		$graduate = Graduate_Requests::all();
+		$designation = User_roles::where('parent','!=','0')->get();
 
 		if(Auth::user()->user_role()->first()->name == 'Superadmin'){
-			return view('superadmin.createuser')->with('roles',$roles)->with('deps',$deps)->with('rolex',$rolex)->with('users',$users)->with('transfer',$transfer)->with('graduate',$graduate);
+			return view('superadmin.createuser')->with('roles',$roles)->with('deps',$deps)->with('rolex',$rolex)->with('users',$users)->with('transfer',$transfer)->with('graduate',$graduate)->with('designation',$designation);
 		}
 		elseif(Auth::user()->user_role()->first()->name == 'Admin'){
-			return view('admin.createuser')->with('roles',$roles)->with('deps',$deps)->with('rolex',$rolex)->with('users',$users)->with('transfer',$transfer)->with('graduate',$graduate);
+			return view('admin.createuser')->with('roles',$roles)->with('deps',$deps)->with('rolex',$rolex)->with('users',$users)->with('transfer',$transfer)->with('graduate',$graduate)->with('designation',$designation);
 		}
 		else{
 			return abort(404);
 		}
+	}
+
+	public function change_pass(Request $request)
+	{
+		$user = Users::where('id',$request->input('userid'))->update(['password' => Hash::make($request->input('newpass'))]);
+
+		Session::flash('alert-class', 'success'); 
+		flash('Password Changed', '')->overlay();
+
+		return back();
 	}
 
 	public function createuserrole()

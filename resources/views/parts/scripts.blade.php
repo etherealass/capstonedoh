@@ -12,7 +12,7 @@
   <script src="{{asset('vendor/fullcalendar/lib/moment.min.js')}}"></script>
   <script src="{{asset('vendor/multi-select/js/jquery.multi-select.js')}}"></script>
 
-  <script src="{{asset('vendor/fullcalendar/fullcalendar.min.js')}}"></script>
+  <script src="{{asset('vendor/fullcalendar/fullcalendar.min.js')}}"></script> 
  
   <!-- Page level plugin JavaScript-->
   <script src="{{asset('vendor/chart.js/Chart.min.js')}}"></script>
@@ -118,6 +118,7 @@
     var email = button.data('email')
     var contact = button.data('contact')
     var department = button.data('department')
+    var password = button.data('password')
     var modal = $(this)
 
     modal.find('.modal-body #userid').val(userid);
@@ -127,6 +128,7 @@
     modal.find('.modal-body #email').val(email);
     modal.find('.modal-body #contact').val(contact);
     modal.find('.modal-body #department').val(department);
+    modal.find('.modal-body #password').val(password);
   })
 
    $('#editemployeeModal').on('show.bs.modal', function (event) {
@@ -181,6 +183,16 @@
     var modal = $(this)
 
     modal.find('.modal-body #cityid').val(cityid);
+  })
+
+  $('#deleteJail').on('show.bs.modal', function (event) {
+
+    var button = $(event.relatedTarget)
+
+    var jailid = button.data('jailid')
+    var modal = $(this)
+
+    modal.find('.modal-body #jailid').val(jailid);
   })
 
   $('#deleteReason').on('show.bs.modal', function (event) {
@@ -247,6 +259,75 @@
     modal.find('.modal-body #patientdep').val(patientdep);
   })
 
+  $('#admintransferPatient').on('show.bs.modal', function (event) {
+
+    var button = $(event.relatedTarget);
+
+    var patientid = button.data('patientid');
+    var patientdep = button.data('patientdep');
+    var modal = $(this);
+
+    modal.find('.modal-body #patientid').val(patientid);
+    modal.find('.modal-body #patientdep').val(patientdep);
+  })
+
+  $('#adminreenrollPatient').on('show.bs.modal', function (event) {
+
+    var button = $(event.relatedTarget);
+
+    var patientid = button.data('patientid');
+    var patientdep = button.data('patientdep');
+    var modal = $(this);
+
+    modal.find('.modal-body #patientid').val(patientid);
+    modal.find('.modal-body #patientdep').val(patientdep);
+  })
+
+  $('#adminreenrollForm').on('show.bs.modal', function (event) {
+
+    var button = $(event.relatedTarget);
+
+    var patientid = button.data('patientid');
+    var depid = button.data('depid');
+    var modal = $(this);
+
+    modal.find('.modal-body #patientid').val(patientid);
+    modal.find('.modal-body #department').val(depid);
+  })
+
+  $('#intakeForm').on('show.bs.modal', function (event) {
+
+    var button = $(event.relatedTarget);
+
+    var patientid = button.data('patientid');
+    var department = $('#adminreenrollForm #department').val().trim();
+    var modal = $(this);
+
+    modal.find('.container #department').val(department);
+  })
+
+  $('#ddeForm').on('show.bs.modal', function (event) {
+
+    var button = $(event.relatedTarget);
+
+    var patientid = button.data('patientid');
+    var department = $('#adminreenrollForm #department').val().trim();
+    var modal = $(this);
+
+    modal.find('.container #department').val(department);
+  })
+
+  $('#changepass').on('show.bs.modal', function (event) {
+
+    var button = $(event.relatedTarget);
+    var button1 = $("#editModal #userid").val().trim();
+
+    var userid = $('#editModal #userid').val().trim();
+    var modal = $(this);
+
+    modal.find('.modal-body #userid').val(userid);
+  })
+
   $('#transferReferral').on('show.bs.modal', function (event) {
 
     var button = $(event.relatedTarget);
@@ -255,6 +336,21 @@
     var depid = button.data('depid');
     var patientid = $('#transferPatient #patientid').val().trim();
     var patientdep = $('#transferPatient #patientdep').val().trim();
+    var modal = $(this);
+
+    modal.find('.modal-body #depid').val(depid);
+    modal.find('.modal-body #patientid').val(patientid);
+    modal.find('.modal-body #patientdep').val(patientdep);
+  })
+
+   $('#admintransferReferral').on('show.bs.modal', function (event) {
+
+    var button = $(event.relatedTarget);
+    var button1 = $("#transferPatient #patientid").val().trim();
+  
+    var depid = button.data('depid');
+    var patientid = $('#admintransferPatient #patientid').val().trim();
+    var patientdep = $('#admintransferPatient #patientdep').val().trim();
     var modal = $(this);
 
     modal.find('.modal-body #depid').val(depid);
@@ -305,7 +401,18 @@
     var modal = $(this);
 
     modal.find('.modal-body #patientid').val(patientid);
+    modal.find('.modal-footer #patient_id').val(patientid);
     modal.find('.modal-body #patientdep').val(patientdep);
+  })
+
+   $('#reenrollForm').on('show.bs.modal', function (event) {
+
+    var button = $(event.relatedTarget);
+
+    var patientid = button.data('patientid');
+    var modal = $(this);
+
+    modal.find('.modal-body #patientid').val(patientid);
   })
 
     $('#addNotes').on('show.bs.modal', function (event) {
@@ -367,6 +474,59 @@
     else{
       document.getElementById("remarks").disabled = true;
       $('#text').hide();
+    }
+
+    });
+  });
+
+  $(function() {
+  $('select[id="designation"]').on('click', function(){
+
+    if ($(this).val() == 'Others') {
+      document.getElementById("designat").disabled = false;
+      $('#design').show();
+    }
+    else{
+      document.getElementById("designat").disabled = true;
+      $('#design').hide();
+    }
+
+    });
+  });
+
+   $(function() {
+  $('select[id="ptype"]').on('click', function(){
+
+    if ($(this).children(":selected").attr("id") == '1') {
+      document.getElementById("caseno").disabled = false;
+      document.getElementById("jail").disabled = false;
+      $('#textas').show();
+      $('#textb').show();
+    }
+    else{
+      document.getElementById("caseno").disabled = true;
+      document.getElementById("jail").disabled = true;
+      $('#textas').hide();
+      $('#textb').hide();
+    }
+
+    });
+  });
+
+    $(function() {
+  $('select[id="ddeptype"]').on('click', function(){
+
+    if ($(this).children(":selected").attr("id") == '1') {
+      document.getElementById("ddecaseno").disabled = false;
+      document.getElementById("ddejail").disabled = false;
+      $('#ddetextas').show();
+      $('#ddetextb').show();
+    }
+    else{
+      document.getElementById("ddecaseno").disabled = true;
+      document.getElementById("ddejail").disabled = true;
+      $('#ddetextas').hide();
+      $('#ddetextb').hide();
     }
 
     });

@@ -22,7 +22,7 @@ class CreateTransferRequestsTable extends Migration
             $table->foreign('to_department')->references('id')->on('departments');
             $table->integer('patient_id')->unsigned();
             $table->foreign('patient_id')->references('id')->on('patients');
-            $table->text('remarks');
+            $table->text('remarks')->nullable();
             $table->string('status')->nullable();
             $table->timestamps();
         });

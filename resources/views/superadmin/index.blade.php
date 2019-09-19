@@ -101,7 +101,7 @@
         <!-- Icon Cards-->
         
 {!! $chart->script() !!}
-<script src="{{asset('vendor/chart.js/Chart.min.js')}}"></script>
+<script src="{{asset('vendor/chart.js/Chart.min.js')}}"></script> 
 <script src="{{asset('js/sb-admin.min.js')}}"></script>
 <script src="{{asset('vendor/jquery/jquery.min.js')}}"></script>
 <script>
@@ -160,7 +160,7 @@ var myPieChart = new Chart(ctx, {
     labels: dep1,
     datasets: [{
       data: [count1, count2, count3 ],
-      backgroundColor: ['#007bff', '#28a745', '#ffc107'],
+      backgroundColor: ['#007bff', 'yellowgreen', '#ffc107'],
     }],
   },
 });

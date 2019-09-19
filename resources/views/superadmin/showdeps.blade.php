@@ -5,7 +5,9 @@
           <li class="breadcrumb-item">
             <a href="{{URL::to('/profile')}}">Dashboard</a>
           </li>
-          <li class="breadcrumb-item active">{{$depsx->department_name}} Department</li>
+          @foreach($depsx as $dep)
+          <li class="breadcrumb-item active">{{$dep->department_name}} Department</li>
+          @endforeach
         </ol> 
 
         <!-- Icon Cards-->
@@ -13,7 +15,9 @@
           <div class="col-xl-12 col-sm-9 mb-10" style="height: 6rem;">
             <div class="mb-3 text-black o-hidden h-100">
               <div class="card-body">
-                  <p style="font-size: 45px;margin-top: 0px">{{$depsx->department_name}} Department</p>             
+                @foreach($depsx as $dep)
+                  <p style="font-size: 45px;margin-top: 0px">{{$dep->department_name}} Department</p>
+                @endforeach             
               </div>
               
             </div>
@@ -27,7 +31,7 @@
               <div class="card-body">
                   <p style="font-size: 40px;margin-top: 7px">{{$role->name}}s</p>
               </div>
-              <a style="color:black" class="card-footer text-white clearfix small z-1" href="{{URL::to('/showdep_users/'.$depsx->id.'/'.$role->id)}}">
+              <a style="color:black" class="card-footer text-white clearfix small z-1" href="{{URL::to('/showdep_users/'.$dep->id.'/'.$role->id)}}">
                 <span style="color:black" class="float-left">View Details</span>
                 <span  style="color:black" class="float-right">
                   <i class="fas fa-angle-right"></i>

@@ -117,6 +117,7 @@ class LoginController extends Controller
       $third_users = Patients::whereDate('created_at', today()->subDays(3))->count();
       $fourth_users = Patients::whereDate('created_at', today()->subDays(4))->count();
       $fifth_users = Patients::whereDate('created_at', today()->subDays(5))->count();
+
       $users_a_month = Patients::whereMonth('created_at', date('m'))->count();
       $users_a_year = Patients::whereYear('created_at', date('Y'))->count();
 

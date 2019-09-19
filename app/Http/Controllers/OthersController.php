@@ -22,6 +22,7 @@ use App\Case_Type;
 use App\Graduate_Requests;
 use App\Dismissal_Reason;
 use App\Logs;
+use App\City_Jails;
 use Notification;
 use Hash;
 use Session;
@@ -82,14 +83,78 @@ class OthersController extends Controller
     
     public function deletecity(Request $request)
     {
-    	$city = Cities::where('id',$request->input('cityid'));
+    
+    $city = Cities::where('id',$request->input('cityid'))->update(['flag' => 'deleted']);
 
-    	$city->delete();
-
-    	Session::flash('alert-class', 'danger'); 
+    Session::flash('alert-class', 'danger'); 
 		flash('City Deleted', '')->overlay();
 
 		return back();
+    }
+
+  public function add_a_city_jail()
+  {
+    $roles = User_roles::all();
+    $deps = Departments::all();
+    $users = Users::find(Auth::user()->id);
+    $transfer = Transfer_Requests::all();
+
+      if(Auth::user()->user_role()->first()->name == 'Superadmin'){
+            return view('superadmin.addcityjail')->with('roles',$roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer);
+      }
+      else if(Auth::user()->user_role()->first()->name == 'Admin'){
+            return view('superadmin.addcityjail')->with('roles',$roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer);
+      }
+  }
+
+  public function addjail(Request $request)
+  {
+
+    $jail_id = rand();
+
+    $validation = $this->validate($request,[
+      'name' => 'required|unique:city__jails',
+    ]);
+
+      if(!$validation){
+        $errors = new MessageBag(['name' => ['City Jail name should be unique']]);
+           return Redirect::back()->withErrors($errors)->withInput(Input::all());
+        }
+        
+        else{
+    $jail = new City_Jails([
+      'jail_id' => $jail_id,
+      'name' => $request->input('name'),
+    ]);
+
+    $jail->save();
+
+    Session::flash('alert-class', 'success'); 
+    flash('Jail Created', '')->overlay();
+
+        $roles = User_roles::all();
+        $deps = Departments::all();
+        $users = Users::find(Auth::user()->id);
+        $transfer = Transfer_Requests::all();
+        $jails = City_Jails::all();
+
+        if(Auth::user()->user_role()->first()->name == 'Superadmin'){
+             return view('superadmin.jails')->with('roles' , $roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('jails',$jails);
+        }
+        else if(Auth::user()->user_role()->first()->name == 'Admin'){
+             return view('admin.jails')->with('roles' , $roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('jails',$jails);
+        }
+    }
+  }
+
+   public function deletejail(Request $request)
+    {
+      $city = City_Jails::where('id',$request->input('jailid'))->update(['flag' => 'deleted']);
+
+      Session::flash('alert-class', 'danger');
+      flash('Jail Deleted', '')->overlay();
+
+      return back();
     }
 
   public function add_a_casetype()
@@ -161,14 +226,13 @@ class OthersController extends Controller
 
 	public function delete_case(Request $request)
     {
-    	$case = Case_Type::where('id',$request->input('caseid'));
+    	$case = Case_Type::where('id',$request->input('caseid'))->update(['flag' => 'deleted']);
 
-    	$case->delete();
 
     	Session::flash('alert-class', 'danger'); 
-		flash('Case Type Deleted', '')->overlay();
+		  flash('Case Type Deleted', '')->overlay();
 
-		return back();
+		  return back();
     }
 
     public function add_a_reason()

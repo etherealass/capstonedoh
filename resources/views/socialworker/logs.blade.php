@@ -8,59 +8,57 @@
       color:white;
       }
 
-</style> 
+</style>
         <!-- Breadcrumbs-->
         <ol class="breadcrumb">
           <li class="breadcrumb-item">
             <a href="{{URL::to('/profile')}}">Dashboard</a>
           </li>
-          <li class="breadcrumb-item active">Employees</li>
+          <li class="breadcrumb-item active">System Logs</li>
         </ol> 
 
         <!-- Icon Cards-->
-        <div class="row" style="margin-left: 0px;margin-bottom: 0px">
+        <div class="row" style="margin-left: 5px;margin-bottom: 0px">
           <div class="col-xl-8 col-sm-9 mb-10" style="height: 6rem;">
             <div class="mb-3 text-black o-hidden h-100">
               <div class="card-body">
-                  <p style="font-size: 50px;margin-top: 0px">Employees</p> 
+                  <p style="font-size: 50px;margin-top: 0px">System Logs</p> 
               </div>
 
                 @include('flash::message')
 
             </div>
-          </div>
-           <div class="col-xl-4 col-sm-9 mb-10">
-            <div class="mb-3 text-black o-hidden h-100">
-              <div class="card-body">
-                  <a style="color:white" href="{{URL::to('/newemployee')}}"><button class="btn btn-dark btn-block" style="height: 50px; width:200px;float: right;margin-top: 0px;margin-left: 0px">New Employee</button></a>
-              </div>
-          </div>
         </div>
-        </div>
-         <div class="card-body" style="margin-left: 0px">
+         <div class="card-body" style="">
             <div class="table-responsive">
               <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                 <thead>
                   <tr>
-                    <th>Name</th>
-                    <th>Contact</th>
-                    <th>Email</th>
-                    <th>Designation</th>
-                    <th>Department</th>
+                    <th>Performed by</th>
+                    <th>Type</th>
                     <th>Action</th>
+                    <th>Date & Time</th>
+                    <th>Action Done</th>
                   </tr>
                 </thead>
                 <tbody>
-                  @foreach($emp as $employee)
-                  <tr>
-                    <td>{{$employee->fname}} {{$employee->mname}} {{$employee->lname}}</td>
-                    <td>{{$employee->contact}}</td>
-                    <td>{{$employee->email}}</td>
-                    <td>{{$employee->emp_designation->name}}</td>
-                    <td>{{$employee->emp_department->department_name}} Department</td>
-                    <td><a class="btn btn-success" href="{{URL::to('/viewemployee/'.$employee->id)}}" style="margin-right: 3px">View</a><button class="btn btn-primary" style="margin-right: 5px" data-toggle="modal" data-target="#editemployeeModal" data-userid="{{$employee->id}}" data-fname="{{$employee->fname}}" data-lname="{{$employee->lname}}" data-mname="{{$employee->mname}}" data-email="{{$employee->email}}" data-contact="{{$employee->contact}}" data-designation="{{$employee->designation}}" data-department="{{$employee->department}}">Edit</button><button class="btn btn-danger" data-toggle="modal" data-target="#deleteemployeeModal" data-employee_id="{{$employee->id}}">Delete</button></td>
-                  </tr>
-                  @endforeach
+                 @foreach($logs as $log)
+                 <tr>
+                    @if($log->performer_id == Auth::user()->id)
+                    <td>You</td>
+                    @else
+                    <td>{{$log->userz->fname}} {{$log->userz->lname}}</td>
+                    @endif
+                    <td>{{$log->type}}</td>
+                    <td>{{$log->action}}</td>
+                    <td>{{$log->date_time}}</td>
+                    @if($log->department_id == "")
+                    <td>--Admin--</td>
+                    @else
+                    <td>{{$log->departmentz->department_name}} Department</td>
+                    @endif
+                 </tr>
+                 @endforeach
                 </tbody>
               </table>
             </div>

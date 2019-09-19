@@ -29,10 +29,17 @@
 
             </div>
         </div>
+        <div class="col-xl-4 col-sm-9 mb-10">
+            <div class="mb-3 text-black o-hidden h-100">
+              <div class="card-body">
+                 <a href="{{URL::to('/add_a_city_jail')}}" style="color:white"><button class="btn btn-dark btn-block"  style="height: 50px; width:200px;float: right;margin-top: 0px;margin-left: 0px">New City Jail</button></a>
+              </div>
+          </div>
+        </div>
       </div>
          <div class="card-body" style="margin-left: 10px">
             <div class="table-responsive">
-              <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+              <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0" style="text-align: center">
                 <thead>
                   <tr>
                     <th>City Jail</th>
@@ -40,100 +47,39 @@
                   </tr>
                 </thead>
                 <tbody>
-                 
+                 @foreach($jails as $jail)
+                <tr>
+                  <td>{{$jail->name}}</td>
+                  <td><button class="btn btn-danger" data-toggle="modal" data-target="#deleteJail" data-jailid="{{$jail->id}}">Delete</button></td>
+                </tr  >
+                @endforeach
                 </tbody>
               </table>
             </div>
           </div>
 
-  <div class="modal fade" id="editemployeeModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+ <div class="modal fade" id="deleteJail" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Edit</h5>
+          <h5 class="modal-title" id="exampleModalLabel">Are you sure you want to delete this?</h5>
           <button class="close" type="button" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">×</span>
           </button>
         </div>
-  <div class="container">
-    <div class="card card-register mx-auto mt-4">
-      <div class="card-body">
-        <form action="{{URL::to('/update_employeenow')}}" method="post">
-          {{csrf_field()}}
+        <form action="{{URL::to('/delete_jail')}}" method="post">
+          {{csrf_field()}} 
           <div class="modal-body">
-          <div class="form-group">
-            <div class="form-row">
-              <div class="col-md-4">
-                <div class="form-label-group">
-                  <input type="text" id="fname" class="form-control" placeholder="First name" required="required" autofocus="autofocus" name="fname" value="">
-                  <label for="fname">First name</label>
-                </div>
-              </div>
-              <div class="col-md-4">
-                <div class="form-label-group">
-                  <input type="text" id="lname" class="form-control" placeholder="Last name" required="required" name="lname" value="">
-                  <label for="lname">Last name</label>
-                </div>
-              </div>
-               <div class="col-md-4">
-               <div class="form-label-group">
-                  <input type="text" id="mname" class="form-control" placeholder="Middle name" required="required" autofocus="autofocus" name="mname" value="">
-                  <label for="mname">Middle Name</label>
-                </div>
-              </div>
-            </div>
+          <input type="hidden" id="jailid" name="jailid" class="form-control" value="">
           </div>
-          <div class="form-group">
-            <div class="form-row">
-              <div class="col-md-6">
-                <div class="form-label-group">
-              <input type="email" id="email" class="form-control" placeholder="Email address" required="required" name="email" value="">
-              <label for="email">Email address</label>
-                </div>
-              </div>
-              <div class="col-md-6">
-                 <div class="form-label-group">
-                  <input type="text" id="contact" class="form-control" placeholder="Contact No." required="required" name="contact" value="">
-                  <label for="contact">Contact no.</label>
-                  <input type="hidden" class="form-control" name="userid" id="userid" value="">
-                  <input type="hidden" name="_token" value="{{csrf_token()}}">
-              </div>
-              </div>
-            </div>
-          </div>
-          <div class="form-group">
-            <div class="form-row">
-              <div class="col-md-6">
-                <div class="form-label-group">
-                  <input type="text" id="designation" class="form-control" placeholder="Designation" required="required" name="designation" value="">
-                  <label for="contact">Designation</label>
-                </div>
-              </div>
-              <div class="col-md-6">
-                <div class="form-label-group">
-                 <select class="form-control" id="department" placeholder="Department" required="required" name="department" value="">
-                  <label for="department">Department</label>
-                    @foreach($deps as $dep)
-                    <option value="{{$dep->id}}">{{$dep->department_name}} Department</option>
-                    @endforeach
-                    <option value="0">None</option>
-                </select>
-                </div>
-              </div>
-    
-            </div>
-            </div>
-            <div class="modal-footer">
+          <div class="modal-footer">
             <button type="button" class="btn btn-primary" data-dismiss="modal">Cancel</button>
-            <button type="submit" class="btn btn-success">Save Changes</button>  
+            <button type="submit" class="btn btn-danger">Delete</button>  
           </div>
         </form>
       </div>
-      </div>
-    </div> 
-  </div>
-  </div>
-  </div>
+    </div>
+</div>
 
 
 @endsection

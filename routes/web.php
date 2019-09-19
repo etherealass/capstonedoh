@@ -117,6 +117,12 @@ Route::group(['middleware' =>'auth'], function()
 
 	 Route::get('/viewpatient/{id}', "PatientController@viewpatient");
 
+	 Route::get('/viewemployee/{id}', "ViewController@viewemployee");
+
+	 Route::get('/viewuser/{id}', "ViewController@viewuser");
+
+	 Route::get('/viewuserx/{id}/{pid}', "ViewController@viewuserx");
+
 	 Route::get('/viewpatients/{id}/{pid}/{tid}', "PatientController@viewpatients");
 
 	 Route::get('/viewpatientx/{id}/{pid}/{gid}', "PatientController@viewpatientx");
@@ -133,13 +139,19 @@ Route::group(['middleware' =>'auth'], function()
 
 	 Route::post('/patientsave_intake', "PatientController@save_intake");
 
+	 Route::post('/reenrollpatientsave_intake', "PatientController@reenrollsave_intake");
+
 	 Route::post('/patientsave_dde', "PatientController@save_dde");
+
+	 Route::post('/reenrollsave_dde', "PatientController@reenrollsave_dde");
 
 	 Route::post('/deletepatient', "PatientController@flagdelete");
 
 	 Route::get('/markAsRead', "NotificationsController@markAsRead");
 
 	 Route::post('/patientTransfer', "PatientController@transferPatient");
+
+	 Route::post('/admin_transfer_patient', "PatientController@adminpatientTransfer"); 
 
 	 Route::get('/transfer_patient_now/{id}/{did}/{tid}/{pid}',"PatientController@patientTransfer");
 
@@ -154,6 +166,8 @@ Route::group(['middleware' =>'auth'], function()
 	 Route::post('/delete_employee', "EmployeeController@delete_employeenow");
 
 	 Route::any('/logs', "ViewController@showlogs");
+
+	 Route::any('/show_my_logs/{id}', "ViewController@show_my_logs");
 
 	 Route::post('/patientDismiss',"PatientController@dismiss_patient");
 
@@ -170,6 +184,12 @@ Route::group(['middleware' =>'auth'], function()
 	 Route::post('/add_city',"OthersController@addcity");
 
 	 Route::post('/delete_city',"OthersController@deletecity");
+
+	 Route::any('/add_a_city_jail',"OthersController@add_a_city_jail");
+
+	 Route::post('/add_cityjail',"OthersController@addjail");
+
+	 Route::post('/delete_jail',"OthersController@deletejail");
 
 	 Route::any('/add_a_casetype',"OthersController@add_a_casetype");
 
@@ -199,6 +219,12 @@ Route::group(['middleware' =>'auth'], function()
 
 	 Route::post('/add_notes',"PatientController@doctor_notes");
 
-	 Route::get('/bar', 'CalendarController@chart');
+	 Route::post('/changepassword',"UserController@change_pass");
+
+	 Route::get('/file','UploadController@index');
+
+	 Route::post('/store','UploadController@store')->name('upload.file');
+
+	 Route::get('/show','UploadController@show');
 
 });

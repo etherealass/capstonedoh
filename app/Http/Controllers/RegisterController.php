@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\URL;
+use Illuminate\Support\Facades\URL; 
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Redirect;
@@ -27,7 +27,27 @@ class RegisterController extends Controller
 {
     public function registernow(request $request)
     {
+
      $id = rand();
+
+     if($request->input('designat')){
+        $role = new User_roles([
+            'parent' => $request->input('roleid'),
+            'name' =>  $request->input('designat'),
+            'description' => 'Designation',
+        ]);
+
+        $role->save();
+        
+        $roles = User_roles::where('name',$request->input('designat'))->get();
+
+        foreach($roles as $rol){
+            $designation_id = $rol->id;
+        }
+    }
+    else{
+        $designation_id = NULL;
+    }
 
       $validation = $this->validate($request,[
         'username' =>'required|unique:users',
@@ -50,7 +70,7 @@ class RegisterController extends Controller
     		'contact' => $request->input('contact'),
     		'email' => $request->input('email'),
     		'role' => $request->input('roleid'),
-            'designation' => $request->input('designation'),
+            'designation' => $designation_id,
     		'department' => $request->input('department'),
     	]);
 
@@ -196,12 +216,13 @@ class RegisterController extends Controller
         $users = Users::find(Auth::user()->id);
         $transfer = Transfer_Requests::all();
         $graduate = Graduate_Requests::all();
+        $designation = User_roles::where('parent','!=','0')->get();
 
         if(Auth::user()->user_role()->first()->name == 'Superadmin'){
-            return view('superadmin.createemployee')->with('roles',$roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('graduate',$graduate);
+            return view('superadmin.createemployee')->with('roles',$roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('graduate',$graduate)->with('designation',$designation);
         }
         else if(Auth::user()->user_role()->first()->name == 'Admin'){
-            return view('superadmin.createemployee')->with('roles',$roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('graduate',$graduate);
+            return view('superadmin.createemployee')->with('roles',$roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('graduate',$graduate)->with('designation',$designation);
         }
 
     }
@@ -237,13 +258,13 @@ class RegisterController extends Controller
 
         }
 
-        $emplo = Employees::with('emp_department')->where('employee_id', $id)->get();
+        $emplo = Employees::with('emp_department')->with('emp_designation')->where('employee_id', $id)->get();
 
         foreach($emplo as $employ)
         {
             $id_employee = $employ->id;
             $department_employee = $employ->emp_department->department_name;
-            $designation_employee = $employ->designation;
+            $designation_employee = $employ->emp_designation->name;
 
         }
 
@@ -253,7 +274,7 @@ class RegisterController extends Controller
             'performer_id' => Auth::user()->id,
             'type' => 'Employee Register',
             'action' => 'Registered '.$designation_employee.' no. '.$id_employee.' in '.$department_employee.' Department ',
-            'date_time' => date('M-j-Y g:i A'),
+            'date_time' => date('M-j-Y g:i A'), 
             'department_id' => Auth::user()->department,
         ]);
 

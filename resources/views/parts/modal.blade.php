@@ -43,6 +43,31 @@
       </div>
     </div>
 </div>
+    
+<div class="modal fade" id="changepass" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Change Password for this current User</h5>
+          <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <form action="{{URL::to('/changepassword')}}" method="post">
+          {{csrf_field()}} 
+          <div class="modal-body">
+          <label for="newpass"><h6>New Password*</h6></label>
+          <input type="password" id="newpass" name="newpass" class="form-control" value="">
+           <input type="hidden" id="userid" name="userid" class="form-control" value="">
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-primary" data-dismiss="modal">Cancel</button>
+            <button type="submit" class="btn btn-danger">Change Password</button>  
+          </div>
+        </form>
+      </div>
+    </div>
+</div>
 
 <div class="modal fade" id="deleteemployeeModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -148,6 +173,32 @@
       </div>
     </div>
   </div>
+</div>
+
+
+<div class="modal fade" id="admintransferReferral" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Are you sure you want to proceed?</h5>
+          <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <form action="{{URL::to('/admin_transfer_patient')}}" method="post">
+          {{csrf_field()}} 
+          <div class="modal-body">
+          <input type="hidden" id="depid" name="depid" class="form-control" value="">
+          <input type="hidden" id="patientid" name="patientid" class="form-control" value="">
+           <input type="hidden" id="patientdep" name="patientdep" class=" form-control" value="">
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-primary" data-dismiss="modal" data-target="#transferPatient" data-toggle="modal">Back</button>
+            <button type="submit" class="btn btn-success">Submit</button>  
+          </div>
+        </form>
+      </div>
+    </div>
 </div>
 
 <div class="modal fade" id="transferReferral" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -273,22 +324,19 @@
         </div>
         <div style="margin-bottom: 50px">
             <div class="card mb-3 text-black o-hidden h-100">
-             <form action="{{URL::to('/reenroll_patient')}}" method="post">
-                {{csrf_field()}}
-              <div class="modal-body">
-                <input type="hidden" id="patientid" name="patientid" class="form-control" value="">
-                <input type="hidden" name="patientdep" id="patientdep" value="">          
-            </div>
+             
             <div class="modal-footer">
             <button type="button" class="btn btn-primary" data-dismiss="modal">Cancel</button>
-            <button type="submit" class="btn btn-success">Re-enroll</button>  
-          </div>
-          </form>
+            <button type="button" class="btn btn-success" data-toggle="modal" data-dismiss="modal" data-target="#reenrollForm">Proceed</button>
+            <!---<button type="submit" class="btn btn-success">Re-enroll</button> -->
+            </div>
+        
         </div>
       </div>
     </div>
   </div>
 </div>
+
 
 <div class="modal fade modal-xl" id="addNotes" tabindex="2" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">

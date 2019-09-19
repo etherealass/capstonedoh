@@ -19,6 +19,7 @@ class CreateAddressesTable extends Migration
             $table->string('street');
             $table->string('barangay');
             $table->string('city');
+            $table->string('flag')->nullable();
             $table->timestamps();
         });
     }

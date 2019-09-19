@@ -88,7 +88,7 @@
                 </div>
                    @elseif($user->type == 'App\Notifications\MyNotifications')
                    <div style="border:thin gray;background-color: lightgray">
-                    <p style="margin-top: 5px;margin-left: 20px"><a href="" style="color:black">A user has been added as {{$user->data['role']}} in {{$user->data['department']}} Department</a></p>
+                    <p style="margin-top: 5px;margin-left: 20px"><a href="{{URL::to('/viewuserx/'.$user->data['user_id'].'/'.$user->id)}}" style="color:black">A user has been added as {{$user->data['role']}} in {{$user->data['department']}} Department</a></p>
                     <?php date_default_timezone_set('Asia/Singapore'); ?>
                     <p style="margin-left: 170px">{{$user->created_at->diffForHumans()}}</p>
                     <div style="border:solid 1px rgba(0, 0, 0, 0.125)"></div>
@@ -104,7 +104,7 @@
                 </div>
                    @elseif($user->type == 'App\Notifications\MyNotifications')
                    <div style="border:thin gray">
-                    <p style="margin-top: 5px;margin-left: 20px"><a href="" style="color:black">A user has been added as {{$user->data['role']}} in {{$user->data['department']}} Department</a></p>
+                    <p style="margin-top: 5px;margin-left: 20px"><a href="{{URL::to('/viewuser/'.$user->data['user_id'])}}" style="color:black">A user has been added as {{$user->data['role']}} in {{$user->data['department']}} Department</a></p>
                     <?php date_default_timezone_set('Asia/Singapore'); ?>
                     <p style="margin-left: 170px">{{$user->created_at->diffForHumans()}}</p>
                     <div style="border:solid 1px rgba(0, 0, 0, 0.125)"></div>
@@ -160,7 +160,7 @@
                 <p style="margin-top: 5px;font-size: 16px;margin-left: 20px">A patient has requested to transfer from {{$user->data['from_department']}} Department</p>
                 <?php date_default_timezone_set('Asia/Singapore'); ?>
                 <p style="margin-left: 185px;font-size: 12px">{{$user->created_at->diffForHumans()}}</p>
-                <p style="margin-left: 90px"><a href="{{URL::to('/viewpatients/'.$user->data['patient_id']. '/'.$user->id.'/'.$user->data['transfer_id'])}}"><button class="btn btn-primary" style="margin-left: 30px">View</button></a></p>
+                <p style="margin-left: 90px"><a href="{{URL::to('/viewpatients/'.$user->data['patient_id']. '/'.$user->id.'/'.$user->data['transfer_id'])}}"><button class="btn btn-primary" style="margin-left: 100px">View</button></a></p>
                 <div style="border:solid 1px rgba(0, 0, 0, 0.125)"></div>
                 </div>
                       @else
@@ -168,7 +168,7 @@
                 <p style="margin-top: 5px;font-size: 16px;margin-left: 50px">A patient has been transfered from {{$user->data['from_department']}} Department to {{$user->data['to_department']}} Department</p>
                 <?php date_default_timezone_set('Asia/Singapore'); ?>
                 <p style="margin-left: 180px;font-size: 12px">{{$user->created_at->diffForHumans()}}</p>
-                <p style="margin-left: 150px"><a href="{{URL::to('/viewpatientz/'.$user->data['patient_id'].'/'.$user->id)}}"><button class="btn btn-primary" style="margin-left: 30px">View</button></a>
+                <p style="margin-left: 150px"><a href="{{URL::to('/viewpatientz/'.$user->data['patient_id'].'/'.$user->id)}}"><button class="btn btn-primary" style="margin-left: 100px">View</button></a>
                 <div style="border:solid 1px rgba(0, 0, 0, 0.125)"></div>
                 </div>
                       @endif
@@ -278,8 +278,7 @@
           <i style="font-size: 30px;" class="fas fa-user-circle fa-fw"></i>
         </a>
         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
-          <a class="dropdown-item" href="#">Settings</a>
-          <a class="dropdown-item" href="#">Activity Log</a>
+          <a class="dropdown-item" href="{{URL::to('/show_my_logs/'.Auth::user()->id)}}">Activity Log</a>
           <div class="dropdown-divider"></div>
           <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">Logout</a>
         </div>

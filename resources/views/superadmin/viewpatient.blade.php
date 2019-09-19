@@ -9,6 +9,7 @@
       color:white;
       }
 
+
 </style>
 
         <!-- Breadcrumbs-->
@@ -25,8 +26,7 @@
               @elseif(Auth::user()->department == $pats->department_id || Auth::user()->user_role->first()->name == 'Superadmin')
           <ol class="breadcrumb" style="height: 100px;font-size:50px;text-align: center">
           <li class="breadcrumb-item active" style=""><i class="fas fa-fw fa fa-user"></i>Patient Information</li>
-    
-        </ol>
+          </ol>
             @endif
             @endforeach
 
@@ -86,7 +86,7 @@
             <legend style="color:white;text-indent: 20px;width:900px;margin-bottom: 20px;border-radius: 5px" class="bg bg-dark">Transfer Remarks</legend>
           <div class="container" style="margin-left: 10px">
             <div class="row">
-            @foreach($transfer as $trans)
+            @foreach($transfers as $trans)
               <p style="margin-left: 30px">{{$trans->remarks}}</p>
             @endforeach
            </div>
@@ -149,6 +149,9 @@
                 <li class="nav-item" id="v-pills-doctornote-tab" data-toggle="pill" href="#v-pills-doctornote" role="tab" aria-controls="v-pills-doctornote" aria-selected="false">
                   <a class="nav-link bg-dark" id="v-pills-doctornote-tab" data-toggle="pill" href="#v-pills-doctornote" role="tab" aria-controls="v-pills-doctornote" aria-selected="false" style="color:white;margin-bottom: 10px;height: 45px"><h6>Doctor's Progress Notes</h6></a>
                 </li>
+                <!--<li class="nav-item" id="v-pills-docu-tab" data-toggle="pill" href="#v-pills-docu" role="tab" aria-controls="v-pills-docu" aria-selected="false">
+                  <a class="nav-link bg-dark" id="v-pills-docu-tab" data-toggle="pill" href="#v-pills-docu" role="tab" aria-controls="v-pills-docu" aria-selected="false" style="color:white;margin-bottom: 10px;height: 45px"><h6>File Documents</h6></a>
+                </li>-->
             </ul>
             </div>
           </div>
@@ -302,230 +305,80 @@
                      </div>
                 </fieldset>
                 </div>
-                <div class="tab-pane fade" id="v-pills-intake" role="tabpanel" aria-labelledby="v-pills-intake-tab">
+        <div class="tab-pane fade" id="v-pills-intake" role="tabpanel" aria-labelledby="v-pills-intake-tab">
           <fieldset style="margin-bottom: 10px;margin-left: 0px;border:solid thin gray;border-radius: 10px">
             <legend style="color:white;text-indent: 20px;width:900px;margin-bottom: 10px;border-radius: 5px" class="bg bg-dark">Intake Form </legend>
-              <div class="container scrollAble2" style="margin-top: 30px">
-                <form action="{{URL::to('/patientsave_intake')}}" method="post">
-                  {{csrf_field()}}
-                  <fieldset style="margin-bottom: 30px">
-                      <legend style="color:white;text-indent: 20px;width:1100px;margin-bottom: 40px" class="bg bg-dark">Intake Information</legend>
-                    <div class="form-group" style="margin-left:20px">
-                      <div class="form-row">
-                        <div class="col-md-4">
-                          <div class="form-label-group">
-                            <h6>Last name*</h6>
-                            <input type="text" id="lname" class="form-control" placeholder="Last name" required="required" autofocus="autofocus" name="lname" value="{{$pats->lname}}" disabled="true">
-                          </div>
-                        </div>
-                      <div class="col-md-4">
-                        <div class="form-label-group">
-                          <h6>First name*</h6>
-                            <input type="text" id="fname" class="form-control" placeholder="First name" required="required" name="fname" value="{{$pats->fname}}" disabled="true">
-                        </div>
-                      </div>
-                    <div class="col-md-1">
-                      <div class="form-label-group">
-                        <h6>Age*</h6>
-                          <input type="number" id="age" class="form-control" placeholder="Age" required="required" autofocus="autofocus" name="age" value="{{$pats->age}}" disabled="true">
-                      </div>
-                    </div>
-                    <div class="col-md-3">
-                      <div class="form-label-group">
-                        <h6>Birthday*</h6>
-                          <input type="date" id="bday" class="form-control" placeholder="Birthday" required="required" autofocus="autofocus" name="bday" value="{{$pats->birthdate}}" disabled="true">
-                          <input type="hidden" name="_token" value="{{csrf_token()}}">
-                          <input type="hidden" name="department" value="{{$pats->id}}">
-                      </div>
-                    </div>
-                </div>
+            <div style="float:right;margin-bottom: 10px;margin-right: 10px;margin-top: 10px"><a href="{{URL::to('sampleform/'.$pats->id)}}" target="_blank"><button class="btn btn-danger"><i class="fas fa-fw fa fa-file-pdf"></i>Print</button></a></div>
+            <div style="float:right;margin-bottom: 10px;margin-right: 10px;margin-top: 10px"><a href="{{URL::to('sampleform/'.$pats->id)}}" target="_blank"><button class="btn btn-success"><i class="fas fa-fw fa fa-pen"></i>Edit</button></a></div>
+          <div class="container scrollAble2" style="margin-top: 30px">
+            <div class="container" style="border:solid thin gray;border-radius: 10px">
+              <p style="float: left;margin-top: 20px"><img src="http://localhost/capstone/public/images/logo.png" height="100px" width="100px"></p>
+              <p style="float: right;margin-top: 20px"><img src="http://localhost/capstone/public/images/logo3.png" height="100px" width="100px"></p><br><p style="text-align: center;font-size: 12px"><b>Republic of the Philippines<br> Department of Health</b><br>
+              <b>DANGEROUS DRUGS ABUSE PREVENTION & TREATMENT PROGRAM</b><br><b>TREATMENT & REHABILITATION CENTER - Cebu City</b><br><b>Outpatient and Aftercare Department</b><br>Jagobiao, Mandaue City, Cebu<br>
+              <font size="1px">Telefax #: (032) 238-0650/Cp #:09255548119/Email Add: <u>cebu_trc@yahoo.com.ph</u></font><br>
+              </p>
+            <center style="margin-bottom: 40px"><h5>INTAKE FORM</h5></center>
+              <div class="row" style="margin-left: 20px;font-size: 12px">
+                <div class="col-md-6"><p><b>Client's Name: </b><u style="font-size: 15px">{{$pats->fname}} {{$pats->lname}}</u></p></div>
+                <div class="col-md-6"><p><b>Date: </b><u style="font-size: 15px">{{date('M-j-Y')}}</u></p></div>
               </div>
-            <div class="form-group" style="margin-left:20px">
-                <div class="form-row">
-                  <div class="col-md-3">
-                    <div class="form-label-group">
-                      <h6>Street Address*</h6>
-                      <input type="text" id="street" class="form-control" placeholder="Address" required="required" name="street" value="{{$pats->address->street}}" disabled="true">
-                    </div>
-                  </div>
-                <div class="col-md-3  ">
-                  <div class="form-label-group">
-                    <h6>Barangay*</h6>
-                    <input type="text" id="barangay" class="form-control" placeholder="Address" required="required" name="barangay" value="{{$pats->address->barangay}}" disabled="true">
-                  </div>
-                </div>
-                <div class="col-md-3">
-                  <div class="form-label-group">
-                    <h6>City*</h6>
-                    <input type="text" id="city" class="form-control" placeholder="Address" required="required" name="city" value="{{$pats->address->city}}" disabled="true">
-                  </div>
-                </div>
-                <div class="col-md-2">
-                  <div class="form-label-group">
-                    <h6>Marital Status*</h6>
-                    <select class="form-control" id="civils" placeholder="Civil Status" required="required" name="civils" value="{{$pats->civil_status}}" disabled="true">
-                      <label for="civils">Civil Status</label>
-                      <option value="Single" {{ ($pats->civil_status == 'Single') ? 'selected' : '' }}>Single</option>
-                      <option value="Married" {{ ($pats->civil_status == 'Married') ? 'selected' : '' }}>Married</option>
-                      <option value="Separated" {{ ($pats->civil_status == 'Separated') ? 'selected' : '' }}>Separated</option>
-                      <option value="Divorced" {{ ($pats->civil_status == 'Divorced') ? 'selected' : '' }}>Divorced</option>
-                      <option value="Widowed" {{ ($pats->civil_status == 'Widowed') ? 'selected' : '' }}>Widowed</option>
-                    </select>
-                  </div>
-                </div>
+              <div class="row" style="margin-left: 20px;font-size: 12px">
+                <div class="col-md-4"><p><b>Date of Birth: </b><u style="font-size: 15px">{{$pats->birthdate}}</u></p></div>
+                <div class="col-md-2"><p><b>Age: </b><u style="font-size: 15px">{{$pats->age}}</u></p></div>
+                <div class="col-md-4"><p><b>Marital Status: </b><u style="font-size: 15px">{{$pats->civil_status}}</u></p></div>
               </div>
+              <div class="row" style="margin-left: 20px;font-size: 12px">
+                <div class="col-md-12"><p><b>Home Address: </b></div>
+                <div class="col-md-12"><p><u style="font-size: 15px">{{$pats->address->street}} {{$pats->address->barangay}} {{$pats->address->city}}</u></p></div>
+              </div>
+              <div class="row" style="margin-left: 20px;font-size: 12px">
+                @foreach($patos as $patss)
+                <div class="col-md-6"><p><b>Educational Attainment: </b><u style="font-size: 15px">{{$patss->educational_attainment}}</u></p></div>
+                <div class="col-md-6"><p><b>Employement Status: </b><u style="font-size: 15px">{{$patss->employment_status}}</u></p></div>
+              </div>
+              <div class="row" style="margin-left: 20px;font-size: 12px">
+                <div class="col-md-12"><p><b>Name of Spouse: </b><u style="font-size: 15px">{{$patss->spouse}}</u></p></div>
+              </div>
+              <div class="row" style="margin-left: 20px;font-size: 12px">
+                <div class="col-md-12"><p><b>Parents: </b></p></div>
+              </div>
+              <div class="row" style="margin-left: 50px;font-size: 12px">
+                <div class="col-md-12"><p><b>Father's Name: </b><u style="font-size: 15px">{{$patss->father}}</u></p></div>
+                <div class="col-md-12"><p><b>Mother's Name: </b><u style="font-size: 15px">{{$patss->mother}}</u></p></div>
+              </div>
+              <div class="row" style="margin-left: 20px;font-size: 12px">
+                <div class="col-md-12"><p><b>Whom to notify in case of emergency: </b></p></div>
+              </div>
+              <div class="row" style="margin-left: 20px;font-size: 12px">
+                <div class="col-md-6"><p><b>Name: </b><u style="font-size: 15px">{{$patss->eperson->name}}</u></p></div>
+                <div class="col-md-6"><p><b>Relationship: </b><u style="font-size: 15px">{{$patss->eperson->relationship}}</u></p></div>
+              </div>
+              <div class="row" style="margin-left: 20px;font-size: 12px">
+                <div class="col-md-4"><p><b>Phone No. (Home): </b><u style="font-size: 15px">{{$patss->eperson->phone}}</u></p></div>
+                <div class="col-md-4"><p><b>Cellphone No.: </b><u style="font-size: 15px">{{$patss->eperson->cellphone}}</u></p></div>
+                <div class="col-md-4"><p><b>Email add: </b><u style="font-size: 10px">{{$patss->eperson->email}}</u></p></div>
+              </div>
+               <div class="row" style="margin-left: 20px;font-size: 12px">
+                <div class="col-md-12"><p><b>Presenting Problems: </b></p></div>
+              </div>
+               <div class="row" style="margin-left: 20px;font-size: 12px">
+                <div class="col-md-12"><p><u style="font-size: 15px">{{$patss->presenting_problems}}</u></p></div>
+              </div>
+               <div class="row" style="margin-left: 20px;font-size: 12px">
+                <div class="col-md-12"><p><b>Impression: </b></p></div>
+              </div>
+              <div class="row" style="margin-left: 20px;font-size: 12px">
+                <div class="col-md-12"><p><u style="font-size: 15px">{{$patss->impression}}</u></p></div>
+              </div>
+              <div class="row" style="margin-left: 20px;font-size: 12px">
+                <div class="col-md-6"><p><b>Intake Officer Signature: </b></p></div>
+                <div class="col-md-6"><p><b>Date: </b></p></div>
+              </div>
+                @endforeach
             </div>
-        </fieldset>
-        <fieldset>
-            <div class="form-group">
-              <div class='form-row'>
-                <div class="col-md-6">
-                  <div class="card card-register mx-auto" style="margin-bottom: 20px">
-                    <div class="card-header"><h6>Whom to notify in case of emergency:</h6></div>
-                     <div class="card-body">
-                      <div class="form-group">
-                       <div class="form-row">
-                        <div class="col-md-6">
-                         <div class="form-label-group">
-                          <h6>Name*</h6>
-                          @foreach($patos as $patss)
-                           <input type="text" id="emername" class="form-control" placeholder="Last name"  name="emername" value="{{$patss->eperson->name}}" disabled="true">
-                          @endforeach
-                         </div>
-                        </div>
-                         <div class="col-md-6">
-                           <div class="form-label-group">
-                             <h6>Relationship*</h6>
-                             @foreach($patos as $patss)
-                              <input type="text" id="emerelation" class="form-control" placeholder="Last name"  name="emerelation" value="{{$patss->eperson->relationship}}" disabled="true">
-                            @endforeach
-                           </div>
-                         </div>
-                       </div>
-                      </div>
-                  <div class="form-group">
-                    <div class="form-row">
-                     <div class="col-md-6">
-                     <div class="form-label-group">
-                      <h6>Phone No.(Home)*</h6>
-                      @foreach($patos as $patss)
-                       <input type="text" id="emerphone" class="form-control" placeholder="Last name"  name="emerphone" value="{{$patss->eperson->phone}}" disabled="true">
-                      @endforeach
-                     </div>
-                   </div>
-                   <div class="col-md-6">
-                     <div class="form-label-group">
-                      <h6>Cellphone No.*</h6>
-                      @foreach($patos as $patss)
-                       <input type="text" id="emercell" class="form-control" placeholder="Last name"  name="emercell" value="{{$patss->eperson->cellphone}}" disabled="true">
-                      @endforeach
-                     </div>
-                   </div>
-                    </div>
-                  </div>
-                   <div class="form-group">
-                      <div class="form-label-group">
-                      <h6>Email add*</h6>
-                      @foreach($patos as $patss)
-                       <input type="text" id="emeremail" class="form-control" placeholder="Last name"  name="emeremail" value="{{$patss->eperson->email}}" disabled="true">
-                      @endforeach
-                    </div>
-                  </div>
-                  </div>
-                 </div>
-               </div>
-               <div class="col-md-6">
-                  <div class="form-group">
-                    <div class="form-row">
-                      <div class="col-md-5">
-                        <div class="form-label-group">
-                          <h6>Educational Attainment*</h6>
-                          @foreach($patos as $patss)
-                          <select class="form-control" id="eduattain" placeholder="Civil Status" required="required" name="eduattain" disabled="true">
-                            <label for="eduattain">Educational Attainment</label>
-                            <option value="Elementary" {{ ($patss->educational_attainment == 'Elementary') ? 'selected' : '' }}>Elementary Graduate</option>
-                            <option value="Highschool" {{ ($patss->educational_attainment == 'Highschool') ? 'selected' : '' }}>High-school Graduate</option>
-                            <option value="College" {{ ($patss->educational_attainment == 'College') ? 'selected' : '' }}>College Graduate</option>
-                        </select>
-                        @endforeach
-                        </div>
-                      </div>
-                      <div class="col-md-4">
-                        <div class="form-label-group">
-                          <h6>Employement Status*</h6>
-                          @foreach($patos as $patss)
-                           <select class="form-control" id="edstat" placeholder="Civil Status" required="required" name="edstat" disabled="true">
-                            <label for="edstat">Employement Status</label>
-                            <option value="Employed"  {{ ($patss->employment_status == 'Employed') ? 'selected' : '' }}>Employed</option>
-                            <option value="Unemployed"  {{ ($patss->employment_status == 'Unemployed') ? 'selected' : '' }}>Unemployed</option>
-                        </select>
-                        @endforeach
-                        </div>
-                      </div>
-                     </div>
-                  </div>
-                  <div class="form-group">
-                    <div class="form-row">
-                      <div class="col-md-9">
-                        <div class="form-label-group">
-                          <h6>Name Of Spouse*</h6>
-                          @foreach($patos as $patss)
-                          <input type="text" id="spouse" class="form-control" placeholder="Chief Complaint" name="spouse" value="{{$patss->spouse}}" disabled="true">
-                          @endforeach
-                        </div>
-                      </div>
-                   </div>
-                </div>
-                <div class="card card-register mx-auto" style="margin-bottom: 20px">
-                    <div class="card-header"><h6>Parents:</h6></div>
-                     <div class="card-body">
-                      <div class="form-group">
-                       <div class="form-row">
-                        <div class="col-md-6">
-                         <div class="form-label-group">
-                          <h6>Father's name*</h6>
-                          @foreach($patos as $patss)
-                           <input type="text" id="fathname" class="form-control" placeholder="Last name"  name="fathname" value="{{$patss->father}}" disabled="true">
-                          @endforeach
-                         </div>
-                        </div>
-                         <div class="col-md-6">
-                           <div class="form-label-group">
-                             <h6>Mother's name*</h6>
-                             @foreach($patos as $patss)
-                              <input type="text" id="mothname" class="form-control" placeholder="Last name"  name="mothname" value="{{$patss->mother}}" disabled="true">
-                            @endforeach
-                             </div>
-                           </div>
-                        </div>
-                        </div>
-                      </div>
-                    </div>
-                 </div>
-                </div>
-              </div>
-          <div class="form-group">
-            <div class="form-label-group">
-              <h6>Presenting Problems*</h6>
-              @foreach($patos as $patss)
-              <textarea type="text" id="preprob" class="form-control" placeholder="{{$patss->presenting_problems}}" name="preprob" value="{{$patss->presenting_problems}}" disabled="true"></textarea>
-              @endforeach
             </div>
-          </div>
-          <div class="form-group">
-                <div class="form-label-group">
-                  <h6>Impression*</h6>
-                  @foreach($patos as $patss)
-                  <textarea style="height: 120px" type="text" id="impre" class="form-control" placeholder="{{$patss->impression}}" name="impre" value="{{$patss->impression}}" disabled="true"></textarea>
-                  @endforeach
-              </div>
-          </div>
-        </fieldset>
-           <input style="width:200px;height:50px;float:right;margin-top: 10px;margin-bottom: 30px" class="btn btn-primary btn-block" type="submit" name="submit" value="Create">
-         </form>
-    </div>
-  </fieldset>
-        </div>
+          </fieldset>
+      </div>
          <div class="tab-pane fade" id="v-pills-dde" role="tabpanel" aria-labelledby="v-pills-dde-tab">
           <fieldset style="margin-bottom: 30px;margin-left: 0px;border:solid thin gray;border-radius: 10px">
             <legend style="color:white;text-indent: 20px;width:900px;margin-bottom: 20px;border-radius: 5px" class="bg bg-dark">Drug Dependency Examination Report</legend>
@@ -812,7 +665,14 @@
           </div>
           <div class="col-md-4" style="margin-top: 10px">
     
-                <button class="btn btn-success" data-patientid="{{$pats->id}}" data-patientdep="{{$pats->department_id}}" data-toggle="modal" data-target="#patientadminGraduate" style="margin-left:10px;height: 60px;width: 90px;margin-top: 10px">Graduate</button><button class="btn btn-warning" style="margin-left: 10px;height: 60px;width: 90px;margin-top: 10px" data-toggle="modal" data-target="#transferPatient" data-patientid="{{$pats->id}}" data-patientdep="{{$pats->department_id}}">Transfer</button><button class="btn btn-danger" data-toggle="modal" data-patientdep="{{$pats->department_id}}" data-patientid="{{$pats->id}}" data-target="#patientDismiss" style="margin-left: 10px;height: 60px;width: 90px;margin-top: 10px">Dismiss</button>
+                <button class="btn btn-success" data-patientid="{{$pats->id}}" data-patientdep="{{$pats->department_id}}" data-toggle="modal" data-target="#patientadminGraduate" style="margin-left:10px;height: 60px;width: 90px;margin-top: 10px">Graduate</button><button class="btn btn-warning" style="margin-left: 10px;height: 60px;width: 90px;margin-top: 10px" data-toggle="modal" data-target="#admintransferPatient" data-patientid="{{$pats->id}}" data-patientdep="{{$pats->department_id}}">Transfer</button><button class="btn btn-danger" data-toggle="modal" data-patientdep="{{$pats->department_id}}" data-patientid="{{$pats->id}}" data-target="#patientDismiss" style="margin-left: 10px;height: 60px;width: 90px;margin-top: 10px">Dismiss</button>
+            <select class="form-control" style="width:290px;margin-left:10px;margin-top:10px">
+              <option disabled selected>Current Admission</option>
+              <option><span>SADASDSADSADSADSADSDSADSAD</span></option>
+              <option><span>ASDSADSADSADSADSADSADSADSAD</span></option>
+              <option><span>SADSADSADSADSADASDSADSADSAD</span></option>
+            </select>
+
     
           </div>
          </div>
@@ -838,7 +698,7 @@
           </div>
           <div class="col-md-3" style="margin-top: 10px">
         
-              <button class="btn btn-primary" data-patientid="{{$pats->id}}" data-toggle="modal" data-target="#patientadminReenroll" style="margin-left:60px;height: 60px;width: 90px;margin-top: 10px">Re-enroll</button>
+              <button class="btn btn-primary" data-patientid="{{$pats->id}}" data-toggle="modal" data-target="#adminreenrollPatient" style="margin-left:60px;height: 60px;width: 90px;margin-top: 10px">Re-enroll</button>
         
           </div>
          </div>
@@ -851,7 +711,7 @@
           </div>
           <div class="col-md-3" style="margin-top: 10px">
         
-              <button class="btn btn-primary" data-patientid="{{$pats->id}}" data-toggle="modal" data-target="#patientadminReenroll" style="margin-left:60px;height: 60px;width: 90px;margin-top: 10px">Re-enroll</button>
+              <button class="btn btn-primary" data-patientid="{{$pats->id}}" data-toggle="modal" data-target="#adminreenrollPatient" style="margin-left:60px;height: 60px;width: 90px;margin-top: 10px">Re-enroll</button>
         
           </div>
          </div>
@@ -885,6 +745,10 @@
                 <li class="nav-item" id="v-pills-doctornote-tab" data-toggle="pill" href="#v-pills-doctornote" role="tab" aria-controls="v-pills-doctornote" aria-selected="false">
                   <a class="nav-link bg-dark" id="v-pills-doctornote-tab" data-toggle="pill" href="#v-pills-doctornote" role="tab" aria-controls="v-pills-doctornote" aria-selected="false" style="color:white;margin-bottom: 5px;height: 65px;text-align: center;border-radius: 5px"><h6><span>Doctor's Progress Notes</span></h6></a>
                 </li>
+                <!--<li class="nav-item" id="v-pills-docu-tab" data-toggle="pill" href="#v-pills-docu" role="tab" aria-controls="v-pills-docu" aria-selected="false">
+                  <a class="nav-link bg-dark" id="v-pills-docu-tab" data-toggle="pill" href="#v-pills-docu" role="tab" aria-controls="v-pills-docu" aria-selected="false" style="color:white;margin-bottom: 10px;height: 50px;text-align: center;border-radius: 5px""><h6>File Documents</h6></a>
+                </li>-->
+              </div>
             </ul>
             </div>
           </div>
@@ -908,8 +772,8 @@
                        <p style="font-size: 8px"><h6>Marital Status:</h6> {{$pats->civil_status}}</p>
                       </div>
                       <div class="col-md-3">
-                         <p style="font-size: 8px"><h6>Age:</h6> {{$pats->age}}</p>
-                      </div>
+                         <p style="font-size: 8px"><h6>Age:</h6> {{\Carbon\Carbon::parse($pats->birthdate)->age}}</p>
+                      </div> 
                       @if($pats->birthorder != NULL)
                       @if($pats->birthorder != 'NULL')
                       <div class="col-md-3">
@@ -938,6 +802,19 @@
                     <legend style="color:white;text-indent: 20px;width:900px;margin-bottom: 20px;border-radius: 5px" class="bg bg-dark">General Information</legend>
                     <div class="container" style="margin-left: 10px">
                       <div class="row">
+                        <div class="col-md-3">
+                         <p style="font-size: 8px"><h6>Patient Type:</h6> {{$pats->type->case_name}}</p>
+                      </div>
+                      @if($pats->jail != NULL)
+                      <div class="col-md-3">
+                         <p style="font-size: 8px"><h6>City Jail:</h6> {{$pats->jails->name}}</p>
+                      </div>
+                      @endif
+                      @if($pats->caseno != NULL)
+                       <div class="col-md-3">
+                         <p style="font-size: 8px"><h6>Case Number:</h6> {{$pats->caseno}}</p>
+                      </div>
+                      @endif
                         <div class="col-md-3">
                         <p style="font-size: 8px"><h6>Department:</h6> {{$pats->departments->department_name}} Department</p>
                        </div>
@@ -1039,77 +916,585 @@
         <div class="tab-pane fade" id="v-pills-intake" role="tabpanel" aria-labelledby="v-pills-intake-tab">
           <fieldset style="margin-bottom: 10px;margin-left: 0px;border:solid thin gray;border-radius: 10px">
             <legend style="color:white;text-indent: 20px;width:900px;margin-bottom: 10px;border-radius: 5px" class="bg bg-dark">Intake Form </legend>
-              <div class="container scrollAble2" style="margin-top: 30px">
-                <form action="{{URL::to('/patientsave_intake')}}" method="post">
-                  {{csrf_field()}}
-                  <fieldset style="margin-bottom: 30px">
-                      <legend style="color:white;text-indent: 20px;width:1100px;margin-bottom: 40px" class="bg bg-dark">Intake Information</legend>
-                    <div class="form-group" style="margin-left:20px">
-                      <div class="form-row">
-                        <div class="col-md-4">
-                          <div class="form-label-group">
-                            <h6>Last name*</h6>
-                            <input type="text" id="lname" class="form-control" placeholder="Last name" required="required" autofocus="autofocus" name="lname" value="{{$pats->lname}}" disabled="true">
-                          </div>
-                        </div>
-                      <div class="col-md-4">
-                        <div class="form-label-group">
-                          <h6>First name*</h6>
-                            <input type="text" id="fname" class="form-control" placeholder="First name" required="required" name="fname" value="{{$pats->fname}}" disabled="true">
-                        </div>
-                      </div>
-                    <div class="col-md-1">
-                      <div class="form-label-group">
-                        <h6>Age*</h6>
-                          <input type="number" id="age" class="form-control" placeholder="Age" required="required" autofocus="autofocus" name="age" value="{{$pats->age}}" disabled="true">
-                      </div>
-                    </div>
-                    <div class="col-md-3">
-                      <div class="form-label-group">
-                        <h6>Birthday*</h6>
-                          <input type="date" id="bday" class="form-control" placeholder="Birthday" required="required" autofocus="autofocus" name="bday" value="{{$pats->birthdate}}" disabled="true">
-                          <input type="hidden" name="_token" value="{{csrf_token()}}">
-                          <input type="hidden" name="department" value="{{$pats->id}}">
-                      </div>
-                    </div>
-                </div>
+            <div style="float:right;margin-bottom: 10px;margin-right: 10px;margin-top: 10px"><a href="{{URL::to('sampleform/'.$pats->id)}}" target="_blank"><button class="btn btn-danger"><i class="fas fa-fw fa fa-file-pdf"></i>Print</button></a></div>
+            <div style="float:right;margin-bottom: 10px;margin-right: 10px;margin-top: 10px"><a href="{{URL::to('sampleform/'.$pats->id)}}" target="_blank"><button class="btn btn-success"><i class="fas fa-fw fa fa-pen"></i>Edit</button></a></div>
+          <div class="container" style="margin-top: 60px;margin-bottom: 30px">
+            <div class="container" style="border:solid thin gray;border-radius: 10px">
+              <p style="float: left;margin-top: 20px"><img src="http://localhost/capstone/public/images/logo.png" height="100px" width="100px"></p>
+              <p style="float: right;margin-top: 20px"><img src="http://localhost/capstone/public/images/logo3.png" height="100px" width="100px"></p><br><p style="text-align: center;font-size: 12px"><b>Republic of the Philippines<br> Department of Health</b><br>
+              <b>DANGEROUS DRUGS ABUSE PREVENTION & TREATMENT PROGRAM</b><br><b>TREATMENT & REHABILITATION CENTER - Cebu City</b><br><b>Outpatient and Aftercare Department</b><br>Jagobiao, Mandaue City, Cebu<br>
+              <font size="1px">Telefax #: (032) 238-0650/Cp #:09255548119/Email Add: <u>cebu_trc@yahoo.com.ph</u></font><br>
+              </p>
+            <center style="margin-bottom: 60px"><h5>INTAKE FORM</h5></center>
+              <div class="row" style="margin-left:60px;font-size: 12px">
+                <label><h6>Client's name:</h6></label>
+                <div class="col-md-5"><p style="border-bottom: solid black 1px;text-align: center">{{$pats->fname}} {{$pats->lname}}</p></div>
+                <label style="margin-left: 20px"><h6>Date:</h6></label>
+                <div class="col-md-3"><p style="border-bottom: solid black 1px;text-align: center">{{date('M-j-Y')}}</p></div>
               </div>
-            <div class="form-group" style="margin-left:20px">
-                <div class="form-row">
-                  <div class="col-md-3">
-                    <div class="form-label-group">
-                      <h6>Street Address*</h6>
-                      <input type="text" id="street" class="form-control" placeholder="Address" required="required" name="street" value="{{$pats->address->street}}" disabled="true">
+            <div class="row" style="margin-left: 60px;font-size: 12px">
+                <label><h6>Date of Birth:</h6></label>
+                <div class="col-md-3"><p style="border-bottom: solid black 1px;text-align: center">{{$pats->birthdate}}</p></div>
+                <label><h6>Age:</h6></label>
+                <div class="col-md-2"><p style="border-bottom: solid black 1px;text-align: center">{{\Carbon\Carbon::parse($pats->birthdate)->age}}</p></div>
+                <label style="margin-left: 0px"><h6>Marital Status:</h6></label>
+                <div class="col-md-2"><p style="border-bottom: solid black 1px;text-align: center">{{$pats->civil_status}}</p></div>
+              </div>
+              <div class="row">
+                <label style="margin-left: 75px;"><h6>Home Address:</h6></label>
+                <div class="col-md-10" style="margin-left: 60px;font-size: 12px;text-align: center"><p style="border-bottom: solid black 1px">{{$pats->address->street}} {{$pats->address->barangay}} {{$pats->address->city}}</p></div>
+              </div>
+              <div class="row" style="margin-left: 60px;font-size: 12px">
+                @foreach($patos as $patss)
+                <label><h6>Educational Attainment:</h6></label>
+                <div class="col-md-3"><p style="border-bottom: solid black 1px;text-align: center">{{$patss->educational_attainment}}</p></div>
+                <label><h6>Employment Status:</h6></label>
+                <div class="col-md-3"><p style="border-bottom: solid black 1px;text-align: center">{{$patss->employment_status}}</p></div>
+              </div>
+              <div class="row" style="margin-left: 60px;font-size: 12px">
+                <label><h6>Name of Spouse:</h6></label>
+                <div class="col-md-5"><p style="border-bottom: solid black 1px;text-align: center">{{$patss->spouse}}</p></div>
+              </div>
+              <div class="row">
+                <label style="margin-left: 75px;"><h6>Parents:</h6></label>
+              </div>
+              <div class="row" style="margin-left: 125px;font-size: 12px">
+                <label><h6>Father's Name:</h6></label>
+                <div class="col-md-5"><p style="border-bottom: solid black 1px;text-align: center">{{$patss->father}}</p></div>
+              </div>
+              <div class="row" style="margin-left: 125px;font-size: 12px">
+               <label><h6>Mother's Name:</h6></label>
+                <div class="col-md-5"><p style="border-bottom: solid black 1px;text-align: center">{{$patss->mother}}</p></div>
+              </div>
+              <div class="row">
+                 <label style="margin-left: 75px;"><h6>Whom to notify in case of emergency:</h6></label>
+              </div>
+              <div class="row" style="margin-left: 60px;font-size: 12px">
+                <label><h6>Name:</h6></label>
+                <div class="col-md-4"><p style="border-bottom: solid black 1px;text-align: center">{{$patss->eperson->name}}</p></div>
+                <label><h6>Relationship:</h6></label>
+                <div class="col-md-4"><p style="border-bottom: solid black 1px;text-align: center">{{$patss->eperson->relationship}}</p></div>
+              </div>
+              <div class="row" style="margin-left: 60px;font-size: 12px">
+                <label><h6>Phone No.(Home):</h6></label>
+                <div class="col-md-2"><p style="border-bottom: solid black 1px;text-align: center">{{$patss->eperson->phone}}</p></div>
+                <label><h6>Cellphone No.:</h6></label>
+                <div class="col-md-2"><p style="border-bottom: solid black 1px;text-align: center">{{$patss->eperson->cellphone}}</p></div>
+                <label><h6>Email add:</h6></label>
+                <div class="col-md-1"><p><u style="text-align: center;font-size: 10px">{{$patss->eperson->email}}</u></p></div>
+              </div>
+               <div class="row">
+                <label style="margin-left: 75px;"><h6>Presenting Problems:</h6></label>
+                <div class="col-md-10" style="margin-left: 60px;font-size: 12px"><p style="border-bottom: solid black 1px">{{$patss->presenting_problems}}</p></div>
+              </div>
+              <div class="row">
+                <label style="margin-left: 75px;"><h6>Impression:</h6></label>
+                <div class="col-md-10" style="margin-left: 60px;font-size: 12px"><p style="border-bottom: solid black 1px">{{$patss->impression}}</p></div>
+              </div>
+              <div class="row" style="margin-left: 60px;font-size: 12px;margin-top: 40px;margin-bottom: 50px">
+                <label><h6>Intake Officer Signature:</h6></label>
+                <div class="col-md-4"><p style="border-bottom: solid black 1px;text-align: center">wasd</p></div>
+                <label><h6>Date:</h6></label>
+                <div class="col-md-4"><p style="border-bottom: solid black 1px;text-align: center">wasd</p></div>
+              </div>
+                @endforeach
+            </div>
+            </div>
+          </fieldset>
+      </div>
+          <div class="tab-pane fade" id="v-pills-dde" role="tabpanel" aria-labelledby="v-pills-dde-tab">
+            <fieldset style="margin-bottom: 30px;margin-left: 0px;border:solid thin gray;border-radius: 10px">
+              <legend style="color:white;text-indent: 20px;width:900px;margin-bottom: 20px;border-radius: 5px" class="bg bg-dark">Drug Dependency Examination Report</legend>
+                <div style="float:right;margin-bottom: 10px;margin-right: 10px;margin-top: 10px"><a href="{{URL::to('sampleform/'.$pats->id)}}" target="_blank"><button class="btn btn-danger"><i class="fas fa-fw fa fa-file-pdf"></i>Print</button></a></div>
+                <div style="float:right;margin-bottom: 10px;margin-right: 10px;margin-top: 10px"><a href="{{URL::to('sampleform/'.$pats->id)}}" target="_blank"><button class="btn btn-success"><i class="fas fa-fw fa fa-pen"></i>Edit</button></a></div>
+                    <div class="container" style="margin-top: 60px;margin-bottom: 30px">
+                      <div class="container" style="border:solid thin gray;border-radius: 10px">
+                        <div style="margin-top:30px">
+                          <img src="http://localhost/capstone/public/images/logo3.png" height="100px" width="100px" style="float:left;">
+                          <p style="text-align:center;position:relative;"><b style="font-size: 25px">TREATMENT & REHABILITATION CENTER - CEBU</b><br><span style="font-size:20px">Drug Dependency Examination Report</span></p>
+                        </div>
+  
+            <div class="row" style="margin-top: 50px;padding:20px">
+              <div class="col-md-6" style="border: solid gray 1px;padding:20px;font-size: 12px;border-right: none">
+                <div class="form-label-group">
+                  <div class="custom-control custom-checkbox custom-control-inline">
+                  <?php $count = 0 ?>
+                  @foreach($history as $hist)
+                    @if($hist->type == 'Enrolled')
+                      @if($hist->deps->department_name == $pats->departments->department_name)
+                      <?php $count++; ?>
+                      @endif
+                    @endif
+                  @endforeach
+                    <input type="checkbox" class="custom-control-input" id="new case" name="casetype" value="New Case" {{ ($count != 1)? "checked" : "" }} disabled="true">
+                    <label class="custom-control-label" for="new case">Old Case</label>
+                  </div>
+                </div>
+                <div class="form-label-group">
+                  <div class="custom-control custom-checkbox custom-control-inline">
+                    <input type="checkbox" class="custom-control-input" id="old case" name="casetype" value="Old Case" {{ ($count == 1)? "checked" : "" }} disabled="true">
+                    <label class="custom-control-label" for="old case">New Case</label>
+                  </div>
+                </div>
+                <div class="form-label-group">
+                  <div class="custom-control custom-checkbox custom-control-inline">
+                    <input type="checkbox" class="custom-control-input" id="case" name="casetype" value="With Court Case" {{ ($pats->caseno != NULL)? "checked" : "" }} disabled="true">
+                    <label class="custom-control-label" for="case">With Court Case:
+                  @if($pats->caseno != NULL)
+                    <u> {{$pats->caseno}}</u>
+                  @else
+                    ________________________________________
+                  @endif
+                    </label>
+                   </div>  
+                  </div>
+                </div>
+                <div class="col-md-6" style="border: solid gray 1px;padding:20px;font-size: 12px">
+                <div class="form-label-group">
+                  <div class="custom-control custom-checkbox custom-control-inline" style="font-size: 50px">
+                    <input type="checkbox" class="custom-control-input" id="Voluntary Submission" name="type" value="Voluntary Submission" {{ ($pats->type->case_name == 'Voluntary' || $pats->type->case_name == 'Voluntary with Court Order')? "checked" : "" }} disabled="true">
+                    <label class="custom-control-label" for="Voluntary Submission">Voluntary Submission</label>
+                  </div>
+                </div>
+                  <div class="form-label-group">
+                  <div class="custom-control custom-checkbox custom-control-inline">
+                    <input type="checkbox" class="custom-control-input" id="Compulsory Submission" name="type" value="Compulsory Submission" {{ ($pats->type->case_name == 'Plea Bargain')? "checked" : "" }} disabled="true">
+                    <label class="custom-control-label" for="Compulsory Submission">Compulsory Submission</label>
+                  </div>
+                  </div>
+                  <div class="form-label-group">
+                  <div class="custom-control custom-checkbox custom-control-inline">
+                    <input type="checkbox" class="custom-control-input" id="others" name="type" value="Others" {{ (old('type') == 'Others') ? 'checked' : '' }} disabled="true">
+                    <label class="custom-control-label" for="others">Others: ___________________________________</label>
+                   </div>  
+                  </div>
+                </div>
+                <div class="col-md-12" style="border: solid gray 1px;font-size: 12px;border-top:none;border-right:none">
+                <div class="row">
+                  <div class="col-md-3" style="border-right: solid gray 1px;border-bottom: solid gray 1px">
+                    <p>Last name:</p>
+                  </div>
+                  <div class="col-md-3" style="border-bottom: solid gray 1px;border-right: solid gray 1px">
+                    <p>{{$pats->lname}}</p>
+                  </div>
+                  <div class="col-md-6" style="border-right: solid gray 1px;">
+                    <p>Address:</p>
+                  </div>
+                 </div>
+                 <div class="row">
+                  <div class="col-md-3" style="border-right: solid gray 1px;border-bottom: solid gray 1px">
+                    <p>First name:</p>
+                  </div>
+                  <div class="col-md-3" style="border-bottom: solid gray 1px;border-right: solid gray 1px">
+                    <p>{{$pats->fname}}</p>
+                  </div>
+                  <div class="col-md-6" style="border-right: solid gray 1px;border-bottom: solid gray 1px;">
+                    <p>{{$pats->address->street}} {{$pats->address->barangay}} {{$pats->address->city}}</p>
+                  </div>
+                 </div>
+                  <div class="row">
+                  <div class="col-md-3" style="border-right: solid gray 1px;border-bottom: solid gray 1px">
+                    <p>Middle name:</p>
+                  </div>
+                  <div class="col-md-3" style="border-bottom: solid gray 1px;border-right: solid gray 1px">
+                    <p>{{$pats->mname}}</p>
+                  </div>
+                  <div class="col-md-3" style="border-right: solid gray 1px;border-bottom: solid gray 1px">
+                    <p>Contact Number:</p>
+                  </div>
+                  <div class="col-md-3" style="border-bottom: solid gray 1px;border-right: solid gray 1px">
+                    <p>{{$pats->contact}}</p>
+                  </div>
+                 </div>
+                 <div class="row">
+                  <div class="col-md-3" style="border-right: solid gray 1px;border-bottom: solid gray 1px">
+                    <p>Age:</p>
+                  </div>
+                  <div class="col-md-3" style="border-bottom: solid gray 1px;border-right: solid gray 1px">
+                    <p>{{\Carbon\Carbon::parse($pats->birthdate)->age}}</p>
+                  </div>
+                   <div class="col-md-3" style="border-right: solid gray 1px;border-bottom: solid gray 1px">
+                    <p>Gender:</p>
+                  </div>
+                  <div class="col-md-3" style="border-bottom: solid gray 1px;border-right: solid gray 1px">
+                    <p></p>
+                  </div>
+                 </div>
+                 <div class="row">
+                  <div class="col-md-3" style="border-right: solid gray 1px;border-bottom: solid gray 1px">
+                    <p>Birthdate:</p>
+                  </div>
+                  <div class="col-md-3" style="border-bottom: solid gray 1px;border-right: solid gray 1px">
+                    <p>{{$pats->birthdate}}</p>
+                  </div>
+                   <div class="col-md-3" style="border-right: solid gray 1px;border-bottom: solid gray 1px">
+                    <p>Civil Status:</p>
+                  </div>
+                  <div class="col-md-3" style="border-bottom: solid gray 1px;border-right: solid gray 1px">
+                    <p></p>
+                  </div>
+                 </div>
+                 <div class="row">
+                  <div class="col-md-3" style="border-right: solid gray 1px;border-bottom: solid gray 1px">
+                    <p>Birth Order:</p>
+                  </div>
+                  <div class="col-md-3" style="border-bottom: solid gray 1px;border-right: solid gray 1px">
+                    <p>{{$pats->birthorder}}</p>
+                  </div>
+                  <div class="col-md-3" style="border-right: solid gray 1px;border-bottom: solid gray 1px">
+                    <p>Nationality:</p>
+                  </div>
+                  <div class="col-md-3" style="border-right: solid gray 1px;border-bottom: solid gray 1px">
+                    <p></p>
+                  </div>
+                 </div>
+                 <div class="row">
+                  <div class="col-md-3" style="border-right: solid gray 1px">
+                    <p></p>
+                  </div>
+                  <div class="col-md-3" style="border-right: solid gray 1px">
+                    <p></p>
+                  </div>
+                  <div class="col-md-3" style="border-right: solid gray 1px;">
+                    <p>Religion:</p>
+                  </div>
+                  <div class="col-md-3" style="border-right: solid gray 1px">
+                    <p></p>
+                  </div>
+                 </div>
+                </div> 
+              </div>
+              <div class="row" style="padding:20px">
+                <div class="col-md-12" style="border: solid gray 1px;font-size: 12px">
+                <div class="row">
+                  <div class="col-md-3" style="border-right: solid gray 1px;">
+                    <p>Referred by:</p>
+                  </div>
+                  <div class="col-md-9" style="border-right: none">
+                    <p></p>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-3" style="border-right: solid gray 1px;border-top: solid gray 1px;padding:10px">
+                    <p>Accompanied By/<br>Informant</p>
+                  </div>
+                  <div class="col-md-9" style="border-top: solid gray 1px;padding-top: 10px">
+                    <div class="row">
+                      <div class="col-md-3">Name: </div>
                     </div>
-                  </div>
-                <div class="col-md-3  ">
-                  <div class="form-label-group">
-                    <h6>Barangay*</h6>
-                    <input type="text" id="barangay" class="form-control" placeholder="Address" required="required" name="barangay" value="{{$pats->address->barangay}}" disabled="true">
-                  </div>
-                </div>
-                <div class="col-md-3">
-                  <div class="form-label-group">
-                    <h6>City*</h6>
-                    <input type="text" id="city" class="form-control" placeholder="Address" required="required" name="city" value="{{$pats->address->city}}" disabled="true">
-                  </div>
-                </div>
-                <div class="col-md-2">
-                  <div class="form-label-group">
-                    <h6>Marital Status*</h6>
-                    <select class="form-control" id="civils" placeholder="Civil Status" required="required" name="civils" value="{{$pats->civil_status}}" disabled="true">
-                      <label for="civils">Civil Status</label>
-                      <option value="Single" {{ ($pats->civil_status == 'Single') ? 'selected' : '' }}>Single</option>
-                      <option value="Married" {{ ($pats->civil_status == 'Married') ? 'selected' : '' }}>Married</option>
-                      <option value="Separated" {{ ($pats->civil_status == 'Separated') ? 'selected' : '' }}>Separated</option>
-                      <option value="Divorced" {{ ($pats->civil_status == 'Divorced') ? 'selected' : '' }}>Divorced</option>
-                      <option value="Widowed" {{ ($pats->civil_status == 'Widowed') ? 'selected' : '' }}>Widowed</option>
-                    </select>
+                    <div class="row">
+                      <div class="col-md-3">Address: </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-3">Signature: </div>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
+          </div>
+        </div>
+    </fieldset>
+  </div>
+    @endif
+  @endforeach
+@endif
+</div>
+<div class="modal fade" id="patientDismiss" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Specify a reason to dismiss</h5>
+          <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <form action="{{URL::to('/patientDismiss')}}" method="post">
+          {{csrf_field()}} 
+          <div class="modal-body" style="margin-bottom: 50px">
+          <div class="form-label-group" style="height: 100px">
+              <input type="hidden" id="patientid" name="patientid" class="form-control" value="">
+              <input type="hidden" id="patientdep" name="patientdep" class="form-control" value="">
+                <select class="form-control" id="dismissal" placeholder="Dismissal Reason" required="required" name="dismissal">
+                  <label for="dismissal">Dismissal Reason</label>
+                    <option value="" disabled selected hidden>--Choose a Reason--</option>
+                     @foreach($reasons as $reas)
+                    <option value="{{$reas->id}}">{{$reas->reason}}</option>
+                     @endforeach
+                    <option value="Others">Others</option>
+                </select>
+                <div class="form-label-group" id="text" style="display: none;margin-top: 20px">
+                  <textarea style="margin-left:0px;height: 100px;margin-bottom: 10px" type="text" id="remarks" class="form-control" placeholder="Specify Reason" name="remarks"></textarea>
+                </div>
+          </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-primary" data-dismiss="modal">Cancel</button>
+            <button type="submit" class="btn btn-success">Submit</button>  
+          </div>
+        </form>
+      </div>
+    </div>
+</div>
+
+<div class="modal fade" id="admintransferPatient" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">To what department?</h5>
+          <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <div style="margin-bottom: 50px">
+           @foreach($deps as $dep)
+            @foreach($pat as $pats)
+           @if($dep->id != $pats->department_id)
+        <div class="row" style="margin-left: 55px;margin-bottom: 5px; margin-top: 0px">
+          <div class="col-xl-10 col-sm-9 mb-10" style="height: 9rem;margin-top: 10px">
+            <div class="card border-dark mb-3 text-black o-hidden h-100">
+              <div class="modal-body">
+                <input type="hidden" name="patientid" id="patientid" value="">
+                <input type="hidden" name="patientdep" id="patientdep" value="">
+                <p style="font-size: 10px;margin-top: 7px"><h6>{{$dep->department_name}} Department</h6></p>             
+              <button class="btn btn-success" data-depid="{{$dep->id}}" data-toggle="modal" data-target="#admintransferReferral" data-dismiss="modal" style="color:white">
+                <span style="" class="float-left">Transfer</span>
+                <span  style="" class="float-right">
+                  <i class="fas fa-angle-right"></i>
+                </span>
+              </button>
+            </div>
+            </div>
+        </div>
+      </div>
+        @endif
+        @endforeach
+        @endforeach
+      </div>
+    </div>
+  </div>
+</div>
+  
+<div class="modal fade" id="adminreenrollPatient" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">To what department?</h5>
+          <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <div style="margin-bottom: 50px">
+           @foreach($deps as $dep)
+            @foreach($pat as $pats)
+        <div class="row" style="margin-left: 55px;margin-bottom: 5px; margin-top: 0px">
+          <div class="col-xl-10 col-sm-9 mb-10" style="height: 9rem;margin-top: 10px">
+            <div class="card border-dark mb-3 text-black o-hidden h-100">
+              <div class="modal-body">
+                <p style="font-size: 10px;margin-top: 7px"><h6>{{$dep->department_name}} Department</h6></p>
+              <button class="btn btn-success" data-depid="{{$dep->id}}" data-patientid="{{$pats->id}}" data-depname-="{{$dep->department_name}}" data-toggle="modal" data-target="#adminreenrollForm" data-dismiss="modal" style="color:white">
+                <span style="" class="float-left">Transfer</span>
+                <span  style="" class="float-right">
+                  <i class="fas fa-angle-right"></i>
+                </span>
+              </button>
+            </div>
+            </div>
+        </div>
+      </div>
+        @endforeach
+        @endforeach
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="adminreenrollForm" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Choose a form to be filled-up</h5>
+          <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+      <div style="margin-bottom: 50px">
+        <div class="row" style="margin-left: 55px;margin-bottom: 5px; margin-top: 0px">
+          <div class="col-xl-10 col-sm-9 mb-10" style="height: 9rem;margin-top: 10px">
+            <div class="card border-dark mb-3 text-black o-hidden h-100">
+              <div class="modal-body">
+               <input type="hidden" name="department" id="department" value="">
+                <p style="font-size: 10px;margin-top: 7px"><h6>Intake Form</h6></p>             
+                <button type="submit" class="btn btn-success" data-dismiss="modal" data-toggle="modal" data-target="#intakeForm" data-patientid="{{$pats->id}}">Proceed</button>
+              </div>
+            </div>
+        </div>
+      </div>
+      <div class="row" style="margin-left: 55px;margin-bottom: 5px; margin-top: 0px">
+          <div class="col-xl-10 col-sm-9 mb-10" style="height: 9rem;margin-top: 10px">
+            <div class="card border-dark mb-3 text-black o-hidden h-100">
+              <div class="modal-body">
+                <input type="hidden" name="department" id="department" value="">
+                <p style="font-size: 10px;margin-top: 7px"><h6>Drug Dependency Form</h6></p>             
+                <button type="submit" class="btn btn-success" data-dismiss="modal" data-toggle="modal" data-target="#ddeForm" data-patientid="{{$pats->id}}">Proceed</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal2 fade" id="intakeForm" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content" style="width: 1000px;">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel" name="exampleModalLabel" value="">Intake Form</h5>
+          <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+<div class="container scrollAble2" style="margin-top: 30px">
+        <form action="{{URL::to('/reenrollpatientsave_intake')}}" method="post">
+          {{csrf_field()}}
+          <fieldset style="margin-bottom: 30px">
+            <legend style="color:white;text-indent: 20px;width:1100px;margin-bottom: 40px" class="bg bg-dark">Intake Information</legend>
+          <div class="form-group" style="margin-left:20px">
+            <div class="form-row">
+              <div class="col-md-4 mb-4">
+                <div class="form-label-group">
+                  <h6>Patient Type*</h6>
+                <select class="form-control" id="ptype" placeholder="Patient Type" required="required" name="ptype">
+                  @foreach($case as $cases)
+                    @if($cases->case_name == $pats->type->case_name)
+                    <option  id="{{$cases->court_order}}" value="{{$cases->id}}" selected>{{$cases->case_name}}</option>
+                    @else
+                    <option id="{{$cases->court_order}}" value="{{$cases->id}}">{{$cases->case_name}}</option>
+                    @endif
+                  @endforeach
+                </select>
+                </div>
+              </div>
+              <div class="col-md-4 mb-4">
+              @if($pats->type->court_order == 0)
+                <div class="form-label-group" id="textb" style="display: none;">
+              @else
+                <div class="form-label-group" id="textb">
+              @endif
+                  <h6>City Jail*</h6>
+                <select class="form-control" id="jail" placeholder="Patient Type" required="required" name="jail">
+              @if($pats->jail != NULL)
+                @foreach($jails as $jail)
+                  @if($jail->name == $pats->jails->name)
+                    <option value="{{$jail->id}}" selected>{{$jail->name}}</option>
+                  @else
+                    <option value="{{$jail->id}}">{{$jail->name}}</option>
+                  @endif
+                @endforeach
+              @else
+                @foreach($jails as $jail)
+                    <option value="" disabled selected hidden>City Jail</option>
+                    <option value="{{$jail->id}}">{{$jail->name}}</option>
+                @endforeach
+              @endif
+                </select>
+                </div>
+              </div>
+              <div class="col-md-4 mb-4">
+              @if($pats->caseno != NULL)
+                @if($pats->type->court_order == 0)
+                <div class="form-label-group" id="textas" style="display: none;">
+                @else
+                <div class="form-label-group" id="textas">
+                @endif
+                  <h6>Case Number*</h6>
+                    <input type="text" id="caseno" class="form-control" placeholder="Case Number" required="required" autofocus="autofocus" name="caseno" value="{{$pats->caseno}}">
+                </div>
+              @else
+                <div class="form-label-group" id="textas" style="display: none;">
+                  <h6>Case Number*</h6>
+                    <input type="text" id="caseno" class="form-control" placeholder="Case Number" required="required" autofocus="autofocus" name="caseno" value="">
+                </div>
+              @endif
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="col-md-4">
+                <div class="form-label-group">
+                  <h6>Last name*</h6>
+                  <input type="text" id="lname" class="form-control" placeholder="Last name" required="required" autofocus="autofocus" name="lname" value="{{$pats->lname}}">
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-label-group">
+                   <h6>First name*</h6>
+                  <input type="text" id="fname" class="form-control" placeholder="First name" required="required" name="fname" value="{{$pats->fname}}">
+                </div>
+              </div>
+              <div class="col-md-1">
+                <div class="form-label-group">
+                   <h6>Age*</h6>
+                  <input type="number" id="age" class="form-control" required="required" autofocus="autofocus" name="age" value="{{\Carbon\Carbon::parse($pats->birthdate)->age}}">
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="form-label-group">
+                   <h6>Birthday*</h6>
+                  <input type="date" id="bday" class="form-control" placeholder="Birthday" required="required" autofocus="autofocus" name="bday" value="{{$pats->birthdate}}">
+                  <input type="hidden" name="_token" value="{{csrf_token()}}">
+                  <input type="hidden" name="department" id="department" value="">
+                  <input type="hidden" name="patdepartment" value="{{$pats->department_id}}">
+                  <input type="hidden" name="patient_id" value="{{$pats->id}}">
+                  <input type="hidden" name="patientadd" value="{{$pats->address_id}}">
+                  @if($patos != NULL)
+                    @foreach($patos as $patss)
+                  <input type="hidden" name="emergency_id" value="{{$patss->eperson->id}}">
+                    @endforeach
+                  @endif
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="form-group" style="margin-left:20px">
+            <div class="form-row">
+              <div class="col-md-3">
+              <div class="form-label-group">
+               <h6>Street Address*</h6>
+              <input type="text" id="street" class="form-control" placeholder="Address" required="required" name="street" value="{{$pats->address->street}}">
+            </div>
+           </div>
+            <div class="col-md-3  ">
+              <div class="form-label-group">
+               <h6>Barangay*</h6>
+              <input type="text" id="barangay" class="form-control" placeholder="Address" required="required" name="barangay" value="{{$pats->address->barangay}}">
+            </div>
+           </div>
+           <div class="col-md-3">
+              <div class="form-label-group">
+               <h6>City*</h6>
+              <input type="text" id="city" class="form-control" placeholder="Address" required="required" name="city" value="{{$pats->address->city}}">
+            </div>
+           </div>
+            <div class="col-md-2">
+                <div class="form-label-group">
+                   <h6>Marital Status*</h6>
+                 <select class="form-control" id="civils" placeholder="{{$pats->civil_status}}" required="required" name="civils">
+                  <label for="civils">{{$pats->civil_status}}</label>
+                    <option value="{{$pats->civil_status}}" selected hidden>{{$pats->civil_status}}</option>
+                    <option value="Single">Single</option>
+                    <option value="Married">Married</option>
+                    <option value="Separated">Separated</option>
+                    <option value="Divorced">Divorced</option>
+                    <option value="Widowed">Widowed</option>
+                </select>
+                </div>
+              </div>
+          </div>
+        </div>
         </fieldset>
+      @if($patos != '[]')
+        @foreach($patos as $patss)
         <fieldset>
             <div class="form-group">
               <div class='form-row'>
@@ -1122,17 +1507,13 @@
                         <div class="col-md-6">
                          <div class="form-label-group">
                           <h6>Name*</h6>
-                          @foreach($patos as $patss)
-                           <input type="text" id="emername" class="form-control" placeholder="Last name"  name="emername" value="{{$patss->eperson->name}}" disabled="true">
-                          @endforeach
-                         </div>
+                           <input type="text" id="emername" class="form-control" placeholder="Last name"  name="emername" value="{{$patss->eperson->name}}">
+                         </div> 
                         </div>
                          <div class="col-md-6">
                            <div class="form-label-group">
                              <h6>Relationship*</h6>
-                             @foreach($patos as $patss)
-                              <input type="text" id="emerelation" class="form-control" placeholder="Last name"  name="emerelation" value="{{$patss->eperson->relationship}}" disabled="true">
-                            @endforeach
+                              <input type="text" id="emerelation" class="form-control" placeholder="Last name"  name="emerelation" value="{{$patss->eperson->relationship}}">
                            </div>
                          </div>
                        </div>
@@ -1142,17 +1523,13 @@
                      <div class="col-md-6">
                      <div class="form-label-group">
                       <h6>Phone No.(Home)*</h6>
-                      @foreach($patos as $patss)
-                       <input type="text" id="emerphone" class="form-control" placeholder="Last name"  name="emerphone" value="{{$patss->eperson->phone}}" disabled="true">
-                      @endforeach
+                       <input type="text" id="emerphone" class="form-control" placeholder="Last name"  name="emerphone" value="{{$patss->eperson->phone}}">
                      </div>
                    </div>
                    <div class="col-md-6">
                      <div class="form-label-group">
                       <h6>Cellphone No.*</h6>
-                      @foreach($patos as $patss)
-                       <input type="text" id="emercell" class="form-control" placeholder="Last name"  name="emercell" value="{{$patss->eperson->cellphone}}" disabled="true">
-                      @endforeach
+                       <input type="text" id="emercell" class="form-control" placeholder="Last name"  name="emercell" value="{{$patss->eperson->cellphone}}">
                      </div>
                    </div>
                     </div>
@@ -1160,9 +1537,7 @@
                    <div class="form-group">
                       <div class="form-label-group">
                       <h6>Email add*</h6>
-                      @foreach($patos as $patss)
-                       <input type="text" id="emeremail" class="form-control" placeholder="Last name"  name="emeremail" value="{{$patss->eperson->email}}" disabled="true">
-                      @endforeach
+                       <input type="text" id="emeremail" class="form-control" placeholder="Last name"  name="emeremail" value="{{$patss->eperson->email}}">
                     </div>
                   </div>
                   </div>
@@ -1174,26 +1549,24 @@
                       <div class="col-md-5">
                         <div class="form-label-group">
                           <h6>Educational Attainment*</h6>
-                          @foreach($patos as $patss)
-                          <select class="form-control" id="eduattain" placeholder="Civil Status" required="required" name="eduattain" disabled="true">
+                          <select class="form-control" id="eduattain" placeholder="Civil Status" required="required" name="eduattain">
                             <label for="eduattain">Educational Attainment</label>
-                            <option value="Elementary" {{ ($patss->educational_attainment == 'Elementary') ? 'selected' : '' }}>Elementary Graduate</option>
-                            <option value="Highschool" {{ ($patss->educational_attainment == 'Highschool') ? 'selected' : '' }}>High-school Graduate</option>
-                            <option value="College" {{ ($patss->educational_attainment == 'College') ? 'selected' : '' }}>College Graduate</option>
+                            <option value="{{$patss->educational_attainment}}" selected>{{$patss->educational_attainment}}</option>
+                            <option value="Elementary">Elementary Graduate</option>
+                            <option value="Highschool">High-school Graduate</option>
+                            <option value="College">College Graduate</option>
                         </select>
-                        @endforeach
                         </div>
                       </div>
                       <div class="col-md-4">
                         <div class="form-label-group">
                           <h6>Employement Status*</h6>
-                          @foreach($patos as $patss)
-                           <select class="form-control" id="edstat" placeholder="Civil Status" required="required" name="edstat" disabled="true">
+                           <select class="form-control" id="edstat" placeholder="Civil Status" required="required" name="edstat">
                             <label for="edstat">Employement Status</label>
-                            <option value="Employed"  {{ ($patss->employment_status == 'Employed') ? 'selected' : '' }}>Employed</option>
-                            <option value="Unemployed"  {{ ($patss->employment_status == 'Unemployed') ? 'selected' : '' }}>Unemployed</option>
+                            <option value="{{$patss->employment_status}}" selected>{{$patss->employment_status}}</option>
+                            <option value="Employed">Employed</option>
+                            <option value="Unemployed">Unemployed</option>
                         </select>
-                        @endforeach
                         </div>
                       </div>
                      </div>
@@ -1203,9 +1576,7 @@
                       <div class="col-md-9">
                         <div class="form-label-group">
                           <h6>Name Of Spouse*</h6>
-                          @foreach($patos as $patss)
-                          <input type="text" id="spouse" class="form-control" placeholder="Chief Complaint" name="spouse" value="{{$patss->spouse}}" disabled="true">
-                          @endforeach
+                          <input type="text" id="spouse" class="form-control" placeholder="Chief Complaint" name="spouse" value="{{$patss->spouse}}">
                         </div>
                       </div>
                    </div>
@@ -1218,17 +1589,13 @@
                         <div class="col-md-6">
                          <div class="form-label-group">
                           <h6>Father's name*</h6>
-                          @foreach($patos as $patss)
-                           <input type="text" id="fathname" class="form-control" placeholder="Last name"  name="fathname" value="{{$patss->father}}" disabled="true">
-                          @endforeach
+                           <input type="text" id="fathname" class="form-control" placeholder="Last name"  name="fathname" value="{{$patss->father}}">
                          </div>
                         </div>
                          <div class="col-md-6">
                            <div class="form-label-group">
                              <h6>Mother's name*</h6>
-                             @foreach($patos as $patss)
-                              <input type="text" id="mothname" class="form-control" placeholder="Last name"  name="mothname" value="{{$patss->mother}}" disabled="true">
-                            @endforeach
+                              <input type="text" id="mothname" class="form-control" placeholder="Last name"  name="mothname" value="{{$patss->mother}}">
                              </div>
                            </div>
                         </div>
@@ -1241,30 +1608,160 @@
           <div class="form-group">
             <div class="form-label-group">
               <h6>Presenting Problems*</h6>
-              @foreach($patos as $patss)
-              <textarea type="text" id="preprob" class="form-control" placeholder="{{$patss->presenting_problems}}" name="preprob" value="{{$patss->presenting_problems}}" disabled="true"></textarea>
-              @endforeach
+              <textarea type="text" id="preprob" class="form-control" placeholder="Please Specify" name="preprob" value="{{$patss->presenting_problems}}">{{$patss->presenting_problems}}</textarea>
             </div>
           </div>
           <div class="form-group">
                 <div class="form-label-group">
                   <h6>Impression*</h6>
-                  @foreach($patos as $patss)
-                  <textarea style="height: 120px" type="text" id="impre" class="form-control" placeholder="{{$patss->impression}}" name="impre" value="{{$patss->impression}}" disabled="true"></textarea>
-                  @endforeach
+                  <textarea style="height: 120px" type="text" id="impre" class="form-control" placeholder="Please Specify" name="impre" value="{{$patss->impression}}">{{$patss->impression}}</textarea>
               </div>
           </div>
         </fieldset>
-           <input style="width:200px;height:50px;float:right;margin-top: 10px;margin-bottom: 30px" class="btn btn-primary btn-block" type="submit" name="submit" value="Create">
+      @endforeach
+        @elseif($patos == '[]')
+        <fieldset>
+            <div class="form-group">
+              <div class='form-row'>
+                <div class="col-md-6">
+                  <div class="card card-register mx-auto" style="margin-bottom: 20px">
+                    <div class="card-header"><h6>Whom to notify in case of emergency:</h6></div>
+                     <div class="card-body">
+                      <div class="form-group">
+                       <div class="form-row">
+                        <div class="col-md-6">
+                         <div class="form-label-group">
+                          <h6>Name*</h6>
+                           <input type="text" id="emername" class="form-control" placeholder="Last name"  name="emername">
+                         </div> 
+                        </div>
+                         <div class="col-md-6">
+                           <div class="form-label-group">
+                             <h6>Relationship*</h6>
+                              <input type="text" id="emerelation" class="form-control" placeholder="Last name"  name="emerelation">
+                           </div>
+                         </div>
+                       </div>
+                      </div>
+                  <div class="form-group">
+                    <div class="form-row">
+                     <div class="col-md-6">
+                     <div class="form-label-group">
+                      <h6>Phone No.(Home)*</h6>
+                       <input type="text" id="emerphone" class="form-control" placeholder="Last name"  name="emerphone">
+                     </div>
+                   </div>
+                   <div class="col-md-6">
+                     <div class="form-label-group">
+                      <h6>Cellphone No.*</h6>
+                       <input type="text" id="emercell" class="form-control" placeholder="Last name"  name="emercell">
+                     </div>
+                   </div>
+                    </div>
+                  </div>
+                   <div class="form-group">
+                      <div class="form-label-group">
+                      <h6>Email add*</h6>
+                       <input type="text" id="emeremail" class="form-control" placeholder="Last name"  name="emeremail">
+                    </div>
+                  </div>
+                  </div>
+                 </div>
+               </div>
+               <div class="col-md-6">
+                  <div class="form-group">
+                    <div class="form-row">
+                      <div class="col-md-5">
+                        <div class="form-label-group">
+                          <h6>Educational Attainment*</h6>
+                          <select class="form-control" id="eduattain" placeholder="Civil Status" name="eduattain">
+                            <label for="eduattain">Educational Attainment</label>
+                            <option value="" disabled hidden selected></option>
+                            <option value="Elementary">Elementary Graduate</option>
+                            <option value="Highschool">High-school Graduate</option>
+                            <option value="College">College Graduate</option>
+                        </select>
+                        </div>
+                      </div>
+                      <div class="col-md-4">
+                        <div class="form-label-group">
+                          <h6>Employement Status*</h6>
+                           <select class="form-control" id="edstat" placeholder="Civil Status" name="edstat">
+                            <label for="edstat">Employement Status</label>
+                            <option value="" disabled hidden selected></option>
+                            <option value="Employed">Employed</option>
+                            <option value="Unemployed">Unemployed</option>
+                        </select>
+                        </div>
+                      </div>
+                     </div>
+                  </div>
+                  <div class="form-group">
+                    <div class="form-row">
+                      <div class="col-md-9">
+                        <div class="form-label-group">
+                          <h6>Name Of Spouse*</h6>
+                          <input type="text" id="spouse" class="form-control" placeholder="Chief Complaint" name="spouse">
+                        </div>
+                      </div>
+                   </div>
+                </div>
+                <div class="card card-register mx-auto" style="margin-bottom: 20px">
+                    <div class="card-header"><h6>Parents:</h6></div>
+                     <div class="card-body">
+                      <div class="form-group">
+                       <div class="form-row">
+                        <div class="col-md-6">
+                         <div class="form-label-group">
+                          <h6>Father's name*</h6>
+                           <input type="text" id="fathname" class="form-control" placeholder="Last name"  name="fathname">
+                         </div>
+                        </div>
+                         <div class="col-md-6">
+                           <div class="form-label-group">
+                             <h6>Mother's name*</h6>
+                              <input type="text" id="mothname" class="form-control" placeholder="Last name"  name="mothname">
+                             </div>
+                           </div>
+                        </div>
+                        </div>
+                      </div>
+                    </div>
+                 </div>
+                </div>
+              </div>
+          <div class="form-group">
+            <div class="form-label-group">
+              <h6>Presenting Problems*</h6>
+              <textarea type="text" id="preprob" class="form-control" placeholder="Please Specify" name="preprob"></textarea>
+            </div>
+          </div>
+          <div class="form-group">
+                <div class="form-label-group">
+                  <h6>Impression*</h6>
+                  <textarea style="height: 120px" type="text" id="impre" class="form-control" placeholder="Please Specify" name="impre"></textarea>
+              </div>
+          </div>
+        </fieldset>
+        @endif
+           <input style="width:200px;height:50px;float:right;margin-top: 10px;margin-bottom: 30px" class="btn btn-primary btn-block" type="submit" name="submit" value="Re enroll">
          </form>
+      </div>
     </div>
-  </fieldset>
+  </div>
+</div>
+
+<div class=" modal2 fade" id="ddeForm" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content" style="width: 1000px;">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Drug Dependency Examination Report</h5>
+          <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span>
+          </button>
         </div>
-         <div class="tab-pane fade" id="v-pills-dde" role="tabpanel" aria-labelledby="v-pills-dde-tab">
-          <fieldset style="margin-bottom: 30px;margin-left: 0px;border:solid thin gray;border-radius: 10px">
-            <legend style="color:white;text-indent: 20px;width:900px;margin-bottom: 20px;border-radius: 5px" class="bg bg-dark">Drug Dependency Examination Report</legend>
-             <div class="container scrollAble2" style="margin-top: 30px">
-        <form action="{{URL::to('/patientsave_dde')}}" method="post">
+  <div class="container scrollAble2" style="margin-top: 30px">
+        <form action="{{URL::to('/reenrollsave_dde')}}" method="post">
           {{csrf_field()}}
           <fieldset style="margin-bottom: 30px">
             <legend style="color:white;text-indent: 20px;width:1100px;margin-bottom: 40px" class="bg bg-dark">Personal Information</legend>
@@ -1273,31 +1770,35 @@
               <div class="col-md-3">
                 <div class="form-label-group">
                   <h6>Last name*</h6>
-                  <input type="text" id="lname" class="form-control" placeholder="Last name" required="required" autofocus="autofocus" name="lname" value="{!! old('lname') !!}">
+                  <input type="text" id="lname" class="form-control" placeholder="Last name" required="required" autofocus="autofocus" name="lname" value="{{$pats->lname}}">
                 </div>
               </div>
               <div class="col-md-3">
                 <div class="form-label-group">
                    <h6>First name*</h6>
-                  <input type="text" id="fname" class="form-control" placeholder="First name" required="required" name="fname" value="{{ old('fname') }}">
+                  <input type="text" id="fname" class="form-control" placeholder="First name" required="required" name="fname" value="{{$pats->fname}}">
                 </div>
               </div>
               <div class="col-md-2">
                 <div class="form-label-group">
                    <h6>Middle name*</h6>
-                  <input type="text" id="mname" class="form-control" placeholder="Middle name" required="required" name="mname" value="{{ old('mname') }}">
+                  <input type="text" id="mname" class="form-control" placeholder="Middle name" required="required" name="mname" value="{{$pats->mname}}">
                 </div>
               </div>
               <div class="col-md-1">
                 <div class="form-label-group">
                    <h6>Age*</h6>
-                  <input type="number" id="age" class="form-control" placeholder="Age" required="required" autofocus="autofocus" name="age" value="{{ old('age') }}">
+                  <input type="number" id="age" class="form-control" placeholder="Age" required="required" autofocus="autofocus" name="age" value="{{\Carbon\Carbon::parse($pats->birthdate)->age}}">
                 </div>
               </div>
               <div class="col-md-2">
                 <div class="form-label-group">
                    <h6>Birthday*</h6>
-                  <input type="date" id="bday" class="form-control" placeholder="Birthday" required="required" autofocus="autofocus" name="bday">
+                  <input type="date" id="bday" class="form-control" placeholder="Birthday" required="required" autofocus="autofocus" name="bday" value="{{$pats->birthdate}}">
+                  <input type="hidden" id="department" name="department" value="">
+                  <input type="hidden" name="patdepartment" value="{{$pats->department_id}}">
+                  <input type="hidden" name="patient_id" value="{{$pats->id}}">
+                  <input type="hidden" name="patientadd" value="{{$pats->address_id}}">
                 </div>
               </div>
             </div>
@@ -1307,25 +1808,25 @@
               <div class="col-md-2">
                 <div class="form-label-group">
                    <h6>Birth Order*</h6>
-                  <input type="number" id="border" class="form-control" placeholder="" required="required" autofocus="autofocus" name="border">
+                  <input type="number" id="border" class="form-control" placeholder="" required="required" autofocus="autofocus" name="border" value="{{$pats->birthorder}}">
                 </div>
               </div>
               <div class="col-md-4">
               <div class="form-label-group">
                <h6>Street Address*</h6>
-              <input type="text" id="street" class="form-control" placeholder="Address" required="required" name="street">
+              <input type="text" id="street" class="form-control" placeholder="Address" required="required" name="street" value="{{$pats->address->street}}">
             </div>
            </div>
             <div class="col-md-3  ">
               <div class="form-label-group">
                <h6>Barangay*</h6>
-              <input type="text" id="barangay" class="form-control" placeholder="Address" required="required" name="barangay">
+              <input type="text" id="barangay" class="form-control" placeholder="Address" required="required" name="barangay" value="{{$pats->address->barangay}}">
             </div>
            </div>
            <div class="col-md-3">
               <div class="form-label-group">
                <h6>City*</h6>
-              <input type="text" id="city" class="form-control" placeholder="Address" required="required" name="city">
+              <input type="text" id="city" class="form-control" placeholder="Address" required="required" name="city" value="{{$pats->address->city}}">
             </div>
            </div>
           </div>
@@ -1335,16 +1836,21 @@
               <div class="col-md-3">
                 <div class="form-label-group">
                    <h6>Contact no.*</h6>
-                  <input type="tel" id="contact" class="form-control" placeholder="Contact No." required="required" name="contact">
+                  <input type="text" id="contact" class="form-control" placeholder="Contact No." required="required" name="contact" value="{{$pats->contact}}">
                   <input type="hidden" name="_token" value="{{csrf_token()}}">
-                  <input type="hidden" name="department" value="{{$pats->id}}">
               </div>
               </div>
               <div class="col-md-2">
                 <div class="form-label-group">
                    <h6>Gender*</h6>
                  <select class="form-control" id="gender" placeholder="Gender" required="required" name="gender">
-                    <option value="" disabled selected hidden>Gender</option>
+                  @if($pats->gender == 'M')
+                    <option value="{{$pats->gender}}" selected>Male</option>
+                  @elseif($pats->gender == 'F')
+                    <option value="{{$pats->gender}}" selected>Female</option>
+                  @else
+                    <option value="Others" selected>Others</option>
+                  @endif
                     <option value="M">Male</option>
                     <option value="F">Female</option>
                     <option value="Others">Others</option>
@@ -1356,7 +1862,7 @@
                    <h6>Civil Status*</h6>
                  <select class="form-control" id="civils" placeholder="Civil Status" required="required" name="civils">
                   <label for="civils">Civil Status</label>
-                    <option value="" disabled selected hidden>Civil Status</option>
+                    <option value="{{$pats->civil_status}}" selected>{{$pats->civil_status}}</option>
                     <option value="Single">Single</option>
                     <option value="Married">Married</option>
                     <option value="Separated">Separated</option>
@@ -1368,77 +1874,170 @@
               <div class="col-md-2">
                 <div class="form-label-group">
                    <h6>Nationality*</h6>
-                <input type="text" id="nation" class="form-control" placeholder="Nationality" required="required" name="nation">
+                <input type="text" id="nation" class="form-control" placeholder="Nationality" required="required" name="nation" value="{{$pats->nationality}}">
                 </div>
               </div>
                <div class="col-md-2">
                 <div class="form-label-group">
                    <h6>Religion*</h6>
-                <input type="text" id="religion" class="form-control" placeholder="Nationality" required="required" name="religion">
+                <input type="text" id="religion" class="form-control" placeholder="Nationality" required="required" name="religion" value="{{$pats->religion}}">
                 </div>
               </div>
             </div>
           </div>
-        </fieldset> 
+        </fieldset>
         <fieldset>
         <legend style="color:white;text-indent: 20px;width:1100px;margin-bottom: 20px" class="bg bg-dark">General Information</legend>
-        <div class="container border border-gray" style="margin-bottom: 20px;margin-top: 10px">
-          <div class="form-group" style="margin-top: 10px">
+        <div class="form-group" style="margin-left: 20px">
             <div class="form-row">
-              <div class="col-md-6">
+              <div class="col-md-4 mb-4">
                 <div class="form-label-group">
-                  <div class="custom-control custom-radio custom-control-inline" style="font-size: 50px">
-                    <input type="radio" class="custom-control-input" id="new case" name="casetype" value="New Case" {{ (old('casetype') == 'New Case') ? 'unchecked' : '' }}>
-                    <label class="custom-control-label" for="new case"><h6>New Case</h6></label>
-                  </div>
-                  <div class="custom-control custom-radio custom-control-inline">
-                    <input type="radio" class="custom-control-input" id="old case" name="casetype" value="Old Case" {{ (old('casetype') == 'Old Case') ? 'unchecked' : '' }}>
-                    <label class="custom-control-label" for="old case"><h6>Old Case</h6></label>
-                  </div>
-                  <div class="custom-control custom-radio custom-control-inline">
-                    <input type="radio" class="custom-control-input" id="case" name="casetype" value="With Court Case" {{ (old('casetype') == 'With Court Case') ? 'unchecked' : '' }}>
-                    <label class="custom-control-label" for="case"><h6>With Court Case</h6></label>
-                   </div>  
-                  </div>
+                  <h6>Patient Type*</h6>
+                <select class="form-control" id="ddeptype" placeholder="Patient Type" required="required" name="ddeptype">
+                  @foreach($case as $cases)
+                    @if($cases->case_name == $pats->type->case_name)
+                    <option  id="{{$cases->court_order}}" value="{{$cases->id}}" selected>{{$cases->case_name}}</option>
+                    @else
+                    <option id="{{$cases->court_order}}" value="{{$cases->id}}">{{$cases->case_name}}</option>
+                    @endif
+                  @endforeach
+                </select> 
                 </div>
+              </div>
+              <div class="col-md-4 mb-4">
+              @if($pats->type->court_order == 0)
+                <div class="form-label-group" id="ddetextb" style="display: none;">
+              @else
+                <div class="form-label-group" id="ddetextb">
+              @endif
+                  <h6>City Jail*</h6>
+                <select class="form-control" id="ddejail" placeholder="Patient Type" required="required" name="ddejail">
+              @if($pats->jail != NULL)
+                @foreach($jails as $jail)
+                  @if($jail->name == $pats->jails->name)
+                    <option value="{{$jail->id}}" selected>{{$jail->name}}</option>
+                  @else
+                    <option value="{{$jail->id}}">{{$jail->name}}</option>
+                  @endif
+                @endforeach
+              @else
+                @foreach($jails as $jail)
+                    <option value="" disabled selected hidden>City Jail</option>
+                    <option value="{{$jail->id}}">{{$jail->name}}</option>
+                @endforeach
+              @endif
+                </select>
+                </div>
+              </div>
+              <div class="col-md-4 mb-4">
+              @if($pats->caseno != NULL)
+                @if($pats->type->court_order == 0)
+                <div class="form-label-group" id="ddetextas" style="display: none;">
+                @else
+                <div class="form-label-group" id="ddetextas">
+                @endif
+                  <h6>Case Number*</h6>
+                    <input type="text" id="ddecaseno" class="form-control" placeholder="Case Number" required="required" autofocus="autofocus" name="ddecaseno" value="{{$pats->caseno}}">
+                @else
+                <div class="form-label-group" id="ddetextas" style="display: none;">
+                  <h6>Case Number*</h6>
+                    <input type="text" id="ddecaseno" class="form-control" placeholder="Case Number" required="required" autofocus="autofocus" name="ddecaseno" value="">
+                </div>
+              @endif
+                </div>
+              </div>
+            </div>
+            </div>
+        @if($patis != '[]')
+          <div class="form-group">
+              <div class='form-row'>
                 <div class="col-md-6">
+                  <div class="card card-register mx-auto" style="margin-bottom: 20px">
+                    <div class="card-header"><h6>Accompanied by/Informant</h6></div>
+                     <div class="card-body">
+                      <div class="form-group">
+                       <div class="form-row">
+                        <div class="col-md-6">
+                        @foreach($patis as $patin)
+                         <div class="form-label-group">
+                          <h6>Name*</h6>
+                           <input type="text" id="infoname" class="form-control" placeholder="Last name"  name="infoname" value="{{$patin->informants->name}}">
+                           <input type="hidden" name="patientinfor" value="{{$patin->informant_id}}">
+                         </div>
+                        </div>
+                         <div class="col-md-6">
+                           <div class="form-label-group">
+                             <h6>Contact no.*</h6>
+                              <input type="text" id="infocontact" class="form-control" placeholder="Last name"  name="infocontact" value="{{$patin->informants->contact}}">
+                           </div>
+                         </div>
+                       </div>
+                      </div>
+                    <div class="form-group">
+                     <div class="form-label-group">
+                      <h6>Address*</h6>
+                       <input type="text" id="infoadd" class="form-control" placeholder="Last name"  name="infoadd" value="{{$patin->informants->address}}">
+                     </div>
+                    </div>
+                  </div>
+                 </div>
+               </div>
+
+        <div class="col-md-6">
+          <div class="form-group">
+            <div class="form-row">
+              <div class="col-md-12">
                 <div class="form-label-group">
-                  <div class="custom-control custom-radio custom-control-inline" style="font-size: 50px">
-                    <input type="radio" class="custom-control-input" id="Voluntary Submission" name="type" value="Voluntary Submission" {{ (old('type') == 'Voluntary Submission') ? 'checked' : '' }}>
-                    <label class="custom-control-label" for="Voluntary Submission"><h6>Voluntary Submission</h6></label>
-                  </div>
-                  <div class="custom-control custom-radio custom-control-inline">
-                    <input type="radio" class="custom-control-input" id="Compulsory Submission" name="type" value="Compulsory Submission" {{ (old('type') == 'Compulsory Submission') ? 'checked' : '' }}>
-                    <label class="custom-control-label" for="Compulsory Submission"><h6>Compulsory Submission</h6></label>
-                  </div>
-                  <div class="custom-control custom-radio custom-control-inline">
-                    <input type="radio" class="custom-control-input" id="others" name="type" value="Others" {{ (old('type') == 'Others') ? 'checked' : '' }}>
-                    <label class="custom-control-label" for="others"><h6>Others</h6></label>
-                   </div>  
-                  </div>
+                  <h6>Referred By*</h6>
+                    <input type="text" id="referred" class="form-control" placeholder="Referred By" name="referred" value="{{$patin->referred_by}}">
                 </div>
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="form-row">
+              <div class="col-md-12">
+                <div class="form-label-group">
+                   <h6>Drug Abused (Present)*</h6>
+                  <input type="text" id="dabused" class="form-control" placeholder="Drugs Abused (Present)" autofocus="autofocus" name="dabused" value="{{$patin->drugs_abused}}">
+                </div>
+              </div>
               </div>
             </div>
             <div class="form-group">
-                  <div class="form-row">
-                    <div class="col-md-4">
-                      <div class="form-label-group" id="textboxes" style="display: none;">
-                          <input style="margin-left:0px" type="text" id="casetype" class="form-control" placeholder="Specify Nature/Case no." name="casetype">
-                          <label for="casetype" style="margin-left:0px">Specify Nature/Case no.</label>
-                      </div>
-                      <div class="form-label-group" id="textback"></div>
-                  </div>
-                  <div class="col-md-4">
-                    <div class="form-label-group" id="textbox" style="display: none;">
-                        <input style="margin-left:180px" type="text" id="type" class="form-control" placeholder="Please Specify" name="type">
-                        <label for="type" style="margin-left:180px">Please specify</label>
-                    </div>
-                      <div class="form-label-group" id="textbax"></div>
-                  </div>
-                </div>
+            <div class="form-row">
+              <div class="col-md-12">
+              <div class="form-label-group">
+                 <h6>Chief Complaint*</h6>
+                  <input type="text" id="ccomplaint" class="form-control" placeholder="Chief Complaint" name="ccomplaint" value="{{$patin->chief_complaint}}">
               </div>
             </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
           <div class="form-group">
+            <div class="form-label-group">
+              <h6>History of Present Illness*</h6>
+              <textarea type="text" id="pillness" class="form-control" placeholder="Please Specify" name="pillness">{{$patin->h_present_illness}}</textarea>
+            </div>
+          </div>
+          <div class="form-group">
+                <div class="form-label-group">
+                  <h6>History of Drug Used*</h6>
+                  <textarea style="height: 120px" type="text" id="dused" class="form-control" placeholder="Please Specify" name="dused">{{$patin->h_drug_abuse}}</textarea>
+              </div>
+          </div>
+          <div class="form-group">
+                <div class="form-label-group">
+                  <h6>Family/Personal Background*</h6>
+                  <textarea style="height:200px" type="text" id="background" class="form-control" placeholder="Please Specify" name="background">{{$patin->famper_history}}</textarea>
+              </div>
+          </div>
+            @endforeach
+          @elseif($patis == '[]')
+            <div class="form-group">
               <div class='form-row'>
                 <div class="col-md-6">
                   <div class="card card-register mx-auto" style="margin-bottom: 20px">
@@ -1450,6 +2049,7 @@
                          <div class="form-label-group">
                           <h6>Name*</h6>
                            <input type="text" id="infoname" class="form-control" placeholder="Last name"  name="infoname">
+                           <input type="hidden" name="patientinfor">
                          </div>
                         </div>
                          <div class="col-md-6">
@@ -1522,55 +2122,13 @@
                   <textarea style="height:200px" type="text" id="background" class="form-control" placeholder="Please Specify" name="background"></textarea>
               </div>
           </div>
+          @endif
         </fieldset>
-           <input style="width:200px;height:50px;float:right;margin-top: 10px;margin-bottom: 30px" class="btn btn-primary btn-block" type="submit" name="submit" value="Create">
+           <input style="width:200px;height:50px;float:right;margin-top: 10px;margin-bottom: 30px" class="btn btn-primary btn-block" type="submit" name="submit" value="Re-enroll">
          </form>
     </div>
-        </fieldset>
-    </div>
-        </div>
-      </div>
     </div>
   </div>
-    @endif
-  @endforeach
-@endif
-
-<div class="modal fade" id="patientDismiss" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Specify a reason to dismiss</h5>
-          <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">×</span>
-          </button>
-        </div>
-        <form action="{{URL::to('/patientDismiss')}}" method="post">
-          {{csrf_field()}} 
-          <div class="modal-body" style="margin-bottom: 50px">
-          <div class="form-label-group" style="height: 100px">
-              <input type="hidden" id="patientid" name="patientid" class="form-control" value="">
-              <input type="hidden" id="patientdep" name="patientdep" class="form-control" value="">
-                <select class="form-control" id="dismissal" placeholder="Dismissal Reason" required="required" name="dismissal">
-                  <label for="dismissal">Dismissal Reason</label>
-                    <option value="" disabled selected hidden>--Choose a Reason--</option>
-                     @foreach($reasons as $reas)
-                    <option value="{{$reas->id}}">{{$reas->reason}}</option>
-                     @endforeach
-                    <option value="Others">Others</option>
-                </select>
-                <div class="form-label-group" id="text" style="display: none;margin-top: 20px">
-                  <textarea style="margin-left:0px;height: 100px;margin-bottom: 10px" type="text" id="remarks" class="form-control" placeholder="Specify Reason" name="remarks"></textarea>
-                </div>
-          </div>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-primary" data-dismiss="modal">Cancel</button>
-            <button type="submit" class="btn btn-success">Submit</button>  
-          </div>
-        </form>
-      </div>
-    </div>
 </div>
-  
+
 @endsection

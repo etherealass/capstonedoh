@@ -31,11 +31,11 @@ class CreatePatientsTable extends Migration
             $table->string('religion')->nullable();
             $table->integer('patient_type')->unsigned()->nullable();
             $table->foreign('patient_type')->references('id')->on('case__types');
-            $table->string('case_remarks')->nullable();
-            $table->string('case')->nullable();
-            $table->string('submission')->nullable();
-            $table->string('status');
-            $table->foreign('status')
+            $table->integer('jail')->unsigned()->nullable();
+            $table->foreign('jail')->references('id')->on('city__jails');
+            $table->string('caseno')->nullable();
+            $table->string('status')->nullable();
+            $table->string('date_admitted');
             $table->integer('department_id')->unsigned();
             $table->foreign('department_id')->references('id')->on('departments');
             $table->string('flag')->nullable();

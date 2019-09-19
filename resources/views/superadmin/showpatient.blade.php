@@ -3,11 +3,11 @@
 
 <style>
 
-  th {
-  text-align: inherit;
-  background-color: #212529;
-  color:white;
-  }
+      th {
+      text-align: inherit;
+      background-color: #343a40;
+      color:white;
+      }
 
 </style>
  

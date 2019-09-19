@@ -17,6 +17,7 @@ class CreateDismissalReasonsTable extends Migration
             $table->increments('id');
             $table->string('dismissal_id');
             $table->string('reason');
+            $table->string('flag')->nullable();
             $table->timestamps();
         });
     }
