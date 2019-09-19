@@ -19,7 +19,10 @@
   
   <script src="{{asset('vendor/multi-select/js/jquery.multi-select.js')}}"></script>
 
+<<<<<<< HEAD
   <script src="{{asset('vendor/fullcalendar/fullcalendar.min.js')}}"></script> 
+=======
+>>>>>>> b935257a14684c80abbdab61d08ebb3503584b04
  
   <!-- Page level plugin JavaScript-->
   <script src="{{asset('vendor/chart.js/Chart.min.js')}}"></script>

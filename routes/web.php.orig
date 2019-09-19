@@ -241,39 +241,38 @@ Route::group(['middleware' =>'auth'], function()
 
 	 Route::post('/create_employee',"RegisterController@create_employee");
 
-	 Route::post('/update_employeenow',"EmployeeController@update_employeenow");
 
-	 Route::post('/delete_employee', "EmployeeController@delete_employeenow");
 
-	 Route::any('/logs', "ViewController@showlogs");
 
+<<<<<<< HEAD
 	 Route::any('/show_my_logs/{id}', "ViewController@show_my_logs");
-	  Route::get('/create_service', "ServiceController@create_service");
 
 	 Route::post('/patientDismiss',"PatientController@dismiss_patient");
+=======
+	  Route::get('/create_service', "ServiceController@create_service");
+>>>>>>> b935257a14684c80abbdab61d08ebb3503584b04
 
 	 Route::any('/show_services', "ServiceController@show_services");
 
 	 Route::post('/add_service', "ServiceController@add_service");
 
-	 Route::any('/show_jails', "ViewController@show_jails");
 
-	 Route::any('/show_dismiss_reason', "ViewController@show_dismiss_reason");
 
-	 Route::any('/add_a_city',"OthersController@add_a_city");
 
-	 Route::post('/add_city',"OthersController@addcity");
 
 	 Route::any('/chooseuser', "UserController@chooseuser_role");
 
+<<<<<<< HEAD
 	 Route::any('/add_a_city_jail',"OthersController@add_a_city_jail");
-	 Route::any('/createuserrole', "UserController@createuserrole");
 
 	 Route::post('/add_cityjail',"OthersController@addjail");
 
 	 Route::post('/delete_jail',"OthersController@deletejail");
 
 	 Route::any('/add_a_casetype',"OthersController@add_a_casetype");
+=======
+	 Route::any('/createuserrole', "UserController@createuserrole");
+>>>>>>> b935257a14684c80abbdab61d08ebb3503584b04
 
 	 Route::get('/create_user/{id}', "UserController@create_user");
 
@@ -287,13 +286,9 @@ Route::group(['middleware' =>'auth'], function()
 
 	 Route::post('/deleteuser', "UserController@deleteuser");
 
-	 Route::any('/samplecsv',"ViewController@samplecsv");
 
-	 Route::post('/graduate_patient',"PatientController@graduate_patient");
 
-	 Route::post('/graduateadmin_patient',"PatientController@graduateadmin_patient");
 
-	 Route::get('/graduate_patient_now/{id}/{did}/{gid}/{pid}',"PatientController@patientGraduate");
 
 	 Route::get('/showdep_users/{did}/{rid}', "ViewController@showdepuser");
 
@@ -314,10 +309,8 @@ Route::group(['middleware' =>'auth'], function()
 	 Route::any('/samplecsv',"ViewController@samplecsv");
 
 
-	 Route::post('/reenroll_patient',"PatientController@reenroll_patient");
 
-	 Route::post('/add_notes',"PatientController@doctor_notes");
-
+<<<<<<< HEAD
 	 Route::post('/changepassword',"UserController@change_pass");
 
 	 Route::get('/file','UploadController@index');
@@ -325,5 +318,8 @@ Route::group(['middleware' =>'auth'], function()
 	 Route::post('/store','UploadController@store')->name('upload.file');
 
 	 Route::get('/show','UploadController@show');
+=======
+>>>>>>> b935257a14684c80abbdab61d08ebb3503584b04
+
 	 
 });

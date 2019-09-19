@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddDesignationToUsersTable extends Migration
+class CreateInterventions extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,12 @@ class AddDesignationToUsersTable extends Migration
      */
     public function up()
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->string('designation')->nullable()->after('role');
+        Schema::create('interventions', function (Blueprint $table) {
+            $table->increments('id');
+            $table->integer('parent');
+            $table->string('interven_name');
+            $table->string('descrp');
+            $table->timestamps();
         });
     }
 
@@ -25,8 +29,6 @@ class AddDesignationToUsersTable extends Migration
      */
     public function down()
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->string('designation');
-        });
+        Schema::dropIfExists('interventions');
     }
 }

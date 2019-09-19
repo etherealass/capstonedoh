@@ -64,6 +64,7 @@
           <a class="dropdown-item" href="{{URL::to('/showpatients/'.$dis)}}">Dismissed</a>
         </div>
       </li>
+7      
       <li class="nav-item">
         <a class="nav-link" href="{{URL::to('/showCalendar')}}">
           <i class="fas fa-fw fa-calendar"></i>
@@ -90,10 +91,13 @@
           <span>Other categories</span>
         </a>
         <div class="dropdown-menu" aria-labelledby="pagesDropdown">
+          <a class="dropdown-item" href="{{URL::to('/showIntervention')}}">Intervention</a>
+          <a class="dropdown-item" href="{{URL::to('/show_services')}}">Services</a>
           <a class="dropdown-item" href="{{URL::to('/show_case_types')}}">Case Types</a>
           <a class="dropdown-item" href="{{URL::to('/show_cities')}}">Cities</a>
           <a class="dropdown-item" href="{{URL::to('/show_jails')}}">City Jails</a>
           <a class="dropdown-item" href="{{URL::to('/show_dismiss_reason')}}">Dismissal Reasons</a>
+
         </div>
       </li>
     @else
