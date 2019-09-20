@@ -117,6 +117,7 @@ class LoginController extends Controller
       $third_users = Patients::whereDate('created_at', today()->subDays(3))->count();
       $fourth_users = Patients::whereDate('created_at', today()->subDays(4))->count();
       $fifth_users = Patients::whereDate('created_at', today()->subDays(5))->count();
+
       $users_a_month = Patients::whereMonth('created_at', date('m'))->count();
       $users_a_year = Patients::whereYear('created_at', date('Y'))->count();
 
@@ -129,7 +130,7 @@ class LoginController extends Controller
         return view('superadmin.index', compact('chart'))->with('roles',$roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('graduate',$graduate)->with('pat',$pat)->with('patx',$patx)->with('patz',$patz);
       }
       else if(Auth::user()->user_role()->first()->name == 'Admin'){
-         return view('admin.index')->with('roles',$roles)->with('deps',$deps)->with('userss',$userss);
+        return view('superadmin.index', compact('chart'))->with('roles',$roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('graduate',$graduate)->with('pat',$pat)->with('patx',$patx)->with('patz',$patz);
       }
       else if(Auth::user()->user_role()->first()->name == 'Social Worker'){
          return view('socialworker.index')->with('roles',$roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer);

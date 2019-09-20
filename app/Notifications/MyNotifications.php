@@ -43,7 +43,7 @@ class MyNotifications extends Notification
     public function toDatabase($notifiable)
     {
         if($this->user->department != 0){
-            $depart = $this->user->user_departments->department_namel;
+            $depart = $this->user->user_departments->department_name;
         }
         else{
             $depart = "none";

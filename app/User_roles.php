@@ -10,6 +10,6 @@ class User_roles extends Model
 	use Notifiable;
 
     protected $fillable = [
-        'name','description'
+        'parent','name','description','flag',
     ];
 }

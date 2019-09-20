@@ -11,7 +11,7 @@ class Users extends Model
     use Notifiable;
 
      protected $fillable = [
-        'user_id','fname','lname','username','password','contact','email', 'role', 'designation','department',
+        'user_id','fname','lname','username','password','contact','email', 'role', 'designation','department','flag',
     ];
 
     public function user_departments()
@@ -22,5 +22,10 @@ class Users extends Model
      public function user_roles()
     {
         return $this->belongsTo('App\User_roles', 'role');
+    }
+
+    public function user_designation()
+    {
+        return $this->belongsTo('App\User_roles', 'designation');
     }
 }

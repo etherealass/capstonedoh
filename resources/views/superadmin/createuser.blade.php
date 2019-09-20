@@ -95,23 +95,35 @@
                 </div>
               </div>
               @endif
-              @if($rolex->name != 'Admin')
-              <div class="col-md-6">
-                <div class="form-label-group">
-                  <input type="text" id="designation" class="form-control" placeholder="Designation" required="required" name="designation">
-                  <label for="designation">Designation/Position</label>
-                </div>
-              </div>
-              @else
+              @if($rolex->name != 'Admin' && $rolex->name != 'Social Worker' && $rolex->name != 'Nurse')
                <div class="col-md-6">
                 <div class="form-label-group">
-                  <input type="hidden" id="designation" class="form-control" placeholder="Designation" required="required" name="designation" value="">
+                 <select class="form-control" id="designation" placeholder="Designation" required="required" name="designation">
+                  <label for="designation">Designation/Position</label>
+                   <option disabled selected hidden>Designation/Position</option>
+                  @foreach($designation as $des)
+                    @if($des->parent == $rolex->id)
+                    <option value="{{$des->id}}">{{$des->name}}</option>
+                    @endif
+                  @endforeach
+                    <option value="Others">Others</option>
+                </select>
                 </div>
               </div>
-              @endif
             </div>
+          </div>
+          <div class="form-group">
+            <div class="form-row">
+              <div class="col-md-6">
+                <div class="form-label-group" id="design" style="display:none">
+                  <input type="text" id="designat" class="form-control" placeholder="Designation" required="required" name="designat">
+                  <label for="designat">Please specify designation</label>
+                </div>
+              </div>
             </div>
-           <input class="btn btn-primary btn-block" type="submit" name="submit" value="Create">
+          </div>
+          @endif
+           <input class="btn btn-primary btn-block" type="submit" name="submit" value="Create" style="margin-top: 20px">
         </form>
       </div>
     </div> 

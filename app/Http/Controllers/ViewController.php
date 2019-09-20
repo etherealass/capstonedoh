@@ -26,6 +26,7 @@ use App\Case_Type;
 use App\Logs;
 use App\Dismissal_Reason;
 use App\Doctors_Progress_Notes;
+use App\City_Jails;
 use Hash;
 use Session;
 
@@ -35,7 +36,7 @@ class ViewController extends Controller
    {
    	
    	$rolex = User_roles::find($id);
-    $urole = Users::where('role',$id)->with('user_departments')->with('user_roles')->get();
+    $urole = Users::where('role',$id)->where('flag',NULL)->with('user_departments')->with('user_roles')->get();
    	$roles = User_roles::all();
    	$deps = Departments::all();
     $users = Users::find(Auth::user()->id);
@@ -53,7 +54,7 @@ class ViewController extends Controller
     public function getDeps($id)
    {
    	
-   	$depsx = Departments::find($id);
+   	$depsx = Departments::where('id',$id)->get();
    	$roles = User_roles::all();
    	$deps = Departments::all();
     $users = Users::find(Auth::user()->id);
@@ -67,7 +68,7 @@ class ViewController extends Controller
    {
 
       $rolex = User_roles::find($rid);
-      $urole = Users::where('role',$rid)->where('department',$did)->with('user_departments')->with('user_roles')->get();
+      $urole = Users::where('role',$rid)->where('department',$did)->where('flag',NULL)->with('user_departments')->with('user_roles')->get();
       $roles = User_roles::all();
       $deps = Departments::all();
       $users = Users::find(Auth::user()->id);
@@ -84,7 +85,7 @@ class ViewController extends Controller
       $deps = Departments::all();
       $users = Users::find(Auth::user()->id);
       $transfer = Transfer_Requests::all();
-      $emp = Employees::all();
+      $emp = Employees::where('flag',NULL)->get();
       $graduate = Graduate_Requests::all();
 
        if(Auth::user()->user_role()->first()->name == 'Superadmin'){
@@ -97,6 +98,70 @@ class ViewController extends Controller
             return view('socialworker.showemployees')->with('roles' , $roles)->with('deps',$deps)->with('emp' ,$emp)->with('users',$users)->with('transfer',$transfer)->with('graduate',$graduate);
         }
 
+   }
+
+   public function viewemployee($id)
+   {
+      $roles = User_roles::all();
+      $deps = Departments::all();
+      $users = Users::find(Auth::user()->id);
+      $transfer = Transfer_Requests::all();
+      $emp = Employees::where('flag',NULL)->where('id',$id)->get();
+      $graduate = Graduate_Requests::all();
+
+      if(Auth::user()->user_role()->first()->name == 'Superadmin'){
+            return view('superadmin.viewemployee')->with('roles' , $roles)->with('deps',$deps)->with('emp' ,$emp)->with('users',$users)->with('transfer',$transfer)->with('graduate',$graduate);
+        }
+        else if(Auth::user()->user_role()->first()->name == 'Admin'){
+            return view('admin.viewemployee')->with('roles' , $roles)->with('deps',$deps)->with('emp' ,$emp)->with('users',$users)->with('transfer',$transfer)->with('graduate',$graduate);
+        }
+        else if(Auth::user()->user_role()->first()->name == 'Social Worker'){
+            return view('socialworker.viewemployee')->with('roles' , $roles)->with('deps',$deps)->with('emp' ,$emp)->with('users',$users)->with('transfer',$transfer)->with('graduate',$graduate);
+        }
+     }
+
+   public function viewuser($id)
+   {
+      $roles = User_roles::all();
+      $deps = Departments::all();
+      $users = Users::find(Auth::user()->id);
+      $transfer = Transfer_Requests::all();
+      $uses = Users::where('flag',NULL)->where('id',$id)->get();
+      $graduate = Graduate_Requests::all();
+
+      $notif = DB::table('notifications')->where('notifiable_id',Auth::user()->id)->update(['read_at' => date('Y-m-d')]);
+
+      if(Auth::user()->user_role()->first()->name == 'Superadmin'){
+            return view('superadmin.viewuser')->with('roles' , $roles)->with('deps',$deps)->with('uses' ,$uses)->with('users',$users)->with('transfer',$transfer)->with('graduate',$graduate);
+        }
+        else if(Auth::user()->user_role()->first()->name == 'Admin'){
+            return view('admin.viewuser')->with('roles' , $roles)->with('deps',$deps)->with('uses' ,$uses)->with('users',$users)->with('transfer',$transfer)->with('graduate',$graduate);
+        }
+        else if(Auth::user()->user_role()->first()->name == 'Social Worker'){
+            return view('socialworker.viewuser')->with('roles' , $roles)->with('deps',$deps)->with('uses' ,$uses)->with('users',$users)->with('transfer',$transfer)->with('graduate',$graduate);
+        }
+   }
+
+   public function viewuserx($id,$pid)
+   {
+      $roles = User_roles::all();
+      $deps = Departments::all();
+      $users = Users::find(Auth::user()->id);
+      $transfer = Transfer_Requests::all();
+      $uses = Users::where('flag',NULL)->where('id',$id)->get();
+      $graduate = Graduate_Requests::all();
+
+      $notif = DB::table('notifications')->where('notifiable_id',Auth::user()->id)->update(['read_at' => date('Y-m-d')]);
+
+      if(Auth::user()->user_role()->first()->name == 'Superadmin'){
+            return view('superadmin.viewuser')->with('roles' , $roles)->with('deps',$deps)->with('uses' ,$uses)->with('users',$users)->with('transfer',$transfer)->with('graduate',$graduate);
+        }
+        else if(Auth::user()->user_role()->first()->name == 'Admin'){
+            return view('admin.viewuser')->with('roles' , $roles)->with('deps',$deps)->with('uses' ,$uses)->with('users',$users)->with('transfer',$transfer)->with('graduate',$graduate);
+        }
+        else if(Auth::user()->user_role()->first()->name == 'Social Worker'){
+            return view('socialworker.viewuser')->with('roles' , $roles)->with('deps',$deps)->with('uses' ,$uses)->with('users',$users)->with('transfer',$transfer)->with('graduate',$graduate);
+        }
    }
 
    public function showlogs()
@@ -118,6 +183,34 @@ class ViewController extends Controller
         }
    }
 
+   public function show_my_logs($id)
+   {
+
+      $roles = User_roles::all();
+      $deps = Departments::all();
+      $users = Users::find(Auth::user()->id);
+      $transfer = Transfer_Requests::all();
+      $graduate = Graduate_Requests::all();
+      $logs = Logs::where('performer_id',$id)->get();
+      $graduate = Graduate_Requests::all();
+
+      if(Auth::user()->user_role()->first()->name == 'Superadmin'){
+            return view('superadmin.logs')->with('roles' , $roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('logs',$logs)->with('graduate',$graduate);
+        }
+      else if(Auth::user()->user_role()->first()->name == 'Admin'){
+            return view('admin.logs')->with('roles' , $roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('logs',$logs)->with('graduate',$graduate);
+        }
+      else if(Auth::user()->user_role()->first()->name == 'Social Worker'){
+            return view('socialworker.logs')->with('roles' , $roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('logs',$logs)->with('graduate',$graduate);
+        }
+      else if(Auth::user()->user_role()->first()->name == 'Doctor'){
+            return view('doctor.logs')->with('roles' , $roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('logs',$logs)->with('graduate',$graduate);
+        }
+        else{
+          return abort(404);
+        }
+   }
+
    public function show_case_types()
    {
 
@@ -125,7 +218,7 @@ class ViewController extends Controller
       $deps = Departments::all();
       $users = Users::find(Auth::user()->id);
       $transfer = Transfer_Requests::all();
-      $case = Case_Type::all();
+      $case = Case_Type::where('flag',NULL)->get();
       $graduate = Graduate_Requests::all();
 
       if(Auth::user()->user_role()->first()->name == 'Superadmin'){
@@ -146,7 +239,7 @@ class ViewController extends Controller
       $deps = Departments::all();
       $users = Users::find(Auth::user()->id);
       $transfer = Transfer_Requests::all();
-      $city = Cities::all();
+      $city = Cities::where('flag',NULL)->get();
       $graduate = Graduate_Requests::all();
 
       if(Auth::user()->user_role()->first()->name == 'Superadmin'){
@@ -165,9 +258,10 @@ class ViewController extends Controller
       $users = Users::find(Auth::user()->id);
       $transfer = Transfer_Requests::all();
       $graduate = Graduate_Requests::all();
+      $jails = City_Jails::where('flag',NULL)->get();
 
       if(Auth::user()->user_role()->first()->name == 'Superadmin'){
-            return view('superadmin.jails')->with('roles' , $roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('graduate',$graduate);
+            return view('superadmin.jails')->with('roles' , $roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('graduate',$graduate)->with('jails',$jails);
         }
         else{
           return abort(404);
@@ -182,7 +276,7 @@ class ViewController extends Controller
       $users = Users::find(Auth::user()->id);
       $transfer = Transfer_Requests::all();
       $graduate = Graduate_Requests::all();
-      $reasons = Dismissal_Reason::all();
+      $reasons = Dismissal_Reason::where('flag',NULL)->get();
 
       if(Auth::user()->user_role()->first()->name == 'Superadmin'){
             return view('superadmin.reasons')->with('roles' , $roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('reasons',$reasons)->with('graduate',$graduate);

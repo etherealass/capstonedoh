@@ -14,7 +14,7 @@
         @if(Auth::user()->user_role()->first()->name == 'Superadmin')
         <div class="dropdown-menu" aria-labelledby="pagesDropdown">
           @foreach($roles as $role)
-            @if($role->name != 'Superadmin')
+            @if($role->name != 'Superadmin' && $role->parent == 0)
           <a class="dropdown-item" href="{{ route('showUsers',$role->id) }}">{{$role->name}}s</a>
           @endif
           @endforeach
@@ -23,7 +23,7 @@
         @elseif(Auth::user()->user_role()->first()->name == 'Admin')
         <div class="dropdown-menu" aria-labelledby="pagesDropdown">
           @foreach($roles as $role)
-            @if($role->name != 'Admin' && $role->name != 'Superadmin')
+            @if($role->name != 'Admin' && $role->name != 'Superadmin' && $role->parent == 0)
           <a class="dropdown-item" href="{{ route('showUsers',$role->id) }}">{{$role->name}}s</a>
           @endif
           @endforeach

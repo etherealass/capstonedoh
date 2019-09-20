@@ -24,6 +24,36 @@
             <legend style="color:white;text-indent: 20px;width:1100px;margin-bottom: 40px" class="bg bg-dark">Intake Information</legend>
           <div class="form-group" style="margin-left:20px">
             <div class="form-row">
+              <div class="col-md-4 mb-4">
+                <div class="form-label-group">
+                  <h6>Patient Type*</h6>
+                <select class="form-control" id="ptype" placeholder="Patient Type" required="required" name="ptype">
+                  @foreach($case as $cases)
+                    <option value="" disabled selected hidden>Patient Type</option>
+                    <option id="{{$cases->court_order}}" value="{{$cases->id}}">{{$cases->case_name}}</option>
+                  @endforeach
+                </select>
+                </div>
+              </div>
+              <div class="col-md-4 mb-4">
+                <div class="form-label-group" id="textb" style="display: none;">
+                  <h6>City Jail*</h6>
+                <select class="form-control" id="jail" placeholder="Patient Type" required="required" name="jail">
+                @foreach($jails as $jail)
+                    <option value="" disabled selected hidden>City Jail</option>
+                    <option value="{{$jail->id}}">{{$jail->name}}</option>
+                @endforeach
+                </select>
+                </div>
+              </div>
+              <div class="col-md-4 mb-4">
+                <div class="form-label-group" id="textas" style="display: none;">
+                  <h6>Case Number*</h6>
+                    <input type="text" id="caseno" class="form-control" placeholder="Case Number" required="required" autofocus="autofocus" name="caseno" value="">
+                </div>
+              </div>
+            </div>
+            <div class="form-row">
               <div class="col-md-4">
                 <div class="form-label-group">
                   <h6>Last name*</h6>

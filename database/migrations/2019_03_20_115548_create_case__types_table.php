@@ -18,6 +18,7 @@ class CreateCaseTypesTable extends Migration
             $table->integer('case_id');
             $table->string('case_name');
             $table->integer('court_order');
+            $table->string('flag')->nullable();
             $table->timestamps();
         });
     }

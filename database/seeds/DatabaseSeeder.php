@@ -13,6 +13,7 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         $user = new Users([
+            'user_id' => rand(),
     		'fname' => 'Erol',
     		'lname' => 'Branzuela',
     		'username' => 'Superadmin',
@@ -20,7 +21,6 @@ class DatabaseSeeder extends Seeder
     		'contact' => '09561137482',
     		'email' => 'erolbranzuela@ymail.com',
     		'role' => '1',
-    		'department' => '1',
     	]);
 
     	$user->save();

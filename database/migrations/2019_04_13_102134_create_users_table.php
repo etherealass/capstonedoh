@@ -24,7 +24,9 @@ class CreateUsersTable extends Migration
             $table->string('email');
             $table->integer('role')->unsigned();
             $table->foreign('role')->references('id')->on('user_roles');
-            $table->string('designation')->nullable();
+            $table->integer('designation')->unsigned()->nullable();
+            $table->foreign('designation')->references('id')->on('user_roles');
+            $table->string('flag')->nullable();
             $table->integer('department')->unsigned()->nullable();
             $table->foreign('department')->references('id')->on('departments');
             $table->timestamp('email_verified_at')->nullable();

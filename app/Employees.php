@@ -9,10 +9,16 @@ class Employees extends Model
 {
 	use Notifiable;
 
-    protected $fillable = ['employee_id','fname','lname','mname','email','contact','designation','department'];
+    protected $fillable = ['employee_id','fname','lname','mname','email','contact','designation','department','flag'];
 
     public function emp_department()
     {
         return $this->belongsTo('App\Departments','department');
     }
+
+    public function emp_designation()
+    {
+        return $this->belongsTo('App\User_roles','designation');
+    }
+    
 }

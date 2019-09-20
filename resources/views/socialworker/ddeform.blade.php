@@ -42,7 +42,7 @@
               <div class="col-md-1">
                 <div class="form-label-group">
                    <h6>Age*</h6>
-                  <input type="number" id="age" class="form-control" placeholder="Age" required="required" autofocus="autofocus" name="age" value="{{ old('age') }}">
+                  <input type="number" id="age" class="form-control" placeholder="Age" autofocus="autofocus" name="age" value="{{ old('age') }}">
                 </div>
               </div>
               <div class="col-md-2">
@@ -133,61 +133,37 @@
         </fieldset>
         <fieldset>
         <legend style="color:white;text-indent: 20px;width:1100px;margin-bottom: 20px" class="bg bg-dark">General Information</legend>
-        <div class="container border border-gray" style="margin-bottom: 20px;margin-top: 10px">
-          <div class="form-group" style="margin-top: 10px">
+           <div class="form-group" style="margin-left: 20px">
             <div class="form-row">
-              <div class="col-md-6">
+              <div class="col-md-4 mb-4">
                 <div class="form-label-group">
-                  <div class="custom-control custom-radio custom-control-inline" style="font-size: 50px">
-                    <input type="radio" class="custom-control-input" id="new case" name="casetype" value="New Case" {{ (old('casetype') == 'New Case') ? 'unchecked' : '' }}>
-                    <label class="custom-control-label" for="new case"><h6>New Case</h6></label>
-                  </div>
-                  <div class="custom-control custom-radio custom-control-inline">
-                    <input type="radio" class="custom-control-input" id="old case" name="casetype" value="Old Case" {{ (old('casetype') == 'Old Case') ? 'unchecked' : '' }}>
-                    <label class="custom-control-label" for="old case"><h6>Old Case</h6></label>
-                  </div>
-                  <div class="custom-control custom-radio custom-control-inline">
-                    <input type="radio" class="custom-control-input" id="case" name="casetype" value="With Court Case" {{ (old('casetype') == 'With Court Case') ? 'unchecked' : '' }}>
-                    <label class="custom-control-label" for="case"><h6>With Court Case</h6></label>
-                   </div>  
-                  </div>
+                  <h6>Patient Type*</h6>
+                <select class="form-control" id="ptype" placeholder="Patient Type" required="required" name="ptype">
+                  @foreach($case as $cases)
+                    <option value="" disabled selected hidden>Patient Type</option>
+                    <option id="{{$cases->court_order}}" value="{{$cases->id}}">{{$cases->case_name}}</option>
+                  @endforeach
+                </select>
                 </div>
-                <div class="col-md-6">
-                <div class="form-label-group">
-                  <div class="custom-control custom-radio custom-control-inline" style="font-size: 50px">
-                    <input type="radio" class="custom-control-input" id="Voluntary Submission" name="type" value="Voluntary Submission" {{ (old('type') == 'Voluntary Submission') ? 'checked' : '' }}>
-                    <label class="custom-control-label" for="Voluntary Submission"><h6>Voluntary Submission</h6></label>
-                  </div>
-                  <div class="custom-control custom-radio custom-control-inline">
-                    <input type="radio" class="custom-control-input" id="Compulsory Submission" name="type" value="Compulsory Submission" {{ (old('type') == 'Compulsory Submission') ? 'checked' : '' }}>
-                    <label class="custom-control-label" for="Compulsory Submission"><h6>Compulsory Submission</h6></label>
-                  </div>
-                  <div class="custom-control custom-radio custom-control-inline">
-                    <input type="radio" class="custom-control-input" id="others" name="type" value="Others" {{ (old('type') == 'Others') ? 'checked' : '' }}>
-                    <label class="custom-control-label" for="others"><h6>Others</h6></label>
-                   </div>  
-                  </div>
+              </div>
+              <div class="col-md-4 mb-4">
+                <div class="form-label-group" id="textb" style="display: none;">
+                  <h6>City Jail*</h6>
+                <select class="form-control" id="jail" placeholder="Patient Type" required="required" name="jail">
+                @foreach($jails as $jail)
+                    <option value="" disabled selected hidden>City Jail</option>
+                    <option value="{{$jail->id}}">{{$jail->name}}</option>
+                @endforeach
+                </select>
+                </div>
+              </div>
+              <div class="col-md-4 mb-4">
+                <div class="form-label-group" id="textas" style="display: none;">
+                  <h6>Case Number*</h6>
+                    <input type="text" id="caseno" class="form-control" placeholder="Case Number" required="required" autofocus="autofocus" name="caseno" value="">
                 </div>
               </div>
             </div>
-            <div class="form-group">
-                  <div class="form-row">
-                    <div class="col-md-4">
-                      <div class="form-label-group" id="textboxes" style="display: none;">
-                          <input style="margin-left:0px" type="text" id="casetype" class="form-control" placeholder="Specify Nature/Case no." name="casetype">
-                          <label for="casetype" style="margin-left:0px">Specify Nature/Case no.</label>
-                      </div>
-                      <div class="form-label-group" id="textback"></div>
-                  </div>
-                  <div class="col-md-4">
-                    <div class="form-label-group" id="textbox" style="display: none;">
-                        <input style="margin-left:180px" type="text" id="type" class="form-control" placeholder="Please Specify" name="type">
-                        <label for="type" style="margin-left:180px">Please specify</label>
-                    </div>
-                      <div class="form-label-group" id="textbax"></div>
-                  </div>
-                </div>
-              </div>
             </div>
           <div class="form-group">
               <div class='form-row'>

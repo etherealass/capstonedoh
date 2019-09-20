@@ -21,28 +21,57 @@
         <form action="{{URL::to('/patientsave_intake')}}" method="post">
           {{csrf_field()}}
           <fieldset style="margin-bottom: 30px">
-            <legend style="color:white;text-indent: 20px;width:1100px;margin-bottom: 40px" class="bg bg-dark">Intake Information</legend>
+            <legend style="color:white;text-indent: 20px;width:1100px" class="bg bg-dark">Intake Information </legend><legend style="text-indent: 20px;width:1090px;margin-left: 5px"><div class="form-row" style="border-radius: 5px;background-color: #e9ecef">
+              <div class="col-md-4 mb-4">
+                <div class="form-label-group" style="margin-top: 20px">
+                  <h6>Patient Type*</h6>
+                <select class="form-control" id="patype" placeholder="Patient Type" required="required" name="ptype" style="margin-left: 20px">
+                  @foreach($case as $cases)
+                    <option value="" disabled selected hidden>Patient Type</option>
+                    <option id="{{$cases->court_order}}" value="{{$cases->id}}">{{$cases->case_name}}</option>
+                  @endforeach
+                </select>
+                </div>
+              </div>
+              <div class="col-md-4 mb-4">
+                <div class="form-label-group" id="textes" style="display: none;margin-top: 20px">
+                  <h6>City Jail*</h6>
+                <select class="form-control" id="jail" placeholder="Patient Type" required="required" name="jail" style="margin-left: 20px">
+                @foreach($jails as $jail)
+                    <option value="" disabled selected hidden>City Jail</option>
+                    <option value="{{$jail->id}}">{{$jail->name}}</option>
+                @endforeach
+                </select>
+                </div>
+              </div>
+              <div class="col-md-3 mb-4">
+                <div class="form-label-group" id="textc" style="display: none;margin-top: 20px">
+                  <h6>Case Number*</h6>
+                    <input type="text" id="caseno" class="form-control" placeholder="Case Number" required="required" autofocus="autofocus" name="caseno" value="" style="margin-left: 20px">
+                </div>
+              </div>
+            </div></legend>
           <div class="form-group" style="margin-left:20px">
             <div class="form-row">
-              <div class="col-md-4">
+              <div class="col-md-3">
                 <div class="form-label-group">
                   <h6>Last name*</h6>
                   <input type="text" id="lname" class="form-control" placeholder="Last name" required="required" autofocus="autofocus" name="lname" value="{!! old('lname') !!}">
                 </div>
               </div>
-              <div class="col-md-4">
+              <div class="col-md-3">
                 <div class="form-label-group">
                    <h6>First name*</h6>
                   <input type="text" id="fname" class="form-control" placeholder="First name" required="required" name="fname" value="{{ old('fname') }}">
                 </div>
               </div>
-              <div class="col-md-1">
+              <div class="col-md-3">
                 <div class="form-label-group">
-                   <h6>Age*</h6>
-                  <input type="number" id="age" class="form-control" placeholder="Age" required="required" autofocus="autofocus" name="age" value="{{ old('age') }}">
+                   <h6>Middle Name*</h6>
+                  <input type="text" id="mname" class="form-control" placeholder="Middle Name" required="required" autofocus="autofocus" name="mname" value="{{ old('mname') }}">
                 </div>
               </div>
-              <div class="col-md-3">
+              <div class="col-md-2">
                 <div class="form-label-group">
                    <h6>Birthday*</h6>
                   <input type="date" id="bday" class="form-control" placeholder="Birthday" required="required" autofocus="autofocus" name="bday">
@@ -90,7 +119,7 @@
         </div>
         </fieldset>
         <fieldset>
-            <div class="form-group">
+            <div class="form-group" style="margin-left:20px">
               <div class='form-row'>
                 <div class="col-md-6">
                   <div class="card card-register mx-auto" style="margin-bottom: 20px">
@@ -169,7 +198,7 @@
                     <div class="form-row">
                       <div class="col-md-9">
                         <div class="form-label-group">
-                          <h6>Name Of Spouse*</h6>
+                          <h6>Name of Spouse*</h6>
                           <input type="text" id="spouse" class="form-control" placeholder="Chief Complaint" name="spouse">
                         </div>
                       </div>
@@ -199,13 +228,13 @@
                  </div>
                 </div>
               </div>
-          <div class="form-group">
+          <div class="form-group" style="margin-left:20px">
             <div class="form-label-group">
               <h6>Presenting Problems*</h6>
               <textarea type="text" id="preprob" class="form-control" placeholder="Please Specify" name="preprob"></textarea>
             </div>
           </div>
-          <div class="form-group">
+          <div class="form-group" style="margin-left:20px">
                 <div class="form-label-group">
                   <h6>Impression*</h6>
                   <textarea style="height: 120px" type="text" id="impre" class="form-control" placeholder="Please Specify" name="impre"></textarea>
