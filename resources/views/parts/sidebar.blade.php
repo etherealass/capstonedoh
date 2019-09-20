@@ -63,8 +63,7 @@
           <a class="dropdown-item" href="{{URL::to('/showpatients/'.$grad)}}">Graduated</a>
           <a class="dropdown-item" href="{{URL::to('/showpatients/'.$dis)}}">Dismissed</a>
         </div>
-      </li>
-7      
+      </li>  
       <li class="nav-item">
         <a class="nav-link" href="{{URL::to('/showCalendar')}}">
           <i class="fas fa-fw fa-calendar"></i>

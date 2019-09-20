@@ -267,6 +267,7 @@ Route::group(['middleware' =>'auth'], function()
 	 Route::any('/chooseuser', "UserController@chooseuser_role");
 
 	 Route::any('/add_a_city_jail',"OthersController@add_a_city_jail");
+	 
 	 Route::any('/createuserrole', "UserController@createuserrole");
 
 	 Route::post('/add_cityjail',"OthersController@addjail");

@@ -37,196 +37,8 @@ section .section-title {
 </style>
 @endsection
 
-  <div class="tab-pane fade" id="v-pills-patientnote" role="tabpanel" aria-labelledby="v-pills-patientnote-tab">
-  
-      <div class="row">
-      <div style="width: 100%">
-        <nav>
-          <div class="nav nav-tabs nav-fill" id="nav-tab" role="tablist">
-            <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true"><i class="fa fa-user-md" style="font-size:32px;"></i></a>
-            <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false"><i class="fas fa-user-nurse"  style="font-size:32px;"></i></a>
-            <a class="nav-item nav-link" id="nav-contact-tab" data-toggle="tab" href="#nav-contact" role="tab" aria-controls="nav-contact" aria-selected="false"><i class="fas fa-tooth" style="font-size:32px;"></i></a>
-            <a class="nav-item nav-link" id="nav-about-tab" data-toggle="tab" href="#nav-about" role="tab" aria-controls="nav-about" aria-selected="false"><i class="fas fa-brain"  style="font-size:32px;"></i></a>
-            <a class="nav-item nav-link" id="nav-social-worker-tab" data-toggle="tab" href="#nav-social-worker" role="tab" aria-controls="nav-social-worker" aria-selected="false"><i class="fas fa-user-check" style="font-size:32px;"></i></a>
-          </div>
-        </nav>
-        <div class="tab-content py-3 px-3 px-sm-0" id="nav-tabContent">
-
-  <!--DOCTOR-->
-          <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
-             <div class="container">
-
-                <div style="float:right;margin-bottom: 10px;margin-right: 10px;margin-top: 10px"><a data-patientid="{{$pats->id}}" data-doctorid="{{Auth::user()->id}}" data-toggle="modal" data-target="addDoctortNotes"><button id="addDoctortNotes" name="addDoctortNotes" class="btn btn-success"><i class="fas fa-fw fa fa-plus"></i></button></a></div>
-
-                 <div class="table-responsive scrollAble2">
-                       <table class="table table-bordered"  width="100%" style="font-size: 12px">
-                            <thead>
-                             <tr>
-                               <th width="15%">Date/Time</th>
-                               <th width="15%">Service Type</th>
-                               <th>Notes</th>
-                               <th width="15%">By</th>
-                               <th width="10%">Action</th>
-                            </tr>
-                            </thead>
-                          <tbody>
-                           @foreach ($patient_notes as $patient_note)
-                             @if($patient_note->role_type == "doctor")
-                              <tr id="{{$patient_note->id}}">
-                                    <td>{{$patient_note->date_time}}</td>
-                                    <td>{{$patient_note->servicex->name}}</td>
-                                    <td>{{$patient_note->notes}}</td>
-                                    <td>{{$patient_note->userx->lname}}, {{$patient_note->userx->fname}}</td>
-                                    <td>{{$patient_note->note_by}}</td>
-                                </tr>
-
-                             @endif
-                          @endforeach
-                          </tbody>
-                        </table>
-                     </div>
-             </div>          
-          </div>
-
-  <!--nurse-->
-          <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
-             <div class="container">
-
-                <div style="float:right;margin-bottom: 10px;margin-right: 10px;margin-top: 10px"><a data-patientid="{{$pats->id}}" data-doctorid="{{Auth::user()->id}}" data-toggle="modal" data-target="addNurseNotes"><button id="addNurseNotes" name="addNurseNotes" class="btn btn-success"><i class="fas fa-fw fa fa-plus"></i></button></a></div>
-
-                 <div class="table-responsive scrollAble2">
-                       <table class="table table-bordered"  width="100%" style="font-size: 12px">
-                            <thead>
-                              <tr>
-                               <th width="15%">Date/Time</th>
-                               <th width="15%">Service Type</th>
-                               <th>Notes</th>
-                               <th width="15%">By</th>
-                               <th width="10%">Action</th>
-                            </tr>
-                            </thead>
-                          <tbody>
-                              @foreach ($patient_notes as $patient_note)
-                             @if($patient_note->role_type == "psychiatrist")
-                              <tr id="{{$patient_note->id}}">
-                                    <td>{{$patient_note->date_time}}</td>
-                                    <td>{{$patient_note->servicex->name}}</td>
-                                    <td>{{$patient_note->notes}}</td>
-                                    <td>{{$patient_note->userx->lname}}, {{$patient_note->userx->fname}}</td>
-                                    <td>{{$patient_note->note_by}}</td>
-                                </tr>
-                             @endif
-                          @endforeach
-
-                          </tbody>
-                        </table>
-                     </div>
-             </div>
-          </div>
-
-    <!--Dental-->
-          <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">
-             <div class="container">
-
-                <div style="float:right;margin-bottom: 10px;margin-right: 10px;margin-top: 10px"><a data-patientid="{{$pats->id}}" data-doctorid="{{Auth::user()->id}}" data-toggle="modal" data-target="addDentalNotes"><button id="addDentalNotes" name="addDentalNotes" class="btn btn-success"><i class="fas fa-fw fa fa-plus"></i></button></a></div>
-
-                 <div class="table-responsive scrollAble2">
-                       <table class="table table-bordered"  width="100%" style="font-size: 12px">
-                            <thead>
-                             <tr>
-                               <th width="10%">Date</th>
-                               <th width="25%">Diagnosis</th>
-                               <th>Tooth No.</th>
-                               <th width="22%">Service Rendered</th>
-                                <th width="15%">Dentist</th>
-                                <th width="22%">Remarks</th>
-                            </tr>
-                            </thead>
-                          <tbody>
-                          </tbody>
-                        </table>
-                     </div>
-             </div>          
-          
-          </div>
-
-
-          <div class="tab-pane fade" id="nav-about" role="tabpanel" aria-labelledby="nav-about-tab">
-                 <div class="container">
-
-                <div style="float:right;margin-bottom: 10px;margin-right: 10px;margin-top: 10px"><a data-patientid="{{$pats->id}}" data-doctorid="{{Auth::user()->id}}" data-toggle="modal" data-target="addPyschiatristNotes"><button id="addPyschiatristNotes" name="addPsychiatristNotes" class="btn btn-success"><i class="fas fa-fw fa fa-plus"></i></button></a></div>
-
-                 <div class="table-responsive scrollAble2">
-                       <table class="table table-bordered"  width="100%" style="font-size: 12px">
-                            <thead>
-                             <tr>
-                               <th width="15%">Date/Time</th>
-                               <th width="15%">Service Type</th>
-                               <th>Notes</th>
-                               <th width="15%">By</th>
-                               <th width="10%">Action</th>
-                            </tr>
-                            </thead>
-                          <tbody>
-                              @foreach ($patient_notes as $patient_note)
-                             @if($patient_note->role_type == "psychiatrist")
-                              <tr id="{{$patient_note->id}}">
-                                    <td>{{$patient_note->date_time}}</td>
-                                    <td>{{$patient_note->servicex->name}}</td>
-                                    <td>{{$patient_note->notes}}</td>
-                                    <td>{{$patient_note->userx->lname}}, {{$patient_note->userx->fname}}</td>
-                                    <td>{{$patient_note->note_by}}</td>
-                                </tr>
-
-                             @endif
-                          @endforeach
-                          </tbody>
-                        </table>
-                     </div>
-             </div>
-          </div>
-
-          <div class="tab-pane fade" id="nav-social-worker" role="tabpanel" aria-labelledby="nav-social-worker-tab">
-                 <div class="container">
-
-                <div style="float:right;margin-bottom: 10px;margin-right: 10px;margin-top: 10px"><a data-patientid="{{$pats->id}}" data-doctorid="{{Auth::user()->id}}" data-toggle="modal" data-target="addSocialWorkerNotes"><button id="addSocialWorkerNotes" name="addSocialWorkerNotes" class="btn btn-success"><i class="fas fa-fw fa fa-plus"></i></button></a></div>
-
-                 <div class="table-responsive scrollAble2">
-                       <table class="table table-bordered"  width="100%" style="font-size: 12px">
-                            <thead>
-                             <tr>
-                               <th width="15%">Date/Time</th>
-                               <th width="15%">Service Type</th>
-                               <th>Notes</th>
-                               <th width="15%">By</th>
-                               <th width="10%">Action</th>
-                            </tr>
-                            </thead>
-                          <tbody>
-                              @foreach ($patient_notes as $patient_note)
-                             @if($patient_note->role_type =="socialworker")
-                              <tr id="{{$patient_note->id}}">
-                                    <td>{{$patient_note->date_time}}</td>
-                                    <td>{{$patient_note->servicex->name}}</td>
-                                    <td>{{$patient_note->notes}}</td>
-                                    <td>{{$patient_note->userx->lname}}, {{$patient_note->userx->fname}}</td>
-                                    <td>{{$patient_note->note_by}}</td>
-                                </tr>
-
-                             @endif
-                          @endforeach
-                          </tbody>
-                        </table>
-                     </div>
-             </div>
-          </div>
-        </div>
-      
-      </div>
-    </div>
-
- </div>
-
+ 
+<!--
     <div class="modal fade" id="DoctorNotesModal" aria-hidden="true" >
           <div class="modal-dialog">
                   <div class="modal-content"  style="width:980px;">
@@ -264,11 +76,12 @@ section .section-title {
                               <div class="modal-footer">
                                   <button type="button" class="btn btn-primary" id="btn-save" name ="btn-save" value="add">Save changes
                                   </button>
-                              </form>
                               </div>
+                            </form>
+
+                      </div>
                   </div>
           </div>
-  </div>
 
    <div class="modal fade" id="NurseNotesModal" aria-hidden="true" >
           <div class="modal-dialog">
@@ -310,7 +123,7 @@ section .section-title {
                               </div>
                   </div>
           </div>
-  </div>
+  </div>--!>
 
 <!--Modal for the Check up button-->
 <!--   <div class="modal fade" id="AddServiceNotesModal" aria-hidden="true" >
