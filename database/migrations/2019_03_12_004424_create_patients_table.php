@@ -18,8 +18,8 @@ class CreatePatientsTable extends Migration
             $table->string('patient_id');
             $table->string('fname');
             $table->string('lname');
-            $table->char('mname',2)->nullable();
-            $table->integer('age');
+            $table->string('mname')->nullable();
+            $table->integer('age')->nullable();
             $table->date('birthdate');
             $table->integer('birthorder')->nullable();
             $table->integer('address_id')->unsigned();
@@ -35,7 +35,7 @@ class CreatePatientsTable extends Migration
             $table->foreign('jail')->references('id')->on('city__jails');
             $table->string('caseno')->nullable();
             $table->string('status')->nullable();
-            $table->string('date_admitted');
+            $table->date('date_admitted');
             $table->integer('department_id')->unsigned();
             $table->foreign('department_id')->references('id')->on('departments');
             $table->string('flag')->nullable();

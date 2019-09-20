@@ -8,9 +8,31 @@
       background-color: #343a40;
       color:white;
       }
+      table, th, td {
+          border: 1px solid lightgray;
+          border-collapse: collapse;
+        }
+        th, td {
+          padding: 7px;
+          text-align: left;  
+
+        }
+
+        .myinput {
+            border: 0;
+        }
+
 
 
 </style>
+<?php 
+
+$month = date('m');
+$day = date('d');
+$year = date('Y');
+
+$today = $year . '-' . $month . '-' . $day;
+?>
 
         <!-- Breadcrumbs-->
     @if($pid)
@@ -3058,4 +3080,505 @@
   </div>
 </div>
 
+@endsection
+
+@section('script')
+<script>
+      
+  $(document).ready(function () {
+    ////----- Open the modal to CREATE a link -----////
+
+    $('body').on('click', '.open_modal', function () {
+             
+              $('#modalFormData').trigger("reset");
+              $('#linkEditor').modal('show');
+
+               var evt_id = $('#event_id').val();
+              $('#evts_id').val(evt_id);
+              $('#patient_interven_id').val($(this).val());
+              $('#btn-save').val("add");
+
+
+          var type = "GET";
+          var ajaxurl = '{{URL::to("/view/vieweventattended")}}';
+          var data = [{'event_id': evt_id, 'patient_id': $(this).val()}]
+              $.ajax({
+                contentType: "application/json; charset=utf-8",
+                type: type,
+                url: ajaxurl,
+                data: {'event_id': evt_id, 'patient_id': $(this).val()},
+               // dataType: 'json',
+                success: function (data) {
+                 
+                  if (data.length > 0){ console.log(data);
+                    for(var a=0; a<data.length; a++) {
+                      var interven_id = data[a]['interven_id'];
+                      var remarks = data[a]['remarks'];
+                      var id = data[a]['id'];
+
+                      //console.log(interven_id);
+                      $("input[value=" + interven_id + "]").click();
+                      $("input[name=remarks_" + interven_id + "]").val(remarks);
+                      $("input[name=rec_id_" + interven_id + "]").val(id);
+                    }
+
+                      //
+                  } else{
+                    $('#modalFormData').trigger("reset");
+                    $('#linkEditor').modal('show');
+                  }
+                   
+                },
+               error: function (data) {
+                    console.log('Error:', data);
+                }
+
+            });
+    
+    });
+
+      $("input[type='checkbox']").click(function (e) {
+            var id = $(this).val();
+            if ($(this).is(':checked')) {
+              $("#textboxes_" + id).show();
+              $("#select_" + id).show();
+
+            } else {
+              $("#textboxes_" + id).hide();
+               $("#select_" + id).hide();
+            }
+        
+           })
+      
+
+     $('#btn-attended').click(function(e){
+
+         $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+            
+        });
+        e.preventDefault();
+      var patient_inter = $('#patient_interven_id').val();
+      var events = $('#evts_id').val();
+      
+
+      var details = {};
+
+      var eventArr = [];
+
+      console.log()
+        var length = $("input[type=checkbox]").each(function(){
+              var isChecked = $(this).is(':checked');
+              var event = {};
+              var value = $(this).val();
+              event['isChecked'] = isChecked;
+              event['rec_id'] = $('#rec_id_'+value).val();
+              event['child_interven_id'] =  $('#childInterven_'+value).val();;
+              event['patient_id'] = patient_inter;
+              event['interven_id'] = value;
+              event['event_id'] = events;
+              event['remarks'] = $('#remarks_'+value).val();
+
+              eventArr.push(event);
+        });
+
+       var type = "POST";
+        var ajaxurl = '{{URL::to("/patient/attendIntervention")}}';
+         $.ajax({
+            contentType: "application/json; charset=utf-8",
+            type: type,
+            url: ajaxurl,
+            data: JSON.stringify(eventArr),
+            success: function (data) {
+                $('#modalFormData').trigger("reset");
+                $('#linkEditor').modal('hide');
+               
+            },
+           error: function (data) {
+                console.log('Error:', data);
+            }
+
+        });
+
+    });
+
+
+   
+
+    $('#add-patient-refer').click(function () {
+        $('#btn-save').val("add");
+        $('#modalFormData').trigger("reset");
+        $('#linkEditorModal').modal('show');
+    });
+
+    $('#addNurseNotes').click(function () {
+
+        $('#NurseNotesFormData').trigger("reset");
+        $('#NurseNotesModal').modal('show');
+    
+
+    });
+
+    $('#add_service').click(function () {
+
+        $('#AddServiceFormData').trigger("reset");
+        $('#AddServiceNotesModal').modal('show');
+    
+    });
+
+    $('#addDoctortNotes').click(function () {
+
+        $('#AddDoctorFormData').trigger("reset");
+        $('#AddDoctorNotesModal').modal('show');
+    
+    });
+
+ $('#addDentalNotes').click(function () {
+
+        $('#AddDentalFormData').trigger("reset");
+        $('#AddDentalNotesModal').modal('show');
+    
+  });
+
+  $('#addPyschiatristNotes').click(function () {
+
+        $('#AddPsychiatristFormData').trigger("reset");
+        $('#AddPsychiatristNotesModal').modal('show');
+    
+  });
+
+
+$('#addSocialWorkerNotes').click(function () {
+
+        $('#AddSocialWorkerFormData').trigger("reset");
+        $('#AddSocialWorkerNotesModal').modal('show');
+    
+  });
+
+
+$("#btn-save-socialworker").click(function (e) {
+   
+
+ $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+            
+        });
+
+     var today = new Date();
+    var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+    var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+    var dateTime = date+' '+time;
+
+      e.preventDefault();
+         var formData = {
+            progress_id: "sample",
+            patient_id: $('#patient_id').val(),
+            date_time: dateTime,
+            service_id: $('#patientList').val(),
+            note_by: $('#note_by').val(),
+            notes: $('#notes').val(),
+            role_type: "socialworker"
+        };
+
+
+        var type = "POST";
+        var id = $('#id').val();
+        var ajaxurl = '{{URL::to("/addsocialworkernotes")}}';
+
+
+     $.ajax({
+            type: type,
+            url: ajaxurl,
+            data: formData,
+            dataType: 'json',
+            success: function (data) {
+               
+
+                $('#modalFormData').trigger("reset");
+                $('#linkEditorModal').modal('hide')
+        },
+           error: function (data) {
+                console.log('Error:', data);
+            }
+
+        });
+
+});
+
+$("#btn-save-psychiatristnotes").click(function (e) {
+   
+
+ $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+            
+        });
+
+     var today = new Date();
+    var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+    var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+    var dateTime = date+' '+time;
+
+      e.preventDefault();
+         var formData = {
+            progress_id: "sample",
+            patient_id: $('#patient_id').val(),
+            date_time: dateTime,
+            service_id: $('#patientList').val(),
+            note_by: $('#note_by').val(),
+            notes: $('#notes2').val(),
+            role_type: "psychiatrist"
+        };
+
+
+        var type = "POST";
+        var id = $('#id').val();
+        var ajaxurl = '{{URL::to("/addsocialworkernotes")}}';
+
+
+     $.ajax({
+            type: type,
+            url: ajaxurl,
+            data: formData,
+            dataType: 'json',
+            success: function (data) {
+
+                $('#AddPsychiatristFormData').trigger("reset");
+                $('#AddPsychiatristNotesModal').modal('hide')
+        },
+           error: function (data) {
+                console.log('Error:', data);
+            }
+
+        });
+
+});
+
+
+
+$("#btn-save-doctornotes").click(function (e) {
+   
+
+ $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+            
+        });
+
+     var today = new Date();
+    var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+    var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+    var dateTime = date+' '+time;
+
+      e.preventDefault();
+         var formData = {
+            progress_id: "sample",
+            patient_id: $('#patient_id').val(),
+            date_time: dateTime,
+            service_id: $('#patientList').val(),
+            note_by: $('#note_by').val(),
+            notes: $('#notes').val(),
+            role_type: "doctor"
+        };
+
+
+        var type = "POST";
+        var id = $('#id').val();
+        var ajaxurl = '{{URL::to("/addsocialworkernotes")}}';
+
+
+     $.ajax({
+            type: type,
+            url: ajaxurl,
+            data: formData,
+            dataType: 'json',
+            success: function (data) {
+               
+                $('#AddDoctorFormData').trigger("reset");
+                $('#AddDoctorNotesModal').modal('hide');
+        },
+           error: function (data) {
+                console.log('Error:', data);
+            }
+
+        });
+
+});
+//Accept Referral REFERAL 
+$('.accept_patient_referal').click(function (e) {
+
+           var result = confirm('Your are about to accept this referal. Would you like to continue?');
+    
+            if(result = true){
+
+              var d = new Date();
+
+              var month = d.getMonth()+1;
+              var day = d.getDate();
+
+              var output = (month<10 ? '0' : '') + month + '/' +
+                            (day<10 ? '0' : '') + day + '/' +
+                             d.getFullYear();
+
+                var refer_id = $(this).val();
+
+
+              $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+            });
+               e.preventDefault();
+              var formData = {
+
+                    ref_slip_return:  output,
+                    accepted_by: $('#user_accepted').val(),
+
+              };
+
+
+            }
+
+            $.ajax({
+            type: "PUT",
+            url: '{{URL::to("/refers")}}'+ '/' + refer_id,
+            data: formData,
+            dataType: 'json',
+            success: function (data) {
+                  var link = '<tr id="refer' + data.id + '"><td>' + data.ref_date + '</td><td>' + data.ref_at + '</td><td>' + data.ref_reason + '</td><td>' + data.ref_by + '</td>';
+                link += '<td><button class="btn btn-info view-link" value="' + data.id + '">View</button>';
+                link += '<button class="btn btn-light print-link" id="btn-print" name ="btn-print" value="' + data.id + '">Print</button></td>';
+               
+                    $("#refer" + refer_id).replaceWith(link);
+            },
+           error: function (data) {
+                console.log('Error:', data);
+            }
+          });
+        
+});
+
+$('body').on('click', '.view-refer-patient-modal', function () {
+
+          var view_id = $(this).val();
+
+           $.get('{{URL::to("/refers")}}' + '/' + view_id, function (data) {
+
+            console.log(data);
+
+            $('#id').val(data[0].id);
+            $('#refDate').val(data[0].ref_date);
+            $('#reason2').val(data[0].ref_reason);
+            $('#refAt2').val(data[0].ref_at);
+            $('#refby22').val(data[0].users.fname+' '+data[0].users.lname);
+            $('#refby2').val(data[0].ref_by);
+            $('#contact2').val(data[0].contact_person);
+            $('#ref_recom2').val(data[0].recommen);
+            $('#refDateback2').val(data[0].ref_back_date);
+            $('#refbyback2').val(data[0].ref_back_by);
+            $('#returnDate').val(data[0].ref_slip_return);
+            $('#accepted_by2').val(data[0].accepted_by.fname+' '+data[0].accepted_by.lname);
+
+            $('#viewModal').modal('show');
+            
+        })
+
+
+});
+
+$('body').on('click', '.edit-refer-modal', function () {
+        var refer_id = $(this).val();
+
+        $.get('{{URL::to("/refers")}}' + '/' + refer_id, function (data) {
+
+            $('#id').val(data[0].id);
+            $('#refDate').val(data[0].ref_date);
+            $('#reason').val(data[0].ref_reason);
+            $('#refAt').val(data[0].ref_at);
+            $('#refby2').val(data[0].users.fname+' '+data[0].users.lname);
+            $('#refby').val(data[0].ref_by);
+            $('#contactPer').val(data[0].contact_person);
+            $('#ref_recom').val(data[0].recommen);
+            $('#refDateback').val(data[0].ref_back_date);
+            $('#refbyback').val(data[0].ref_back_by);
+            $('#returnDate').val(data[0].ref_slip_return);
+            $('#btn-save').val("update");
+            $('#linkEditorModal').modal('show');
+            
+        })
+});
+
+
+
+
+$("#btn-save").click(function (e) {
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+            
+        });
+        e.preventDefault();
+         var formData = {
+            patient_id: $('#patient_id').val(),
+            ref_date:  $('#refDate').val(),
+            ref_at: $('#refAt').val(),
+            ref_reason:  $('#reason').val(),
+            ref_by:  $('#refby').val(),
+            recommen:  $('#ref_recom').val(),
+            contact_person:  $('#contactPer').val(),
+            ref_back_date:  $('#refDateback').val(),
+            ref_back_by:  $('#refbyback').val(),
+            ref_slip_return:  $('#returnDate').val(),
+
+        };
+
+        console.log(formData);
+       var state = $('#btn-save').val();
+
+       var type = "POST";
+        var id = $('#id').val();
+        var ajaxurl = '{{URL::to("/refers")}}';
+        if (state == "update") {
+            type = "PUT";
+            ajaxurl = '{{URL::to("/refers")}}'+ '/' + id;
+            console.log(ajaxurl);
+        }
+        $.ajax({
+            type: type,
+            url: ajaxurl,
+            data: formData,
+            dataType: 'json',
+            success: function (data) {
+                var link = '<tr id="refer' + data.id + '"><td>' + data.ref_date + '</td><td>' + data.ref_at + '</td><td>' + data.ref_reason + '</td><td>' + data.ref_by + '</td>';
+                link += '<td><button class="btn btn-info edit-refer-modal" value="' + data.id + '">Edit</button>';
+                link += '<button class="btn btn-secondary accept_patient_referal" id="btn-accept" name ="btn-accept" value="' + data.id + '">Accept</button>';
+                 link += '<button class="btn btn-light print-link" id="btn-ptint" name ="btn-print" value="' + data.id + '">Print</button>';
+                
+                if (state == "add") {
+                    $('#links-list').append(link);
+                } else {
+                    $("#refer" + id).replaceWith(link);
+                }
+    
+                $('#modalFormData').trigger("reset");
+                $('#linkEditorModal').modal('hide')
+        },
+           error: function (data) {
+                console.log('Error:', data);
+            }
+
+        });
+      });
+
+  })
+
+
+  </script>
 @endsection

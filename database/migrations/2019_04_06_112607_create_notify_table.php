@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateUserRolesTable extends Migration
+class CreateNotifyTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,12 @@ class CreateUserRolesTable extends Migration
      */
     public function up()
     {
-        Schema::create('user_roles', function (Blueprint $table) {
+        Schema::create('notify', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('parent');
-            $table->string('name');
-            $table->text('description');
-            $table->string('flag')->nullable();
+            $table->integer('service_id')->unsigned();
+            $table->foreign('service_id')->references('id')->on('services');
+            $table->integer('role')->unsigned();
+            $table->foreign('role')->references('id')->on('user_roles');
             $table->timestamps();
         });
     }
@@ -30,6 +30,6 @@ class CreateUserRolesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('user_roles');
+        Schema::dropIfExists('notify');
     }
 }
