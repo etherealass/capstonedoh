@@ -32,64 +32,63 @@
 
           @include('flash::message')
         <!-- Icon Cards-->
-        <div class="container">
-<fieldset style="margin-bottom: 30px;margin-left: 0px;border:solid thin gray;border-radius: 10px">
-                       <legend style="color:white;text-indent: 20px;width:900px;margin-bottom: 20px;border-radius: 5px" class="bg bg-dark">Personal Information</legend>
-                    <div class="container" style="margin-left: 0px">
+
+<div class="container">
+  <fieldset style="margin-bottom: 30px;margin-left: 0px;border:solid thin gray;border-radius: 10px">
+          <legend style="color:white;text-indent: 20px;width:900px;margin-bottom: 20px;border-radius: 5px" class="bg bg-dark">Personal Information</legend>
+                <div class="container" style="margin-left: 0px">
                       <div class="row">
                         <div class="col-md-3">
-                          <p style="font-size: 8px"><h6>Name:</h6><span>{{$pats->fname}} {{$pats->mname}}. {{$pats->lname}}</span></p>
-                         </div>
-                       <div class="col-md-3">
-                          <p style="font-size: 8px"><h6>Date of Birth:</h6> {{$pats->birthdate}}</p>
-                       </div>
-                      <div class="col-md-3">
-                        <p style="font-size: 8px"><h6>Address:</h6> {{$pats->address->street}} {{$pats->address->barangay}} {{$pats->address->city}}</p>
-                      </div>
-                      <div class="col-md-3">
-                       <p style="font-size: 8px"><h6>Marital Status:</h6> {{$pats->civil_status}}</p>
-                      </div>
-                      <div class="col-md-3">
-                         <p style="font-size: 8px"><h6>Age:</h6> {{\Carbon\Carbon::parse($pats->birthdate)->age}}</p>
-                      </div> 
+                           <p style="font-size: 8px"><h6>Name:</h6><span>{{$pats->fname}} {{$pats->mname}}. {{$pats->lname}}</span></p>
+                        </div>
+                        <div class="col-md-3">
+                           <p style="font-size: 8px"><h6>Date of Birth:</h6> {{$pats->birthdate}}</p>
+                        </div>
+                        <div class="col-md-3">
+                           <p style="font-size: 8px"><h6>Address:</h6> {{$pats->address->street}} {{$pats->address->barangay}} {{$pats->address->city}}</p>
+                        </div>
+                        <div class="col-md-3">
+                           <p style="font-size: 8px"><h6>Marital Status:</h6> {{$pats->civil_status}}</p>
+                        </div>
+                        <div class="col-md-3">
+                           <p style="font-size: 8px"><h6>Age:</h6> {{\Carbon\Carbon::parse($pats->birthdate)->age}}</p>
+                        </div> 
                       @if($pats->birthorder != NULL)
                       @if($pats->birthorder != 'NULL')
-                      <div class="col-md-3">
-                        <p style="font-size: 8px"><h6>Birth Order:</h6> {{$pats->birthorder}}</p>
-                      </div>
+                        <div class="col-md-3">
+                           <p style="font-size: 8px"><h6>Birth Order:</h6> {{$pats->birthorder}}</p>
+                        </div>
                       @endif
                     @if($pats->contact != 'NULL')
-                    <div class="col-md-3">
-                      <p style="font-size: 8px"><h6>Contact Number:</h6> {{$pats->contact}}</p>
-                    </div>
+                        <div class="col-md-3">
+                           <p style="font-size: 8px"><h6>Contact Number:</h6> {{$pats->contact}}</p>
+                        </div>
                     @endif
                     @if($pats->nationality != 'NULL')
-                    <div class="col-md-3">
-                      <p style="font-size: 8px"><h6>Nationality:</h6> {{$pats->nationality}}</p>
-                    </div>
+                        <div class="col-md-3">
+                           <p style="font-size: 8px"><h6>Nationality:</h6> {{$pats->nationality}}</p>
+                        </div>
                    @endif
                   @if($pats->religion != 'NULL')
-                   <div class="col-md-3" style=""> 
-                     <p style="font-size: 8px"><h6>Religion:</h6> {{$pats->religion}}</p>
-                  </div>
+                        <div class="col-md-3" style=""> 
+                           <p style="font-size: 8px"><h6>Religion:</h6> {{$pats->religion}}</p>
+                        </div>
                  @endif
                 @endif
-                  </div>
-                </fieldset>
-          <fieldset style="margin-bottom: 30px;margin-left: 0px;border:solid thin gray;border-radius: 10px">
-            <legend style="color:white;text-indent: 20px;width:900px;margin-bottom: 20px;border-radius: 5px" class="bg bg-dark">Transfer Remarks</legend>
+                    </div>
+                </div>
+  </fieldset>
+  <fieldset style="margin-bottom: 30px;margin-left: 0px;border:solid thin gray;border-radius: 10px">
+      <legend style="color:white;text-indent: 20px;width:900px;margin-bottom: 20px;border-radius: 5px" class="bg bg-dark">Transfer Remarks</legend>
           <div class="container" style="margin-left: 10px">
             <div class="row">
             @foreach($transfers as $trans)
               <p style="margin-left: 30px">{{$trans->remarks}}</p>
             @endforeach
            </div>
-           <div class="row">
-          
-           </div>
           </div>
-          </fieldset>
-        </div>
+  </fieldset>
+  </div>
           @endif
         @endforeach
       @elseif($pid == '0')
@@ -98,7 +97,7 @@
         @if($pats->status == 'Enrolled')
         <div class="row">
           <div class="col-md-4" style="margin-left: 28px;margin-right: 60px">
-            <p><h1 style="color:#343a40">Patient No. {{$pats->id}}</h1><br><h4 style="color:#343a40"> Patient Status: <span class="text-primary">Enrolled</span></p>
+            <p><h1 style="color:#343a40">Patient No. {{$pats->id}}</h1><h4 style="color:#343a40"> Patient Status: <span class="text-primary">Enrolled</span></p>
           </div>
           <div class="col-md-3">
           </div>
@@ -109,9 +108,9 @@
           </div>
          </div>
             @elseif($pats->status == 'For Graduate')
-            <div class="row">
+        <div class="row">
           <div class="col-md-4" style="margin-left: 28px;margin-right: 60px">
-            <p><h1 style="color:#343a40">Patient No. {{$pats->id}}</h1><br><h4 style="color:#343a40"> Patient Status: <span class="text-warning">For Graduation</span></h4></p>
+            <p><h1 style="color:#343a40">Patient No. {{$pats->id}}</h1><h4 style="color:#343a40"> Patient Status: <span class="text-warning">For Graduation</span></h4></p>
           </div>
           <div class="col-md-4">
           </div>
@@ -122,9 +121,9 @@
           </div>
          </div>
          @elseif($pats->status == 'Graduated')
-            <div class="row">
+        <div class="row">
           <div class="col-md-4" style="margin-left: 28px;margin-right: 60px">
-            <p><h1 style="color:#343a40">Patient No. {{$pats->id}}</h1><br><h4 style="color:#343a40"> Patient Status: <span class="text-success">Graduated</span></h4></p>
+            <p><h1 style="color:#343a40">Patient No. {{$pats->id}}</h1><h4 style="color:#343a40"> Patient Status: <span class="text-success">Graduated</span></h4></p>
           </div>
           <div class="col-md-4">
           </div>
@@ -135,9 +134,9 @@
           </div>
          </div>
           @elseif($pats->status == 'Dismissed')
-            <div class="row">
+        <div class="row">
           <div class="col-md-4" style="margin-left: 28px;margin-right: 60px">
-            <p><h1 style="color:#343a40">Patient No. {{$pats->id}}</h1><br><h4 style="color:#343a40"> Patient Status: <span class="text-danger">Dismissed</span></h4></p>
+            <p><h1 style="color:#343a40">Patient No. {{$pats->id}}</h1><h4 style="color:#343a40"> Patient Status: <span class="text-danger">Dismissed</span></h4></p>
           </div>
           <div class="col-md-4">
           </div>
@@ -151,10 +150,11 @@
 
 
           @include('flash::message')
-        <!-- Icon Cards-->
-          <div class="row" style="margin-left: 0px;">
-<div style="">
-            <div class="col-md-12 scrollAble2" style="margin-right: 0px;">
+
+          <!--Tabs-->
+          <div class="row" style="margin-left: 0px">
+          <div>
+          <div class="col-md-12">
              <ul class="sidebar navbar-nav" style="background-color:white;border-radius: 5rem;">
               <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical" style="border-radius: 5rem">
                 <li class="nav-item active"  id="v-pills-home-tab" data-toggle="pill" href="#v-pills-home" role="tab" aria-controls="v-pills-home" aria-selected="true" style="margin-top: 10px;border-radius: 10px">
@@ -178,13 +178,14 @@
                 <li class="nav-item" id="v-pills-doctornote-tab" data-toggle="pill" href="#v-pills-doctornote" role="tab" aria-controls="v-pills-doctornote" aria-selected="false">
                   <a class="nav-link bg-dark" id="v-pills-doctornote-tab" data-toggle="pill" href="#v-pills-doctornote" role="tab" aria-controls="v-pills-doctornote" aria-selected="false" style="color:white;margin-bottom: 5px;height: 65px;text-align: center;border-radius: 5px"><h6><span>Doctor's Progress Notes</span></h6></a>
                 </li>
+              </div>
             </ul>
-            </div>
           </div>
-            <div class="col-md-9" style="margin-top: 10px">
+        </div>
+          <div class="col-md-9">
               <div class="tab-content" id="v-pills-tabContent" >
                 <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">
-                   <fieldset style="margin-bottom: 30px;margin-left: 0px;border:solid thin gray;border-radius: 10px">
+                   <fieldset style="margin-bottom: 30px;border:solid thin gray;border-radius: 10px">
                        <legend style="color:white;text-indent: 20px;width:900px;margin-bottom: 20px;border-radius: 5px" class="bg bg-dark">Personal Information</legend>
                     <div class="container" style="margin-left: 0px">
                       <div class="row">
@@ -267,6 +268,7 @@
                     </div>
                   </fieldset>
                 </div>
+                <!--Patient History-->
                 <div class="tab-pane fade" id="v-pills-history" role="tabpanel" aria-labelledby="v-pills-history-tab">
                   <fieldset style="margin-bottom: 30px;margin-left: 0px;border:solid thin gray;border-radius: 10px">
                     <legend style="color:white;text-indent: 20px;width:900px;margin-bottom: 20px;border-radius: 5px" class="bg bg-dark">Patient History</legend>
@@ -308,7 +310,8 @@
                      </div>
                 </fieldset>
                 </div>
-                <div class="tab-pane fade" id="v-pills-doctornote" role="tabpanel" aria-labelledby="v-pills-doctornote-tab">
+          <!--Doctor's Note Tab-->
+              <div class="tab-pane fade" id="v-pills-doctornote" role="tabpanel" aria-labelledby="v-pills-doctornote-tab">
                   <fieldset style="margin-bottom: 30px;margin-left: 0px;border:solid thin gray;border-radius: 10px">
                     <legend style="color:white;text-indent: 20px;width:900px;margin-bottom: 20px;border-radius: 5px" class="bg bg-dark">Doctor's Progress Notes </legend>
                     <div class="container" style="margin-left: 0px">
@@ -340,12 +343,15 @@
                       </div>
                      </div>
                 </fieldset>
-                </div>
-                <div class="tab-pane fade" id="v-pills-intake" role="tabpanel" aria-labelledby="v-pills-intake-tab">
+              </div>
+      <!--Intake Tab-->
+        <div class="tab-pane fade" id="v-pills-intake" role="tabpanel" aria-labelledby="v-pills-intake-tab">
           <fieldset style="margin-bottom: 10px;margin-left: 0px;border:solid thin gray;border-radius: 10px">
             <legend style="color:white;text-indent: 20px;width:900px;margin-bottom: 10px;border-radius: 5px" class="bg bg-dark">Intake Form </legend>
             <div style="float:right;margin-bottom: 10px;margin-right: 10px;margin-top: 10px"><a href="{{URL::to('sampleform/'.$pats->id)}}" target="_blank"><button class="btn btn-danger"><i class="fas fa-fw fa fa-file-pdf"></i>Print</button></a></div>
+            @if(Auth::user()->user_role->name == 'Superadmin' || Auth::user()->user_role->name == 'Admin')
             <div style="float:right;margin-bottom: 10px;margin-right: 10px;margin-top: 10px"><a href="{{URL::to('sampleform/'.$pats->id)}}" target="_blank"><button class="btn btn-success"><i class="fas fa-fw fa fa-pen"></i>Edit</button></a></div>
+            @endif
           <div class="container scrollAble2" style="margin-top: 30px">
             <div class="container" style="border:solid thin gray;border-radius: 10px">
               <p style="float: left;margin-top: 20px"><img src="http://localhost/capstone/public/images/logo.png" height="100px" width="100px"></p>
@@ -414,17 +420,316 @@
             </div>
             </div>
           </fieldset>
-      </div>
+        </div>
+        <div class="tab-pane fade" id="v-pills-dde" role="tabpanel" aria-labelledby="v-pills-dde-tab">
+            <fieldset style="margin-bottom: 30px;margin-left: 0px;border:solid thin gray;border-radius: 10px">
+              <legend style="color:white;text-indent: 20px;width:900px;margin-bottom: 20px;border-radius: 5px" class="bg bg-dark">Drug Dependency Examination Report</legend>
+                <div style="float:right;margin-bottom: 10px;margin-right: 10px;margin-top: 10px"><a href="{{URL::to('sampleform/'.$pats->id)}}" target="_blank"><button class="btn btn-danger"><i class="fas fa-fw fa fa-file-pdf"></i>Print</button></a></div>
+                @if(Auth::user()->user_role->name == 'Superadmin' || Auth::user()->user_role->name == 'Admin')
+                <div style="float:right;margin-bottom: 10px;margin-right: 10px;margin-top: 10px"><button class="btn btn-success" data-toggle="modal" data-target="#ddeFormEdit"><i class="fas fa-fw fa fa-pen"></i>Edit</button></div>
+                @endif
+                    <div class="container" style="margin-top: 60px;margin-bottom: 30px">
+                      <div class="container" style="border:solid thin gray;border-radius: 10px">
+                        <div style="margin-top:30px">
+                          <img src="http://localhost/capstone/public/images/logo3.png" height="100px" width="100px" style="float:left;">
+                          <p style="text-align:center;position:relative;"><b style="font-size: 25px">TREATMENT & REHABILITATION CENTER - CEBU</b><br><span style="font-size:20px">Drug Dependency Examination Report</span></p>
+                        </div>
+  
+            <div class="row" style="margin-top: 50px;padding:20px">
+              <div class="col-md-6" style="border: solid gray 1px;padding:20px;font-size: 12px;border-right: none">
+                <div class="form-label-group">
+                  <div class="custom-control custom-checkbox custom-control-inline">
+                  <?php $count = 0 ?>
+                  @foreach($history as $hist)
+                    @if($hist->type == 'Enrolled')
+                      @if($hist->deps->department_name == $pats->departments->department_name)
+                      <?php $count++; ?>
+                      @endif
+                    @endif
+                  @endforeach
+                    <input type="checkbox" class="custom-control-input" id="new case" name="casetype" value="New Case" {{ ($count != 1)? "checked" : "" }} disabled="true">
+                    <label class="custom-control-label" for="new case"><b>Old Case</b></label>
+                  </div>
+                </div>
+                <div class="form-label-group">
+                  <div class="custom-control custom-checkbox custom-control-inline">
+                    <input type="checkbox" class="custom-control-input" id="old case" name="casetype" value="Old Case" {{ ($count == 1)? "checked" : "" }} disabled="true">
+                    <label class="custom-control-label" for="old case"><b>New Case</b></label>
+                  </div>
+                </div>
+                <div class="form-label-group">
+                  <div class="custom-control custom-checkbox custom-control-inline">
+                    <input type="checkbox" class="custom-control-input" id="case" name="casetype" value="With Court Case" {{ ($pats->caseno != NULL)? "checked" : "" }} disabled="true">
+                    <label class="custom-control-label" for="case"><b>With Court Case:</b>
+                  @if($pats->caseno != NULL)
+                    <b><u> {{$pats->caseno}}</u></b>
+                  @else
+                    ________________________________________
+                  @endif
+                    </label>
+                   </div>  
+                  </div>
+                </div>
+                <div class="col-md-6" style="border: solid gray 1px;padding:20px;font-size: 12px">
+                <div class="form-label-group">
+                  <div class="custom-control custom-checkbox custom-control-inline" style="font-size: 50px">
+                    <input type="checkbox" class="custom-control-input" id="Voluntary Submission" name="type" value="Voluntary Submission" {{ ($pats->type->case_name == 'Voluntary' || $pats->type->case_name == 'Voluntary with Court Order')? "checked" : "" }} disabled="true">
+                    <label class="custom-control-label" for="Voluntary Submission"><b>Voluntary Submission</b></label>
+                  </div>
+                </div>
+                  <div class="form-label-group">
+                  <div class="custom-control custom-checkbox custom-control-inline">
+                    <input type="checkbox" class="custom-control-input" id="Compulsory Submission" name="type" value="Compulsory Submission" {{ ($pats->type->case_name == 'Plea Bargain')? "checked" : "" }} disabled="true">
+                    <label class="custom-control-label" for="Compulsory Submission"><b>Compulsory Submission</b></label>
+                  </div>
+                  </div>
+                  <div class="form-label-group">
+                  <div class="custom-control custom-checkbox custom-control-inline">
+                    <input type="checkbox" class="custom-control-input" id="others" name="type" value="Others" {{ (old('type') == 'Others') ? 'checked' : '' }} disabled="true">
+                    <label class="custom-control-label" for="others"><b>Others: ___________________________________</b></label>
+                   </div>  
+                  </div>
+                </div>
+                <div class="col-md-12" style="border: solid gray 1px;font-size: 12px;border-top:none;border-right:none">
+                <div class="row">
+                  <div class="col-md-3" style="border-right: solid gray 1px;border-bottom: solid gray 1px">
+                    <b><p>Last name:</p></b>
+                  </div>
+                  <div class="col-md-3" style="border-bottom: solid gray 1px;border-right: solid gray 1px">
+                    <p>{{$pats->lname}}</p>
+                  </div>
+                  <div class="col-md-6" style="border-right: solid gray 1px;">
+                    <b><p>Address:</p></b>
+                  </div>
+                 </div>
+                 <div class="row">
+                  <div class="col-md-3" style="border-right: solid gray 1px;border-bottom: solid gray 1px">
+                    <p><b>First name:</b></p>
+                  </div>
+                  <div class="col-md-3" style="border-bottom: solid gray 1px;border-right: solid gray 1px">
+                    <p>{{$pats->fname}}</p>
+                  </div>
+                  <div class="col-md-6" style="border-right: solid gray 1px;border-bottom: solid gray 1px;">
+                    <p>{{$pats->address->street}} {{$pats->address->barangay}} {{$pats->address->city}}</p>
+                  </div>
+                 </div>
+                  <div class="row">
+                  <div class="col-md-3" style="border-right: solid gray 1px;border-bottom: solid gray 1px">
+                    <p><b>Middle name:</b></p>
+                  </div>
+                  <div class="col-md-3" style="border-bottom: solid gray 1px;border-right: solid gray 1px">
+                    <p>{{$pats->mname}}</p>
+                  </div>
+                  <div class="col-md-3" style="border-right: solid gray 1px;border-bottom: solid gray 1px">
+                    <p><b>Contact Number:</b></p>
+                  </div>
+                  <div class="col-md-3" style="border-bottom: solid gray 1px;border-right: solid gray 1px">
+                    <p>{{$pats->contact}}</p>
+                  </div>
+                 </div>
+                 <div class="row">
+                  <div class="col-md-3" style="border-right: solid gray 1px;border-bottom: solid gray 1px">
+                    <p><b>Age:</b></p>
+                  </div>
+                  <div class="col-md-3" style="border-bottom: solid gray 1px;border-right: solid gray 1px">
+                    <p>{{\Carbon\Carbon::parse($pats->birthdate)->age}}</p>
+                  </div>
+                   <div class="col-md-3" style="border-right: solid gray 1px;border-bottom: solid gray 1px">
+                    <p><b>Gender:</b></p>
+                  </div>
+                  <div class="col-md-3" style="border-bottom: solid gray 1px;border-right: solid gray 1px">
+                    <p></p>
+                  </div>
+                 </div>
+                 <div class="row">
+                  <div class="col-md-3" style="border-right: solid gray 1px;border-bottom: solid gray 1px">
+                    <p><b>Birthdate:</b></p>
+                  </div>
+                  <div class="col-md-3" style="border-bottom: solid gray 1px;border-right: solid gray 1px">
+                    <p>{{$pats->birthdate}}</p>
+                  </div>
+                   <div class="col-md-3" style="border-right: solid gray 1px;border-bottom: solid gray 1px">
+                    <p><b>Civil Status:</b></p>
+                  </div>
+                  <div class="col-md-3" style="border-bottom: solid gray 1px;border-right: solid gray 1px">
+                    <p></p>
+                  </div>
+                 </div>
+                 <div class="row">
+                  <div class="col-md-3" style="border-right: solid gray 1px;border-bottom: solid gray 1px">
+                    <p><b>Birth Order:</b></p>
+                  </div>
+                  <div class="col-md-3" style="border-bottom: solid gray 1px;border-right: solid gray 1px">
+                    <p>{{$pats->birthorder}}</p>
+                  </div>
+                  <div class="col-md-3" style="border-right: solid gray 1px;border-bottom: solid gray 1px">
+                    <p><b>Nationality:</b></p>
+                  </div>
+                  <div class="col-md-3" style="border-right: solid gray 1px;border-bottom: solid gray 1px">
+                    <p></p>
+                  </div>
+                 </div>
+                 <div class="row">
+                  <div class="col-md-3" style="border-right: solid gray 1px">
+                    <p></p>
+                  </div>
+                  <div class="col-md-3" style="border-right: solid gray 1px">
+                    <p></p>
+                  </div>
+                  <div class="col-md-3" style="border-right: solid gray 1px;">
+                    <p><b>Religion:</b></p>
+                  </div>
+                  <div class="col-md-3" style="border-right: solid gray 1px">
+                    <p></p>
+                  </div>
+                 </div>
+                </div> 
+              </div>
+              <div class="row" style="padding:20px">
+                <div class="col-md-12" style="border: solid gray 1px;font-size: 12px">
+                <div class="row">
+                  <div class="col-md-3" style="border-right: solid gray 1px;">
+                    <p><b>Referred by:</b></p>
+                  </div>
+                  <div class="col-md-9" style="border-right: none">
+                    <p></p>
+                  </div>
+                </div>
+              @if($patis != '[]')
+                @foreach($patis as $patin)
+                <div class="row">
+                  <div class="col-md-3" style="border-right: solid gray 1px;border-top: solid gray 1px;padding:10px">
+                    <p><b>Accompanied By/<br>Informant</b></p>
+                  </div>
+                  <div class="col-md-9" style="border-top: solid gray 1px;padding-top: 10px">
+                    <div class="row">
+                      <div class="col-md-6"><b>Name:</b> {{$patin->informants->name}}</div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-6"><b>Address:</b> {{$patin->informants->address}}</div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-5"><b>Signature:</b> _____________________________</div>
+                      <div class="col-md-5"><b>Contact no:</b> {{$patin->informants->contact}}</div>
+                    </div>
+                  </div>
+                   <div class="col-md-3" style="border-right: solid gray 1px;border-top: solid gray 1px;padding:10px">
+                    <p><b>DRUGS ABUSED<br>(Present)</b></p>
+                  </div>
+                  <div class="col-md-9" style="border-top: solid gray 1px;padding-top: 10px">
+                    <div class="row">
+                     <div class="col-md-9">{{$patin->drugs_abused}}</div>
+                   </div>
+                  </div>
+                   <div class="col-md-3" style="border-right: solid gray 1px;border-top: solid gray 1px;padding:10px">
+                    <p><b>Chief Complaint</b></p>
+                  </div>
+                  <div class="col-md-9" style="border-top: solid gray 1px;padding-top: 10px">
+                    <div class="row">
+                     <div class="col-md-9">{{$patin->chief_complaint}}</div>
+                   </div>
+                  </div>
+                  <div class="col-md-3" style="border-right: solid gray 1px;border-top: solid gray 1px;padding:10px">
+                    <p><b>History of Present<br>Illness</b></p>
+                  </div>
+                   <div class="col-md-9" style="border-top: solid gray 1px;padding-top: 10px">
+                    <div class="row">
+                     <div class="col-md-9">{{$patin->h_present_illness}}</div>
+                   </div>
+                  </div>
+                   <div class="col-md-3" style="border-right: solid gray 1px;border-top: solid gray 1px;padding:10px;height: 100px">
+                    <p><b>History of Drug<br>Use</b></p>
+                  </div>
+                  <div class="col-md-9" style="border-top: solid gray 1px;padding-top: 10px">
+                    <div class="row">
+                     <div class="col-md-9">{{$patin->h_drug_abuse}}</div>
+                   </div>
+                  </div>
+                  <div class="col-md-3" style="border-right: solid gray 1px;border-top: solid gray 1px;padding:10px;height: 100px">
+                    <p><b>Family/Personal<br>History</b></p>
+                  </div>
+                  <div class="col-md-9" style="border-top: solid gray 1px;padding-top: 10px">
+                    <div class="row">
+                     <div class="col-md-9">{{$patin->famper_history}}</div>
+                   </div>
+                  </div>
+                </div>
+                 @endforeach
+                @elseif($patis == '[]')
+                    <div class="row">
+                  <div class="col-md-3" style="border-right: solid gray 1px;border-top: solid gray 1px;padding:10px">
+                    <p><b>Accompanied By/<br>Informant</b></p>
+                  </div>
+                  <div class="col-md-9" style="border-top: solid gray 1px;padding-top: 10px">
+                    <div class="row">
+                      <div class="col-md-6"><b>Name:</b></div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-6"><b>Address:</b></div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-5"><b>Signature:</b> _____________________________</div>
+                      <div class="col-md-5"><b>Contact no:</b></div>
+                    </div>
+                  </div>
+                   <div class="col-md-3" style="border-right: solid gray 1px;border-top: solid gray 1px;padding:10px">
+                    <p><b>DRUGS ABUSED<br>(Present)</b></p>
+                  </div>
+                  <div class="col-md-9" style="border-top: solid gray 1px;padding-top: 10px">
+                    <div class="row">
+                     <div class="col-md-9"></div>
+                   </div>
+                  </div>
+                   <div class="col-md-3" style="border-right: solid gray 1px;border-top: solid gray 1px;padding:10px">
+                    <p><b>Chief Complaint</b></p>
+                  </div>
+                  <div class="col-md-9" style="border-top: solid gray 1px;padding-top: 10px">
+                    <div class="row">
+                     <div class="col-md-9"></div>
+                   </div>
+                  </div>
+                  <div class="col-md-3" style="border-right: solid gray 1px;border-top: solid gray 1px;padding:10px">
+                    <p><b>History of Present<br>Illness</b></p>
+                  </div>
+                   <div class="col-md-9" style="border-top: solid gray 1px;padding-top: 10px">
+                    <div class="row">
+                     <div class="col-md-9"></div>
+                   </div>
+                  </div>
+                   <div class="col-md-3" style="border-right: solid gray 1px;border-top: solid gray 1px;padding:10px;height: 100px">
+                    <p><b>History of Drug<br>Use</b></p>
+                  </div>
+                  <div class="col-md-9" style="border-top: solid gray 1px;padding-top: 10px">
+                    <div class="row">
+                     <div class="col-md-9"></div>
+                   </div>
+                  </div>
+                  <div class="col-md-3" style="border-right: solid gray 1px;border-top: solid gray 1px;padding:10px;height: 100px">
+                    <p><b>Family/Personal<br>History</b></p>
+                  </div>
+                  <div class="col-md-9" style="border-top: solid gray 1px;padding-top: 10px">
+                    <div class="row">
+                     <div class="col-md-9"></div>
+                   </div>
+                  </div>
+                </div>
+                @endif
               </div>
             </div>
           </div>
-          @elseif($pats->department_id != Auth::user()->department)
-           <h1>Patient Not Found/Transfered/Deleted</h1>
-        @endif
-        @endforeach
-      @endif
+        </div>
+    </fieldset>
+  </div>
+      </div>
+    </div>
+    @elseif($pats->department_id != Auth::user()->department)
+    <h1>Patient Not Found/Transfered/Deleted</h1>
+    @endif
+    @endforeach
+    @endif
 
-  <div class="modal fade" id="patientDismiss" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<!--Dismiss modal-->
+<div class="modal fade" id="patientDismiss" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
@@ -461,7 +766,7 @@
     </div>
 </div>
   
-
+<!--Choose a form for re-enrolling-->
 <div class="modal fade" id="reenrollForm" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
@@ -477,7 +782,7 @@
             <div class="card border-dark mb-3 text-black o-hidden h-100">
               <div class="modal-body">
                 <p style="font-size: 10px;margin-top: 7px"><h6>Intake Form</h6></p>             
-                <button type="submit" class="btn btn-success" data-dismiss="modal" data-toggle="modal" data-target="#intakeForm" data-patientid="{{$pats->id}}">Proceed</button>
+                <button type="submit" class="btn btn-success" data-dismiss="modal" data-toggle="modal" data-target="#intakeForms" data-patientid="{{$pats->id}}">Proceed</button>
               </div>
             </div>
         </div>
@@ -487,7 +792,7 @@
             <div class="card border-dark mb-3 text-black o-hidden h-100">
               <div class="modal-body">
                 <p style="font-size: 10px;margin-top: 7px"><h6>Drug Dependency Form</h6></p>             
-                <button type="submit" class="btn btn-success" data-dismiss="modal" data-toggle="modal" data-target="#ddeForm" data-patientid="{{$pats->id}}">Proceed</button>
+                <button type="submit" class="btn btn-success" data-dismiss="modal" data-toggle="modal" data-target="#ddeForms" data-patientid="{{$pats->id}}">Proceed</button>
             </div>
           </div>
         </div>
@@ -497,17 +802,18 @@
   </div>
 </div>
 
-<div class=" modal2 fade" id="intakeForm" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<!--Intake Re-enroll Form-->
+<div class="modal2 fade" id="intakeForms" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
-      <div class="modal-content" style="width: 1000px;">
+      <div class="modal-content" style="width:1000px">
         <div class="modal-header">
           <h5 class="modal-title" id="exampleModalLabel">{{Auth::user()->user_department->department_name}} Department (Intake Form)</h5>
           <button class="close" type="button" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">×</span>
           </button>
         </div>
-<div class="container scrollAble2" style="margin-top: 30px">
-        <form action="{{URL::to('/reenrollpatientsave_intake')}}" method="post">
+        <div class="container scrollAble2" style="margin-top: 30px">
+          <form action="{{URL::to('/reenrollpatientsave_intake')}}" method="post">
           {{csrf_field()}}
           <fieldset style="margin-bottom: 30px">
             <legend style="color:white;text-indent: 20px;width:1100px;margin-bottom: 40px" class="bg bg-dark">Intake Information</legend>
@@ -902,11 +1208,12 @@
   </div>
 </div>
 
-<div class=" modal2 fade" id="ddeForm" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<!--DDE Form for Re-enrolling-->
+<div class=" modal2 fade" id="ddeForms" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
       <div class="modal-content" style="width: 1000px;">
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">{{Auth::user()->user_department->department_name}} Department (Drug Dependency Examination Report)</h5>
+          <h5 class="modal-title" id="exampleModalLabel">Drug Dependency Examination Report</h5>
           <button class="close" type="button" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">×</span>
           </button>
@@ -942,11 +1249,11 @@
                   <input type="number" id="age" class="form-control" placeholder="Age" required="required" autofocus="autofocus" name="age" value="{{\Carbon\Carbon::parse($pats->birthdate)->age}}">
                 </div>
               </div>
-              <div class="col-md-2">
+              <div class="col-md-3">
                 <div class="form-label-group">
                    <h6>Birthday*</h6>
                   <input type="date" id="bday" class="form-control" placeholder="Birthday" required="required" autofocus="autofocus" name="bday" value="{{$pats->birthdate}}">
-                  <input type="hidden" name="department" value="{{Auth::user()->user_department->id}}">
+                  <input type="hidden" id="department" name="department" value="{{Auth::user()->department}}">
                   <input type="hidden" name="patdepartment" value="{{$pats->department_id}}">
                   <input type="hidden" name="patient_id" value="{{$pats->id}}">
                   <input type="hidden" name="patientadd" value="{{$pats->address_id}}">
@@ -989,7 +1296,6 @@
                    <h6>Contact no.*</h6>
                   <input type="text" id="contact" class="form-control" placeholder="Contact No." required="required" name="contact" value="{{$pats->contact}}">
                   <input type="hidden" name="_token" value="{{csrf_token()}}">
-                  <input type="hidden" name="department" value="{{$pats->department_id}}">
               </div>
               </div>
               <div class="col-md-2">
@@ -1041,67 +1347,59 @@
         <fieldset>
         <legend style="color:white;text-indent: 20px;width:1100px;margin-bottom: 20px" class="bg bg-dark">General Information</legend>
         <div class="form-group" style="margin-left: 20px">
-            <div class="form-row">
-              <div class="col-md-4 mb-4">
-                <div class="form-label-group">
-                  <h6>Patient Type*</h6>
+          <div class="form-row">
+            <div class="col-md-4 mb-4">
+              <div class="form-label-group">
+               <h6>Patient Type*</h6>
                 <select class="form-control" id="ddeptype" placeholder="Patient Type" required="required" name="ddeptype">
+                    <option id="{{$pats->type->court_order}}" value="{{$pats->type->id}}" selected hidden>{{$pats->type->case_name}}</option> 
                   @foreach($case as $cases)
-                    @if($cases->case_name == $pats->type->case_name)
-                    <option  id="{{$cases->court_order}}" value="{{$cases->id}}" selected>{{$cases->case_name}}</option>
-                    @else
                     <option id="{{$cases->court_order}}" value="{{$cases->id}}">{{$cases->case_name}}</option>
-                    @endif
                   @endforeach
-                </select> 
+                </select>
                 </div>
               </div>
+              @if($pats->type->court_order != 0)
               <div class="col-md-4 mb-4">
-              @if($pats->type->court_order == 0)
-                <div class="form-label-group" id="ddetextb" style="display: none;">
-              @else
-                <div class="form-label-group" id="ddetextb">
-              @endif
+               <div class="form-label-group" id="ddetextas">
                   <h6>City Jail*</h6>
-                <select class="form-control" id="ddejail" placeholder="Patient Type" required="required" name="ddejail">
-              @if($pats->jail != NULL)
+                <select class="form-control" id="ddejail" placeholder="Patient Type" name="ddejail">
+                    <option value="{{$pats->jails->id}}" selected hidden>{{$pats->jails->name}}</option>
                 @foreach($jails as $jail)
-                  @if($jail->name == $pats->jails->name)
-                    <option value="{{$jail->id}}" selected>{{$jail->name}}</option>
-                  @else
-                    <option value="{{$jail->id}}">{{$jail->name}}</option>
-                  @endif
-                @endforeach
-              @else
-                @foreach($jails as $jail)
-                    <option value="" disabled selected hidden>City Jail</option>
                     <option value="{{$jail->id}}">{{$jail->name}}</option>
                 @endforeach
-              @endif
                 </select>
                 </div>
               </div>
               <div class="col-md-4 mb-4">
-              @if($pats->caseno != NULL)
-                @if($pats->type->court_order == 0)
-                <div class="form-label-group" id="ddetextas" style="display: none;">
-                @else
-                <div class="form-label-group" id="ddetextas">
-                @endif
+                <div class="form-label-group" id="ddetextb">
                   <h6>Case Number*</h6>
-                    <input type="text" id="ddecaseno" class="form-control" placeholder="Case Number" required="required" autofocus="autofocus" name="ddecaseno" value="{{$pats->caseno}}">
-                @else
-                <div class="form-label-group" id="ddetextas" style="display: none;">
-                  <h6>Case Number*</h6>
-                    <input type="text" id="ddecaseno" class="form-control" placeholder="Case Number" required="required" autofocus="autofocus" name="ddecaseno" value="">
-                </div>
-              @endif
+                    <input type="text" id="ddecaseno" class="form-control" placeholder="Case Number" autofocus="autofocus" name="ddecaseno" value="{{$pats->caseno}}">
                 </div>
               </div>
-            </div>
-            </div>
-        @if($patis != '[]')
-          <div class="form-group">
+              @else
+               <div class="col-md-4 mb-4">
+                <div class="form-label-group" id="ddetextas" style="display: none;">
+                  <h6>City Jail*</h6>
+                <select class="form-control" id="ddejail" placeholder="Patient Type" name="ddejail">
+                @foreach($jails as $jail)
+                    <option value="" disabled selected hidden>City Jail</option>
+                    <option value="{{$jail->id}}">{{$jail->name}}</option>
+                @endforeach
+                </select>
+                </div>
+              </div>
+              <div class="col-md-4 mb-4">
+                <div class="form-label-group" id="ddetextb" style="display: none;">
+                  <h6>Case Number*</h6>
+                    <input type="text" id="ddecaseno" class="form-control" placeholder="Case Number" autofocus="autofocus" name="ddecaseno" value="">
+                </div>
+              </div>
+              @endif
+          </div>
+        </div>
+         @if($patis != '[]')
+          <div class="form-group" style="margin-left: 20px">
               <div class='form-row'>
                 <div class="col-md-6">
                   <div class="card card-register mx-auto" style="margin-bottom: 20px">
@@ -1169,19 +1467,19 @@
           </div>
         </div>
       </div>
-          <div class="form-group">
+          <div class="form-group" style="margin-left: 20px">
             <div class="form-label-group">
               <h6>History of Present Illness*</h6>
               <textarea type="text" id="pillness" class="form-control" placeholder="Please Specify" name="pillness">{{$patin->h_present_illness}}</textarea>
             </div>
           </div>
-          <div class="form-group">
+          <div class="form-group" style="margin-left: 20px">
                 <div class="form-label-group">
                   <h6>History of Drug Used*</h6>
                   <textarea style="height: 120px" type="text" id="dused" class="form-control" placeholder="Please Specify" name="dused">{{$patin->h_drug_abuse}}</textarea>
               </div>
           </div>
-          <div class="form-group">
+          <div class="form-group" style="margin-left: 20px">
                 <div class="form-label-group">
                   <h6>Family/Personal Background*</h6>
                   <textarea style="height:200px" type="text" id="background" class="form-control" placeholder="Please Specify" name="background">{{$patin->famper_history}}</textarea>
@@ -1189,7 +1487,7 @@
           </div>
             @endforeach
           @elseif($patis == '[]')
-            <div class="form-group">
+            <div class="form-group" style="margin-left: 20px">
               <div class='form-row'>
                 <div class="col-md-6">
                   <div class="card card-register mx-auto" style="margin-bottom: 20px">
@@ -1256,30 +1554,33 @@
           </div>
         </div>
       </div>
-          <div class="form-group">
+          <div class="form-group" style="margin-left: 20px">
             <div class="form-label-group">
               <h6>History of Present Illness*</h6>
               <textarea type="text" id="pillness" class="form-control" placeholder="Please Specify" name="pillness"></textarea>
             </div>
           </div>
-          <div class="form-group">
+          <div class="form-group" style="margin-left: 20px">
                 <div class="form-label-group">
                   <h6>History of Drug Used*</h6>
                   <textarea style="height: 120px" type="text" id="dused" class="form-control" placeholder="Please Specify" name="dused"></textarea>
               </div>
           </div>
-          <div class="form-group">
+          <div class="form-group" style="margin-left: 20px">
                 <div class="form-label-group">
                   <h6>Family/Personal Background*</h6>
                   <textarea style="height:200px" type="text" id="background" class="form-control" placeholder="Please Specify" name="background"></textarea>
               </div>
           </div>
           @endif
-        </fieldset>
            <input style="width:200px;height:50px;float:right;margin-top: 10px;margin-bottom: 30px" class="btn btn-primary btn-block" type="submit" name="submit" value="Re-enroll">
-         </form>
+            </div>
+            </div>
+        </fieldset>
+      </form>
     </div>
     </div>
   </div>
 </div>
+
 @endsection

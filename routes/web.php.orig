@@ -193,7 +193,11 @@ Route::group(['middleware' =>'auth'], function()
 	 Route::post('/patientsave_dde', "PatientController@save_dde");
 
 	 Route::post('/reenrollsave_dde', "PatientController@reenrollsave_dde");
+<<<<<<< HEAD
 
+	 Route::post('/deletepatient', "PatientController@flagdelete");
+=======
+>>>>>>> c54175cd652da234c47e5ca33e1941c8ec97fbc2
 
 	 Route::post('/deletepatient', "PatientController@flagdelete");
 
@@ -249,8 +253,10 @@ Route::group(['middleware' =>'auth'], function()
 	 Route::any('/logs', "ViewController@showlogs");
 
 	 Route::any('/show_my_logs/{id}', "ViewController@show_my_logs");
-
+<<<<<<< HEAD
+=======
 	  Route::get('/create_service', "ServiceController@create_service");
+>>>>>>> c54175cd652da234c47e5ca33e1941c8ec97fbc2
 
 	 Route::post('/patientDismiss',"PatientController@dismiss_patient");
 
@@ -332,6 +338,11 @@ Route::group(['middleware' =>'auth'], function()
 	 Route::get('/file','UploadController@index');
 
 	 Route::post('/store','UploadController@store')->name('upload.file');
+<<<<<<< HEAD
+
+	 Route::get('/show','UploadController@show');
+=======
+>>>>>>> c54175cd652da234c47e5ca33e1941c8ec97fbc2
 
 	 Route::get('/show','UploadController@show');
 	 

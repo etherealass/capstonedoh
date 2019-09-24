@@ -462,7 +462,45 @@
     });
   });
 
-    $(function() {
+   $(function() {
+  $('select[id="sptype"]').on('click', function(){
+
+    if ($(this).children(":selected").attr("id") == '1') {
+      document.getElementById("scaseno").disabled = false;
+      document.getElementById("sjail").disabled = false;
+      $('#stextas').show();
+      $('#stextb').show();
+    }
+    else{
+      document.getElementById("scaseno").disabled = true;
+      document.getElementById("sjail").disabled = true;
+      $('#stextas').hide();
+      $('#stextb').hide();
+    }
+
+    });
+  });
+
+   $(function() {
+  $('select[id="patype"]').on('click', function(){
+
+    if ($(this).children(":selected").attr("id") == '1') {
+      document.getElementById("caseno").disabled = false;
+      document.getElementById("jail").disabled = false;
+      $('#textes').show();
+      $('#textc').show();
+    }
+    else{
+      document.getElementById("caseno").disabled = true;
+      document.getElementById("jail").disabled = true;
+      $('#textes').hide();
+      $('#textc').hide();
+    }
+
+    });
+  });
+
+$(function() {
   $('select[id="ddeptype"]').on('click', function(){
 
     if ($(this).children(":selected").attr("id") == '1') {
@@ -476,6 +514,25 @@
       document.getElementById("ddejail").disabled = true;
       $('#ddetextas').hide();
       $('#ddetextb').hide();
+    }
+
+    });
+  });
+
+$(function() {
+  $('select[id="ddes"]').on('click', function(){
+
+    if ($(this).children(":selected").attr("id") == '1') {
+      document.getElementById("ddecas").disabled = false;
+      document.getElementById("ddejs").disabled = false;
+      $('#ddets').show();
+      $('#ddetes').show();
+    }
+    else{
+      document.getElementById("ddecas").disabled = true;
+      document.getElementById("ddejs").disabled = true;
+      $('#ddets').hide();
+      $('#ddetes').hide();
     }
 
     });

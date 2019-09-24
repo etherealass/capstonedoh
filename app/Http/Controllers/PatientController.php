@@ -99,7 +99,7 @@ class PatientController extends Controller
         $pid = 0;
         $pat = Patients::where('id',$id)->get();
         $patos = Patient_Intake_Information::where('patient_id',$id)->get();
-        $patis = Patient_Information::where('patient_id',$id)->get();
+        $patis = Patient_Information::with('informants')->where('patient_id',$id)->get();
         $roles = User_roles::all();
         $deps = Departments::all();
         $users = Users::find(Auth::user()->id);
@@ -190,6 +190,7 @@ class PatientController extends Controller
         $stat = 0;
         $pat = Patients::where('id',$id)->get();
         $patos = Patient_Intake_Information::where('patient_id',$id)->with('eperson')->get();
+        $patis = Patient_Information::with('informants')->where('patient_id',$id)->get();
         $roles = User_roles::all();
         $deps = Departments::all();
         $users = Users::find(Auth::user()->id);
@@ -202,6 +203,8 @@ class PatientController extends Controller
         $notes = Doctors_Progress_Notes::where('patient_id',$id)->get();
         $files = Files::all();
         $patient_note = ProgressNotes::where('patient_id', $id)->get();
+        $case = Case_Type::where('flag',NULL)->get();
+        $jails = City_Jails::where('flag',NULL)->get();
                 $interven = Interventions::where('parent', 0)->get();
         $childInterven = Interventions::where('parent', '!=', 0)->get();
 
@@ -210,15 +213,16 @@ class PatientController extends Controller
             return view('superadmin.viewpatient')->with('roles' , $roles)->with('deps',$deps)->with('pat' ,$pat)->with('users',$users)->with('pid',$pid)->with('transfers',$transfers)->with('transfer',$transfer)->with('history',$history)->with('stat',$stat)->with('graduates',$graduates)->with('gid',$gid)->with('graduate',$graduate)->with('reasons',$reasons)->with('patos',$patos)->with('notes',$notes)->with('patient_notes', $patient_note)->with('intv', $interven)->with('childIntervens', $childInterven)->with('files',$files);
         }
         else if(Auth::user()->user_role()->first()->name == 'Admin'){
+            return view('admin.viewpatient')->with('roles' , $roles)->with('deps',$deps)->with('pat' ,$pat)->with('users',$users)->with('pid',$pid)->with('transfers',$transfers)->with('transfer',$transfer)->with('history',$history)->with('graduate',$graduate)->with('reasons',$reasons)->with('patos',$patos)->with('notes',$notes)->with('case',$case)->with('jails',$jails)->with('patis',$patis);
             return view('admin.viewpatient')->with('roles' , $roles)->with('deps',$deps)->with('pat' ,$pat)->with('users',$users)->with('pid',$pid)->with('transfers',$transfers)->with('transfer',$transfer)->with('history',$history)->with('graduate',$graduate)->with('reasons',$reasons)->with('patos',$patos)->with('notes',$notes)->with('patient_notes', $patient_note)->with('intv', $interven)->with('childIntervens', $childInterven)->with('files',$files);
         
         }   
         else if(Auth::user()->user_role()->first()->name == 'Social Worker'){
-           
+            return view('socialworker.viewpatient')->with('roles' , $roles)->with('deps',$deps)->with('pat' ,$pat)->with('users',$users)->with('pid',$pid)->with('transfers',$transfers)->with('transfer',$transfer)->with('history',$history)->with('graduate',$graduate)->with('reasons',$reasons)->with('patos',$patos)->with('notes',$notes)->with('case',$case)->with('jails',$jails)->with('patis',$patis);
             return view('socialworker.viewpatient')->with('roles' , $roles)->with('deps',$deps)->with('pat' ,$pat)->with('users',$users)->with('pid',$pid)->with('transfers',$transfers)->with('transfer',$transfer)->with('history',$history)->with('graduate',$graduate)->with('reasons',$reasons)->with('patos',$patos)->with('notes',$notes)->with('patient_notes', $patient_note)->with('intv', $interven)->with('childIntervens', $childInterven)->with('files',$files);
         }
         else if(Auth::user()->user_role()->first()->name == 'Doctor'){
-            
+            return view('doctor.viewpatient')->with('roles' , $roles)->with('deps',$deps)->with('pat' ,$pat)->with('users',$users)->with('pid',$pid)->with('transfer',$transfer)->with('history',$history)->with('reasons',$reasons)->with('graduate',$graduate)->with('patos',$patos)->with('notes',$notes)->with('case',$case)->with('jails',$jails)->with('patis',$patis);
             return view('doctor.viewpatient')->with('roles' , $roles)->with('deps',$deps)->with('pat' ,$pat)->with('users',$users)->with('pid',$pid)->with('transfer',$transfer)->with('history',$history)->with('reasons',$reasons)->with('graduate',$graduate)->with('patos',$patos)->with('notes',$notes)->with('patient_notes', $patient_note)->with('intv', $interven)->with('childIntervens', $childInterven)->with('files',$files);
         }
 }
@@ -529,9 +533,18 @@ class PatientController extends Controller
         Patients::where('id',$request->input('patient_id'))->update(['birthdate' => $request->input('bday')]);
         Patients::where('id',$request->input('patient_id'))->update(['civil_status' => $request->input('civils')]);
         Patients::where('id',$request->input('patient_id'))->update(['department_id' => $request->input('department')]);
-        Patients::where('id',$request->input('patient_id'))->update(['patient_type' => $request->input('ptype')]);
-        Patients::where('id',$request->input('patient_id'))->update(['caseno' => $request->input('caseno')]);
-        Patients::where('id',$request->input('patient_id'))->update(['jail' => $request->input('jail')]);
+
+        if($request->input('sptype') == NULL){
+            Patients::where('id',$request->input('patient_id'))->update(['patient_type' => $request->input('ptype')]);
+            Patients::where('id',$request->input('patient_id'))->update(['caseno' => $request->input('caseno')]);
+            Patients::where('id',$request->input('patient_id'))->update(['jail' => $request->input('jail')]);
+        }
+        elseif($request->input('ptype') == NULL){
+            Patients::where('id',$request->input('patient_id'))->update(['patient_type' => $request->input('sptype')]);
+            Patients::where('id',$request->input('patient_id'))->update(['caseno' => $request->input('scaseno')]);
+            Patients::where('id',$request->input('patient_id'))->update(['jail' => $request->input('sjail')]);
+        }
+
         Patients::where('id',$request->input('patient_id'))->update(['status' => 'Enrolled']);
         date_default_timezone_set('Asia/Singapore');
         Patients::where('id',$request->input('patient_id'))->update(['date_admitted' => date('M-j-Y g:i A')]);
@@ -546,7 +559,9 @@ class PatientController extends Controller
             'email' => $request->input('emeremail'),
         ]);
 
+
         $emergency_people->save();
+
 
         $emers = Emergency_Persons::where('emergency_id',$emer)->get();
 
@@ -571,7 +586,9 @@ class PatientController extends Controller
         ]);
 
             $patient_intake_info->save();  
-
+        
+        if($request->input('edvalue') != 1){
+        
         $depart = Departments::where('id', $request->input('department'))->get();
 
         foreach($depart as $deppy)
@@ -592,6 +609,7 @@ class PatientController extends Controller
         $logs->save();
 
         date_default_timezone_set('Asia/Singapore');
+        $nhistory->save();
 
         $nhistory = new Patient_History([
             'date' => date('M-j-Y g:i A'),
@@ -609,7 +627,46 @@ class PatientController extends Controller
 
         return back();
 
+        }
+        elseif($request->input('edvalue') == 1){
 
+        $depart = Departments::where('id', $request->input('department'))->get();
+
+        foreach($depart as $deppy)
+        {
+            $name = $deppy->department_name;
+        }
+
+        date_default_timezone_set('Asia/Singapore');
+
+        $logs = new Logs([
+            'performer_id' => Auth::user()->id,
+            'type' => 'Patient ' .$request->input('fvalue'). ' Edited',
+            'action' => 'Edited Patient no. '.$request->input('patient_id'). " 's ".$request->input('fvalue'),
+            'date_time' => date('M-j-Y g:i A'),
+            'department_id' => Auth::user()->department,
+        ]);
+
+        $logs->save();
+
+        date_default_timezone_set('Asia/Singapore');
+
+        $nhistory = new Patient_History([
+            'date' => date('M-j-Y g:i A'),
+            'patient_id' => $request->input('patient_id'),
+            'by' => Auth::user()->id,
+            'type' => $request->input('fvalue').' Edited ',
+            'from_dep' => $request->input('patdepartment'),
+            'to_dep' => $request->input('department'),
+        ]);
+
+        $nhistory->save();
+
+        Session::flash('alert-class', 'success'); 
+        flash($request->input('fvalue'). ' Edited', '')->overlay();
+
+        return back();
+            }
         }
         else{
 
@@ -633,9 +690,18 @@ class PatientController extends Controller
         Patients::where('id',$request->input('patient_id'))->update(['birthdate' => $request->input('bday')]);
         Patients::where('id',$request->input('patient_id'))->update(['civil_status' => $request->input('civils')]);
         Patients::where('id',$request->input('patient_id'))->update(['department_id' => $request->input('department')]);
-        Patients::where('id',$request->input('patient_id'))->update(['patient_type' => $request->input('ptype')]);
-        Patients::where('id',$request->input('patient_id'))->update(['caseno' => $request->input('caseno')]);
-        Patients::where('id',$request->input('patient_id'))->update(['jail' => $request->input('jail')]);
+        
+        if($request->input('sptype') == NULL){
+            Patients::where('id',$request->input('patient_id'))->update(['patient_type' => $request->input('ptype')]);
+            Patients::where('id',$request->input('patient_id'))->update(['caseno' => $request->input('caseno')]);
+            Patients::where('id',$request->input('patient_id'))->update(['jail' => $request->input('jail')]);
+        }
+        elseif($request->input('ptype') == NULL){
+            Patients::where('id',$request->input('patient_id'))->update(['patient_type' => $request->input('sptype')]);
+            Patients::where('id',$request->input('patient_id'))->update(['caseno' => $request->input('scaseno')]);
+            Patients::where('id',$request->input('patient_id'))->update(['jail' => $request->input('sjail')]);
+        }
+
         Patients::where('id',$request->input('patient_id'))->update(['status' => 'Enrolled']);
         date_default_timezone_set('Asia/Singapore');
         Patients::where('id',$request->input('patient_id'))->update(['date_admitted' => date('M-j-Y g:i A')]);
@@ -654,6 +720,8 @@ class PatientController extends Controller
          Emergency_Persons::where('id',$request->input('emergency_id'))->update(['relationship' => $request->input('emerelation')]);
         Emergency_Persons::where('id',$request->input('emergency_id'))->update(['email' => $request->input('emeremail')]);
 
+    if($request->input('edvalue') != 1){
+        
         $depart = Departments::where('id', $request->input('department'))->get();
 
         foreach($depart as $deppy)
@@ -690,6 +758,47 @@ class PatientController extends Controller
         flash('Patient Re-enrolled', '')->overlay();
 
         return back();
+
+        }
+        elseif($request->input('edvalue') == 1){
+
+        $depart = Departments::where('id', $request->input('department'))->get();
+
+        foreach($depart as $deppy)
+        {
+            $name = $deppy->department_name;
+        }
+
+        date_default_timezone_set('Asia/Singapore');
+
+        $logs = new Logs([
+            'performer_id' => Auth::user()->id,
+            'type' => 'Patient ' .$request->input('fvalue'). ' Edited',
+            'action' => 'Edited Patient no. '.$request->input('patient_id'). " 's ".$request->input('fvalue'),
+            'date_time' => date('M-j-Y g:i A'),
+            'department_id' => Auth::user()->department,
+        ]);
+
+        $logs->save();
+
+        date_default_timezone_set('Asia/Singapore');
+
+        $nhistory = new Patient_History([
+            'date' => date('M-j-Y g:i A'),
+            'patient_id' => $request->input('patient_id'),
+            'by' => Auth::user()->id,
+            'type' => $request->input('fvalue').' Edited ',
+            'from_dep' => $request->input('patdepartment'),
+            'to_dep' => $request->input('department'),
+        ]);
+
+        $nhistory->save();
+
+        Session::flash('alert-class', 'success'); 
+        flash($request->input('fvalue'). ' Edited', '')->overlay();
+
+        return back();
+        }
 
         }
 
@@ -727,9 +836,17 @@ class PatientController extends Controller
             Patients::where('id',$request->input('patient_id'))->update(['nationality' => $request->input('nation')]);
             Patients::where('id',$request->input('patient_id'))->update(['contact' => $request->input('contact')]);
             Patients::where('id',$request->input('patient_id'))->update(['department_id' => $request->input('department')]);
+
+        if($request->input('ddes') == NULL){
             Patients::where('id',$request->input('patient_id'))->update(['patient_type' => $request->input('ddeptype')]);
             Patients::where('id',$request->input('patient_id'))->update(['caseno' => $request->input('ddecaseno')]);
             Patients::where('id',$request->input('patient_id'))->update(['jail' => $request->input('ddejail')]);
+        }
+        else if($request->input('ddetype') == NULL){
+            Patients::where('id',$request->input('patient_id'))->update(['patient_type' => $request->input('ddes')]);
+            Patients::where('id',$request->input('patient_id'))->update(['caseno' => $request->input('ddecas')]);
+            Patients::where('id',$request->input('patient_id'))->update(['jail' => $request->input('ddejs')]);
+        }
             Patients::where('id',$request->input('patient_id'))->update(['status' => 'Enrolled']);
             date_default_timezone_set('Asia/Singapore');
             Patients::where('id',$request->input('patient_id'))->update(['date_admitted' => date('M-j-Y g:i A')]);
@@ -763,6 +880,8 @@ class PatientController extends Controller
             ]);
 
             $information->save();
+
+        if($request->input('edvalue') != 1){
 
             $depart = Departments::where('id', $request->input('department'))->get();
 
@@ -800,7 +919,46 @@ class PatientController extends Controller
             flash('Patient Re-enrolled', '')->overlay();
 
             return back();
+        }
+        elseif($request->input('edvalue') == 1){
 
+        $depart = Departments::where('id', $request->input('department'))->get();
+
+        foreach($depart as $deppy)
+        {
+            $name = $deppy->department_name;
+        }
+
+        date_default_timezone_set('Asia/Singapore');
+
+        $logs = new Logs([
+            'performer_id' => Auth::user()->id,
+            'type' => 'Patient ' .$request->input('fvalue'). ' Edited',
+            'action' => 'Edited Patient no. '.$request->input('patient_id'). " 's ".$request->input('fvalue'),
+            'date_time' => date('M-j-Y g:i A'),
+            'department_id' => Auth::user()->department,
+        ]);
+
+        $logs->save();
+
+        date_default_timezone_set('Asia/Singapore');
+
+        $nhistory = new Patient_History([
+            'date' => date('M-j-Y g:i A'),
+            'patient_id' => $request->input('patient_id'),
+            'by' => Auth::user()->id,
+            'type' => $request->input('fvalue').' Edited ',
+            'from_dep' => $request->input('patdepartment'),
+            'to_dep' => $request->input('department'),
+        ]);
+
+        $nhistory->save();
+
+        Session::flash('alert-class', 'success'); 
+        flash($request->input('fvalue'). ' Edited', '')->overlay();
+
+        return back();
+        }
 
         }
 
@@ -831,9 +989,18 @@ class PatientController extends Controller
         Patients::where('id',$request->input('patient_id'))->update(['nationality' => $request->input('nation')]);
         Patients::where('id',$request->input('patient_id'))->update(['contact' => $request->input('contact')]);
         Patients::where('id',$request->input('patient_id'))->update(['department_id' => $request->input('department')]);
-        Patients::where('id',$request->input('patient_id'))->update(['patient_type' => $request->input('ddeptype')]);
-        Patients::where('id',$request->input('patient_id'))->update(['caseno' => $request->input('ddecaseno')]);
-        Patients::where('id',$request->input('patient_id'))->update(['jail' => $request->input('ddejail')]);
+        
+       if($request->input('ddes') == NULL){
+            Patients::where('id',$request->input('patient_id'))->update(['patient_type' => $request->input('ddeptype')]);
+            Patients::where('id',$request->input('patient_id'))->update(['caseno' => $request->input('ddecaseno')]);
+            Patients::where('id',$request->input('patient_id'))->update(['jail' => $request->input('ddejail')]);
+        }
+        else if($request->input('ddetype') == NULL){
+            Patients::where('id',$request->input('patient_id'))->update(['patient_type' => $request->input('ddes')]);
+            Patients::where('id',$request->input('patient_id'))->update(['caseno' => $request->input('ddecas')]);
+            Patients::where('id',$request->input('patient_id'))->update(['jail' => $request->input('ddejs')]);
+        }
+
         Patients::where('id',$request->input('patient_id'))->update(['status' => 'Enrolled']);
         date_default_timezone_set('Asia/Singapore');
         Patients::where('id',$request->input('patient_id'))->update(['date_admitted' => date('M-j-Y g:i A')]);
@@ -849,6 +1016,47 @@ class PatientController extends Controller
         Patient_Informant::where('id',$request->input('informant_id'))->update(['address' => $request->input('infoadd')]);
         Patient_Informant::where('id',$request->input('informant_id'))->update(['contact' => $request->input('infocontact')]);
 
+       if($request->input('edvalue') != 1){
+
+            $depart = Departments::where('id', $request->input('department'))->get();
+
+            foreach($depart as $deppy)
+            {
+                $name = $deppy->department_name;
+            }
+
+            date_default_timezone_set('Asia/Singapore');
+
+            $logs = new Logs([
+                'performer_id' => Auth::user()->id,
+                'type' => 'Patient Re-enrolled',
+                'action' => 'Re-enrolled Patient no. '.$request->input('patient_id'). ' to '.$name.' Department ',
+                'date_time' => date('M-j-Y g:i A'),
+                'department_id' => Auth::user()->department,
+            ]);
+
+            $logs->save();
+
+            date_default_timezone_set('Asia/Singapore');
+
+            $nhistory = new Patient_History([
+                'date' => date('M-j-Y g:i A'),
+                'patient_id' => $request->input('patient_id'),
+                'by' => Auth::user()->id,
+                'type' => 'Re-enrolled',
+                'from_dep' => $request->input('patdepartment'),
+                'to_dep' => $request->input('department'),
+            ]);
+
+            $nhistory->save();
+
+            Session::flash('alert-class', 'success'); 
+            flash('Patient Re-enrolled', '')->overlay();
+
+            return back();
+        }
+        elseif($request->input('edvalue') == 1){
+
         $depart = Departments::where('id', $request->input('department'))->get();
 
         foreach($depart as $deppy)
@@ -860,8 +1068,8 @@ class PatientController extends Controller
 
         $logs = new Logs([
             'performer_id' => Auth::user()->id,
-            'type' => 'Patient Re-enrolled',
-            'action' => 'Re-enrolled Patient no. '.$request->input('patient_id'). ' to '.$name.' Department ',
+            'type' => 'Patient ' .$request->input('fvalue'). ' Edited',
+            'action' => 'Edited Patient no. '.$request->input('patient_id'). " 's ".$request->input('fvalue'),
             'date_time' => date('M-j-Y g:i A'),
             'department_id' => Auth::user()->department,
         ]);
@@ -874,7 +1082,7 @@ class PatientController extends Controller
             'date' => date('M-j-Y g:i A'),
             'patient_id' => $request->input('patient_id'),
             'by' => Auth::user()->id,
-            'type' => 'Re-enrolled',
+            'type' => $request->input('fvalue').' Edited ',
             'from_dep' => $request->input('patdepartment'),
             'to_dep' => $request->input('department'),
         ]);
@@ -882,9 +1090,10 @@ class PatientController extends Controller
         $nhistory->save();
 
         Session::flash('alert-class', 'success'); 
-        flash('Patient Re-enrolled', '')->overlay();
+        flash($request->input('fvalue'). ' Edited', '')->overlay();
 
         return back();
+        }
 
         }
 
@@ -1271,6 +1480,7 @@ class PatientController extends Controller
             'patient_id' => $request->input('patientid'),
             'by' => Auth::user()->id,
             'type' => 'Dismissed',
+            'from_dep' => $request->input('patientdep'),
             'to_dep' => $request->input('patientdep'),
             'remarks'=> $rem,
         ]);
@@ -1306,7 +1516,7 @@ class PatientController extends Controller
         
         date_default_timezone_set('Asia/Singapore');
 
-        $patientdep = Patients::with('departments')->where('id', $request->input('patientdep'))->get();
+        $patientdep = Patients::with('departments')->where('id', $request->input('patientid'))->get();
 
         foreach($patientdep as $patd)
         {
@@ -1460,12 +1670,13 @@ class PatientController extends Controller
             'patient_id' => $id,
             'by' => Auth::user()->id,
             'type' => 'Graduated',
+            'from_dep' => $did,
             'to_dep' => $did,
         ]);
 
         $nhistory->save();
 
-        $pid = 0;
+        $pid = 0;   
         $pat = Patients::where('id',$id)->get();
         $roles = User_roles::all();
         $deps = Departments::all();
@@ -1475,19 +1686,22 @@ class PatientController extends Controller
         $history = Patient_History::where('patient_id',$id)->get();
         $notes = Doctors_Progress_Notes::where('patient_id',$id)->get();
         $patos = Patient_Intake_Information::where('patient_id',$id)->get();
+        $patis = Patient_Information::with('informants')->where('patient_id',$id)->get();
         $reasons = Dismissal_Reason::all();
+        $case = Case_Type::where('flag',NULL)->get();
+        $jails = City_Jails::where('flag',NULL)->get();
 
         Session::flash('alert-class', 'success'); 
         flash('Patient Graduated', '')->overlay();
 
         if(Auth::user()->user_role()->first()->name == 'Superadmin'){
-            return view('superadmin.viewpatient')->with('roles' , $roles)->with('deps',$deps)->with('pat' ,$pat)->with('users',$users)->with('pid',$pid)->with('transfer',$transfer)->with('history',$history)->with('graduate',$graduate)->with('notes',$notes)->with('patos',$patos)->with('reasons',$reasons);
+            return view('superadmin.viewpatient')->with('roles' , $roles)->with('deps',$deps)->with('pat' ,$pat)->with('users',$users)->with('pid',$pid)->with('transfer',$transfer)->with('history',$history)->with('graduate',$graduate)->with('notes',$notes)->with('patos',$patos)->with('reasons',$reasons)->with('patis',$patis)->with('case',$case)->with('jails',$jails);
         }
         else if(Auth::user()->user_role()->first()->name == 'Admin'){
-            return view('admin.viewpatient')->with('roles' , $roles)->with('deps',$deps)->with('pat' ,$pat)->with('users',$users)->with('pid',$pid)->with('transfer',$transfer)->with('history',$history)->with('graduate',$graduate)->with('notes',$notes)->with('patos',$patos)->with('reasons',$reasons);
+            return view('admin.viewpatient')->with('roles' , $roles)->with('deps',$deps)->with('pat' ,$pat)->with('users',$users)->with('pid',$pid)->with('transfer',$transfer)->with('history',$history)->with('graduate',$graduate)->with('notes',$notes)->with('patos',$patos)->with('reasons',$reasons)->with('patis',$patis)->with('case',$case)->with('jails',$jails);
         }
         else if(Auth::user()->user_role()->first()->name == 'Social Worker'){
-            return view('socialworker.viewpatient')->with('roles' , $roles)->with('deps',$deps)->with('pat' ,$pat)->with('users',$users)->with('pid',$pid)->with('transfer',$transfer)->with('history',$history)->with('graduate',$graduate)->with('notes',$notes)->with('patos',$patos)->with('reasons',$reasons);
+            return view('socialworker.viewpatient')->with('roles' , $roles)->with('deps',$deps)->with('pat' ,$pat)->with('users',$users)->with('pid',$pid)->with('transfer',$transfer)->with('history',$history)->with('graduate',$graduate)->with('notes',$notes)->with('patos',$patos)->with('reasons',$reasons)->with('patis',$patis)->with('case',$case)->with('jails',$jails);
         }
     }
 
@@ -1519,6 +1733,7 @@ class PatientController extends Controller
             'patient_id' => $id,
             'by' => Auth::user()->id,
             'type' => 'Graduate Request Declined',
+            'from_dep' => $did,
             'to_dep' => $did,
         ]);
 
@@ -1534,19 +1749,22 @@ class PatientController extends Controller
         $history = Patient_History::where('patient_id',$id)->get();
         $notes = Doctors_Progress_Notes::where('patient_id',$id)->get();
         $patos = Patient_Intake_Information::where('patient_id',$id)->get();
+        $patis = Patient_Information::with('informants')->where('patient_id',$id)->get();
         $reasons = Dismissal_Reason::all();
+        $case = Case_Type::where('flag',NULL)->get();
+        $jails = City_Jails::where('flag',NULL)->get();
 
         Session::flash('alert-class', 'danger'); 
         flash('Declined Request', '')->overlay();
 
         if(Auth::user()->user_role()->first()->name == 'Superadmin'){
-            return view('superadmin.viewpatient')->with('roles' , $roles)->with('deps',$deps)->with('pat' ,$pat)->with('users',$users)->with('pid',$pid)->with('transfer',$transfer)->with('history',$history)->with('graduate',$graduate)->with('reasons',$reasons)->with('notes',$notes)->with('patos',$patos);
+            return view('superadmin.viewpatient')->with('roles' , $roles)->with('deps',$deps)->with('pat' ,$pat)->with('users',$users)->with('pid',$pid)->with('transfer',$transfer)->with('history',$history)->with('graduate',$graduate)->with('reasons',$reasons)->with('notes',$notes)->with('patos',$patos)->with('patis',$patis)->with('case',$case)->with('jails',$jails);
         }
         else if(Auth::user()->user_role()->first()->name == 'Admin'){
-            return view('admin.viewpatient')->with('roles' , $roles)->with('deps',$deps)->with('pat' ,$pat)->with('users',$users)->with('pid',$pid)->with('transfer',$transfer)->with('history',$history)->with('graduate',$graduate)->with('reasons',$reasons)->with('notes',$notes)->with('patos',$patos);
+            return view('admin.viewpatient')->with('roles' , $roles)->with('deps',$deps)->with('pat' ,$pat)->with('users',$users)->with('pid',$pid)->with('transfer',$transfer)->with('history',$history)->with('graduate',$graduate)->with('reasons',$reasons)->with('notes',$notes)->with('patos',$patos)->with('patis',$patis)->with('case',$case)->with('jails',$jails);
         }
         else if(Auth::user()->user_role()->first()->name == 'Social Worker'){
-            return view('socialworker.viewpatient')->with('roles' , $roles)->with('deps',$deps)->with('pat' ,$pat)->with('users',$users)->with('pid',$pid)->with('transfer',$transfer)->with('history',$history)->with('graduate',$graduate)->with('reasons',$reasons)->with('notes',$notes)->with('patos',$patos);
+            return view('socialworker.viewpatient')->with('roles' , $roles)->with('deps',$deps)->with('pat' ,$pat)->with('users',$users)->with('pid',$pid)->with('transfer',$transfer)->with('history',$history)->with('graduate',$graduate)->with('reasons',$reasons)->with('notes',$notes)->with('patos',$patos)->with('patis',$patis)->with('case',$case)->with('jails',$jails);
         }
     }
 

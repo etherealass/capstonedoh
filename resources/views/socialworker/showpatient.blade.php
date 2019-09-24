@@ -57,7 +57,7 @@
                     @if($pats->flag != 'deleted')    
                   <tr>
                     <td>{{$pats->fname}} {{$pats->mname}}. {{$pats->lname}}</td>
-                    <td>{{$pats->age}}</td>
+                    <td>{{\Carbon\Carbon::parse($pats->birthdate)->age}}</td>
                     <td>{{$pats->birthdate}}</td>
                     <td>{{$pats->address->street}},{{$pats->address->barangay}},{{$pats->address->city}}</td>
                     <td>{{$pats->departments->department_name}} Department</td>
@@ -71,7 +71,7 @@
                     @if($pats->flag != 'deleted')
                   <tr>
                     <td>{{$pats->fname}} {{$pats->mname}}. {{$pats->lname}}</td>
-                    <td>{{$pats->age}}</td>
+                    <td>{{\Carbon\Carbon::parse($pats->birthdate)->age}}</td>
                     <td>{{$pats->birthdate}}</td>
                     <td>{{$pats->address->street}},{{$pats->address->barangay}},{{$pats->address->city}}</td>
                     <td>{{$pats->departments->department_name}} Department</td>
@@ -86,7 +86,7 @@
                     @if($pats->flag != 'deleted')
                   <tr>
                     <td>{{$pats->fname}} {{$pats->mname}}. {{$pats->lname}}</td>
-                    <td>{{$pats->age}}</td>
+                    <td>{{\Carbon\Carbon::parse($pats->birthdate)->age}}</td>
                     <td>{{$pats->birthdate}}</td>
                     <td>{{$pats->address->street}},{{$pats->address->barangay}},{{$pats->address->city}}</td>
                     <td>{{$pats->departments->department_name}} Department</td>

@@ -130,7 +130,7 @@ class LoginController extends Controller
         return view('superadmin.index', compact('chart'))->with('roles',$roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('graduate',$graduate)->with('pat',$pat)->with('patx',$patx)->with('patz',$patz);
       }
       else if(Auth::user()->user_role()->first()->name == 'Admin'){
-         return view('admin.index')->with('roles',$roles)->with('deps',$deps)->with('userss',$userss);
+        return view('superadmin.index', compact('chart'))->with('roles',$roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('graduate',$graduate)->with('pat',$pat)->with('patx',$patx)->with('patz',$patz);
       }
       else if(Auth::user()->user_role()->first()->name == 'Social Worker'){
          return view('socialworker.index')->with('roles',$roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer);

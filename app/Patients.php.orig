@@ -26,7 +26,6 @@ class Patients extends Model
         return $this->belongsTo('App\Address','address_id');
     }
 
-<<<<<<< HEAD
     public function type()
     {
         return $this->belongsTo('App\Case_Type','patient_type');
@@ -37,6 +36,7 @@ class Patients extends Model
         return $this->belongsTo('App\City_Jails','jail');
     }
 
+<<<<<<< HEAD
 =======
     public function deps()
     {
@@ -51,5 +51,5 @@ class Patients extends Model
     }
 
 
->>>>>>> b935257a14684c80abbdab61d08ebb3503584b04
+>>>>>>> c54175cd652da234c47e5ca33e1941c8ec97fbc2
 }

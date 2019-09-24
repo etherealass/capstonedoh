@@ -2,7 +2,7 @@
 @section('content')
 
         <!-- Breadcrumbs-->
-        <ol class="breadcrumb">
+        <ol class="breadcrumb"> 
           <li class="breadcrumb-item">
             <a href="{{URL::to('/profile')}}">Dashboard</a>
           </li>
@@ -12,7 +12,7 @@
           <li class="breadcrumb-item active">Fill up</li>
         </ol>
 
-        <!-- Icon Cards-->
+        <!-- Icon Cards--> 
     <div class="container" style="margin-top: 30px">
         <p style="font-size:50px;margin-bottom: 20px">Drug Dependency Examination Report</p>
         <form action="{{URL::to('/patientsave_dde')}}" method="post">
@@ -158,7 +158,7 @@
                 </div>
               </div>
               <div class="col-md-4 mb-4">
-                <div class="form-label-group" id="text" style="display: none;">
+                <div class="form-label-group" id="textb" style="display: none;">
                   <h6>Case Number*</h6>
                     <input type="text" id="caseno" class="form-control" placeholder="Case Number" required="required" autofocus="autofocus" name="caseno" value="">
                 </div>

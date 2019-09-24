@@ -65,28 +65,21 @@ class DatabaseSeeder extends Seeder
                 'description' => 'Aftercare'
          ]);
 
-         DB::table('case__types')->insert([
-                'case_id' => rand(),
-                'case_name' => 'Voluntary Submission',
-                'court_order' => 0
-
-         ]);
-         DB::table('case__types')->insert([
-                'case_id' => rand(),
-                'case_name' => 'Voluntary with Court Order',
-                'court_order' => 1
-                
-         ]);
-         DB::table('case__types')->insert([
-                'case_id' => rand(),
-                'case_name' => 'Plea Bargain',
-                'court_order' => 1
-                
-         ]);
-
 
         $user = new Users([
             'user_id' => rand(),
+<<<<<<< HEAD
+    		'fname' => 'Erol',
+    		'lname' => 'Branzuela',
+    		'username' => 'Superadmin',
+    		'password' => Hash::make('erol'),
+    		'contact' => '09561137482',
+    		'email' => 'erolbranzuela@ymail.com',
+    		'role' => '1',
+    	]);
+
+    	$user->save();
+=======
             'fname' => 'Erol',
             'lname' => 'Branzuela',
             'username' => 'Superadmin',
@@ -97,5 +90,6 @@ class DatabaseSeeder extends Seeder
         ]);
 
         $user->save();
+>>>>>>> c54175cd652da234c47e5ca33e1941c8ec97fbc2
     }
 }

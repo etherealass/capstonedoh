@@ -25,7 +25,7 @@
               <div class="col-md-4 mb-4">
                 <div class="form-label-group" style="margin-top: 20px">
                   <h6>Patient Type*</h6>
-                <select class="form-control" id="ptype" placeholder="Patient Type" required="required" name="ptype" style="margin-left: 20px">
+                <select class="form-control" id="patype" placeholder="Patient Type" required="required" name="ptype" style="margin-left: 20px">
                   @foreach($case as $cases)
                     <option value="" disabled selected hidden>Patient Type</option>
                     <option id="{{$cases->court_order}}" value="{{$cases->id}}">{{$cases->case_name}}</option>
@@ -34,7 +34,7 @@
                 </div>
               </div>
               <div class="col-md-4 mb-4">
-                <div class="form-label-group" id="textas" style="display: none;margin-top: 20px">
+                <div class="form-label-group" id="textes" style="display: none;margin-top: 20px">
                   <h6>City Jail*</h6>
                 <select class="form-control" id="jail" placeholder="Patient Type" required="required" name="jail" style="margin-left: 20px">
                 @foreach($jails as $jail)
@@ -45,7 +45,7 @@
                 </div>
               </div>
               <div class="col-md-3 mb-4">
-                <div class="form-label-group" id="text" style="display: none;margin-top: 20px">
+                <div class="form-label-group" id="textc" style="display: none;margin-top: 20px">
                   <h6>Case Number*</h6>
                     <input type="text" id="caseno" class="form-control" placeholder="Case Number" required="required" autofocus="autofocus" name="caseno" value="" style="margin-left: 20px">
                 </div>
