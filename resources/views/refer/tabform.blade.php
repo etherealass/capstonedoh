@@ -1,7 +1,5 @@
 
-
-                      <!--modal for Refer Button-->
-  <div class="modal fade" id="linkEditorModal" aria-hidden="true" >
+<div class="modal fade" id="linkEditorModal" aria-hidden="true" >
           <div class="modal-dialog">
                   <div class="modal-content"  style="width:980px;">
                               <div class="modal-header">

@@ -2930,6 +2930,9 @@ $("#btn-save").click(function (e) {
             data: formData,
             dataType: 'json',
             success: function (data) {
+
+              $(".odd").remove();
+
                 var link = '<tr id="refer' + data.id + '"><td>' + data.ref_date + '</td><td>' + data.ref_at + '</td><td>' + data.ref_reason + '</td><td>' + data.ref_by + '</td>';
                 link += '<td><button class="btn btn-info edit-refer-modal" value="' + data.id + '">Edit</button>';
                 link += '<button class="btn btn-secondary accept_patient_referal" id="btn-accept" name ="btn-accept" value="' + data.id + '">Accept</button>';

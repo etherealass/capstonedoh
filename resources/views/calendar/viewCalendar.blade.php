@@ -8,14 +8,14 @@
    <div class="card-header" style="background-color: #343a40;color:white"><h6>Calendar</h6></div>
    <center>
     <div class="card-body">
-    	<div class="col-md-10">
-	   <div id='calendar'></div>
-	</div>
-	</center>
+      <div class="col-md-10">
+     <div id='calendar'></div>
+  </div>
+  </center>
     </div>
 
   </div>
-</div>	</center>
+</div>  </center>
 
 @endsection
 

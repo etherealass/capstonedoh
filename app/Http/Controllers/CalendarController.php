@@ -42,7 +42,7 @@ class CalendarController extends Controller
        $transfer = Transfer_Requests::all();
       
 
-       return view('calendar.viewCalendar')->with('roles',$roles)->with('deps',$deps)->with('users',$users)->with('graduate',$graduate)->with('transfer',$transfer);;
+       return view('calendar.viewCalendar')->with('roles',$roles)->with('deps',$deps)->with('users',$users)->with('graduate',$graduate)->with('transfer',$transfer);
 
    }
 

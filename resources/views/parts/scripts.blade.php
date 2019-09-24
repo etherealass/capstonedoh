@@ -18,8 +18,6 @@
 
   
   <script src="{{asset('vendor/multi-select/js/jquery.multi-select.js')}}"></script>
-
-  <script src="{{asset('vendor/fullcalendar/fullcalendar.min.js')}}"></script> 
  
   <!-- Page level plugin JavaScript-->
   <script src="{{asset('vendor/chart.js/Chart.min.js')}}"></script>
