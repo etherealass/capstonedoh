@@ -19,6 +19,7 @@ use App\Events;
 use App\Patients;
 use App\Refers;
 use App\ProgressNotes;
+use App\DentalNotes;
 
 use Hash;
 use Session;
@@ -40,6 +41,15 @@ class ReferController extends Controller
 
          $socialworker = ProgressNotes::create($request->all());
          return Response::json($socialworker);
+
+    }
+
+ public function addDentalNotes(Request $request)
+    {
+
+
+         $dentalnotes = DentalNotes::create($request->all());
+         return Response::json($dentalnotes);
 
     }
 

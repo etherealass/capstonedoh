@@ -229,6 +229,9 @@ Route::group(['middleware' =>'auth'], function()
 
 
 	Route::post('/addsocialworkernotes', "ReferController@addsocialworkernotes");
+	Route::post('/addDentalNotes', "ReferController@addDentalNotes");
+
+
 
 
 

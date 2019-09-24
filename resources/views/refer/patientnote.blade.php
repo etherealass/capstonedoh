@@ -107,7 +107,7 @@ section .section-title {
                             </thead>
                           <tbody>
                               @foreach ($patient_notes as $patient_note)
-                             @if($patient_note->role_type == "psychiatrist")
+                             @if($patient_note->role_type == "nurse")
                               <tr id="{{$patient_note->id}}">
                                     <td>{{$patient_note->date_time}}</td>
                                     <td>{{$patient_note->servicex->name}}</td>
@@ -123,6 +123,7 @@ section .section-title {
                      </div>
              </div>
           </div>
+
 
     <!--Dental-->
           <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">
@@ -143,6 +144,18 @@ section .section-title {
                             </tr>
                             </thead>
                           <tbody>
+                              @foreach ($DentalNotes as $dental_notes)
+                               <tr id="{{$patient_note->id}}">
+                                    <td>{{$dental_notes->date_time}}</td>
+                                    <td>{{$dental_notes->diagnose}}</td>
+                                    <td>{{$dental_notes->tooth_no}}</td>
+                                    <td>{{$dental_notes->service_rendered}}</td>
+                                    <td></td>
+                                    <td>{{$dental_notes->remarks}}</td>  
+                                </tr>
+
+                              @endforeach
+
                           </tbody>
                         </table>
                      </div>
@@ -410,31 +423,34 @@ section .section-title {
                          <div class="form-group">
                                 <div class="form-label-group">
                                   <h6>Tooth No.</h6>
-                                  <input style="width:30%;" type="textbox" id="Diagnosis" class="form-control" placeholder="Description" required="required" name="Diagnosis">
+                                  <input style="width:30%;" type="number" id="tooth_no" class="form-control" placeholder="Description" required="required" name="tooth_no">
                                 </div>
                             </div>
                         <div class="form-group">
                                 <div class="form-label-group">
                                   <h6>Diagnosis</h6>
-                                  <input style="height:100px;word-wrap: break-word;" type="textbox" id="Diagnosis" class="form-control" placeholder="Description" required="required" name="Diagnosis">
+                                  <input style="height:100px;word-wrap: break-word;" type="textbox" id="diagnosis" class="form-control" placeholder="Description" required="required" name="diagnosis">
                                 </div>
                             </div>
                             <div class="form-group">
                                 <div class="form-label-group">
                                   <h6>Service Rendered</h6>
-                                  <input style="height:100px;word-wrap: break-word;" type="textbox" id="Diagnosis" class="form-control" placeholder="Description" required="required" name="Diagnosis">
+                                  <input style="height:100px;word-wrap: break-word;" type="textbox" id="service_rendered" class="form-control" placeholder="Service Rendered" required="required" name="service_rendered">
                                 </div>
                               </div>
                             <div class="form-group">
                                         <h6>Remarks</h6>
-                                           <textarea style="margin-left:0px;height: 150px;width:760px;margin-bottom: 10px;word-wrap: break-word;" type="text" id="note" class="form-control" placeholder="Note" name="note" required="required"></textarea>
+                                           <textarea style="margin-left:0px;height: 150px;width:760px;margin-bottom: 10px;word-wrap: break-word;" type="text" id="remarks" class="form-control" placeholder="Note" name="remarks" required="required"></textarea>
                                   </div>
 
                         </div>
                        </form>
                   <div class="modal-footer">
-                                  <button type="button" class="btn btn-primary" id="btn-save" name ="btn-save" value="add">Save changes
+                                  <button type="button" class="btn btn-primary" id="btn-save-dentalServices" name ="btn-save" value="add">Save changes
                                   </button>
+                                  <input type="hidden" id="patient_id" name="patient_id" value="{{$pats->id}}">
+                                  <input type="hidden" id="note_by" name="note_by" value="{{Auth::user()->id}}">
+                                  <input type="hidden" id="creator_role" name="creator_role" value="social_worker">
                   </div>
           </div>
       </div>
@@ -463,7 +479,7 @@ section .section-title {
 
                                   <div class="form-group">
                                         <h6>Notes</h6>
-                                           <textarea style="margin-left:0px;height: 150px;width:760px;margin-bottom: 10px" type="text" id="notes" class="form-control" placeholder="Note" name="notes" required="required"></textarea>
+                                           <textarea style="margin-left:0px;height: 150px;width:760px;margin-bottom: 10px" type="text" id="socialworkerNote" class="form-control" placeholder="Note" name="socialworkerNote" required="required"></textarea>
                                   </div>
 
 
@@ -529,3 +545,5 @@ section .section-title {
                   </div>
           </div>
   </div>
+
+  

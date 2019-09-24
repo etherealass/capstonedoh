@@ -1587,11 +1587,12 @@ $today = $year . '-' . $month . '-' . $day;
 
 @include('refer.patientnote')
 
-          @include('refer.tabform')
           
 </div>
 
-          
+    
+         <!--   @include('refer.tabform')-->
+     
 
 <div class="modal fade" id="patientDismiss" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -1629,6 +1630,7 @@ $today = $year . '-' . $month . '-' . $day;
       </div>
     </div>
 </div>
+
 
 <div class="modal fade" id="admintransferPatient" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -3478,6 +3480,74 @@ $('#addSocialWorkerNotes').click(function () {
     
   });
 
+$("#btn-save").click(function (e) {
+
+  alert('sample');
+
+  console.log('sample');
+
+  /*
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+            
+        });
+        e.preventDefault();
+         var formData = {
+            patient_id: $('#patient_id').val(),
+            ref_date:  $('#refDate').val(),
+            ref_at: $('#refAt').val(),
+            ref_reason:  $('#reason').val(),
+            ref_by:  $('#refby').val(),
+            recommen:  $('#ref_recom').val(),
+            contact_person:  $('#contactPer').val(),
+            ref_back_date:  $('#refDateback').val(),
+            ref_back_by:  $('#refbyback').val(),
+            ref_slip_return:  $('#returnDate').val(),
+
+        };
+
+        console.log(formData);
+       var state = $('#btn-save').val();
+
+       var type = "POST";
+        var id = $('#id').val();
+        var ajaxurl = '{{URL::to("/refers")}}';
+        if (state == "update") {
+            type = "PUT";
+            ajaxurl = '{{URL::to("/refers")}}'+ '/' + id;
+            console.log(ajaxurl);
+        }
+        $.ajax({
+            type: type,
+            url: ajaxurl,
+            data: formData,
+            dataType: 'json',
+            success: function (data) {
+
+              $(".odd").remove();
+
+                var link = '<tr id="refer' + data.id + '"><td>' + data.ref_date + '</td><td>' + data.ref_at + '</td><td>' + data.ref_reason + '</td><td>' + data.ref_by + '</td>';
+                link += '<td><button class="btn btn-info edit-refer-modal" value="' + data.id + '">Edit</button>';
+                link += '<button class="btn btn-secondary accept_patient_referal" id="btn-accept" name ="btn-accept" value="' + data.id + '">Accept</button>';
+                 link += '<button class="btn btn-light print-link" id="btn-ptint" name ="btn-print" value="' + data.id + '">Print</button>';
+                
+                if (state == "add") {
+                    $('#links-list').append(link);
+                } else {
+                    $("#refer" + id).replaceWith(link);
+                }
+    
+                $('#modalFormData').trigger("reset");
+                $('#linkEditorModal').modal('hide')
+        },
+           error: function (data) {
+                console.log('Error:', data);
+            }
+
+        });*/
+      });
 
 $("#btn-save-socialworker").click(function (e) {
    
@@ -3501,7 +3571,7 @@ $("#btn-save-socialworker").click(function (e) {
             date_time: dateTime,
             service_id: $('#patientList').val(),
             note_by: $('#note_by').val(),
-            notes: $('#notes').val(),
+            notes: $('#socialworkerNote').val(),
             role_type: "socialworker"
         };
 
@@ -3519,8 +3589,8 @@ $("#btn-save-socialworker").click(function (e) {
             success: function (data) {
                
 
-                $('#modalFormData').trigger("reset");
-                $('#linkEditorModal').modal('hide')
+                $('#AddSocialWorkerFormData').trigger("reset");
+                $('#AddSocialWorkerNotesModal').modal('hide')
         },
            error: function (data) {
                 console.log('Error:', data);
@@ -3579,6 +3649,63 @@ $("#btn-save-psychiatristnotes").click(function (e) {
         });
 
 });
+
+
+$("#btn-save-dentalServices").click(function (e) {
+   
+
+ $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+            
+        });
+
+     var today = new Date();
+    var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+    var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+    var dateTime = date+' '+time;
+
+   
+ var formData = {
+  
+            patient_id: $('#patient_id').val(),
+            date_time: dateTime,
+            note_by: $('#note_by').val(),
+            tooth_no: $('#tooth_no').val(),
+            diagnose: $('#diagnosis').val(),
+            service_rendered: $('#service_rendered').val(),
+            remarks: $('#remarks').val()
+
+        };
+
+
+        var type = "POST";
+        var id = $('#id').val();
+        var ajaxurl = '{{URL::to("/addDentalNotes")}}';
+
+
+
+     $.ajax({
+            type: type,
+            url: ajaxurl,
+            data: formData,
+            dataType: 'json',
+            success: function (data) {
+
+                $('#AddDentalFormData').trigger("reset");
+                $('#AddDentalNotesModal').modal('hide')
+        },
+           error: function (data) {
+                console.log('Error:', data);
+            }
+
+        });
+
+});
+
+
+
 
 
 
@@ -3738,68 +3865,7 @@ $('body').on('click', '.edit-refer-modal', function () {
 
 
 
-$("#btn-save").click(function (e) {
-        $.ajaxSetup({
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            }
-            
-        });
-        e.preventDefault();
-         var formData = {
-            patient_id: $('#patient_id').val(),
-            ref_date:  $('#refDate').val(),
-            ref_at: $('#refAt').val(),
-            ref_reason:  $('#reason').val(),
-            ref_by:  $('#refby').val(),
-            recommen:  $('#ref_recom').val(),
-            contact_person:  $('#contactPer').val(),
-            ref_back_date:  $('#refDateback').val(),
-            ref_back_by:  $('#refbyback').val(),
-            ref_slip_return:  $('#returnDate').val(),
 
-        };
-
-        console.log(formData);
-       var state = $('#btn-save').val();
-
-       var type = "POST";
-        var id = $('#id').val();
-        var ajaxurl = '{{URL::to("/refers")}}';
-        if (state == "update") {
-            type = "PUT";
-            ajaxurl = '{{URL::to("/refers")}}'+ '/' + id;
-            console.log(ajaxurl);
-        }
-        $.ajax({
-            type: type,
-            url: ajaxurl,
-            data: formData,
-            dataType: 'json',
-            success: function (data) {
-
-              $(".odd").remove();
-
-                var link = '<tr id="refer' + data.id + '"><td>' + data.ref_date + '</td><td>' + data.ref_at + '</td><td>' + data.ref_reason + '</td><td>' + data.ref_by + '</td>';
-                link += '<td><button class="btn btn-info edit-refer-modal" value="' + data.id + '">Edit</button>';
-                link += '<button class="btn btn-secondary accept_patient_referal" id="btn-accept" name ="btn-accept" value="' + data.id + '">Accept</button>';
-                 link += '<button class="btn btn-light print-link" id="btn-ptint" name ="btn-print" value="' + data.id + '">Print</button>';
-                
-                if (state == "add") {
-                    $('#links-list').append(link);
-                } else {
-                    $("#refer" + id).replaceWith(link);
-                }
-    
-                $('#modalFormData').trigger("reset");
-                $('#linkEditorModal').modal('hide')
-        },
-           error: function (data) {
-                console.log('Error:', data);
-            }
-
-        });
-      });
 
   })
 
