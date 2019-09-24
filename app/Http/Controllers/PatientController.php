@@ -96,6 +96,7 @@ class PatientController extends Controller
 
     public function viewpatient($id)
     {   
+        
         $pid = 0;
         $pat = Patients::where('id',$id)->get();
         $patos = Patient_Intake_Information::where('patient_id',$id)->get();

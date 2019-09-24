@@ -41,14 +41,14 @@ $today = $year . '-' . $month . '-' . $day;
           @if($pats->department_id != Auth::user()->department || Auth::user()->user_role->first()->name == 'Superadmin')
             @foreach($transfers as $trans)
               @if($trans->status == "")   
-        <ol class="breadcrumb" style="height: 100px;font-size:50px;text-align: center">
+    <ol class="breadcrumb" style="height: 100px;font-size:50px;text-align: center">
           <li class="breadcrumb-item active" style=""><i class="fas fa-fw fa fa-user"></i>Patient Information</li>
           <a href="{{URL::to('transfer_patient_now/'.$pats->id.'/'.$trans->to_department.'/'.$trans->transfer_id.'/'.$pid)}}" class="btn btn-primary" style="margin-left:550px;height: 60px;width: 100px;margin-top: 10px"><p style="margin-top: 10px">Enroll</p></a>
-        </ol>
+    </ol>
               @elseif(Auth::user()->department == $pats->department_id || Auth::user()->user_role->first()->name == 'Superadmin')
-          <ol class="breadcrumb" style="height: 100px;font-size:50px;text-align: center">
+    <ol class="breadcrumb" style="height: 100px;font-size:50px;text-align: center">
           <li class="breadcrumb-item active" style=""><i class="fas fa-fw fa fa-user"></i>Patient Information</li>
-          </ol>
+    </ol>
             @endif
             @endforeach
 
@@ -148,12 +148,13 @@ $today = $year . '-' . $month . '-' . $day;
       
         <!-- Tabss-->
           <div class="row" style="margin-left: 0px;">
-          <div>
+
+
           <div class="col-md-12">
              <ul class="sidebar navbar-nav" style="background-color:white;border-radius: 5rem;">
               <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical" style="border-radius: 5rem">
                 <li class="nav-item active"  id="v-pills-home-tab" data-toggle="pill" href="#v-pills-home" role="tab" aria-controls="v-pills-home" aria-selected="true" style="margin-top: 10px;border-radius: 10px">
-                  <a class="nav-link active bg-dark" id="v-pills-home-tab" data-toggle="pill" href="#v-pills-home" role="tab" aria-controls="v-pills-home" aria-selected="true" style="color:white;margin-bottom: 5px;height: 45px;text-align: center;border-radius: 5px"><h6><span>Information</span></h6></a>
+                  <a class="nav-link active bg-dark" id="v-pills-home-tab" data-toggle="pill" href="#v-pills-home" role="tab" aria-controls="v-pills-home" aria-selected="true" style="color:white;margin-bottom: 5px;height: 45px;text-align: center;border-radius: 5px"><h6><span>101 Information</span></h6></a>
                 </li>
                 <li class="nav-item" id="v-pills-profile-tab" data-toggle="pill" href="#v-pills-profile" role="tab" aria-controls="v-pills-profile" aria-selected="false" style="">
                   <a class="nav-link bg-dark" id="v-pills-profile-tab" data-toggle="pill" href="#v-pills-profile" role="tab" aria-controls="v-pills-profile" aria-selected="false" style="color:white;margin-bottom: 5px;height: 45px;text-align: center;border-radius: 5px"><h6><span>Refer</span></h6></a>
@@ -170,73 +171,85 @@ $today = $year . '-' . $month . '-' . $day;
                 <li class="nav-item" id="v-pills-dde-tab" data-toggle="pill" href="#v-pills-dde" role="tab" aria-controls="v-pills-dde" aria-selected="false" style="">
                   <a class="nav-link bg-dark" id="v-pills-dde-tab" data-toggle="pill" href="#v-pills-dde" role="tab" aria-controls="v-pills-dde" aria-selected="false" style="color:white;margin-bottom: 5px;height: 75px;text-align: center;border-radius: 5px"><h6><span>Drug Dependency Examination</span></h6></a>
                 </li>
+                @if($pats->department_id == 1)
+                  <li class="nav-item" id="v-pills-patientnote-tab" data-toggle="pill" href="#v-pills-patientnote" role="tab" aria-controls="v-pills-patientnote" aria-selected="false">
+                  <a class="nav-link bg-dark" id="v-pills-patientnote-tab" data-toggle="pill" href="#v-pills-patientnote" role="tab" aria-controls="v-pills-note" aria-selected="false" style="color:white;margin-bottom: 5px;height: 65px;text-align: center;border-radius: 5px"><h6><span>Patients Notes</span></h6></a>
+                </li>
+                @else
                 <li class="nav-item" id="v-pills-doctornote-tab" data-toggle="pill" href="#v-pills-doctornote" role="tab" aria-controls="v-pills-doctornote" aria-selected="false">
                   <a class="nav-link bg-dark" id="v-pills-doctornote-tab" data-toggle="pill" href="#v-pills-doctornote" role="tab" aria-controls="v-pills-doctornote" aria-selected="false" style="color:white;margin-bottom: 5px;height: 65px;text-align: center;border-radius: 5px"><h6><span>Doctor's Progress Notes</span></h6></a>
                 </li>
+                @endif
+               
               </div>
             </ul>
           </div>
-        </div>
+
+
+        <!--Tabs -->
             <div class="col-md-9" style="margin-top: 10px">
+
               <div class="tab-content" id="v-pills-tabContent" >
                 <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">
-                  <fieldset style="margin-bottom: 30px;margin-left: 0px;border:solid thin gray;border-radius: 10px">
-                       <legend style="color:white;text-indent: 20px;width:900px;margin-bottom: 20px;border-radius: 5px" class="bg bg-dark">Graduate Remarks</legend>
-                  <div class="container" style="margin-left: 10px">
-                    <div class="row">
-                      <div class="col-md-2">
-                        @foreach($graduates as $grads)
-                        <p style="font-size: 8px"><h6>{{$grads->remarks}}</h6></p>
-                        @endforeach
-                      </div>
-                   </div>
-                 </div>
-                </fieldset>
-                   <fieldset style="margin-bottom: 30px;margin-left: 0px;border:solid thin gray;border-radius: 10px">
-                       <legend style="color:white;text-indent: 20px;width:900px;margin-bottom: 20px;border-radius: 5px" class="bg bg-dark">Personal Information</legend>
-                    <div class="container" style="margin-left: 10px">
-                      <div class="row">
-                        <div class="col-md-2">
-                          <p style="font-size: 8px"><h6>Name:</h6><span>{{$pats->fname}} {{$pats->mname}}. {{$pats->lname}}</span></p>
+                    <fieldset style="margin-bottom: 30px;margin-left: 0px;border:solid thin gray;border-radius: 10px">
+                          <legend style="color:white;text-indent: 20px;width:900px;margin-bottom: 20px;border-radius: 5px" class="bg bg-dark">Graduate Remarks</legend>
+                        <div class="container" style="margin-left: 10px">
+                          <div class="row">
+                            <div class="col-md-2">
+                              @foreach($graduates as $grads)
+                              <p style="font-size: 8px"><h6>{{$grads->remarks}}</h6></p>
+                              @endforeach
+                            </div>
                          </div>
-                       <div class="col-md-2">
-                          <p style="font-size: 8px"><h6>Date of Birth:</h6> {{$pats->birthdate}}</p>
-                       </div>
-                      <div class="col-md-4">
-                        <p style="font-size: 8px"><h6>Address:</h6> {{$pats->address->street}} {{$pats->address->barangay}} {{$pats->address->city}}</p>
-                      </div>
-                      <div class="col-md-2">
-                       <p style="font-size: 8px"><h6>Marital Status:</h6> {{$pats->civil_status}}</p>
-                      </div>
-                      <div class="col-md-1">
-                         <p style="font-size: 8px"><h6>Age:</h6> {{$pats->age}}</p>
-                      </div>
-                      @if($pats->birthorder != NULL)
-                      @if($pats->birthorder != 'NULL')
-                      <div class="col-md-2">
-                        <p style="font-size: 8px"><h6>Birth Order:</h6> {{$pats->birthorder}}</p>
+                        </div>
+                    </fieldset>
+                  
+                    <fieldset style="margin-bottom: 30px;margin-left: 0px;border:solid thin gray;border-radius: 10px">
+                         <legend style="color:white;text-indent: 20px;width:900px;margin-bottom: 20px;border-radius: 5px" class="bg bg-dark">1212 Personal Information</legend>
+                      <div class="container" style="margin-left: 10px">
+                        <div class="row">
+                            <div class="col-md-2">
+                              <p style="font-size: 8px"><h6>Name:</h6><span>{{$pats->fname}} {{$pats->mname}}. {{$pats->lname}}</span></p>
+                             </div>
+                         <div class="col-md-2">
+                            <p style="font-size: 8px"><h6>Date of Birth:</h6> {{$pats->birthdate}}</p>
+                         </div>
+                        <div class="col-md-4">
+                          <p style="font-size: 8px"><h6>Address:</h6> {{$pats->address->street}} {{$pats->address->barangay}} {{$pats->address->city}}</p>
+                        </div>
+                        <div class="col-md-2">
+                         <p style="font-size: 8px"><h6>Marital Status:</h6> {{$pats->civil_status}}</p>
+                        </div>
+                        <div class="col-md-1">
+                           <p style="font-size: 8px"><h6>Age:</h6> {{$pats->age}}</p>
+                        </div>
+                        @if($pats->birthorder != NULL)
+                        @if($pats->birthorder != 'NULL')
+                        <div class="col-md-2">
+                          <p style="font-size: 8px"><h6>Birth Order:</h6> {{$pats->birthorder}}</p>
+                        </div>
+                        @endif
+                      @if($pats->contact != 'NULL')
+                      <div class="col-md-3">
+                        <p style="font-size: 8px"><h6>Contact Number:</h6> {{$pats->contact}}</p>
                       </div>
                       @endif
-                    @if($pats->contact != 'NULL')
-                    <div class="col-md-3">
-                      <p style="font-size: 8px"><h6>Contact Number:</h6> {{$pats->contact}}</p>
+                      @if($pats->nationality != 'NULL')
+                      <div class="col-md-2">
+                        <p style="font-size: 8px"><h6>Nationality:</h6> {{$pats->nationality}}</p>
+                      </div>
+                     @endif
+                      @if($pats->religion != 'NULL')
+                      <div class="col-md-2"> 
+                       <p style="font-size: 8px"><h6>Religion:</h6> {{$pats->religion}}</p>
+                      </div>
+                      @endif
+                      @endif
                     </div>
-                    @endif
-                    @if($pats->nationality != 'NULL')
-                    <div class="col-md-2">
-                      <p style="font-size: 8px"><h6>Nationality:</h6> {{$pats->nationality}}</p>
-                    </div>
-                   @endif
-                  @if($pats->religion != 'NULL')
-                   <div class="col-md-2"> 
-                     <p style="font-size: 8px"><h6>Religion:</h6> {{$pats->religion}}</p>
                   </div>
-                 @endif
-                @endif
-                  </div>
-                </div>
-                </fieldset>
-                 <fieldset style="margin-bottom: 30px;margin-left: 0px;border:solid thin gray;border-radius: 10px">
+
+                  </fieldset>
+                  <fieldset style="margin-bottom: 30px;margin-left: 0px;border:solid thin gray;border-radius: 10px">
                     <legend style="color:white;text-indent: 20px;width:900px;margin-bottom: 20px;border-radius: 5px" class="bg bg-dark">General Information</legend>
                     <div class="container" style="margin-left: 10px">
                       <div class="row">
@@ -263,6 +276,61 @@ $today = $year . '-' . $month . '-' . $day;
                     </div>
                   </fieldset>
                 </div>
+              </div>
+
+        
+
+              <div class="tab-pane fade" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">
+              
+                      <button id="add-patient-refer" name="add-patient-refer" class="btn btn-dark btn-block" style="height: 50px; width:200px;float: right;margin-top: 0px;margin-left: 120px">Refer Patient</button>
+                        <br>
+                        <br>
+                      
+                        <div class="card-body" style="margin-left: 10px">
+                          <div class="table-responsive">
+                              <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                <thead>
+                                  <tr>
+                                    <th>Date</th>
+                                    <th>Refer At</th>
+                                    <th>Reason of Referal</th>
+                                    <th>Refered by</th>
+                                    <th>Action</th>
+                                  </tr>
+                                </thead>
+                                <tbody id="links-list" name="links-list">
+                                    @foreach ($refers as $refer)
+                                    <tr id="refer{{$refer->id}}">
+                                    <td>{{$refer->ref_date}}</td>
+                                    <td>{{$refer->ref_at}}</td>
+                                    <td>{{$refer->ref_reason}}</td>
+                                    <td>{{$refer->ref_by}}</td>
+                              <td>
+                                @if($refer->accepted_by)
+                                <button class="btn btn-info view-refer-patient-modal" value="{{$refer->id}}">View
+                                  </button>
+                                  <button class="btn btn-light print-link" id="btn-print" name ="btn-print" value="{{$refer->id}}">Print
+                                  </button>
+
+                                @else
+                                  <button class="btn btn-info edit-refer-modal" value="{{$refer->id}}">Edit
+                                  </button>
+                                  <button class="btn btn-secondary accept_patient_referal" id="btn-accept" name ="btn-accept" value="{{$refer->id}}">Accept
+                                  </button>
+                                  <button class="btn btn-light print-link" id="btn-ptint" name ="btn-print" value="{{$refer->id}}">Print
+                                  </button>
+                                @endif 
+                              </td>
+                          </tr>
+                          @endforeach
+                                </tbody>
+                              </table>
+                            </div>
+                          </div>
+                 </div>
+
+
+
                 <div class="tab-pane fade" id="v-pills-history" role="tabpanel" aria-labelledby="v-pills-history-tab">
                   <fieldset style="margin-bottom: 30px;margin-left: 0px;border:solid thin gray;border-radius: 10px">
                     <legend style="color:white;text-indent: 20px;width:900px;margin-bottom: 20px;border-radius: 5px" class="bg bg-dark">Patient History</legend>
@@ -304,6 +372,9 @@ $today = $year . '-' . $month . '-' . $day;
                      </div>
                 </fieldset>
                 </div>
+
+
+
                <div class="tab-pane fade" id="v-pills-doctornote" role="tabpanel" aria-labelledby="v-pills-doctornote-tab">
                   <fieldset style="margin-bottom: 30px;margin-left: 0px;border:solid thin gray;border-radius: 10px">
                     <legend style="color:white;text-indent: 20px;width:900px;margin-bottom: 20px;border-radius: 5px" class="bg bg-dark">Doctor's Progress Notes </legend>
@@ -337,7 +408,60 @@ $today = $year . '-' . $month . '-' . $day;
                       </div>
                      </div>
                 </fieldset>
-                </div>
+              </div>
+
+
+          <div class="tab-pane fade" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">
+                 <!-- <fieldset style="margin-bottom: 30px;margin-left: 0px;">-->
+              
+                      <button id="add-patient-refer" name="add-patient-refer" class="btn btn-dark btn-block" style="height: 50px; width:200px;float: right;margin-top: 0px;margin-left: 120px">Refer Patient</button>
+                        <br>
+                        <br>
+                      
+                        <div class="card-body" style="margin-left: 10px">
+                          <div class="table-responsive">
+                              <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                <thead>
+                                  <tr>
+                                    <th>Date</th>
+                                    <th>Refer At</th>
+                                    <th>Reason of Referal</th>
+                                    <th>Refered by</th>
+                                    <th>Action</th>
+                                  </tr>
+                                </thead>
+                                <tbody id="links-list" name="links-list">
+                                    @foreach ($refers as $refer)
+                                    <tr id="refer{{$refer->id}}">
+                                    <td>{{$refer->ref_date}}</td>
+                                    <td>{{$refer->ref_at}}</td>
+                                    <td>{{$refer->ref_reason}}</td>
+                                    <td>{{$refer->ref_by}}</td>
+                              <td>
+                                @if($refer->accepted_by)
+                                <button class="btn btn-info view-refer-patient-modal" value="{{$refer->id}}">View
+                                  </button>
+                                  <button class="btn btn-light print-link" id="btn-print" name ="btn-print" value="{{$refer->id}}">Print
+                                  </button>
+
+                                @else
+                                  <button class="btn btn-info edit-refer-modal" value="{{$refer->id}}">Edit
+                                  </button>
+                                  <button class="btn btn-secondary accept_patient_referal" id="btn-accept" name ="btn-accept" value="{{$refer->id}}">Accept
+                                  </button>
+                                  <button class="btn btn-light print-link" id="btn-ptint" name ="btn-print" value="{{$refer->id}}">Print
+                                  </button>
+                                @endif 
+                              </td>
+                          </tr>
+                          @endforeach
+                                </tbody>
+                              </table>
+                            </div>
+                          </div>
+  </div>
+
+
         <div class="tab-pane fade" id="v-pills-intake" role="tabpanel" aria-labelledby="v-pills-intake-tab">
           <fieldset style="margin-bottom: 10px;margin-left: 0px;border:solid thin gray;border-radius: 10px">
             <legend style="color:white;text-indent: 20px;width:900px;margin-bottom: 10px;border-radius: 5px" class="bg bg-dark">Intake Form </legend>
@@ -414,6 +538,8 @@ $today = $year . '-' . $month . '-' . $day;
             </div>
           </fieldset>
       </div>
+
+
         <div class="tab-pane fade" id="v-pills-dde" role="tabpanel" aria-labelledby="v-pills-dde-tab">
             <fieldset style="margin-bottom: 30px;margin-left: 0px;border:solid thin gray;border-radius: 10px">
               <legend style="color:white;text-indent: 20px;width:900px;margin-bottom: 20px;border-radius: 5px" class="bg bg-dark">Drug Dependency Examination Report</legend>
@@ -809,9 +935,17 @@ $today = $year . '-' . $month . '-' . $day;
                 <li class="nav-item" id="v-pills-dde-tab" data-toggle="pill" href="#v-pills-dde" role="tab" aria-controls="v-pills-dde" aria-selected="false" style="">
                   <a class="nav-link bg-dark" id="v-pills-dde-tab" data-toggle="pill" href="#v-pills-dde" role="tab" aria-controls="v-pills-dde" aria-selected="false" style="color:white;margin-bottom: 5px;height: 75px;text-align: center;border-radius: 5px"><h6><span>Drug Dependency Examination</span></h6></a>
                 </li>
+
+
+                   @if($pats->department_id == 1)
+                  <li class="nav-item" id="v-pills-patientnote-tab" data-toggle="pill" href="#v-pills-patientnote" role="tab" aria-controls="v-pills-patientnote" aria-selected="false">
+                  <a class="nav-link bg-dark" id="v-pills-patientnote-tab" data-toggle="pill" href="#v-pills-patientnote" role="tab" aria-controls="v-pills-note" aria-selected="false" style="color:white;margin-bottom: 5px;height: 65px;text-align: center;border-radius: 5px"><h6><span>Patients Notes</span></h6></a>
+                </li>
+                @else
                 <li class="nav-item" id="v-pills-doctornote-tab" data-toggle="pill" href="#v-pills-doctornote" role="tab" aria-controls="v-pills-doctornote" aria-selected="false">
                   <a class="nav-link bg-dark" id="v-pills-doctornote-tab" data-toggle="pill" href="#v-pills-doctornote" role="tab" aria-controls="v-pills-doctornote" aria-selected="false" style="color:white;margin-bottom: 5px;height: 65px;text-align: center;border-radius: 5px"><h6><span>Doctor's Progress Notes</span></h6></a>
                 </li>
+                @endif
                 <!--<li class="nav-item" id="v-pills-docu-tab" data-toggle="pill" href="#v-pills-docu" role="tab" aria-controls="v-pills-docu" aria-selected="false">
                   <a class="nav-link bg-dark" id="v-pills-docu-tab" data-toggle="pill" href="#v-pills-docu" role="tab" aria-controls="v-pills-docu" aria-selected="false" style="color:white;margin-bottom: 10px;height: 50px;text-align: center;border-radius: 5px""><h6>File Documents</h6></a>
                 </li>-->
@@ -823,7 +957,7 @@ $today = $year . '-' . $month . '-' . $day;
               <div class="tab-content" id="v-pills-tabContent" >
                 <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">
                    <fieldset style="margin-bottom: 30px;margin-left: 0px;border:solid thin gray;border-radius: 10px">
-                       <legend style="color:white;text-indent: 20px;width:900px;margin-bottom: 20px;border-radius: 5px" class="bg bg-dark">Personal Information</legend>
+                       <legend style="color:white;text-indent: 20px;width:900px;margin-bottom: 20px;border-radius: 5px" class="bg bg-dark"> Personal Information</legend>
                     <div class="container" style="margin-left: 0px">
                       <div class="row">
                         <div class="col-md-3">
@@ -946,6 +1080,7 @@ $today = $year . '-' . $month . '-' . $day;
                      </div>
                 </fieldset>
                 </div>
+
                 <div class="tab-pane fade" id="v-pills-doctornote" role="tabpanel" aria-labelledby="v-pills-doctornote-tab">
                   <fieldset style="margin-bottom: 30px;margin-left: 0px;border:solid thin gray;border-radius: 10px">
                     <legend style="color:white;text-indent: 20px;width:900px;margin-bottom: 20px;border-radius: 5px" class="bg bg-dark">Doctor's Progress Notes </legend>
@@ -980,7 +1115,83 @@ $today = $year . '-' . $month . '-' . $day;
                      </div>
                 </fieldset>
                 </div>
-        <div class="tab-pane fade" id="v-pills-intake" role="tabpanel" aria-labelledby="v-pills-intake-tab">
+
+
+              <div class="tab-pane fade" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">
+              
+                      <button id="add-patient-refer" name="add-patient-refer" class="btn btn-dark btn-block" style="height: 50px; width:200px;float: right;margin-top: 0px;margin-left: 120px">Refer Patient</button>
+                        <br>
+                        <br>
+                      
+
+                        <div class="card-body" style="margin-left: 10px">
+                          <div class="table-responsive">
+                              <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                <thead>
+                                  <tr>
+                                    <th>Date</th>
+                                    <th>Refer At</th>
+                                    <th>Reason of Referal</th>
+                                    <th>Refered by</th>
+                                    <th>Action</th>
+                                  </tr>
+                                </thead>
+                                <tbody id="links-list" name="links-list">
+                                    @foreach ($refers as $refer)
+                                    <tr id="refer{{$refer->id}}">
+                                    <td>{{$refer->ref_date}}</td>
+                                    <td>{{$refer->ref_at}}</td>
+                                    <td>{{$refer->ref_reason}}</td>
+                                    <td>{{$refer->ref_by}}</td>
+                              <td>
+                                @if($refer->accepted_by)
+                                <button class="btn btn-info view-refer-patient-modal" value="{{$refer->id}}">View
+                                  </button>
+                                  <button class="btn btn-light print-link" id="btn-print" name ="btn-print" value="{{$refer->id}}">Print
+                                  </button>
+
+                                @else
+                                  <button class="btn btn-info edit-refer-modal" value="{{$refer->id}}">Edit
+                                  </button>
+                                  <button class="btn btn-secondary accept_patient_referal" id="btn-accept" name ="btn-accept" value="{{$refer->id}}">Accept
+                                  </button>
+                                  <button class="btn btn-light print-link" id="btn-ptint" name ="btn-print" value="{{$refer->id}}">Print
+                                  </button>
+                                @endif 
+                              </td>
+                          </tr>
+                          @endforeach
+                                </tbody>
+                              </table>
+                            </div>
+                          </div>
+                 </div>
+
+                  <div class="tab-pane fade" id="v-pills-contact" role="tabpanel" aria-labelledby="v-pills-profile-tab">
+                 <!-- <fieldset style="margin-bottom: 30px;margin-left: 0px;">-->
+              
+                 <button id="btn-visit" name="btn-visit" class="btn btn-dark btn-block" style="height: 50px; width:200px;float: right;margin-top: 0px;margin-left: 120px">Patient Visit</button>
+                        <br>
+
+                        <div class="row" style="margin-left: 10px;margin-bottom: 50px; margin-top: 70px">
+                        
+                        @foreach ($visits as $pat_visit)
+                         
+                        <div class="col-xl-2 col-sm-3 mb-5" style="height: 5rem;margin-top: 2px">
+                        <div class="card border-dark mb-3 text-black o-hidden h-100">
+                          <div class="card-body open_modal">
+                           <a href="#"><p style="font-size: 12px;margin-top: 2px">{{$pat_visit->date}}<br> {{$pat_visit->events->title}}</p></a>
+                          <div class="mr-5"></div>
+                          </div>
+                        </div>
+                      </div>
+                      @endforeach
+                      </div>          
+
+     </div>
+
+
+       <div class="tab-pane fade" id="v-pills-intake" role="tabpanel" aria-labelledby="v-pills-intake-tab">
           <fieldset style="margin-bottom: 10px;margin-left: 0px;border:solid thin gray;border-radius: 10px">
             <legend style="color:white;text-indent: 20px;width:900px;margin-bottom: 10px;border-radius: 5px" class="bg bg-dark">Intake Form </legend>
             <div style="float:right;margin-bottom: 10px;margin-right: 10px;margin-top: 10px"><a href="{{URL::to('sampleform/'.$pats->id)}}" target="_blank"><button class="btn btn-danger"><i class="fas fa-fw fa fa-file-pdf"></i>Print</button></a></div>
@@ -1373,7 +1584,15 @@ $today = $year . '-' . $month . '-' . $day;
     @endif
   @endforeach
 @endif
+
+@include('refer.patientnote')
+
+          @include('refer.tabform')
+          
 </div>
+
+          
+
 <div class="modal fade" id="patientDismiss" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
@@ -3078,6 +3297,8 @@ $today = $year . '-' . $month . '-' . $day;
     </div>
     </div>
   </div>
+
+
 </div>
 
 @endsection
