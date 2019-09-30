@@ -79,7 +79,7 @@
                                 <div class="col-md-6">
                                 <div class="form-label-group">
                                     <h6>End Date*</h6>
-                                    <input type="date" id="end_date" class="form-control" placeholder="End Date" name="end_date" value='{{$date}}'>
+                                    <input type="datetime" id="end_date" class="form-control" placeholder="End Date" name="end_date" value='{{$date}}'>
                                 </div>
                               </div>
                                 <div class="col-md-5">
@@ -92,6 +92,8 @@
                              </div>
                           </div>
                         </div>
+
+                       
                         <div class="col-md-6">
                           <div class="form-group">
                             <div class="form-row">
@@ -120,9 +122,9 @@
                               <div class="col-md-11">
                                   <div class="form-label-group" style="margin-top: 25px">
                                     <h6>Department</h6>
-                                    <select id="department" class="form-control" style="font-size: 18px;" name="department">
+                                    <select id="department" class="form-control dept_picker" style="font-size: 18px;" name="department">
+                                        <option disabled selected value> -- select an option -- </option>                                        
                                         @foreach($deps as $department)
-                                        
                                             <option value="{{$department->id}}">{{$department->department_name}}</option>
                                         @endforeach
                                     </select>
@@ -136,44 +138,27 @@
                     <br>
                     <br>
 
-                <div class="form-group">
-                  <div class='form-row'>
-                      <div class="col-md-12">
-                        <div class="card" >
-                          <div class="card-header"><h6>List of Patient To Attend</h6></div>
-                            <div class="card-body">
-                              <div class="container" style="margin:45px auto">
-                                  <div class="row">
-                                      <div class="col-md-8 col-md-offset-3" >
-                                        <table class="table table-hover table-striped table-bordered">
-                                          <thead>
-                                            <tr>
-                                              <th style="text-align:center;width:45px"><input type="checkbox" id="checkall"/></th>
-                                              <th>Name</th>
-                                              <th>Department</th>
+                     <div class="dataTables_wrapper form-inline dt-bootstrap pt-20"> 
+                        <div class="row">
+                            <div class="col-md-12">
+                                <table class="table table-bordered table-striped dataTable" id="YoohsTable">
+                                    <thead>
+                                        <tr>
+                                             <th style="text-align:center;width:45px"><input type="checkbox" id="checkall"/></th>
+                                              <th style="text-align:center;width:45px">Id</th>
+                                              <th style="text-align:center;width:300px">Name</th>
+                                              <th style="text-align:center;width:300px">Date Admitted</th>
                                               <th>Contact Number</th>
-                                            </tr>
-                                          </thead>
-                                          <tbody>
-                                          @foreach($patients as $patients)
-                                          <tr>
-                                            <td class="text-center" height="50"><input type="checkbox" class="checkitem" name="checkitem[]" value='{{$patients->id}}'/>&nbsp;</td>
-                                             <td height="50"><a> {{ $patients->lname }}, {{ $patients->fname }}</a></td>
-                                             <td height="50"><a> {{ $patients->departments->department_name}}</a></td>
-                                              <td height="50"><a> {{ $patients->contact}}</a></td>
-                                             </tr>
-                                          @endforeach
-
-                                          </tbody>
-                                      </table>
-                                    </div> 
-                                </div>
-                              </div>
+                                            
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    </tbody>
+                                </table>
                             </div>
-                          </div>
                         </div>
-                      </div>
-                  </div>
+                    </div>
+
 
       </div>    
 
@@ -194,16 +179,62 @@
 
 @section('script')
 
-  <script type="text/javascript">
+ <script type="text/javascript">
 
        $(document).ready(function () {
 
-        
 
-        $(".picker").selectpicker({
+
+        
+        $(".dept_picker").change(function(){
+
+
+
+                 var selectedCountry = $(this).children("option:selected").val();
+
+                  ajaxurl = '{{URL::to("/event_patient")}}'+ '/' + selectedCountry;
+
+
+                 console.log(selectedCountry);
+
+               $.ajax({
+                type: "GET",
+                url: ajaxurl,
+                datatype: 'json',
+                success: function(data){
+                  $('#YoohsTable').DataTable().clear().draw();
+    
+
+                     $.each(data, function(index, value) {
+
+
+
+                     var newRow = $('#YoohsTable').DataTable().row.add([
+
+                           '<input style="center" type="checkbox" class="checkitem" name="checkitem[]" value="'+value.id+'"/>',value.id,value.fname +' '+ value.lname, value.date_admitted,value.contact
+                        ]).draw().node(); 
+
+
+
+                  });
+
+
+                }
+
+                });
+            });
+  })
+
+        $('#YoohsTable').dataTable({
+                "order": [[3, "desc"]]
+            
+
+       });
+
+      $(".picker").selectpicker({
       style: 'btn-info',
       size: 4
-  });
+        });
         $('#checkall').on('click', function(e) {
          if($(this).is(':checked',true))  
          {
@@ -213,10 +244,9 @@
             $(".checkitem").prop('checked',false);  
          }  
         });
-      })
+       
 
   </script>  
-
 @endsection
 
 

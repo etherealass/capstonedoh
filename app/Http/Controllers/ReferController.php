@@ -40,6 +40,8 @@ class ReferController extends Controller
 
 
          $socialworker = ProgressNotes::create($request->all());
+
+        
          return Response::json($socialworker);
 
     }

@@ -28,6 +28,7 @@ use App\Transfer_Requests;
 use App\Graduate_Requests;
 use App\Patient_History;
 use App\Interventions;
+use App\ChildInterventions;
 use App\Cities;
 use App\Case_Type;
 use App\Logs;
@@ -119,8 +120,8 @@ class PatientController extends Controller
        
         $services = Display::with('services')->get();
         $patient_note = ProgressNotes::where('patient_id', $id)->with('servicex')->with('userx')->get();
-        $interven = Interventions::where('parent', 0)->get();
-        $childInterven = Interventions::where('parent', '!=', 0)->get();
+        $interven = Interventions::all();
+        $childInterven = ChildInterventions::all();
 
 
 

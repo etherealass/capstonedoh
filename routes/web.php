@@ -85,6 +85,9 @@ Route::group(['middleware' =>'auth'], function()
 
 	 Route::any('/create_event/{date}', "CalendarController@create_event");
 
+	 Route::get('/event_patient/{id}', "CalendarController@event_patient");
+
+
 	 Route::any('/add_event', "CalendarController@add_event");
 
 	 Route::get('/view_event/{id}', "CalendarController@viewevent");

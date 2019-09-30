@@ -33,5 +33,7 @@
   <link href="{{asset('vendor/multi-select/css/multi-select.css')}}" rel="stylesheet" type="text/css">
 
   <meta name="csrf-token" content="{{ csrf_token() }}">
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.7.14/css/bootstrap-datetimepicker.css"></script>
 
 </head>  

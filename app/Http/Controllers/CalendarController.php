@@ -23,6 +23,7 @@ use App\Graduate_Requests;
 use Notifications;
 use App\Charts\PatientChart;
 use App\EventAssignee;
+use App\ChildInterventions;
 use Carbon\Carbon;
 use Hash;
 use Charts;
@@ -54,7 +55,13 @@ class CalendarController extends Controller
 
    }
 
-   
+    public function event_patient($id)
+   {
+          $events = Patients::where('department_id', $id)->get();
+
+          return response()->json($events);
+
+   }
 
     
    public function create_event($date){
@@ -97,12 +104,13 @@ class CalendarController extends Controller
         $input = $request->all();
         $graduate = Graduate_Requests::all();
 
-        $depts = $request->input('dept');
+        $depts = $request->input('department');
 
-       if($request->input('dept') == 1){
+
+       if($depts == 1){
 
             $color = '#32CD32';
-        }else if($request->input('dept') == 2 || $request->input('dept') == 3){
+        }else if($depts == 2 || $depts == 3){
 
             $color = '';
         }else{
@@ -194,12 +202,16 @@ class CalendarController extends Controller
        $pid = 0;
         date_default_timezone_set('Asia/Macau');
         $evt = Events::find($id);
+        $evts = Events::where('id', $id)->with('Departments')->get();
+        $assignee = EventAssignee::where('event_id', $id)->with('assignee')->get();
+
+       // dd($evts)
         $graduate = Graduate_Requests::all();
 
         $roles = User_roles::all();
         $deps = Departments::all();
-        $interven = Interventions::where('parent', 0)->get();
-        $childInterven = Interventions::where('parent', '!=', 0)->get();
+        $interven = Interventions::all();
+        $childInterven = ChildInterventions::all();
 
         $users = Users::find(Auth::user()->id);
         $transfer = Transfer_Requests::all();
@@ -255,7 +267,7 @@ class CalendarController extends Controller
 
 
 
-        return view('calendar.viewEvent')->with('roles' , $roles)->with('deps',$deps)->with('evt' ,$evt)->with('users',$users)->with('pats', $event_patient)->with('intv', $interven)->with('transfer',$transfer)->with('isEventExpired', $isEventExpired)->with('isEventCancelled', $isEventCancelled)->with('graduate',$graduate)->with('isPatientRemove', $isPatientRemove)->with('patients', $patients)->with('childIntervens', $childInterven);
+        return view('calendar.viewEvent')->with('roles' , $roles)->with('deps',$deps)->with('evts' ,$evts)->with('users',$users)->with('pats', $event_patient)->with('intv', $interven)->with('transfer',$transfer)->with('isEventExpired', $isEventExpired)->with('isEventCancelled', $isEventCancelled)->with('graduate',$graduate)->with('isPatientRemove', $isPatientRemove)->with('patients', $patients)->with('childIntervens', $childInterven)->with('assignee',  $assignee);
 
 
     }

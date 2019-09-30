@@ -22,7 +22,7 @@ class CreateVisitIntervenTable extends Migration
             $table->integer('interven_id')->unsigned();
             $table->foreign('interven_id')->references('id')->on('interventions');
             $table->integer('child_interven_id')->unsigned()->nullable();
-            $table->foreign('child_interven_id')->references('id')->on('interventions');
+            $table->foreign('child_interven_id')->references('id')->on('child_interventions');
             $table->integer('event_id')->unsigned();
             $table->foreign('event_id')->references('id')->on('events');
             $table->integer('created_by')->unsigned();

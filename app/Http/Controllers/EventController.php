@@ -47,7 +47,8 @@ class EventController extends Controller
 
          $id = $patient_list->id;
 
-         $patient = Patient_Event_List::where('id',$id)->with('patients')->get();
+
+         $patient = Patient_Event_List::where('id',$id)->with('patients')->first();
 
          return Response::json($patient);
 

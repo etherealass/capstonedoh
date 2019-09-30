@@ -15,7 +15,6 @@ class CreateInterventions extends Migration
     {
         Schema::create('interventions', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('parent');
             $table->string('interven_name');
             $table->string('descrp');
             $table->timestamps();

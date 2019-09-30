@@ -33,7 +33,7 @@
                    <select class="form-control" id="parent" placeholder="Civil Status" name="parent">
                         <option value="0">--NONE--</option>
                        @foreach($inter as $interven)
-                          <option value="{{ $interven->id }}">{{ $interven->interven_name }}</option>
+                          <option value="{{ $interven->id }}">{{ $interven->interven_name}}</option>
                         @endforeach
                   </select>
                   </div>

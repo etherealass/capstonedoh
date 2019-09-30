@@ -15,6 +15,7 @@ use App\User_roles;
 use App\Interventions;
 use App\Departments;
 use App\Transfer_Requests;
+use App\ChildInterventions;
 use Session;
 
 
@@ -27,7 +28,7 @@ class InterventionController extends Controller
         
         $roles = User_roles::all();
         $deps = Departments::all();
-        $inter = Interventions::where('parent', 0)->get();
+        $inter = Interventions::all();
         $users = Users::find(Auth::user()->id);
         $transfer = Transfer_Requests::all();
 
@@ -52,7 +53,7 @@ class InterventionController extends Controller
 
      //   $inter = Interventions::all();
 
-        $inter = Interventions::where('parent', 0)->get();
+        $inter = Interventions::all();
 
         if(Auth::user()->user_role()->first()->name == 'Superadmin'){
             return view('intervention.addIntervention')->with('roles',$roles)->with('deps',$deps)->with('inter', $inter)->with('users',$users)->with('transfer',$transfer);
@@ -68,15 +69,19 @@ class InterventionController extends Controller
 
         $roles = User_roles::all();
         $deps = Departments::all();
-        $inter = Interventions::where('parent', 0)->get();
+        $inter = Interventions::all();
         $users = Users::find(Auth::user()->id);
+
+        $child = ChildInterventions::all();
 
         $transfer = Transfer_Requests::all();
 
           $input = $request->all(); 
 
 
-              $interven = new Interventions([
+          if($request->input('parent') != 0){
+
+              $interven = new ChildInterventions([
                 'parent' => $request->input('parent'),
                 'interven_name' => $request->input('name'),
                 'descrp' => $request->input('descrpt'),
@@ -92,9 +97,25 @@ class InterventionController extends Controller
           if(Auth::user()->user_role()->first()->name == 'Superadmin'){
            return view('intervention.addIntervention')->with('roles',$roles)->with('deps',$deps)->with('inter', $inter)->with('users',$users)->with('transfer',$transfer);
         }
-        else{
-            return abort(404);
+        }else{
+            
+             $interven = new Interventions([
+              //  'parent' => $request->input('parent'),
+                'interven_name' => $request->input('name'),
+                'descrp' => $request->input('descrpt'),
+                ]);
+
+      $interven->save();
+      Session::flash('alert-class', 'success'); 
+      flash('Intervention Created', '')->overlay();
+
+        $roles = User_roles::all();
+        $deps = Departments::all();
+
+          if(Auth::user()->user_role()->first()->name == 'Superadmin'){
+           return view('intervention.addIntervention')->with('roles',$roles)->with('deps',$deps)->with('inter', $inter)->with('users',$users)->with('transfer',$transfer);
         }
+      }
          
          
      }
@@ -107,7 +128,7 @@ class InterventionController extends Controller
         $deps = Departments::all();
         $intersx = Interventions::find($id);
 
-        $inter = Interventions::where('parent', $id)->get();
+        $inter = Interventions::all();
         $users = Users::find(Auth::user()->id);
 
         $transfer = Transfer_Requests::all();
