@@ -1,0 +1,58 @@
+<?php
+
+namespace App;
+
+use Illuminate\Database\Eloquent\Model;
+use App\Events;
+use App\Patients;
+<<<<<<< HEAD
+use App\ChildInterventions;
+use App\Patient_Event_List;
+=======
+use App\Interventions;
+>>>>>>> 21be206bf59555f9fb188f183514af37f520f2be
+
+
+class Visit_interven extends Model
+{
+    protected $fillable = [
+<<<<<<< HEAD
+        'id','patient_event','patient_id','interven_id','event_id','remarks','child_interven_id', 'created_by', 'date'
+    ];
+
+    public function patient_event()
+    {
+      return $this->belongsTo('App\Patient_Event_List','patient_event');
+
+    }
+
+=======
+        'id','patient_id','interven_id','event_id','remarks','child_interven_id', 'created_by', 'date'
+    ];
+
+>>>>>>> 21be206bf59555f9fb188f183514af37f520f2be
+     public function patient()
+    {
+       return $this->belongsTo('App\Patients','patient_id');
+    }
+
+      public function intervention()
+    {
+       return $this->belongsTo('App\Interventions','interven_id');
+    }
+
+      public function childintervention()
+    {
+<<<<<<< HEAD
+       return $this->belongsTo('App\ChildInterventions','child_interven_id');
+=======
+       return $this->belongsTo('App\Interventions','child_interven_id');
+>>>>>>> 21be206bf59555f9fb188f183514af37f520f2be
+    }
+
+
+     public function events()
+    {
+       return $this->belongsTo('App\Events','event_id');
+    }
+}

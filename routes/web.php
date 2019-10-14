@@ -157,11 +157,25 @@ Route::group(['middleware' =>'auth'], function()
 
 	 Route::post('/delete_city',"OthersController@deletecity");
 
+	 Route::post('/activate_city',"OthersController@activatecity");
+
 	 Route::any('/add_a_casetype',"OthersController@add_a_casetype");
 
 	 Route::post('/add_casetype',"OthersController@add_casetype");
 
 	 Route::post('/delete_case',"OthersController@delete_case");
+
+	 Route::post('/activate_case',"OthersController@activate_case");
+
+	  Route::any('/add_a_checklist',"OthersController@add_a_checklist");
+
+	 Route::post('/add_checklist',"OthersController@addchecklist");
+
+	 Route::post('/delete_checklist',"OthersController@deletechecklist");
+
+	 Route::post('/update_checklist',"OthersController@updatechecklist");
+
+	 Route::post('/activate_checklist',"OthersController@activatechecklist");
 
 	 Route::any('/add_a_reason',"OthersController@add_a_reason");
 
@@ -169,9 +183,7 @@ Route::group(['middleware' =>'auth'], function()
 
 	 Route::post('/delete_reason',"OthersController@deletereason");
 
-
-
-
+	 Route::post('/activate_reason',"OthersController@activatereason");
 
 	 Route::any('/addpatient', "PatientController@addpatient");
 
@@ -276,8 +288,6 @@ Route::group(['middleware' =>'auth'], function()
 
 	 Route::post('/patientDismiss',"PatientController@dismiss_patient");
 
-
-
 	 Route::any('/show_services', "ServiceController@show_services");
 
 	 Route::get('/view/service', "ServiceController@viewService");
@@ -285,6 +295,8 @@ Route::group(['middleware' =>'auth'], function()
 	 Route::post('/add_service', "ServiceController@add_service");
 
 	 Route::any('/show_jails', "ViewController@show_jails");
+
+	 Route::any('/reports', "ViewController@show_reports");
 
 	 Route::any('/show_dismiss_reason', "ViewController@show_dismiss_reason");
 
@@ -301,6 +313,8 @@ Route::group(['middleware' =>'auth'], function()
 	 Route::post('/add_cityjail',"OthersController@addjail");
 
 	 Route::post('/delete_jail',"OthersController@deletejail");
+
+	 Route::post('/activate_jail',"OthersController@activatejail");
 
 	 Route::any('/add_a_city_jail',"OthersController@add_a_city_jail");
 
@@ -322,7 +336,11 @@ Route::group(['middleware' =>'auth'], function()
 
 	 Route::post('/deleteuser', "UserController@deleteuser");
 
-	 Route::any('/samplecsv',"ViewController@samplecsv");
+	 Route::post('/getlist',"ViewController@getlist");
+
+	 Route::post('/samplecsv',"ViewController@samplecsv");
+
+	 Route::post('/downloadcsv',"ViewController@downloadcsv");
 
 	 Route::post('/graduate_patient',"PatientController@graduate_patient");
 
@@ -344,10 +362,11 @@ Route::group(['middleware' =>'auth'], function()
 
 	 Route::any('/show_dismiss_reason', "ViewController@show_dismiss_reason");
 
+	 Route::any('/show_checklist', "ViewController@show_checklist");
+
+	 Route::get('/show_sub_checklist/{id}', "ViewController@show_sub_checklist");
+
 	 Route::any('/sampleform/{id}',"ViewController@sampleform");
-
-	 Route::any('/samplecsv',"ViewController@samplecsv");
-
 
 	 Route::post('/reenroll_patient',"PatientController@reenroll_patient");
 

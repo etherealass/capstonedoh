@@ -1,5 +1,5 @@
 <ul class="sidebar navbar-nav" style="">
-      <li class="nav-item active" style="margin-top: 10px">
+      <li class="nav-item" style="margin-top: 10px">
         <a class="nav-link" href="{{URL::to('/profile')}}">
           <i class="fas fa-fw fa-tachometer-alt"></i>
           <span>Dashboard</span>
@@ -70,14 +70,14 @@
           <span>Calendar</span></a>
       </li>
       <li class="nav-item" style="">
-        <a class="nav-link" href="tables.html">
+        <a class="nav-link" href="{{URL::to('/reports')}}">
           <i class="fas fa-fw fa-chart-area"></i>
           <span>Reports</span></a>
       </li>
-      <li class="nav-item">
+      <!--<li class="nav-item">
         <a class="nav-link" href="tables.html">
           <i class="fas fa-fw fa-list"></i>
-          <span>Forms</span></a>
+          <span>Forms</span></a>-->
       </li>
       <li class="nav-item">
         <a class="nav-link" href="{{URL::to('/logs')}}">
@@ -96,7 +96,8 @@
           <a class="dropdown-item" href="{{URL::to('/show_cities')}}">Cities</a>
           <a class="dropdown-item" href="{{URL::to('/show_jails')}}">City Jails</a>
           <a class="dropdown-item" href="{{URL::to('/show_dismiss_reason')}}">Dismissal Reasons</a>
-
+          <a class="dropdown-item" href="{{URL::to('/show_dismiss_reason')}}">Civil Status</a>
+          <a class="dropdown-item" href="{{URL::to('/show_checklist')}}">Checklist</a>
         </div>
       </li>
     @else
@@ -127,10 +128,10 @@
           <span>My Appointments</span></a>
       </li>
       @endif
-      <li class="nav-item">
+      <!--<li class="nav-item">
         <a class="nav-link" href="tables.html">
           <i class="fas fa-fw fa-list"></i>
           <span>Forms</span></a>
-      </li>
+      </li>-->
     @endif
     </ul>

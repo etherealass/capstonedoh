@@ -59,7 +59,7 @@ section .section-title {
                 <div style="float:right;margin-bottom: 10px;margin-right: 10px;margin-top: 10px"><a data-patientid="{{$pats->id}}" data-doctorid="{{Auth::user()->id}}" data-toggle="modal" data-target="addDoctortNotes"><button id="addDoctortNotes" name="addDoctortNotes" class="btn btn-success"><i class="fas fa-fw fa fa-plus"></i></button></a></div>
 
                  <div class="table-responsive scrollAble2">
-                       <table class="table table-bordered"  id="doctorsTable" width="100%" style="font-size: 12px">
+                       <table class="table table-bordered"  width="100%" style="font-size: 12px">
                             <thead>
                              <tr>
                                <th width="15%">Date/Time</th>
@@ -69,10 +69,11 @@ section .section-title {
                                <th width="10%">Action</th>
                             </tr>
                             </thead>
+                          <tbody>
                           <tbody id="doctor-list" name="doctor-list">
                            @foreach ($patient_notes as $patient_note)
                              @if($patient_note->role_type == "doctor")
-                              <tr id="doctor_{{$patient_note->id}}">
+                              <tr id="{{$patient_note->id}}">
                                     <td>{{$patient_note->date_time}}</td>
                                     <td>{{$patient_note->servicex->name}}</td>
                                     <td>{{$patient_note->notes}}</td>

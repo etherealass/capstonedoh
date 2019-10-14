@@ -15,7 +15,8 @@
           <li class="breadcrumb-item active">Fill up</li>
         </ol>
 
-        <!-- Icon Cards-->
+
+  <div style="background-color: white;border-radius: 5px;height: 1300px;padding-top: 10px">  
     <div class="container" style="margin-top: 30px">
         <p style="font-size:50px;margin-bottom: 20px">Intake Form</p>
         <form action="{{URL::to('/patientsave_intake')}}" method="post">
@@ -245,6 +246,7 @@
            <input style="width:200px;height:50px;float:right;margin-top: 10px;margin-bottom: 30px" class="btn btn-primary btn-block" type="submit" name="submit" value="Create">
          </form>
     </div>
+  </div>
 
        
 @endsection

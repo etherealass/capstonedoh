@@ -19,6 +19,9 @@ class MyFifthNotification extends Notification
     public function __construct()
     {
         //
+
+                $this->user = $user;
+
     }
 
     /**
@@ -29,7 +32,7 @@ class MyFifthNotification extends Notification
      */
     public function via($notifiable)
     {
-        return ['mail'];
+        return ['database'];
     }
 
     /**

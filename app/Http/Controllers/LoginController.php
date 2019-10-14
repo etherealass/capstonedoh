@@ -111,15 +111,15 @@ class LoginController extends Controller
 
       $patx = count($patients3);
 
-      $today_users = Patients::whereDate('created_at', today())->count();
-      $first_users = Patients::whereDate('created_at', today()->subDays(1))->count();
-      $second_users = Patients::whereDate('created_at', today()->subDays(2))->count();
-      $third_users = Patients::whereDate('created_at', today()->subDays(3))->count();
-      $fourth_users = Patients::whereDate('created_at', today()->subDays(4))->count();
-      $fifth_users = Patients::whereDate('created_at', today()->subDays(5))->count();
+      $today_users = Patients::whereDate('date_admitted', today())->count();
+      $first_users = Patients::whereDate('date_admitted', today()->subDays(1))->count();
+      $second_users = Patients::whereDate('date_admitted', today()->subDays(2))->count();
+      $third_users = Patients::whereDate('date_admitted', today()->subDays(3))->count();
+      $fourth_users = Patients::whereDate('date_admitted', today()->subDays(4))->count();
+      $fifth_users = Patients::whereDate('date_admitted', today()->subDays(5))->count();
 
-      $users_a_month = Patients::whereMonth('created_at', date('m'))->count();
-      $users_a_year = Patients::whereYear('created_at', date('Y'))->count();
+      $users_a_month = Patients::whereMonth('date_admitted', date('m'))->count();
+      $users_a_year = Patients::whereYear('date_admitted', date('Y'))->count();
 
       $chart = new PatientChart;
       $chart->labels([Carbon::now()->subDays(5)->format('M-j'),Carbon::now()->subDays(4)->format('M-j'),Carbon::now()->subDays(3)->format('M-j'),Carbon::now()->subDays(2)->format('M-j'),Carbon::now()->subDays(1)->format('M-j'),'Today']);

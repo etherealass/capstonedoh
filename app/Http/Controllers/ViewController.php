@@ -27,8 +27,18 @@ use App\Logs;
 use App\Dismissal_Reason;
 use App\Doctors_Progress_Notes;
 use App\City_Jails;
+use App\Patients;
+use App\Patient_Intake_Information;
+use App\Patient_Information;
+use App\Patient_History;
+use App\Checklist;
 use Hash;
 use Session;
+use NumConvert;
+use PHPExcel_Style_Border;
+use PHPExcel_Style_Alignment;
+use Carbon\Carbon;
+
 
 class ViewController extends Controller
 {
@@ -218,7 +228,7 @@ class ViewController extends Controller
       $deps = Departments::all();
       $users = Users::find(Auth::user()->id);
       $transfer = Transfer_Requests::all();
-      $case = Case_Type::where('flag',NULL)->get();
+      $case = Case_Type::all();
       $graduate = Graduate_Requests::all();
 
       if(Auth::user()->user_role()->first()->name == 'Superadmin'){
@@ -239,7 +249,7 @@ class ViewController extends Controller
       $deps = Departments::all();
       $users = Users::find(Auth::user()->id);
       $transfer = Transfer_Requests::all();
-      $city = Cities::where('flag',NULL)->get();
+      $city = Cities::all();
       $graduate = Graduate_Requests::all();
 
       if(Auth::user()->user_role()->first()->name == 'Superadmin'){
@@ -258,10 +268,28 @@ class ViewController extends Controller
       $users = Users::find(Auth::user()->id);
       $transfer = Transfer_Requests::all();
       $graduate = Graduate_Requests::all();
-      $jails = City_Jails::where('flag',NULL)->get();
+      $jails = City_Jails::all();
 
       if(Auth::user()->user_role()->first()->name == 'Superadmin'){
             return view('superadmin.jails')->with('roles' , $roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('graduate',$graduate)->with('jails',$jails);
+        }
+        else{
+          return abort(404);
+        }
+   }
+
+    public function show_reports()
+   {
+
+      $roles = User_roles::all();
+      $deps = Departments::all();
+      $users = Users::find(Auth::user()->id);
+      $transfer = Transfer_Requests::all();
+      $graduate = Graduate_Requests::all();
+      $jails = City_Jails::where('flag',NULL)->get();
+
+      if(Auth::user()->user_role()->first()->name == 'Superadmin'){
+            return view('superadmin.reports')->with('roles' , $roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('graduate',$graduate)->with('jails',$jails);
         }
         else{
           return abort(404);
@@ -276,7 +304,7 @@ class ViewController extends Controller
       $users = Users::find(Auth::user()->id);
       $transfer = Transfer_Requests::all();
       $graduate = Graduate_Requests::all();
-      $reasons = Dismissal_Reason::where('flag',NULL)->get();
+      $reasons = Dismissal_Reason::all();
 
       if(Auth::user()->user_role()->first()->name == 'Superadmin'){
             return view('superadmin.reasons')->with('roles' , $roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('reasons',$reasons)->with('graduate',$graduate);
@@ -284,6 +312,55 @@ class ViewController extends Controller
         else{
           return abort(404);
         }
+   }
+
+    public function show_checklist()
+   {
+
+      $roles = User_roles::all();
+      $deps = Departments::all();
+      $users = Users::find(Auth::user()->id);
+      $transfer = Transfer_Requests::all();
+      $graduate = Graduate_Requests::all();
+      $checklist = Checklist::where('parent',0)->get();
+
+      if(Auth::user()->user_role()->first()->name == 'Superadmin'){
+            return view('superadmin.checklist')->with('roles' , $roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('checklist',$checklist)->with('graduate',$graduate);
+        }
+        else{
+          return abort(404);
+        }
+   }
+
+   public function show_sub_checklist($id)
+   {
+
+      $roles = User_roles::all();
+      $deps = Departments::all();
+      $users = Users::find(Auth::user()->id);
+      $transfer = Transfer_Requests::all();
+      $graduate = Graduate_Requests::all();
+      $mainlist = Checklist::where('id',$id)->get();
+      $checklist = Checklist::where('parent',$id)->get();
+      $sublist = Checklist::all();
+
+     
+     if(Auth::user()->user_role()->first()->name == 'Superadmin'){
+            return view('superadmin.subchecklist')->with('roles' , $roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('checklist',$checklist)->with('graduate',$graduate)->with('mainlist',$mainlist)->with('sublist',$sublist);
+        }
+        else{
+          return abort(404);
+        } 
+   }
+
+    public function getlist(request $request)
+   {
+
+    $checklist = Checklist::where('id',$request->input('listid'))->pluck('name');
+
+    foreach($checklist as $list)
+    return \Response::json(['list' => $list]);
+    
    }
 
    public function sampleform($id)
@@ -295,15 +372,246 @@ class ViewController extends Controller
       return $pdf->stream();
    }
 
-   public function samplecsv()
+   public function samplecsv(request $request)
    {
-      //libxml_use_internal_errors(true);
 
-       return Excel::download(new PnotesExport, 'notes.xls');
+    $pats = Patients::where('status','Enrolled')->where('department_id',$request->input('department'))->whereBetween('date_admitted',[$request->input('datefrom'),$request->input('dateto')])->get();
+    $dep = Departments::where('id',$request->input('department'))->get();
 
-       //libxml_use_internal_errors(false);
+    if(count($pats) == 0){
+      $res = 1;
+      return \Response::json(['res' => $res]);
+    }
+    else{
+      $res = 0;
+      return \Response::json(['res' => $res,'report' => $request->input('report'),'dep' => $request->input('department'),'datefrom' => $request->input('datefrom'),'dateto' => $request->input('dateto')]);
+    }
+    
 
    }
+
+
+   public function downloadcsv(request $request)
+   {
+
+    if($request->input('reports') == 'Accomplishment Report'){
+      Excel::load('resources/reports/Monthly Accomplishment Report.xlsx', function($doc) 
+      {
+
+      $sheet = $doc->setActiveSheetIndex(0);
+      $sheet->setCellValue('H13', 'test');
+
+      $dismiss = Dismissal_Reason::all();
+      $limit = count(Dismissal_Reason::all());
+      $count = 0;
+      $index = 24;
+
+      $reasons = array();
+
+      foreach($dismiss as $dis){
+        $reasons[] = $dis->reason;
+      }
+
+      for($count=0;$count<$limit;$count++)
+      {
+        $sheet->setCellValue('B'.$index, $reasons[$count]);
+        $index++;
+      }
+
+      })->setFileName('Monthly Accomplishment Report')->download('xlsx');
+
+    }
+
+    else if($request->input('reports') == 'Profile Report'){
+
+    $pats = Patients::where('status','Enrolled')->where('department_id',$request->input('departments'))->whereBetween('date_admitted',[$request->input('datefroms'),$request->input('datetos')])->get();
+    $dep = Departments::where('id',$request->input('departments'))->get();
+
+    if(count($pats) == 0){
+      
+        Session::flash('alert-class', 'danger'); 
+        flash('No Result', '')->overlay();
+
+        return back();
+    }
+    else{
+
+    $patient = array();
+    $total = count($pats);
+    $index = 8;
+    $no = 1;
+
+    foreach($dep as $deps)
+
+    foreach($pats as $pat){
+      $patient[] = $pat;
+    }
+
+
+      $depname = $deps->department_name;
+      $datefrom = Carbon::parse($request->input('datefroms'))->format('d F Y');
+      $dateto = Carbon::parse($request->input('datetos'))->format('d F Y');
+
+       Excel::load('resources/reports/Patient Profile Report.xlsx', function($doc) use ($request,$datefrom,$dateto,$depname,$pat,$index,$total,$patient,$no)
+      {
+
+        $style2= array(
+
+            'font' => array(
+              'size' => 11,
+                'bold' => true)
+
+          );
+
+         $style3= array(
+
+            'font' => array(
+              'size' => 9)
+
+          );
+
+        $start = 9;
+        $next = $start+$total;
+        $nexts = $next+1;
+        $nextz = $nexts+1;
+        $nextx = $nextz+1;
+
+        $sheet = $doc->setActiveSheetIndex(0);
+        $sheet->setCellValue('A4', $depname.' Enrollment  Profile as of '.$datefrom.' - '.$dateto);
+        $sheet->getStyle("A$next")->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
+        $sheet->setCellValue('A'.$next, 'Prepared by:');
+        $sheet->getStyle("D$next")->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
+        $sheet->setCellValue('D'.$next, 'Noted by:');
+        $sheet->getStyle("K$next")->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
+        $sheet->setCellValue('K'.$next, 'Recommending Approval:');
+        $sheet->getStyle("P$next")->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
+        $sheet->setCellValue('P'.$next, 'Approved by:');
+
+        $sheet->getStyle("A$nexts")->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
+        $sheet->getStyle("A$nexts")->applyFromArray($style2);
+        $sheet->setCellValue('A'.$nexts, 'LOVENA G. ALEGRE');
+
+        $sheet->getStyle("D$nexts")->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
+        $sheet->getStyle("D$nexts")->applyFromArray($style2);
+        $sheet->setCellValue('D'.$nexts, 'ANACLETO CLENT L. BANAAY JR., MD, MPM');
+
+        $sheet->getStyle("K$nexts")->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
+        $sheet->getStyle("K$nexts")->applyFromArray($style2);
+        $sheet->setCellValue('K'.$nexts, 'JOSEFEL A. CHUA, RSW, MSW, MPA');
+
+        $sheet->getStyle("P$nexts")->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
+        $sheet->getStyle("P$nexts")->applyFromArray($style2);
+        $sheet->setCellValue('P'.$nexts, 'JASMIN T. PERALTA, MD, MPH, DPCAM, FPSMSI');
+
+        $sheet->mergeCells("A$nextz:C$nextz");
+        $sheet->getStyle("A$nextz")->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
+        $sheet->getStyle("A$nextz")->getAlignment()->setVertical(PHPExcel_Style_Alignment::VERTICAL_TOP);
+        $sheet->getStyle("A$nextz")->applyFromArray($style3);
+        $sheet->setCellValue('A'.$nextz, 'Social Welfare Officer I ');
+
+        $sheet->getRowDimension("$nextz")->setRowHeight(15);
+        $sheet->mergeCells("D$nextz:I$nextz");
+        $sheet->getStyle("D$nextz")->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER)->setVertical(PHPExcel_Style_Alignment::VERTICAL_TOP);
+        $sheet->getStyle("D$nextz")->applyFromArray($style3);
+        $sheet->setCellValue('D'.$nextz, 'Medical Specialist I');
+
+        $sheet->mergeCells("K$nextz:O$nextz");
+        $sheet->getStyle("K$nextz")->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER)->setVertical(PHPExcel_Style_Alignment::VERTICAL_TOP);
+        $sheet->getStyle("K$nextz")->applyFromArray($style3);
+        $sheet->setCellValue('K'.$nextz, 'Chief Health Program Officer');
+
+        $sheet->mergeCells("P$nextz:T$nextz");
+        $sheet->getStyle("P$nextz")->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER)->setVertical(PHPExcel_Style_Alignment::VERTICAL_TOP);
+        $sheet->getStyle("P$nextz")->applyFromArray($style3);
+        $sheet->setCellValue('P'.$nextz, 'Chief of Hospital II');
+
+        $sheet->mergeCells("D$nextx:I$nextx");
+        $sheet->getStyle("D$nextx")->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER)->setVertical(PHPExcel_Style_Alignment::VERTICAL_TOP);
+        $sheet->getStyle("D$nextx")->applyFromArray($style3);
+        $sheet->setCellValue('D'.$nextx, 'Section Head – OPD and Aftercare Program');
+
+        $sheet->mergeCells("P$nextx:T$nextx");
+        $sheet->getStyle("P$nextx")->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER)->setVertical(PHPExcel_Style_Alignment::VERTICAL_TOP);
+        $sheet->getStyle("P$nextx")->applyFromArray($style3);
+        $sheet->setCellValue('P'.$nextx, 'DOH TRC Cebu City');
+
+
+
+        for($count=0;$count<$total;$count++)
+      {
+
+        $style= array(
+            'borders' => array(
+              'allborders' => array(
+                'style' => PHPExcel_Style_Border::BORDER_THIN)
+            ),
+
+            'alignment' => array(
+              'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+              'vertical' => PHPExcel_Style_Alignment::VERTICAL_CENTER),
+
+            'font' => array(
+              'size' => 10)
+
+          );
+        
+        $sheet->getStyle("A$index:T$index")->applyFromArray($style);
+        $sheet->mergeCells("B$index:C$index");
+        $sheet->mergeCells("D$index:E$index");
+        $sheet->mergeCells("H$index:I$index");
+        $sheet->mergeCells("K$index:L$index");
+        $sheet->mergeCells("M$index:N$index");
+        $sheet->getStyle('H'.$index)->getAlignment()->setWrapText(true);
+        $sheet->getStyle('J'.$index)->getAlignment()->setWrapText(true);
+        $sheet->getStyle('P'.$index)->getAlignment()->setWrapText(true);
+        $sheet->getStyle('Q'.$index)->getAlignment()->setWrapText(true);
+        $sheet->setCellValue('A'.$index, $no);
+        $sheet->setCellValue('B'.$index, $patient[$count]->fname.' '.$patient[$count]->mname.' '.$patient[$count]->lname);
+        $sheet->setCellValue('D'.$index, Carbon::parse($patient[$count]->date_admitted)->format('m/d/Y'));
+        $sheet->setCellValue('F'.$index, $patient[$count]->civil_status);
+        $sheet->setCellValue('G'.$index, Carbon::parse($patient[$count]->birthdate)->age);
+        $sheet->setCellValue('H'.$index, $patient[$count]->address->street.' '.$patient[$count]->address->barangay.' '.$patient[$count]->address->city);
+        $sheet->setCellValue('J'.$index, $patient[$count]->religion);
+
+        $patos = Patient_Intake_Information::where('patient_id',$patient[$count]->id)->get();
+        $patis = Patient_Information::where('patient_id',$patient[$count]->id)->get();
+        $history = Patient_History::where('patient_id',$patient[$count]->id)->where(function($q){
+          $q->where('type','Enrolled')
+            ->orWhere('type','Enrolled from Transfer')
+            ->orWhere('type','Re-enrolled');
+
+        })->where('to_dep',$request->input('departments'))->count();
+        foreach($patos as $pats)
+        foreach($patis as $patss)
+
+        $sheet->setCellValue('P'.$index, $patient[$count]->type->case_name);
+      if($patis != '[]'){
+        $sheet->setCellValue('K'.$index, $pats->educational_attainment);
+        $sheet->setCellValue('Q'.$index, $patss->drugs_abused);
+      }
+        $sheet->setCellValue('R'.$index, NumConvert::numberOrdinal($history).' Timer');
+        $index++;
+        $no++;
+      }
+
+      })->setFileName($datefrom.' - '.$dateto.' '.$depname.' Profile Report')->download('xlsx');
+
+
+      }
+
+    }
+
+    else if($request->input('reports') == 'Status Report'){
+
+       Excel::load('resources/reports/Monthly Status Report.xlsx', function($doc) 
+      {
+
+      })->setFileName('Monthly Status Report')->download('xlsx');
+    }
+
+
+  }
+
 
    public function get_notes($id)
    {

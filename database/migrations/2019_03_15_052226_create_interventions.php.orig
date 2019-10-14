@@ -1,0 +1,40 @@
+<?php
+
+use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
+
+class CreateInterventions extends Migration
+{
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
+    public function up()
+    {
+        Schema::create('interventions', function (Blueprint $table) {
+            $table->increments('id');
+<<<<<<< HEAD
+            $table->string('interven_name');
+            $table->string('descrp');
+            $table->integer('inactive')->nullable();
+=======
+            $table->integer('parent');
+            $table->string('interven_name');
+            $table->string('descrp');
+>>>>>>> 21be206bf59555f9fb188f183514af37f520f2be
+            $table->timestamps();
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
+    {
+        Schema::dropIfExists('interventions');
+    }
+}

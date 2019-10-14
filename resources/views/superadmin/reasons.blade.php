@@ -17,7 +17,7 @@
           <li class="breadcrumb-item active">Dismissal reasons</li>
         </ol> 
 
-        <!-- Icon Cards-->
+        <div style="background-color: white;border-radius: 5px">
         <div class="row" style="margin-left: 5px;margin-bottom: 0px">
           <div class="col-xl-8 col-sm-9 mb-10" style="height: 6rem;">
             <div class="mb-3 text-black o-hidden h-100">
@@ -50,13 +50,18 @@
                  @foreach($reasons as $reas)
                  <tr>
                     <td>{{$reas->reason}}</td>
+                    @if($reas->flag != 'deleted')
                     <td><button class="btn btn-danger" data-toggle="modal" data-target="#deleteReason" data-reasonid="{{$reas->id}}">Delete</button></td>
+                    @else
+                    <td><button class="btn btn-success" data-toggle="modal" data-target="#activateReason" data-reasonid="{{$reas->id}}">Activate</button></td>
+                    @endif
                  </tr>
                  @endforeach
                 </tbody>
               </table>
             </div>
           </div>
+        </div>
 
   <div class="modal fade" id="deleteReason" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -79,6 +84,30 @@
         </form>
       </div>
     </div>
+  </div>
+
+  <div class="modal fade" id="activateReason" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Are you sure you want to delete this?</h5>
+          <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <form action="{{URL::to('/activate_reason')}}" method="post">
+          {{csrf_field()}} 
+          <div class="modal-body">
+          <input type="hidden" id="reasonid" name="reasonid" class="form-control" value="">
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-primary" data-dismiss="modal">Cancel</button>
+            <button type="submit" class="btn btn-success">Activate</button>  
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
 
 
 @endsection

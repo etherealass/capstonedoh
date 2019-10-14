@@ -13,7 +13,11 @@ class Patients extends Model
     use Notifiable;
     
 	protected $fillable = [
+<<<<<<< HEAD
+		'patient_id','fname','lname','mname','age','birthdate','birthorder','address_id','contact','gender','civil_status','nationality','religion','patient_type','jail','caseno','status','date_admitted','department_id','flag', 'inactive', 'remarks'
+=======
 		'patient_id','fname','lname','mname','age','birthdate','birthorder','address_id','contact','gender','civil_status','nationality','religion','patient_type','jail','caseno','status','date_admitted','department_id','flag',
+>>>>>>> 21be206bf59555f9fb188f183514af37f520f2be
 	];
 
 	 public function departments()
@@ -36,8 +40,6 @@ class Patients extends Model
         return $this->belongsTo('App\City_Jails','jail');
     }
 
-<<<<<<< HEAD
-=======
     public function deps()
     {
         return $this->belongsTo('Departments::class');
@@ -51,5 +53,4 @@ class Patients extends Model
     }
 
 
->>>>>>> c54175cd652da234c47e5ca33e1941c8ec97fbc2
 }

@@ -13,10 +13,11 @@
         "consoletvs/charts": "6.*",
         "doctrine/dbal": "^2.9",
         "fideloper/proxy": "^4.0",
+        "hnhdigital-os/laravel-number-converter": "^1.1",
         "laracasts/flash": "^3.0",
         "laravel/framework": "5.7.*",
         "laravel/tinker": "^1.0",
-        "maatwebsite/excel": "^3.1",
+        "maatwebsite/excel": "~2.1.0",
         "nesbot/carbon": "~1.36.2",
         "pusher/pusher-php-server": "~3.0",
         "ybr-nx/laravel-mariadb": "^1.0"

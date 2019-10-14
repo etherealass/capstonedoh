@@ -15,13 +15,13 @@
           <li class="breadcrumb-item active">Fill up</li>
         </ol>
 
-        <!-- Icon Cards-->
+    <div style="background-color: white;border-radius: 5px;height: 1300px;padding-top: 10px">
     <div class="container" style="margin-top: 30px">
-        <p style="font-size:50px;margin-bottom: 20px">Intake Form</p>
+        <p style="font-size:50px">Intake Form</p>
         <form action="{{URL::to('/patientsave_intake')}}" method="post">
           {{csrf_field()}}
           <fieldset style="margin-bottom: 30px">
-            <legend style="color:white;text-indent: 20px;width:1100px" class="bg bg-dark">Intake Information </legend><legend style="text-indent: 20px;width:1090px;margin-left: 5px"><div class="form-row" style="border-radius: 5px;background-color: #e9ecef">
+            <legend style="color:white;text-indent: 20px;width:1100px" class="bg bg-dark">Intake Information </legend><legend style="text-indent: 20px;width:1090px;margin-left: 5px"><div class="form-row" style="border-radius: 5px">
               <div class="col-md-4 mb-4">
                 <div class="form-label-group" style="margin-top: 20px">
                   <h6>Patient Type*</h6>
@@ -244,6 +244,7 @@
            <input style="width:200px;height:50px;float:right;margin-top: 10px;margin-bottom: 30px" class="btn btn-primary btn-block" type="submit" name="submit" value="Create">
          </form>
     </div>
+  </div>
 
        
 @endsection

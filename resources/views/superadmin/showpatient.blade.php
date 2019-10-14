@@ -20,6 +20,7 @@
         </ol> 
 
         <!-- Icon Cards-->
+      <div style="background-color: white;border-radius: 5px">
         <div class="row" style="margin-left: 5px;margin-bottom: 0px">
           <div class="col-xl-8 col-sm-9 mb-10" style="height: 6rem;">
             <div class="mb-3 text-black o-hidden h-100">
@@ -112,6 +113,8 @@
               </table>
             </div>
           </div>
+        </div>
+      </div>
 
 
 @endsection

@@ -155,7 +155,7 @@
           <div class="row" style="margin-left: 0px">
           <div>
           <div class="col-md-12">
-             <ul class="sidebar navbar-nav" style="background-color:white;border-radius: 5rem;">
+             <ul class="sidebar navbar-nav" style="background-color: transparent;">
               <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical" style="border-radius: 5rem">
                 <li class="nav-item active"  id="v-pills-home-tab" data-toggle="pill" href="#v-pills-home" role="tab" aria-controls="v-pills-home" aria-selected="true" style="margin-top: 10px;border-radius: 10px">
                   <a class="nav-link active bg-dark" id="v-pills-home-tab" data-toggle="pill" href="#v-pills-home" role="tab" aria-controls="v-pills-home" aria-selected="true" style="color:white;margin-bottom: 5px;height: 45px;text-align: center;border-radius: 5px"><h6><span>Information</span></h6></a>
@@ -185,7 +185,7 @@
           <div class="col-md-9">
               <div class="tab-content" id="v-pills-tabContent" >
                 <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">
-                   <fieldset style="margin-bottom: 30px;border:solid thin gray;border-radius: 10px">
+                   <fieldset style="margin-bottom: 30px;border:solid thin gray;border-radius: 10px;background-color: white">
                        <legend style="color:white;text-indent: 20px;width:900px;margin-bottom: 20px;border-radius: 5px" class="bg bg-dark">Personal Information</legend>
                     <div class="container" style="margin-left: 0px">
                       <div class="row">
@@ -228,7 +228,7 @@
                 @endif
                   </div>
                 </fieldset>
-                 <fieldset style="margin-bottom: 30px;margin-left: 0px;border:solid thin gray;border-radius: 10px">
+                 <fieldset style="margin-bottom: 30px;margin-left: 0px;border:solid thin gray;border-radius: 10px;background-color: white">
                     <legend style="color:white;text-indent: 20px;width:900px;margin-bottom: 20px;border-radius: 5px" class="bg bg-dark">General Information</legend>
                     <div class="container" style="margin-left: 10px">
                       <div class="row">
@@ -249,7 +249,7 @@
                         <p style="font-size: 8px"><h6>Department:</h6> {{$pats->departments->department_name}} Department</p>
                        </div>
                        <div class="col-md-3">
-                        <p style="font-size: 8px"><h6>Date Admitted:</h6> {{$pats->date_admitted}}</p>
+                        <p style="font-size: 8px"><h6>Date Admitted:</h6> {{\Carbon\Carbon::parse($pats->date_admitted)->format('M-j-Y')}}</p>
                        </div>
                        @if($pats->case != "")
                         <div class="col-md-2">
@@ -270,7 +270,7 @@
                 </div>
                 <!--Patient History-->
                 <div class="tab-pane fade" id="v-pills-history" role="tabpanel" aria-labelledby="v-pills-history-tab">
-                  <fieldset style="margin-bottom: 30px;margin-left: 0px;border:solid thin gray;border-radius: 10px">
+                  <fieldset style="margin-bottom: 30px;margin-left: 0px;border:solid thin gray;border-radius: 10px;background-color: white">
                     <legend style="color:white;text-indent: 20px;width:900px;margin-bottom: 20px;border-radius: 5px" class="bg bg-dark">Patient History</legend>
                     <div class="container" style="margin-left: 0px">
                       <div class="row">
@@ -312,7 +312,7 @@
                 </div>
           <!--Doctor's Note Tab-->
               <div class="tab-pane fade" id="v-pills-doctornote" role="tabpanel" aria-labelledby="v-pills-doctornote-tab">
-                  <fieldset style="margin-bottom: 30px;margin-left: 0px;border:solid thin gray;border-radius: 10px">
+                  <fieldset style="margin-bottom: 30px;margin-left: 0px;border:solid thin gray;border-radius: 10px;background-color: white">
                     <legend style="color:white;text-indent: 20px;width:900px;margin-bottom: 20px;border-radius: 5px" class="bg bg-dark">Doctor's Progress Notes </legend>
                     <div class="container" style="margin-left: 0px">
                       <div class="row">
@@ -346,7 +346,7 @@
               </div>
       <!--Intake Tab-->
         <div class="tab-pane fade" id="v-pills-intake" role="tabpanel" aria-labelledby="v-pills-intake-tab">
-          <fieldset style="margin-bottom: 10px;margin-left: 0px;border:solid thin gray;border-radius: 10px">
+          <fieldset style="margin-bottom: 10px;margin-left: 0px;">
             <legend style="color:white;text-indent: 20px;width:900px;margin-bottom: 10px;border-radius: 5px" class="bg bg-dark">Intake Form </legend>
             <div style="float:right;margin-bottom: 10px;margin-right: 10px;margin-top: 10px"><a href="{{URL::to('sampleform/'.$pats->id)}}" target="_blank"><button class="btn btn-danger"><i class="fas fa-fw fa fa-file-pdf"></i>Print</button></a></div>
             @if(Auth::user()->user_role->name == 'Superadmin' || Auth::user()->user_role->name == 'Admin')
@@ -422,7 +422,7 @@
           </fieldset>
         </div>
         <div class="tab-pane fade" id="v-pills-dde" role="tabpanel" aria-labelledby="v-pills-dde-tab">
-            <fieldset style="margin-bottom: 30px;margin-left: 0px;border:solid thin gray;border-radius: 10px">
+            <fieldset style="margin-bottom: 30px;margin-left: 0px;">
               <legend style="color:white;text-indent: 20px;width:900px;margin-bottom: 20px;border-radius: 5px" class="bg bg-dark">Drug Dependency Examination Report</legend>
                 <div style="float:right;margin-bottom: 10px;margin-right: 10px;margin-top: 10px"><a href="{{URL::to('sampleform/'.$pats->id)}}" target="_blank"><button class="btn btn-danger"><i class="fas fa-fw fa fa-file-pdf"></i>Print</button></a></div>
                 @if(Auth::user()->user_role->name == 'Superadmin' || Auth::user()->user_role->name == 'Admin')

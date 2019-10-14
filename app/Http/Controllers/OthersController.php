@@ -23,6 +23,7 @@ use App\Graduate_Requests;
 use App\Dismissal_Reason;
 use App\Logs;
 use App\City_Jails;
+use App\Checklist;
 use Notification;
 use Hash;
 use Session;
@@ -92,6 +93,17 @@ class OthersController extends Controller
 		return back();
     }
 
+    public function activatecity(Request $request)
+    {
+    
+    $city = Cities::where('id',$request->input('cityid'))->update(['flag' => NULL]);
+
+    Session::flash('alert-class', 'success'); 
+    flash('City Activated', '')->overlay();
+
+    return back();
+    }
+
   public function add_a_city_jail()
   {
     $roles = User_roles::all();
@@ -148,7 +160,7 @@ class OthersController extends Controller
   }
 
    public function deletejail(Request $request)
-    {
+   {
       $city = City_Jails::where('id',$request->input('jailid'))->update(['flag' => 'deleted']);
 
       Session::flash('alert-class', 'danger');
@@ -156,6 +168,116 @@ class OthersController extends Controller
 
       return back();
     }
+
+    public function activatejail(Request $request)
+    {
+      $city = City_Jails::where('id',$request->input('jailid'))->update(['flag' => NULL]);
+
+      Session::flash('alert-class', 'success');
+      flash('Jail Activated', '')->overlay();
+
+      return back();
+    }
+
+    public function add_a_checklist()
+  {
+    $roles = User_roles::all();
+    $deps = Departments::all();
+    $users = Users::find(Auth::user()->id);
+    $transfer = Transfer_Requests::all();
+    $list = Checklist::where(function ($list) {
+      $list->where('parent','=',0)
+           ->orWhere('has_sublist','=',1);
+    })->get();
+
+      if(Auth::user()->user_role()->first()->name == 'Superadmin'){
+            return view('superadmin.addchecklist')->with('roles',$roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('list',$list);
+      }
+      else if(Auth::user()->user_role()->first()->name == 'Admin'){
+            return view('superadmin.addchecklist')->with('roles',$roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('list',$list);
+      }
+  }
+
+    public function addchecklist(Request $request)
+  {
+
+    if($request->input('parentlist') == NULL){
+      $parent = 0;
+      $hassublist = 0;
+    }
+    else{
+      $parent = $request->input('parentlist');
+      $hassublist = $request->input('slist');
+    }
+
+      $list = new Checklist([
+        'parent' => $parent,
+        'name' => $request->input('name'),
+        'has_sublist' => $hassublist
+      ]);
+
+        $list->save();
+
+        Session::flash('alert-class', 'success'); 
+        flash('List Added', '')->overlay();
+
+        $roles = User_roles::all();
+        $deps = Departments::all();
+        $users = Users::find(Auth::user()->id);
+        $transfer = Transfer_Requests::all();
+        $checklist = Checklist::all();
+
+       if($request->input('parentlist') == NULL){
+        if(Auth::user()->user_role()->first()->name == 'Superadmin'){
+             return redirect('/show_checklist')->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('checklist',$checklist);
+        }
+        else if(Auth::user()->user_role()->first()->name == 'Admin'){
+             return redirect('/show_checklist')->with('roles' , $roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('checklist',$checklist);
+        }
+      }
+      else{
+        if(Auth::user()->user_role()->first()->name == 'Superadmin'){
+             return redirect('/show_sub_checklist/'.$request->input('parentlist'))->with('roles' , $roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('checklist',$checklist);
+        }
+        else if(Auth::user()->user_role()->first()->name == 'Admin'){
+             return redirect('/show_sub_checklist/'.$request->input('parentlist'))->with('roles' , $roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('checklist',$checklist);
+        }
+      }
+  }
+
+   public function deletechecklist(Request $request)
+    {
+      $list = Checklist::where('id',$request->input('listid'))->update(['flag' => 'deleted']);
+      $sublist = Checklist::where('parent',$request->input('listid'))->update(['flag' => 'deleted']);
+
+      Session::flash('alert-class', 'danger');
+      flash('List Deleted', '')->overlay();
+
+      return back();
+    }
+
+     public function updatechecklist(Request $request)
+    {
+      $list = Checklist::where('id',$request->input('listid'))->update(['name' => $request->input('listname')]);
+
+      Session::flash('alert-class', 'success');
+      flash('List Updated', '')->overlay();
+
+      return back();
+    }
+
+
+    public function activatechecklist(Request $request)
+    {
+      $city = Checklist::where('id',$request->input('listid'))->update(['flag' => NULL]);
+      $sublist = Checklist::where('parent',$request->input('listid'))->update(['flag' => NULL]);
+
+      Session::flash('alert-class', 'success');
+      flash('List Activated', '')->overlay();
+
+      return back();
+    }
+
 
   public function add_a_casetype()
 	 {
@@ -235,6 +357,17 @@ class OthersController extends Controller
 		  return back();
     }
 
+    public function activate_case(Request $request)
+    {
+      $case = Case_Type::where('id',$request->input('caseid'))->update(['flag' => NULL]);
+
+
+      Session::flash('alert-class', 'success'); 
+      flash('Case Type Activated', '')->overlay();
+
+      return back();
+    }
+
     public function add_a_reason()
    {
         $roles = User_roles::all();
@@ -309,12 +442,21 @@ class OthersController extends Controller
 
   public function deletereason(Request $request)
   {
-      $reason = Dismissal_Reason::where('id',$request->input('reasonid'));
+      $reason = Dismissal_Reason::where('id',$request->input('reasonid'))->update(['flag' => 'deleted']);
 
-      $reason->delete();
 
       Session::flash('alert-class', 'danger'); 
-      flash('Deleted', '')->overlay();
+      flash('Deleted Reason')->overlay();
+
+      return back();
+  }
+
+   public function activatereason(Request $request)
+  {
+      $reason = Dismissal_Reason::where('id',$request->input('reasonid'))->update(['flag' => NULL]);
+
+      Session::flash('alert-class', 'success'); 
+      flash('Activated Reason')->overlay();
 
       return back();
   }

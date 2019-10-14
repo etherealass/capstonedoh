@@ -60,13 +60,13 @@ $today = $year . '-' . $month . '-' . $day;
           <div class="container" style="margin-left: 10px">
             <div class="row">
               <div class="col-md-2">
-                <p style="font-size: 15px"><h5>Name:</h5> {{$pats->fname}} {{$pats->mname}}. {{$pats->lname}}</p>
+                <p style="font-size: 15px"><h5><b>Name:</b></h5> {{$pats->fname}} {{$pats->mname}}. {{$pats->lname}}</p>
               </div>
               <div class="col-md-2">
-                <p style="font-size: 15px"><h5>Date of Birth:</h5> {{$pats->birthdate}}</p>
+                <p style="font-size: 15px"><h5><b>Date of Birth:</b></h5> {{$pats->birthdate}}</p>
               </div>
               <div class="col-md-3">
-                <p style="font-size: 15px"><h5>Address:</h5> {{$pats->address->street}} {{$pats->address->barangay}} {{$pats->address->city}}</p>
+                <p style="font-size: 15px"><h5><b>Address:</b></h5> {{$pats->address->street}} {{$pats->address->barangay}} {{$pats->address->city}}</p>
               </div>
               <div class="col-md-2">
                 <p style="font-size: 15px"><h5>Marital Status:</h5> {{$pats->civil_status}}</p>
@@ -75,7 +75,7 @@ $today = $year . '-' . $month . '-' . $day;
                 <p style="font-size: 15px"><h5>Age:</h5> {{$pats->age}}</p>
               </div>
               <div class="col-md-2">
-                <p style="font-size: 15px"><h5>Date Admitted:</h5> {{$pats->date_admitted}}</p>
+                <p style="font-size: 15px"><h5>Date Admitted:</h5> {{\Carbon\Carbon::parse($pats->date_admitted)->format('M-j-Y')}}</p>
               </div>
            </div>
            <div class="row">
@@ -151,7 +151,7 @@ $today = $year . '-' . $month . '-' . $day;
 
 
           <div class="col-md-12">
-             <ul class="sidebar navbar-nav" style="background-color:white;border-radius: 5rem;">
+             <ul class="sidebar navbar-nav" style="background-color: transparent;">
               <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical" style="border-radius: 5rem">
                 <li class="nav-item active"  id="v-pills-home-tab" data-toggle="pill" href="#v-pills-home" role="tab" aria-controls="v-pills-home" aria-selected="true" style="margin-top: 10px;border-radius: 10px">
                   <a class="nav-link active bg-dark" id="v-pills-home-tab" data-toggle="pill" href="#v-pills-home" role="tab" aria-controls="v-pills-home" aria-selected="true" style="color:white;margin-bottom: 5px;height: 45px;text-align: center;border-radius: 5px"><h6><span>101 Information</span></h6></a>
@@ -208,11 +208,11 @@ $today = $year . '-' . $month . '-' . $day;
                     </fieldset>
                   
                     <fieldset style="margin-bottom: 30px;margin-left: 0px;border:solid thin gray;border-radius: 10px">
-                         <legend style="color:white;text-indent: 20px;width:900px;margin-bottom: 20px;border-radius: 5px" class="bg bg-dark">1212 Personal Information</legend>
+                         <legend style="color:white;text-indent: 20px;width:900px;margin-bottom: 20px;border-radius: 5px" class="bg bg-dark">Personal Information</legend>
                       <div class="container" style="margin-left: 10px">
                         <div class="row">
                             <div class="col-md-2">
-                              <p style="font-size: 8px"><h6>Name:</h6><span>{{$pats->fname}} {{$pats->mname}}. {{$pats->lname}}</span></p>
+                              <p style="font-size: 8px"><h6><b>Name:</b></h6><span>{{$pats->fname}} {{$pats->mname}}. {{$pats->lname}}</span></p>
                              </div>
                          <div class="col-md-2">
                             <p style="font-size: 8px"><h6>Date of Birth:</h6> {{$pats->birthdate}}</p>
@@ -260,7 +260,7 @@ $today = $year . '-' . $month . '-' . $day;
                         <p style="font-size: 8px"><h6>Department:</h6> {{$pats->departments->department_name}} Department</p>
                        </div>
                        <div class="col-md-3">
-                        <p style="font-size: 8px"><h6>Date Admitted:</h6> {{$pats->date_admitted}}</p>
+                        <p style="font-size: 8px"><h6>Date Admitted:</h6> {{\Carbon\Carbon::parse($pats->date_admitted)->format('M-j-Y')}}</p>
                        </div>
                        @if($pats->case != "")
                         <div class="col-md-2">
@@ -386,7 +386,6 @@ $today = $year . '-' . $month . '-' . $day;
                         <div class="col-md-12">
                          <div class="table-responsive scrollAble2">
                            <div style="float:right;margin-bottom: 10px;margin-right: 10px;margin-top: 10px"><a href="{{URL::to('sampleform/'.$pats->id)}}" target="_blank"><button class="btn btn-danger"><i class="fas fa-fw fa fa-file-pdf"></i>Print</button></a></div>
-                            <div style="float:right;margin-bottom: 10px;margin-right: 10px;margin-top: 10px"><a href="{{URL::to('samplecsv')}}"><button class="btn btn-success"><i class="fas fa-fw fa fa-file-csv"></i>CSV</button></a></div>
                            @if(Auth::user()->user_role->name == 'Doctor' || Auth::user()->user_role->name == 'Superadmin')
                           <div style="float:right;margin-bottom: 10px;margin-right: 10px;margin-top: 10px"><a data-patientid="{{$pats->id}}" data-doctorid="{{Auth::user()->id}}" data-toggle="modal" data-target="#addNotes"><button class="btn btn-success"><i class="fas fa-fw fa fa-plus"></i>Add Notes</button></a></div>
                           @endif
@@ -397,7 +396,7 @@ $today = $year . '-' . $month . '-' . $day;
                                <th>Notes</th>
                             </tr>
                             </thead>
-                          <tbody >
+                          <tbody>
                           @foreach($notes as $note)
                             <tr>
                               <td>{{$note->date_time}}</td>
@@ -911,7 +910,7 @@ $today = $year . '-' . $month . '-' . $day;
           <div class="row" style="margin-left: 0px;">
            <div style="">
             <div class="col-md-12" style="margin-right: 0px;">
-             <ul class="sidebar navbar-nav" style="background-color:white;border-radius: 5rem;">
+             <ul class="sidebar navbar-nav" style="background-color:transparent;">
               <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical" style="border-radius: 5rem">
                 <li class="nav-item active"  id="v-pills-home-tab" data-toggle="pill" href="#v-pills-home" role="tab" aria-controls="v-pills-home" aria-selected="true" style="margin-top: 10px;border-radius: 10px">
                   <a class="nav-link active bg-dark" id="v-pills-home-tab" data-toggle="pill" href="#v-pills-home" role="tab" aria-controls="v-pills-home" aria-selected="true" style="color:white;margin-bottom: 5px;height: 45px;text-align: center;border-radius: 5px"><h6><span>Information</span></h6></a>
@@ -942,7 +941,7 @@ $today = $year . '-' . $month . '-' . $day;
                 </li>
 
 
-                   @if($pats->department_id == 1)
+                @if($pats->department_id == 1)
                   <li class="nav-item" id="v-pills-patientnote-tab" data-toggle="pill" href="#v-pills-patientnote" role="tab" aria-controls="v-pills-patientnote" aria-selected="false">
                   <a class="nav-link bg-dark" id="v-pills-patientnote-tab" data-toggle="pill" href="#v-pills-patientnote" role="tab" aria-controls="v-pills-note" aria-selected="false" style="color:white;margin-bottom: 5px;height: 65px;text-align: center;border-radius: 5px"><h6><span>Patients Notes</span></h6></a>
                 </li>
@@ -951,90 +950,90 @@ $today = $year . '-' . $month . '-' . $day;
                   <a class="nav-link bg-dark" id="v-pills-doctornote-tab" data-toggle="pill" href="#v-pills-doctornote" role="tab" aria-controls="v-pills-doctornote" aria-selected="false" style="color:white;margin-bottom: 5px;height: 65px;text-align: center;border-radius: 5px"><h6><span>Doctor's Progress Notes</span></h6></a>
                 </li>
                 @endif
-                <!--<li class="nav-item" id="v-pills-docu-tab" data-toggle="pill" href="#v-pills-docu" role="tab" aria-controls="v-pills-docu" aria-selected="false">
-                  <a class="nav-link bg-dark" id="v-pills-docu-tab" data-toggle="pill" href="#v-pills-docu" role="tab" aria-controls="v-pills-docu" aria-selected="false" style="color:white;margin-bottom: 10px;height: 50px;text-align: center;border-radius: 5px""><h6>File Documents</h6></a>
-                </li>-->
+                <li class="nav-item" id="v-pills-checklist-tab" data-toggle="pill" href="#v-pills-checklist" role="tab" aria-controls="v-pills-checklist" aria-selected="false">
+                  <a class="nav-link bg-dark" id="v-pills-checklist-tab" data-toggle="pill" href="#v-pills-checklist" role="tab" aria-controls="v-pills-checklist" aria-selected="false" style="color:white;margin-bottom: 10px;height: 50px;text-align: center;border-radius: 5px"><h6>Checklist</h6></a>
+                </li>
               </div>
             </ul>
             </div>
           </div>
-            <div class="col-md-9" style="margin-top: 10px">
-              <div class="tab-content" id="v-pills-tabContent" >
+            <div class="col-md-9" style="margin-top: 10px" style="background-color: #e9ecef;">
+              <div class="tab-content" id="v-pills-tabContent" style="background-color: #e9ecef;">
                 <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">
                    <fieldset style="margin-bottom: 30px;margin-left: 0px;border:solid thin gray;border-radius: 10px">
                        <legend style="color:white;text-indent: 20px;width:900px;margin-bottom: 20px;border-radius: 5px" class="bg bg-dark"> Personal Information</legend>
                     <div class="container" style="margin-left: 0px">
                       <div class="row">
                         <div class="col-md-3">
-                          <p style="font-size: 8px"><h6>Name:</h6><span>{{$pats->fname}} {{$pats->mname}}. {{$pats->lname}}</span></p>
+                          <p style="font-size: 8px"><h6><b>Name:</b></h6><span>{{$pats->fname}} {{$pats->mname}}. {{$pats->lname}}</span></p>
                          </div>
                        <div class="col-md-3">
-                          <p style="font-size: 8px"><h6>Date of Birth:</h6> {{$pats->birthdate}}</p>
+                          <p style="font-size: 8px"><h6><b>Date of Birth</b>:</h6> {{\Carbon\Carbon::parse($pats->birthdate)->format('M-j-Y')}}</p>
                        </div>
                       <div class="col-md-3">
-                        <p style="font-size: 8px"><h6>Address:</h6> {{$pats->address->street}} {{$pats->address->barangay}} {{$pats->address->city}}</p>
+                        <p style="font-size: 8px"><h6><b>Address:</b></h6> {{$pats->address->street}} {{$pats->address->barangay}} {{$pats->address->city}}</p>
                       </div>
                       <div class="col-md-3">
-                       <p style="font-size: 8px"><h6>Marital Status:</h6> {{$pats->civil_status}}</p>
+                       <p style="font-size: 8px"><h6><b>Marital Status:</b></h6> {{$pats->civil_status}}</p>
                       </div>
                       <div class="col-md-3">
-                         <p style="font-size: 8px"><h6>Age:</h6> {{\Carbon\Carbon::parse($pats->birthdate)->age}}</p>
+                         <p style="font-size: 8px"><h6><b>Age:</b></h6> {{\Carbon\Carbon::parse($pats->birthdate)->age}}</p>
                       </div> 
                       @if($pats->birthorder != NULL)
                       @if($pats->birthorder != 'NULL')
                       <div class="col-md-3">
-                        <p style="font-size: 8px"><h6>Birth Order:</h6> {{$pats->birthorder}}</p>
+                        <p style="font-size: 8px"><h6><b>Birth Order:</b></h6> {{$pats->birthorder}}</p>
                       </div>
                       @endif
                     @if($pats->contact != 'NULL')
                     <div class="col-md-3">
-                      <p style="font-size: 8px"><h6>Contact Number:</h6> {{$pats->contact}}</p>
+                      <p style="font-size: 8px"><h6><b>Contact Number:</b></h6> {{$pats->contact}}</p>
                     </div>
                     @endif
                     @if($pats->nationality != 'NULL')
                     <div class="col-md-3">
-                      <p style="font-size: 8px"><h6>Nationality:</h6> {{$pats->nationality}}</p>
+                      <p style="font-size: 8px"><h6><b>Nationality:</b></h6> {{$pats->nationality}}</p>
                     </div>
                    @endif
                   @if($pats->religion != 'NULL')
                    <div class="col-md-3" style=""> 
-                     <p style="font-size: 8px"><h6>Religion:</h6> {{$pats->religion}}</p>
+                     <p style="font-size: 8px"><h6><b>Religion:</b></h6> {{$pats->religion}}</p>
                   </div>
                  @endif
                 @endif
                   </div>
                 </fieldset>
-                 <fieldset style="margin-bottom: 30px;margin-left: 0px;border:solid thin gray;border-radius: 10px">
+                 <fieldset style="margin-bottom: 30px;margin-left: 0px;border:solid thin gray;border-radius: 10px;;background-color: white;">
                     <legend style="color:white;text-indent: 20px;width:900px;margin-bottom: 20px;border-radius: 5px" class="bg bg-dark">General Information</legend>
                     <div class="container" style="margin-left: 10px">
                       <div class="row">
                         <div class="col-md-3">
-                         <p style="font-size: 8px"><h6>Patient Type:</h6> {{$pats->type->case_name}}</p>
+                         <p style="font-size: 8px"><h6><b>Patient Type:</b></h6> {{$pats->type->case_name}}</p>
                       </div>
                       @if($pats->jail != NULL)
                       <div class="col-md-3">
-                         <p style="font-size: 8px"><h6>City Jail:</h6> {{$pats->jails->name}}</p>
+                         <p style="font-size: 8px"><h6><b>City Jail:</b></h6> {{$pats->jails->name}}</p>
                       </div>
                       @endif
                       @if($pats->caseno != NULL)
                        <div class="col-md-3">
-                         <p style="font-size: 8px"><h6>Case Number:</h6> {{$pats->caseno}}</p>
+                         <p style="font-size: 8px"><h6><b>Case Number:</b></h6> {{$pats->caseno}}</p>
                       </div>
                       @endif
                         <div class="col-md-3">
-                        <p style="font-size: 8px"><h6>Department:</h6> {{$pats->departments->department_name}} Department</p>
+                        <p style="font-size: 8px"><h6><b>Department:</b></h6> {{$pats->departments->department_name}} Department</p>
                        </div>
                        <div class="col-md-3">
-                        <p style="font-size: 8px"><h6>Date Admitted:</h6> {{$pats->date_admitted}}</p>
+                        <p style="font-size: 8px"><h6><b>Date Admitted:</b></h6> {{\Carbon\Carbon::parse($pats->date_admitted)->format('M-j-Y')}}</p>
                        </div>
                        @if($pats->case != "")
                         <div class="col-md-2">
-                        <p style="font-size: 8px"><h6>Case Type:</h6> {{$pats->case}}</p>
+                        <p style="font-size: 8px"><h6><b>Case Type:</b></h6> {{$pats->case}}</p>
                        </div>
                        @endif
                        @if($pats->submission != "")
                         <div class="col-md-3">
-                        <p style="font-size: 8px"><h6>Submission Type:</h6> {{$pats->submission}}</p>
+                        <p style="font-size: 8px"><h6><b>Submission Type:</b></h6> {{$pats->submission}}</p>
                        </div>
                        @endif
                         <div class="col-md-10">
@@ -1094,7 +1093,6 @@ $today = $year . '-' . $month . '-' . $day;
                         <div class="col-md-12">
                          <div class="table-responsive scrollAble2">
                            <div style="float:right;margin-bottom: 10px;margin-right: 10px;margin-top: 10px"><a href="{{URL::to('sampleform/'.$pats->id)}}" target="_blank"><button class="btn btn-danger"><i class="fas fa-fw fa fa-file-pdf"></i>Print</button></a></div>
-                            <div style="float:right;margin-bottom: 10px;margin-right: 10px;margin-top: 10px"><a href="{{URL::to('samplecsv')}}"><button class="btn btn-success"><i class="fas fa-fw fa fa-file-csv"></i>CSV</button></a></div>
                            @if(Auth::user()->user_role->name == 'Doctor' || Auth::user()->user_role->name == 'Superadmin')
                           <div style="float:right;margin-bottom: 10px;margin-right: 10px;margin-top: 10px"><a data-patientid="{{$pats->id}}" data-doctorid="{{Auth::user()->id}}" data-toggle="modal" data-target="#addNotes"><button class="btn btn-success"><i class="fas fa-fw fa fa-plus"></i>Add Notes</button></a></div>
                           @endif
@@ -1316,7 +1314,7 @@ $today = $year . '-' . $month . '-' . $day;
                 <div style="float:right;margin-bottom: 10px;margin-right: 10px;margin-top: 10px"><button class="btn btn-success" data-toggle="modal" data-target="#ddeFormEdit"><i class="fas fa-fw fa fa-pen"></i>Edit</button></div>
                 @endif
                     <div class="container" style="margin-top: 60px;margin-bottom: 30px">
-                      <div class="container" style="border:solid thin gray;border-radius: 10px">
+                      <div class="container">
                         <div style="margin-top:30px">
                           <img src="http://localhost/capstone/public/images/logo3.png" height="100px" width="100px" style="float:left;">
                           <p style="text-align:center;position:relative;"><b style="font-size: 25px">TREATMENT & REHABILITATION CENTER - CEBU</b><br><span style="font-size:20px">Drug Dependency Examination Report</span></p>
@@ -1607,6 +1605,61 @@ $today = $year . '-' . $month . '-' . $day;
         </div>
     </fieldset>
   </div>
+  <div class="tab-pane fade" id="v-pills-checklist" role="tabpanel" aria-labelledby="v-pills-checklist-tab">
+      <fieldset style="margin-bottom: 30px;margin-left: 0px;border:solid thin gray;border-radius: 10px">
+          <legend style="color:white;text-indent: 20px;width:900px;margin-bottom: 20px;border-radius: 5px" class="bg bg-dark">Checklist</legend>
+            <div class="container" style="margin-left: 0px">
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="table-responsive scrollAble2" id="table1">
+                      <table class="table table-bordered"  width="100%" cellspacing="0" style="font-size: 12px">
+                   @foreach($checklist as $list)
+                    @if($list->parent == 0 || $list->has_sublist == 1)
+                    <?php $current = $list->id; ?>
+                        <thead style="width: 200px">
+                          <tr>
+                            <th  style="width: 200px">{{$list->name}}</th>
+                            <th style="text-align: center;width:200px">Status</th>
+                            <th style="text-align: center;width:200px">Action</th>
+                          </tr>
+                        </thead>
+                    @endif
+                    @if($list->parent == $current)
+                    <tbody>
+                          <td style="width: 200px">{{$list->name}}</td>
+                          <td style="width: 200px;"></td>
+                          <td style="width: 200px;"><input type="button" name="listname" value="View" id="{{$list->id}}" class="details" style="margin-right: 10px;margin-left: 50px"><button class="btn btn-primary">Upload</button></td>
+                    </tbody>
+                    @elseif($list->has_sublist == 0 && $list->parent != 0)
+                    </tbody>
+                          <td style="width:200px">{{$list->name}}</td>
+                          <td style="width: 200px"></td>
+                          <td style="width: 200px"><button class="btn btn-success" style="margin-right: 10px;margin-left: 50px">View</button><button class="btn btn-primary">Upload</button></td>
+                    </tbody>
+                    @endif
+                  </form>
+                    @endforeach
+                      </table>
+                      </div>
+                      <div class="table-responsive scrollAble2" id="table2" style="display: none">
+                      <table class="table table-bordered"  width="100%" cellspacing="0" style="font-size: 12px">
+                        <h1 id="title"></h1>
+                         <thead style="width: 200px">
+                          <tr>
+                            <th style="text-align: center;width:200px">Path</th>
+                            <th style="text-align: center;width:200px">Action</th>
+                          </tr>
+                        </thead>
+                         </tbody>
+                      
+                        </tbody>
+                      </table>
+                    </div>
+                    </div>
+                  </div>
+                 </div> 
+          </fieldset>
+      </div>
     @endif
   @endforeach
 @endif
@@ -2578,7 +2631,7 @@ $today = $year . '-' . $month . '-' . $day;
   </div>
 </div>
 
-<div class=" modal2 fade" id="ddeForm" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal2 fade" id="ddeForm" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
       <div class="modal-content" style="width: 1000px;">
         <div class="modal-header">
@@ -3000,6 +3053,7 @@ $today = $year . '-' . $month . '-' . $day;
                   <input type="hidden" name="patdepartment" value="{{$pats->department_id}}">
                   <input type="hidden" name="patient_id" value="{{$pats->id}}">
                   <input type="hidden" name="patientadd" value="{{$pats->address_id}}">
+                  <input type="hidden" name="edvalue" value="1">
                 </div>
               </div>
             </div>
@@ -3324,6 +3378,22 @@ $today = $year . '-' . $month . '-' . $day;
     </div>
     </div>
   </div>
+
+<div class="modal2 fade" id="getChecklist" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content" style="width:1000px">
+        <div class="modal-header">
+          <h5 class="modal-title" id="title" name="title" value=""></h5>
+          <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <div class="modal-body" id="checklistDetail">
+
+        </div>
+      </div>
+    </div>
+</div>
 
 
 </div>
