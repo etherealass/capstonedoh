@@ -152,6 +152,16 @@ Route::group(['middleware' =>'auth'], function()
 
 	 Route::post('/activate_case',"OthersController@activate_case");
 
+	  Route::any('/add_a_checklist',"OthersController@add_a_checklist");
+
+	 Route::post('/add_checklist',"OthersController@addchecklist");
+
+	 Route::post('/delete_checklist',"OthersController@deletechecklist");
+
+	 Route::post('/update_checklist',"OthersController@updatechecklist");
+
+	 Route::post('/activate_checklist',"OthersController@activatechecklist");
+
 	 Route::any('/add_a_reason',"OthersController@add_a_reason");
 
 	 Route::post('/add_reason',"OthersController@add_reason");
@@ -303,7 +313,11 @@ Route::group(['middleware' =>'auth'], function()
 
 	 Route::post('/deleteuser', "UserController@deleteuser");
 
+	 Route::post('/getlist',"ViewController@getlist");
+
 	 Route::post('/samplecsv',"ViewController@samplecsv");
+
+	 Route::post('/downloadcsv',"ViewController@downloadcsv");
 
 	 Route::post('/graduate_patient',"PatientController@graduate_patient");
 
@@ -324,6 +338,10 @@ Route::group(['middleware' =>'auth'], function()
 	 Route::any('/show_jails', "ViewController@show_jails");
 
 	 Route::any('/show_dismiss_reason', "ViewController@show_dismiss_reason");
+
+	 Route::any('/show_checklist', "ViewController@show_checklist");
+
+	 Route::get('/show_sub_checklist/{id}', "ViewController@show_sub_checklist");
 
 	 Route::any('/sampleform/{id}',"ViewController@sampleform");
 

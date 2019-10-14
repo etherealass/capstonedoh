@@ -96,7 +96,8 @@
           <a class="dropdown-item" href="{{URL::to('/show_cities')}}">Cities</a>
           <a class="dropdown-item" href="{{URL::to('/show_jails')}}">City Jails</a>
           <a class="dropdown-item" href="{{URL::to('/show_dismiss_reason')}}">Dismissal Reasons</a>
-
+          <a class="dropdown-item" href="{{URL::to('/show_dismiss_reason')}}">Civil Status</a>
+          <a class="dropdown-item" href="{{URL::to('/show_checklist')}}">Checklist</a>
         </div>
       </li>
     @else

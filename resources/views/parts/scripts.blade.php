@@ -56,30 +56,36 @@
   </script>
 
   <script>
-        $('form').on("submit", function (event) {
 
-            var formData = {
-            'report'              : $('input[name=report]').val(),
-            'department'             : $('input[name=department]').val(),
-            'month'   : $('input[name=month]').val(),
-            'year'    : $('input[name=year]').val()
-          };
+  $('#myform').submit(function( event ) {
+    $('.loader').show();
+    $('.successload').hide();
+    $('.failedload').hide();
+    event.preventDefault();
+    $.ajax({
+        url: '{{URL::to('/samplecsv')}}',
+        type: 'post',
+        data: $('#myform').serialize(), 
+        dataType: 'json',
+        success: function(data){
+          $('.loader').hide();
+          if(data.res == 1){
+            $('.successload').hide();
+            $('.failedload').show();
+          }
+          else if(data.res != 1){
+            $('.failedload').hide();
+            $('.successload').show();
+            $('#reports').val(data.report);
+            $('#departments').val(data.dep);
+            $('#datefroms').val(data.datefrom);
+            $('#datetos').val(data.dateto);
+          }
+        }
+    });
+  });
 
-            $('.loader').show();
-
-            $.ajax({
-               type: "POST",
-               url: "{{URL::to('/samplecsv')}}",
-               data: formData,
-              complete:function (res){
-               setTimeout(function () {
-              $('.loader').hide();
-                }, 1000); // in milliseconds
-              }
-            });
-
-          });
-</script>
+  </script>
 
   <script type="text/javascript">  
   $('#editModal').on('show.bs.modal', function (event) {
@@ -189,6 +195,39 @@
 
     modal.find('.modal-body #jailid').val(jailid);
   })
+
+  $('#deleteList').on('show.bs.modal', function (event) {
+
+    var button = $(event.relatedTarget)
+
+    var listid = button.data('listid')
+    var modal = $(this)
+
+    modal.find('.modal-body #listid').val(listid);
+  })
+
+  $('#updateList').on('show.bs.modal', function (event) {
+
+    var button = $(event.relatedTarget)
+
+    var listid = button.data('listid')
+    var listname = button.data('listname')
+    var modal = $(this)
+
+    modal.find('.modal-body #listid').val(listid);
+    modal.find('.modal-body #listname').val(listname);
+  })
+
+  $('#activateList').on('show.bs.modal', function (event) {
+
+    var button = $(event.relatedTarget)
+
+    var listid = button.data('listid')
+    var modal = $(this)
+
+    modal.find('.modal-body #listid').val(listid);
+  })
+
 
   $('#deleteReason').on('show.bs.modal', function (event) {
 
@@ -603,5 +642,31 @@ $(function() {
 
     });
   });
+
+$(function() {
+  $('select[id="parentlist"]').on('click', function(){
+
+    if ($(this).children(":selected").attr("value") != 0) {
+      document.getElementById("sublist").disabled = true;
+      $('#sublist').show();
+    }
+    else{
+      document.getElementById("sublist").disabled = false;
+      $('#sublist').hide();
+    }
+
+    });
+  });
+
+/*$('#getChecklist').on('show.bs.modal', function (event) {
+
+    var button = $(event.relatedTarget);
+
+    var listname = button.data('listname');
+    var modal = $(this);
+
+     $("h5").append('<?php  echo $var = 1 ?>');
+  })
+
   
 </script>

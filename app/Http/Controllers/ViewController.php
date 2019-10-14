@@ -31,6 +31,7 @@ use App\Patients;
 use App\Patient_Intake_Information;
 use App\Patient_Information;
 use App\Patient_History;
+use App\Checklist;
 use Hash;
 use Session;
 use NumConvert;
@@ -313,6 +314,55 @@ class ViewController extends Controller
         }
    }
 
+    public function show_checklist()
+   {
+
+      $roles = User_roles::all();
+      $deps = Departments::all();
+      $users = Users::find(Auth::user()->id);
+      $transfer = Transfer_Requests::all();
+      $graduate = Graduate_Requests::all();
+      $checklist = Checklist::where('parent',0)->get();
+
+      if(Auth::user()->user_role()->first()->name == 'Superadmin'){
+            return view('superadmin.checklist')->with('roles' , $roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('checklist',$checklist)->with('graduate',$graduate);
+        }
+        else{
+          return abort(404);
+        }
+   }
+
+   public function show_sub_checklist($id)
+   {
+
+      $roles = User_roles::all();
+      $deps = Departments::all();
+      $users = Users::find(Auth::user()->id);
+      $transfer = Transfer_Requests::all();
+      $graduate = Graduate_Requests::all();
+      $mainlist = Checklist::where('id',$id)->get();
+      $checklist = Checklist::where('parent',$id)->get();
+      $sublist = Checklist::all();
+
+     
+     if(Auth::user()->user_role()->first()->name == 'Superadmin'){
+            return view('superadmin.subchecklist')->with('roles' , $roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('checklist',$checklist)->with('graduate',$graduate)->with('mainlist',$mainlist)->with('sublist',$sublist);
+        }
+        else{
+          return abort(404);
+        } 
+   }
+
+    public function getlist(request $request)
+   {
+
+    $checklist = Checklist::where('id',$request->input('listid'))->pluck('name');
+
+    foreach($checklist as $list)
+    return \Response::json(['list' => $list]);
+    
+   }
+
    public function sampleform($id)
    {
       $notes = $this->get_notes($id);
@@ -325,7 +375,26 @@ class ViewController extends Controller
    public function samplecsv(request $request)
    {
 
-    if($request->input('report') == 'Accomplishment Report'){
+    $pats = Patients::where('status','Enrolled')->where('department_id',$request->input('department'))->whereBetween('date_admitted',[$request->input('datefrom'),$request->input('dateto')])->get();
+    $dep = Departments::where('id',$request->input('department'))->get();
+
+    if(count($pats) == 0){
+      $res = 1;
+      return \Response::json(['res' => $res]);
+    }
+    else{
+      $res = 0;
+      return \Response::json(['res' => $res,'report' => $request->input('report'),'dep' => $request->input('department'),'datefrom' => $request->input('datefrom'),'dateto' => $request->input('dateto')]);
+    }
+    
+
+   }
+
+
+   public function downloadcsv(request $request)
+   {
+
+    if($request->input('reports') == 'Accomplishment Report'){
       Excel::load('resources/reports/Monthly Accomplishment Report.xlsx', function($doc) 
       {
 
@@ -353,10 +422,10 @@ class ViewController extends Controller
 
     }
 
-    else if($request->input('report') == 'Profile Report'){
+    else if($request->input('reports') == 'Profile Report'){
 
-    $pats = Patients::where('status','Enrolled')->where('department_id',$request->input('department'))->whereMonth('date_admitted',$request->input('month'))->whereYear('date_admitted',$request->input('year'))->get();
-    $dep = Departments::where('id',$request->input('department'))->get();
+    $pats = Patients::where('status','Enrolled')->where('department_id',$request->input('departments'))->whereBetween('date_admitted',[$request->input('datefroms'),$request->input('datetos')])->get();
+    $dep = Departments::where('id',$request->input('departments'))->get();
 
     if(count($pats) == 0){
       
@@ -379,13 +448,11 @@ class ViewController extends Controller
     }
 
 
-    $depname = $deps->department_name;
-  
-      $month = $request->input('month');
-      $dateObj   = Carbon::createFromFormat('!m', $month);
-      $monthName = $dateObj->format('F'); // March
+      $depname = $deps->department_name;
+      $datefrom = Carbon::parse($request->input('datefroms'))->format('d F Y');
+      $dateto = Carbon::parse($request->input('datetos'))->format('d F Y');
 
-       Excel::load('resources/reports/Patient Profile Report.xlsx', function($doc) use ($request,$monthName,$depname,$pat,$index,$total,$patient,$no)
+       Excel::load('resources/reports/Patient Profile Report.xlsx', function($doc) use ($request,$datefrom,$dateto,$depname,$pat,$index,$total,$patient,$no)
       {
 
         $style2= array(
@@ -410,7 +477,7 @@ class ViewController extends Controller
         $nextx = $nextz+1;
 
         $sheet = $doc->setActiveSheetIndex(0);
-        $sheet->setCellValue('A4', $depname.' Enrollment  Profile for the month of '.$monthName.' '.$request->input('year'));
+        $sheet->setCellValue('A4', $depname.' Enrollment  Profile as of '.$datefrom.' - '.$dateto);
         $sheet->getStyle("A$next")->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
         $sheet->setCellValue('A'.$next, 'Prepared by:');
         $sheet->getStyle("D$next")->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
@@ -513,7 +580,7 @@ class ViewController extends Controller
             ->orWhere('type','Enrolled from Transfer')
             ->orWhere('type','Re-enrolled');
 
-        })->where('to_dep',$request->input('department'))->count();
+        })->where('to_dep',$request->input('departments'))->count();
         foreach($patos as $pats)
         foreach($patis as $patss)
 
@@ -527,14 +594,14 @@ class ViewController extends Controller
         $no++;
       }
 
-      })->setFileName($monthName.' '.$depname.' Profile Report')->download('xlsx');
+      })->setFileName($datefrom.' - '.$dateto.' '.$depname.' Profile Report')->download('xlsx');
 
 
       }
 
     }
 
-    else if($request->input('report') == 'Status Report'){
+    else if($request->input('reports') == 'Status Report'){
 
        Excel::load('resources/reports/Monthly Status Report.xlsx', function($doc) 
       {
