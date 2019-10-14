@@ -121,8 +121,6 @@ class PatientController extends Controller
         $dentalNotes = DentalNotes::where('patient_id', $id)->with('userxk')->get();
         $services = Display::with('services')->get();
         $patient_note = ProgressNotes::where('patient_id', $id)->with('servicex')->with('userx')->get();
-        $interven = Interventions::where('parent', 0)->get();
-        $childInterven = Interventions::where('parent', '!=', 0)->get();
         $checklist = Checklist::all();
         $parentlist = Checklist::where('parent',0)->get();
         $haslist = Checklist::where('has_sublist',1)->get();
@@ -174,8 +172,8 @@ class PatientController extends Controller
         $case = Case_Type::where('flag',NULL)->get();
         $jails = City_Jails::where('flag',NULL)->get();
         $patient_note = ProgressNotes::where('patient_id', $id)->get();
-        $interven = Interventions::where('parent', 0)->get();
-        $childInterven = Interventions::where('parent', '!=', 0)->get();
+        $interven = Interventions::all();
+        $childInterven = ChildInterventions::all();
         $dentalNotes = DentalNotes::where('patient_id', $id)->with('userxk')->get();
 
 
@@ -230,8 +228,8 @@ class PatientController extends Controller
         $patient_note = ProgressNotes::where('patient_id', $id)->get();
         $case = Case_Type::where('flag',NULL)->get();
         $jails = City_Jails::where('flag',NULL)->get();
-        $interven = Interventions::where('parent', 0)->get();
-        $childInterven = Interventions::where('parent', '!=', 0)->get();
+        $interven = Interventions::all();
+        $childInterven = ChildInterventions::all();
         $dentalNotes = DentalNotes::where('patient_id', $id)->with('userxk')->get();
 
 
@@ -270,8 +268,8 @@ class PatientController extends Controller
         $notes = Doctors_Progress_Notes::where('patient_id',$id)->get();
         $patient_note = ProgressNotes::where('patient_id', $id)->get();
         $notif = DB::table('notifications')->where('id',$nid)->update(['read_at' => date('Y-m-d')]);
-        $interven = Interventions::where('parent', 0)->get();
-        $childInterven = Interventions::where('parent', '!=', 0)->get();
+        $interven = Interventions::all();
+        $childInterven = ChildInterventions::all();
         $dentalNotes = DentalNotes::where('patient_id', $id)->with('userxk')->get();
 
         
