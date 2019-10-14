@@ -35,6 +35,8 @@ class CreatePatientsTable extends Migration
             $table->foreign('jail')->references('id')->on('city__jails');
             $table->string('caseno')->nullable();
             $table->string('status')->nullable();
+            $table->integer('inactive')->nullable();
+            $table->text('remarks')->nullable();
             $table->date('date_admitted');
             $table->integer('department_id')->unsigned();
             $table->foreign('department_id')->references('id')->on('departments');

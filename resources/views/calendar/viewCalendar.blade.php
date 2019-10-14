@@ -1,21 +1,55 @@
 @extends('main')
 
+@section('style')
+
+<style type="text/css">
+
+    .dot {
+  height: 15px;
+  width: 15px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+</style>
+@endsection
+
+
 
 @section('content')
 <center>
-<div class="col-md-10" style="height: 63rem;">
-  <div class="card border-gray mb-3 text-black o-hidden h-100">
-   <div class="card-header" style="background-color: #343a40;color:white"><h6>Calendar</h6></div>
-   <center>
-    <div class="card-body">
-      <div class="col-md-10">
-     <div id='calendar'></div>
-  </div>
-  </center>
-    </div>
+  
 
+      <div class="form-group">
+       <div class="form-row">
+             <div class="col-md-3">
+
+                  <button type="button" class="btn btn-outline-secondary" style="margin-top: 100px">Secondary</button>
+
+                    <div class="card border-dark mb-3" style="max-width: 18rem; margin-top: 50px;">
+                      <div class="card-header">Calendar</div>
+                      <div class="card-body text-dark">
+
+                          <p style="text-align: left; margin-left: 20px"><span class="dot"  style="background-color: #32CD32;" ></span>&nbsp;&nbsp;&nbsp;Inpatient Events</p>
+                          <p style="text-align: left; margin-left: 20px"><span class="dot"  style="background-color: #428bca;" ></span>&nbsp;&nbsp;&nbsp;Outpatient Events</p>
+                          <p style="text-align: left;  margin-left: 20px"><span class="dot"  style="background-color: #5bc0de;" ></span>&nbsp;&nbsp;&nbsp;Aftacare Events</p>
+                          <p style="text-align: left;  margin-left: 20px"><span class="dot"  style="background-color: #d9534f;" ></span>&nbsp;&nbsp;&nbsp;Cancelled Events</p>
+                          <p style="text-align: left;  margin-left: 20px"><span class="dot"  style="background-color: #f0ad4e;" ></span>&nbsp;&nbsp;&nbsp;Other Events</p>
+
+
+                        </div>
+                    </div>
+              </div>
+     
+     <div  class="col-md-8" id='calendar'>
   </div>
-</div>  </center>
+  <div class="col-md-2">
+     </div>
+</div>
+</div>
+  
+  </center>
+
 
 @endsection
 
@@ -40,6 +74,7 @@
       $("#calendar").fullCalendar({
 
 
+
       header: {
         left: 'prev,next today',
         center: 'title',
@@ -54,6 +89,7 @@
       minTime: "06:00:00",
       maxTime: "20:00:00",
       events: evt,
+
 
 
 
@@ -79,15 +115,19 @@
 
              var current_date = moment().format('YYYY-MM-DD');
 
-             console.log(current_date);
              
 
               if(current_date > date.format()) {
 
                   cell.css("background", "#e8e8e8");
+
+
               }
        
       },
+
+
+   
 
       
        eventClick: function(calEvent, jsEvent, view) {
@@ -98,8 +138,11 @@
 
                 window.location.href=url;
 
-       }
+       },
+  
 
+
+      
     });
 
       })

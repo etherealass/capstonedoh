@@ -352,7 +352,7 @@ $today = $year . '-' . $month . '-' . $day;
                                <th>Remarks</th>
                             </tr>
                             </thead>
-                          <tbody>
+                          <tbody >
                             @foreach($history as $hist)
                             <tr>
                               <td>{{$hist->date}}</td>
@@ -397,7 +397,7 @@ $today = $year . '-' . $month . '-' . $day;
                                <th>Notes</th>
                             </tr>
                             </thead>
-                          <tbody>
+                          <tbody >
                           @foreach($notes as $note)
                             <tr>
                               <td>{{$note->date_time}}</td>
@@ -1175,7 +1175,28 @@ $today = $year . '-' . $month . '-' . $day;
                   <div class="tab-pane fade" id="v-pills-contact" role="tabpanel" aria-labelledby="v-pills-profile-tab">
                  <!-- <fieldset style="margin-bottom: 30px;margin-left: 0px;">-->
               
-                 <button id="btn-visit" name="btn-visit" class="btn btn-dark btn-block" style="height: 50px; width:200px;float: right;margin-top: 0px;margin-left: 120px">Patient Visit</button>
+              
+
+                 <!--<button id="btn-visit" name="btn-visit" class="btn btn-dark btn-block" style="height: 50px; width:200px;float: right;margin-top: 0px;margin-left: 120px">Patient Visit</button>
+                    <button id="btn-inactive" name="btn-inactive" class="btn btn-info btn-block" style="height: 50px; width:200px;float: right;margin-top: 0px;margin-left: 40px">Inactive</button>-->
+
+                    <div class="dropdown">
+                          <button class="btn btn-dark dropdown-toggle"  style="height: 50px; width:200px;float: right;margin-top: 0px;margin-left: 120px" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Action
+                          </button>
+                          <div class="dropdown-menu menu_btn" aria-labelledby="dropdownMenuButton">
+                          @if($pats->inactive != 1)
+                            <a class="dropdown-item visit_btn" id="a-visit" name="a-visit" href="#"><button id="btn-visit" name="btn-visit" class="btn">Patient Visit</button></a>
+                          @endif
+                            <a class="dropdown-item inactive_btn"  id="a-inactive" name="a-inactive" href="#"><button id="btn-inactive" name="btn-inactive" class="btn" value="{{$pats->inactive}}">
+                             @if($pats->inactive != 1)
+                             Inactive
+                             @else
+                             Active
+                             @endif
+                            </button></a>
+                          </div>
+                      </div>
                         <br>
 
                         <div class="row" style="margin-left: 10px;margin-bottom: 50px; margin-top: 70px">
@@ -1595,7 +1616,8 @@ $today = $year . '-' . $month . '-' . $day;
           
 </div>
 
-         
+@include('refer.tabform')
+   
 
 <div class="modal fade" id="patientDismiss" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -3314,6 +3336,17 @@ $today = $year . '-' . $month . '-' . $day;
   $(document).ready(function () {
     ////----- Open the modal to CREATE a link -----////
 
+              $('#doctorsTable').DataTable();
+
+            $('#nurseTable').DataTable();
+            $('#dentalTable').DataTable();
+
+            $('#psychiatristTable').DataTable();
+
+            $('#socialworkerTable').DataTable();
+
+
+
     $('body').on('click', '.open_modal', function () {
              
               $('#modalFormData').trigger("reset");
@@ -3377,56 +3410,11 @@ $today = $year . '-' . $month . '-' . $day;
            })
       
 
-     $('#btn-attended').click(function(e){
+     $('#btn-visit').click(function(e){
 
-         $.ajaxSetup({
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            }
-            
-        });
-        e.preventDefault();
-      var patient_inter = $('#patient_interven_id').val();
-      var events = $('#evts_id').val();
-      
 
-      var details = {};
-
-      var eventArr = [];
-
-      console.log()
-        var length = $("input[type=checkbox]").each(function(){
-              var isChecked = $(this).is(':checked');
-              var event = {};
-              var value = $(this).val();
-              event['isChecked'] = isChecked;
-              event['rec_id'] = $('#rec_id_'+value).val();
-              event['child_interven_id'] =  $('#childInterven_'+value).val();;
-              event['patient_id'] = patient_inter;
-              event['interven_id'] = value;
-              event['event_id'] = events;
-              event['remarks'] = $('#remarks_'+value).val();
-
-              eventArr.push(event);
-        });
-
-       var type = "POST";
-        var ajaxurl = '{{URL::to("/patient/attendIntervention")}}';
-         $.ajax({
-            contentType: "application/json; charset=utf-8",
-            type: type,
-            url: ajaxurl,
-            data: JSON.stringify(eventArr),
-            success: function (data) {
-                $('#modalFormData').trigger("reset");
-                $('#linkEditor').modal('hide');
-               
-            },
-           error: function (data) {
-                console.log('Error:', data);
-            }
-
-        });
+             $('#VisitmodalFormData').trigger("reset");
+             $('#VisitlinkEditor').modal('show');
 
     });
 
@@ -3437,6 +3425,18 @@ $today = $year . '-' . $month . '-' . $day;
         $('#btn-save').val("add");
         $('#modalFormData').trigger("reset");
         $('#linkEditorModal').modal('show');
+    });
+
+
+    $('#btn-inactive').click(function () {
+        var activate = $(this).val();
+
+            $('#inactivemodalFormData').trigger("reset");
+            $('#inactiveEditorModal').modal('show');
+        
+
+
+     
     });
 
     $('#addNurseNotes').click(function () {
@@ -3539,7 +3539,7 @@ $("#btn-save").click(function (e) {
                 }
     
                 $('#modalFormData').trigger("reset");
-                $('#linkEditorModal').modal('hide')
+                $('#linkEditorModal').modal('hide');
         },
            error: function (data) {
                 console.log('Error:', data);
@@ -3547,6 +3547,79 @@ $("#btn-save").click(function (e) {
 
         });
       });
+
+$("#btn_activate").click(function (e) {
+
+          var curStat = $(this).val();
+
+          var patient_id = $("#patient-id").val();
+
+          console.log(curStat);
+
+          var newStat;
+
+          if(curStat == 1){
+
+              newStat = 0;
+          }else{
+
+              newStat = 1;
+          }
+
+          alert(patient_id);
+
+
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+            });
+               e.preventDefault();
+              var formData = {
+
+                    remarks:  $("#note").val(),
+                    inactive: newStat,
+
+              };
+
+
+            $.ajax({
+            type: "PUT",
+            url: '{{URL::to("/activation")}}'+ '/' + patient_id,
+            data: formData,
+            dataType: 'json',
+            success: function (data) {
+
+                      $('#inactivemodalFormData').trigger("reset");
+                      $('#inactiveEditorModal').modal('hide');
+
+                          var link = '<div class="dropdown-menu menu_btn2" aria-labelledby="dropdownMenuButton">';
+                       
+
+                       if(curStat == 1){
+                           link += ' <a class="dropdown-item visit_btn" id="a-visit" name="a-visit" href="#"><button id="btn-visit" name="btn-visit" class="btn">Patient Visit</button></a>';
+                            link += '<a class="dropdown-item inactive_btn"  id="a-inactive" name="a-inactive" href="#"><button id="btn-inactive" name="btn-inactive" class="btn" value="{{$pats->inactive}}">Inactive</button></a>';
+
+
+                        
+                        }else{
+                             link += '<a class="dropdown-item inactive_btn"  id="a-inactive" name="a-inactive" href="#"><button id="btn-inactive" name="btn-inactive" class="btn" value="{{$pats->inactive}}">Active</button></a>';
+
+                        }
+
+                       $('.menu_btn').replaceWith(link);
+
+
+                 
+            },
+           error: function (data) {
+                console.log('Error:', data);
+            }
+          });
+
+
+
+});
 
 $("#btn-save-socialworker").click(function (e) {
    
@@ -3568,7 +3641,7 @@ $("#btn-save-socialworker").click(function (e) {
             progress_id: "sample",
             patient_id: $('#patient_id').val(),
             date_time: dateTime,
-            service_id: $('#patientList').val(),
+            service_id: $('#socialList').val(),
             note_by: $('#note_by').val(),
             notes: $('#socialworkerNote').val(),
             role_type: "socialworker"
@@ -3586,10 +3659,91 @@ $("#btn-save-socialworker").click(function (e) {
             data: formData,
             dataType: 'json',
             success: function (data) {
+
+                  console.log(data);
+
+
+                    var link = '<tr id="socialworker_' + data[0].id + '"><td>' + data[0].date_time + '</td><td>' + data[0]['servicex'].name + '</td><td>' + data[0].notes + '</td><td>' + data[0]['userx'].lname +', '+ data[0]['userx'].fname + '</td>';
+                link += '<td></td>';
+                
+
+                    $('#socialworker-list').append(link);
+
                
 
                 $('#AddSocialWorkerFormData').trigger("reset");
-                $('#AddSocialWorkerNotesModal').modal('hide')
+                $('#AddSocialWorkerNotesModal').modal('hide');
+        },
+           error: function (data) {
+                console.log('Error:', data);
+            }
+
+        });
+
+});
+
+$("#btn-save-nursenotes").click(function (e) {
+   
+
+ $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+            
+        });
+
+     var today = new Date();
+    var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+    var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+    var dateTime = date+' '+time;
+
+  
+
+
+
+      e.preventDefault();
+         var formData = {
+            progress_id: "sample",
+            patient_id: $('#patient_id').val(),
+            date_time: dateTime,
+            service_id: $('#nurseList').val(),
+            note_by: $('#note_by').val(),
+            notes: $('#nursenote').val(),
+            role_type: "nurse"
+        };
+
+
+        var type = "POST";
+        var id = $('#id').val();
+        var ajaxurl = '{{URL::to("/addsocialworkernotes")}}';
+
+
+     $.ajax({
+            type: type,
+            url: ajaxurl,
+            data: formData,
+            dataType: 'json',
+            success: function (data) {
+
+                var service = " ";
+
+                  console.log(data[0].service_id);
+                  if(data[0].service_id){
+                     service = data[0]['servicex'].name;
+
+                  }
+
+                  console.log(service);
+                    var link = '<tr id="nurse_' + data[0].id + '"><td>' + data[0].date_time + '</td><td>' + service + '</td><td>' + data[0].notes + '</td><td>' + data[0]['userx'].lname +', '+ data[0]['userx'].fname + '</td>';
+                link += '<td></td>';
+                
+
+                    $('#nurse-list').append(link);
+
+               
+
+                $('#NurseNotesFormData').trigger("reset");
+                $('#NurseNotesModal').modal('hide');
         },
            error: function (data) {
                 console.log('Error:', data);
@@ -3619,7 +3773,7 @@ $("#btn-save-psychiatristnotes").click(function (e) {
             progress_id: "sample",
             patient_id: $('#patient_id').val(),
             date_time: dateTime,
-            service_id: $('#patientList').val(),
+            service_id: $('#psychiatristList').val(),
             note_by: $('#note_by').val(),
             notes: $('#notes2').val(),
             role_type: "psychiatrist"
@@ -3637,6 +3791,15 @@ $("#btn-save-psychiatristnotes").click(function (e) {
             data: formData,
             dataType: 'json',
             success: function (data) {
+
+
+
+                   var link = '<tr id="psychiatrist_' + data[0].id + '"><td>' + data[0].date_time + '</td><td>' + data[0]['servicex'].name + '</td><td>' + data[0].notes + '</td><td>' + data[0]['userx'].lname +', '+ data[0]['userx'].fname + '</td>';
+                link += '<td></td>';
+                
+
+                    $('#psychiatrist-list').append(link);
+              
 
                 $('#AddPsychiatristFormData').trigger("reset");
                 $('#AddPsychiatristNotesModal').modal('hide')
@@ -3692,8 +3855,17 @@ $("#btn-save-dentalServices").click(function (e) {
             dataType: 'json',
             success: function (data) {
 
+
+                  console.log(data);
+
+                   var link = '<tr id="dental_' + data[0].id + '"><td>' + data[0].date_time + '</td><td>' + data[0].diagnose + '</td><td>' + data[0].tooth_no + '</td><td>' + data[0].service_rendered +'</td><td>'+ data[0]['userxk'].lname +', '+data[0]['userxk'].fname+'</td><td>'+data[0].remarks+'</td>';
+                link += '<td></td>';
+                
+
+                    $('#dental-list').append(link);
+
                 $('#AddDentalFormData').trigger("reset");
-                $('#AddDentalNotesModal').modal('hide')
+                $('#AddDentalNotesModal').modal('hide');
         },
            error: function (data) {
                 console.log('Error:', data);
@@ -3728,7 +3900,7 @@ $("#btn-save-doctornotes").click(function (e) {
             progress_id: "sample",
             patient_id: $('#patient_id').val(),
             date_time: dateTime,
-            service_id: $('#patientList').val(),
+            service_id: $('#doctorList').val(),
             note_by: $('#note_by').val(),
             notes: $('#notes').val(),
             role_type: "doctor"
@@ -3746,6 +3918,15 @@ $("#btn-save-doctornotes").click(function (e) {
             data: formData,
             dataType: 'json',
             success: function (data) {
+
+
+
+                   var link = '<tr id="doctor_' + data[0].id + '"><td>' + data[0].date_time + '</td><td>' + data[0]['servicex'].name + '</td><td>' + data[0].notes + '</td><td>' + data[0]['userx'].lname +', '+ data[0]['userx'].fname + '</td>';
+                link += '<td></td>';
+                
+
+                    $('#doctor-list').append(link);
+        
                
                 $('#AddDoctorFormData').trigger("reset");
                 $('#AddDoctorNotesModal').modal('hide');

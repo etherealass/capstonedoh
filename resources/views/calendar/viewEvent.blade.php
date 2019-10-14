@@ -1,3 +1,4 @@
+
 @extends('main')
 
 @section('style')
@@ -42,8 +43,8 @@ select
 @endsection
 @section('content')
 
-      @foreach($evts as $evt)
-
+        <!-- Breadcrumbs-->
+        
         <ol class="breadcrumb" style="height: 100px;font-size:50px;text-align: center">
           <li class="breadcrumb-item active" style=""><i class="fas fa-fw fa fa-calendar"></i>
           @if($evt->status == 2)
@@ -62,31 +63,28 @@ select
         <fieldset style="margin-bottom: 30px;margin-left: 0px;border:solid thin gray;border-radius: 10px">
           <div class="container" style="margin-left: 10px">
             <div class="row">
-              <div class="col-md-6">
+              <div class="col-md-3">
                  <input type="text" id="event_id" class="form-control" placeholder="End Date" name="event_id" value='{{$evt->id}}' hidden="hidden">
-                <p style="font-size: 15px"> <h5>Venue:</h5> {{$evt->venue}}</p>
+                <p style="font-size: 15px"> <h5>Venue:</h5>{{$evt->venue}}</p>
+              </div>
+              <div class="col-md-2">
+                <p style="font-size: 15px"><h5>Start Date:</h5> {{$evt->start_date}}</p>
               </div>
               <div class="col-md-3">
-                <input type="date" id="date_Start" class="form-control" placeholder="Start Date" name="date_Start" value='{{$evt->start_date}}' hidden="hidden">
-                <input type="date" id="date_end" class="form-control" placeholder="End Date" name="date_end" value='{{$evt->end_date}}' hidden="hidden">
-                <p style="font-size: 15px"><h5>Start Date:</h5> {{$evt->start_date}} {{$evt->start_time}}</p>
+                <p style="font-size: 15px"><h5>End Date:</h5> {{$evt->end_date}}</p>
               </div>
-               <div class="col-md-3">
-                <p style="font-size: 15px"><h5>End Date:</h5> {{$evt->end_date}} {{$evt->end_time}}</p>
+               <div class="col-md-2">
+                <p style="font-size: 15px"><h5>Start Time:</h5> {{$evt->start_time}}</p>
               </div>
-              <div class="col-md-6">
-                <p style="font-size: 15px"><h5>Department:</h5> {{$evt->Departments->department_name}}</p>
+               <div class="col-md-2">
+                <p style="font-size: 15px"><h5>End Time:</h5><span id="datetime">{{$evt->end_time}}</span></p>
               </div>
-              <div class="col-md-6">
-                <p style="font-size: 15px"><h5>Assignee:</h5> @foreach($assignee as $assignees)
-                    {{$assignees->assignee->fname}} {{$assignees->assignee->lname}} 
-
-                 @endforeach</p>
-              </div>
-            
           </div>
       </fieldset>
-@endforeach
+
+
+
+        @if($evt->department_id)
 
          <div class="form-group">
                   <div class='form-row'>
@@ -146,7 +144,7 @@ select
                             </div>
                           </div>
                   </div>
-
+            @endif
             <div class="modal fade" id="linkEditor" aria-hidden="true" >
                 <div class="modal-dialog">
                     <div class="modal-content"  style="width:980px;">
@@ -282,7 +280,6 @@ select
 @endsection
 
 
-
 @section('script')
 
   <script type="text/javascript">
@@ -372,8 +369,6 @@ select
 
               $('.textboxes').hide();
               $('.select1').hide();
-
-
   
     })
 
@@ -433,9 +428,6 @@ select
      $('.add_patient').click(function(e){
 
 
-
-
-
          var patient = $('#patientList').val();
 
          if(patient == ''){
@@ -449,8 +441,6 @@ select
          }
 
          var event_id = $('#event_id').val();
-                  var date = $('#date_Start').val();
-
 
          var selectedVal = $('select option:selected').text();
 
@@ -464,7 +454,6 @@ select
          var formData = {
             event_id: event_id,
             patient_id: patient,
-            date: date,
             status: 1
          }
 
@@ -478,28 +467,14 @@ select
             dataType: 'json',
             success: function (data) {
 
-              console.log( new Date(date) + ' '+ new Date());
+              console.log(data);
 
+                 var link = '<tr id="patient' + data[0].id + '"><td>' + data.ref_date + '</td><td>' + + '</td><td>' + data.ref_reason + '</td><td>' + data.ref_by + '</td>';
+                link += '<td><button class="btn btn-info open-modal" value="' + data.id + '">Edit</button>';
+                link += '<button class="btn btn-secondary delete-link" id="btn-accept" name ="btn-accept" value="' + data.id + '">Accept</button>';
+                 link += '<button class="btn btn-light print-link" id="btn-ptint" name ="btn-print" value="' + data.id + '">Print</button>';
 
-
-                 var link = '<tr id="patient' + data.id + '"><td>'+ data.patients.lname +', '+  data.patients.fname  +'</td><td>' + ' sample' + '</td><td>' + 'sample ' + '</td>';
-
-                 if(new Date(date) == new Date()){
-
-                 link += '<td><button class="btn btn-info view-link" value="' + data.patient_id + '"><i class="far fa-calendar-check" aria-hidden="true"></i></button>';
-                }
-
-                link += '<button class="btn btn-light print-link" id="btn-print" name ="btn-print" value="' + data.id + '">Print</button></td>';
-              //    var link += '<button class="btn btn-info  open-modal" value='+data.patient_id+' data-id='+data.patient_id+'><i class="far fa-calendar-check" aria-hidden="true"></i></button>';                   
-                
-
-              //  var link += '<button class="btn btn-danger delete_link" value="'+data.patient_id+'" data-name="'+ data.patients.lname +', '+  data.patients.fname  +'"><i class="fa fa-times" aria-hidden="true"></i></button>';
-               // var link += '</td>'
-                    $('#dataTable').append(link);
-
-              
-
-
+                    $('#links-list').append(link);
                 alert('successfully added');
                
             },

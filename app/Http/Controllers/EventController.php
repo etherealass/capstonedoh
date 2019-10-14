@@ -58,30 +58,51 @@ class EventController extends Controller
     public function patient_attend_intervention(Request $request){
 
             $data = $request->all();
-        
-               // var_dump($data); exit;
+            $id = rand();
+
              foreach ($data as $record) {
                 if (!$record['isChecked'] && $record['rec_id']) {
+
                     //find record and delete
                     $rec = Visit_interven::find($record['rec_id']);
                     $rec->delete();
+
+
                 } else {
                     if ($record['isChecked'] && empty($record['rec_id'])) {
+
                         $rec = new Visit_interven;
-                    } else if ($record['isChecked'] && $record['rec_id']) {
+
+                            $rec->event_patient_id = $id;
+                            $rec->patient_id = $record['patient_id'];
+                            $rec->interven_id = $record['interven_id'];
+                            $rec->event_id = $record['event_id'];
+                            $rec->remarks = $record['remarks'];
+
+                            if(!empty( $record['child_interven_id'])){
+                            $rec->child_interven_id = $record['child_interven_id'];
+                            }
+                            $rec->created_by = 1;
+                            $rec->save();
+
+
+                    }else if ($record['isChecked'] && $record['rec_id']) {
                         $rec = Visit_interven::find($record['rec_id']);
+
+                            $rec->patient_id = $record['patient_id'];
+                            $rec->interven_id = $record['interven_id'];
+                            $rec->event_id = $record['event_id'];
+                            $rec->remarks = $record['remarks'];
+                            if(!empty( $record['child_interven_id'])){
+                            $rec->child_interven_id = $record['child_interven_id'];
+                            }
+                            $rec->created_by = 1;
+                            $rec->save();
 
 
                     }
 
-                    $rec->patient_event = 
-                    $rec->patient_id = $record['patient_id'];
-                    $rec->interven_id = $record['interven_id'];
-                    $rec->event_id = $record['event_id'];
-                    $rec->remarks = $record['remarks'];
-                    $rec->child_interven_id = 10;
-                    $rec->created_by = 3;
-                    $rec->save();
+                   
                 }
             }
              
@@ -90,6 +111,7 @@ class EventController extends Controller
     }
 
     public function view_event_attended() {
+
         $patient_id = isset($_GET['patient_id']) ? $_GET['patient_id'] : 0;
         $event_id = isset($_GET['event_id']) ? $_GET['event_id'] : 0;
         $eventsAttended = Visit_interven::where(['patient_id' => $patient_id, 'event_id' => $event_id])->get();

@@ -13,7 +13,7 @@ class Patients extends Model
     use Notifiable;
     
 	protected $fillable = [
-		'patient_id','fname','lname','mname','age','birthdate','birthorder','address_id','contact','gender','civil_status','nationality','religion','patient_type','jail','caseno','status','date_admitted','department_id','flag',
+		'patient_id','fname','lname','mname','age','birthdate','birthorder','address_id','contact','gender','civil_status','nationality','religion','patient_type','jail','caseno','status','date_admitted','department_id','flag', 'inactive', 'remarks'
 	];
 
 	 public function departments()

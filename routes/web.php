@@ -128,6 +128,18 @@ Route::group(['middleware' =>'auth'], function()
 
 	 Route::any('/viewIntervention/{id}', "InterventionController@viewIntervention");
 
+	 Route::any('/edit/intervention', "InterventionController@editintervention");
+
+	 Route::any('/update/intervention/{id}', "InterventionController@updateintervention");
+
+
+	 	 Route::any('/inactive/intervention/{id}', "InterventionController@inactiveintervention");
+
+
+
+	// Route::get('/view/intervention', "InterventionController@findIntervention");
+
+
 	 Route::any('/patient/intervention', "InterventionController@patientInterven");
 
 
@@ -230,6 +242,10 @@ Route::group(['middleware' =>'auth'], function()
 
 	Route::put('/refers/{id?}', "ReferController@putRefer"); 
 
+	Route::put('/activation/{id?}', "ReferController@putInactiveActive"); 
+
+
+
 
 	Route::post('/addsocialworkernotes', "ReferController@addsocialworkernotes");
 	Route::post('/addDentalNotes', "ReferController@addDentalNotes");
@@ -260,7 +276,11 @@ Route::group(['middleware' =>'auth'], function()
 
 	 Route::post('/patientDismiss',"PatientController@dismiss_patient");
 
+
+
 	 Route::any('/show_services', "ServiceController@show_services");
+
+	 Route::get('/view/service', "ServiceController@viewService");
 
 	 Route::post('/add_service', "ServiceController@add_service");
 

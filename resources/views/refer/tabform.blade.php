@@ -234,3 +234,101 @@
                     </div>
                 </div>
             </div>
+
+  <div class="modal fade" id="inactiveEditorModal" aria-hidden="true" >
+          <div class="modal-dialog">
+                  <div class="modal-content"  >
+                         @if($pats->inactive != 1)
+                              <div class="modal-header">
+                                  <h4 class="modal-title" id="inactiveEditorModalLabel">
+                             Inactive
+                             </h4>
+                              </div>
+                              <div class="modal-body">
+                                   <form id="inactivemodalFormData" name="inactivemodalFormData" class="form-horizontal" novalidate="">
+
+                                          <p>You are about to inactive the patient! Inactivating the patient means the patient will no longer be associated in any types of events in the Rehabilation Center.</p>
+
+                                           <h6>Remarks</h6>
+                                           <textarea  type="text" id="note" class="form-control" placeholder="Note" name="note"></textarea>
+                                    
+                                    </form>
+                              </div>
+
+                              @else
+                                 <div class="modal-header">
+                                  <h4 class="modal-title" id="activeEditorModalLabel">Activate</h4>
+                              </div>
+                              <div class="modal-body">
+                                   <form id="activemodalFormData" name="activemodalFormData" class="form-horizontal" novalidate="">
+
+                                          <p>You are about to activate patient {{$pats->lname}}, {{$pats->fname}}! Click active button to proceed.</p>
+
+                                           <h6>Remarks</h6>
+                                           <textarea  type="text" id="note" class="form-control" placeholder="Note" name="note" ></textarea>
+                                    
+                                    </form>
+                              </div>
+                             @endif
+                              <div class="modal-footer">
+                                  <button type="button" class="btn btn-primary" id="btn_activate" name ="btn_activate" value="{{$pats->inactive}}"">Procceed
+                                  </button>
+                                  <input type="hidden" id="patient-id" name="patient-id" value="{{$pats->id}}">
+
+                              </div>
+                  </div>
+          </div>
+  </div>
+
+ <div class="modal fade" id="VisitlinkEditor" aria-hidden="true" >
+                <div class="modal-dialog">
+                    <div class="modal-content" >
+                        <div class="modal-header">
+                            <h4 class="modal-title" id="linkEditorModalLabel">Patient Visit</h4>
+                        </div>
+                        <div class="modal-body">
+                            <form id="VisitmodalFormData" name="VisitmodalFormData" class="form-horizontal" novalidate="">
+
+                                @foreach($intv as $interven)
+                                  <div>
+                                    <input type="hidden" name="rec_id_{{$interven->id}}" id="rec_id_{{$interven->id}}" value="">
+                                    <div class="checkboxs" id="checkboxes_{{$interven->id}}">
+                                      <label><input type="checkbox" class="checkitems" id="checkitem[]" name="checkitem[]" style="zoom:1.5;font-size: 28px;"  value="{{$interven->id}}">{{$interven->interven_name}}</label>
+                                    </div>
+
+                                  @foreach($childIntervens->groupby('parent') as  $name => $member)
+
+                                    @if($name  == $interven->id)
+
+                                <div class="form-label-group select1" id="select_{{$interven->id}}" name="select_{{$interven->id}}"  style="display: none;">
+
+                                  <select class="form-control col-md-6" id="childInterven_{{$interven->id}}"  name="childInterven_{{$interven->id}}" style=" margin-bottom: 10px">
+                                    @foreach($member as $item)
+                                      <option value="{{ $item['id']}}">{{  $item['interven_name'] }}</option>
+                                          @endforeach
+                                    </select>
+                                  </div>
+                                    @endif
+
+                                  @endforeach
+                                    <div class="form-label-group textboxes" id="textboxes_{{$interven->id}}" style="display: none;">
+                                        <input style="margin-left:0px" type="text" class="form-control" placeholder="Remarks" name="remarks_{{$interven->id}}" id="remarks_{{$interven->id}}">
+                                     </div>
+                                   </br>
+                                  </div>
+                                @endforeach
+                                  
+                          </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-primary"  id="btn-attended" name ="btn-attended" value="add">Save changes
+                            </button>
+                            <input type="hidden" id="evts_id" name="evts_id" value="">
+                            <input type="hidden" id="patient_interven_id" name="patient_interven_id" value="">
+                            <input type="hidden" id="patient_interven_id" name="patient_interven_id" value="">
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>

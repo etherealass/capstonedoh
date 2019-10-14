@@ -110,12 +110,16 @@ class CalendarController extends Controller
        if($depts == 1){
 
             $color = '#32CD32';
-        }else if($depts == 2 || $depts == 3){
+        }else if($depts == 2){
 
-            $color = '';
+            $color = '#428bca';
+        }else if($depts == 3){
+
+            $color = '#5bc0de';
+
         }else{
 
-          $color = '#800080';
+          $color = '#f0ad4e';
         }
 
        $assignee = $request->input('nameid');
@@ -130,6 +134,7 @@ class CalendarController extends Controller
         'evt_id' => $evt,
         'title' => $request->input('title'),
         'venue' => $request->input('venue'),
+        'description' => $request->input('description'),
         'department_id' => $depts,
         'start' => $request->input('start_date')." ".date("H:m:s", strtotime($request->input('start_time'))),
         'end' => $request->input('end_date')." ".date("H:m:s", strtotime($request->input('end_time'))),
@@ -152,7 +157,7 @@ class CalendarController extends Controller
         $eventid = $ev->id;
       }
 
-
+        if($request->input('checkitem')){
         foreach($request->input('checkitem') as $pat)
         {
 
@@ -167,8 +172,10 @@ class CalendarController extends Controller
             ]);
             $patient_event->save();
         }
+      }
 
 
+        if($request->input('nameid')){
         foreach($request->input('nameid') as $assinee) {
 
               $event_assignee = new EventAssignee([
@@ -182,6 +189,7 @@ class CalendarController extends Controller
 
 
         }
+      }
 
       Session::flash('alert-class', 'success'); 
       flash('Schedule Created', '')->overlay();
@@ -267,7 +275,7 @@ class CalendarController extends Controller
 
 
 
-        return view('calendar.viewEvent')->with('roles' , $roles)->with('deps',$deps)->with('evts' ,$evts)->with('users',$users)->with('pats', $event_patient)->with('intv', $interven)->with('transfer',$transfer)->with('isEventExpired', $isEventExpired)->with('isEventCancelled', $isEventCancelled)->with('graduate',$graduate)->with('isPatientRemove', $isPatientRemove)->with('patients', $patients)->with('childIntervens', $childInterven)->with('assignee',  $assignee);
+        return view('calendar.viewEvent')->with('roles' , $roles)->with('deps',$deps)->with('evts' ,$evts)->with('users',$users)->with('pats', $event_patient)->with('intv', $interven)->with('transfer',$transfer)->with('isEventExpired', $isEventExpired)->with('isEventCancelled', $isEventCancelled)->with('graduate',$graduate)->with('isPatientRemove', $isPatientRemove)->with('patients', $patients)->with('childIntervens', $childInterven)->with('assignee',  $assignee)->with('evt', $evt);
 
 
     }
@@ -284,7 +292,7 @@ class CalendarController extends Controller
         $updatedetails = array(
 
             'status' => 2,
-            'color'  => '#F08080'
+            'color'  => '#d9534f'
         );
         $evt->update($updatedetails);
 
@@ -293,9 +301,13 @@ class CalendarController extends Controller
 
         $roles = User_roles::all();
         $deps = Departments::all();
-        $interven = Interventions::where('parent', 0)->get();
+        $interven = Interventions::all();
+        $evts = Events::where('id', $id)->with('Departments')->get();
         $transfer = Transfer_Requests::all();
         $event_patient = Patient_Event_List::where('event_id', $evt_id)->with('events')->with('patients')->get();
+        $assignee = EventAssignee::where('event_id', $id)->with('assignee')->get();
+        $patients = Patients::where('department_id', $dept)->whereNotIn('id', $eventPatientIds)->with('departments')->whereNotIn('id', $eventPatientIds)->get();
+
 
 
         $start = Carbon::parse($evt->start);
@@ -326,7 +338,7 @@ class CalendarController extends Controller
       
         $users = Users::find(Auth::user()->id);
 
-        return view('calendar.viewEvent')->with('roles' , $roles)->with('deps',$deps)->with('evt' ,$evt)->with('users',$users)->with('pats', $event_patient)->with('intv', $interven)->with('transfer',$transfer)->with('isEventExpired', $isEventExpired)->with('isEventCancelled', $isEventCancelled)->with('isPatientRemove', $isPatientRemove);
+        return view('calendar.viewEvent')->with('roles' , $roles)->with('deps',$deps)->with('evt' ,$evt)->with('users',$users)->with('pats', $event_patient)->with('intv', $interven)->with('transfer',$transfer)->with('isEventExpired', $isEventExpired)->with('isEventCancelled', $isEventCancelled)->with('isPatientRemove', $isPatientRemove)->with('evts' ,$evts)->with('assignee',  $assignee)->with('patients', $patients);
 
 
     }

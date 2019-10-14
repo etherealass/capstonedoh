@@ -17,6 +17,7 @@ use App\Departments;
 use App\Transfer_Requests;
 use App\ChildInterventions;
 use Session;
+use Response;
 
 
 class InterventionController extends Controller
@@ -31,10 +32,11 @@ class InterventionController extends Controller
         $inter = Interventions::all();
         $users = Users::find(Auth::user()->id);
         $transfer = Transfer_Requests::all();
+        $child = ChildInterventions::all();
 
 
         if(Auth::user()->user_role()->first()->name == 'Superadmin'){
-            return view('intervention.showintervention')->with('roles',$roles)->with('deps',$deps)->with('inter', $inter)->with('users',$users)->with('transfer',$transfer);
+            return view('intervention.showintervention')->with('roles',$roles)->with('deps',$deps)->with('inter', $inter)->with('users',$users)->with('transfer',$transfer)->with('child', $child);
         }
         else{
             return abort(404);
@@ -148,6 +150,44 @@ class InterventionController extends Controller
           var_dump($input);
 
           exit;
+
+     }
+
+     public function editintervention(Request $request){
+
+          $interven_id = $request->id;
+
+
+         $intervention = Interventions::find($interven_id);
+
+
+              return Response::json($intervention);
+
+
+     }
+
+     public function updateintervention(Request $request, $id){
+
+        $interven_name = $request->interven_name;
+        $descrpt = $request->descrp;
+
+
+         $interven = Interventions::find($id);
+
+         $interven->update(array('interven_name' => $interven_name, 'descrp' => $descrpt));
+
+
+
+
+         return Response::json($interven);
+
+     }
+
+     public function inactiveintervention(Request $request, $id){
+
+            $interven = Interventions::find($id);
+
+         $interven->update(array('inactive' => 1));
 
      }
    

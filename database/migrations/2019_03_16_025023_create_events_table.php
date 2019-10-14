@@ -19,6 +19,7 @@ class CreateEventsTable extends Migration
             $table->string('evt_id');
             $table->string('title');
             $table->string('venue');
+            $table->text('description');
             $table->integer('department_id')->unsigned()->nullable();
             $table->foreign('department_id')->references('id')->on('departments');
             $table->integer('status')->nullable();

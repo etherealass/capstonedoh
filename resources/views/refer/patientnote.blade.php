@@ -59,7 +59,7 @@ section .section-title {
                 <div style="float:right;margin-bottom: 10px;margin-right: 10px;margin-top: 10px"><a data-patientid="{{$pats->id}}" data-doctorid="{{Auth::user()->id}}" data-toggle="modal" data-target="addDoctortNotes"><button id="addDoctortNotes" name="addDoctortNotes" class="btn btn-success"><i class="fas fa-fw fa fa-plus"></i></button></a></div>
 
                  <div class="table-responsive scrollAble2">
-                       <table class="table table-bordered"  width="100%" style="font-size: 12px">
+                       <table class="table table-bordered"  id="doctorsTable" width="100%" style="font-size: 12px">
                             <thead>
                              <tr>
                                <th width="15%">Date/Time</th>
@@ -69,10 +69,10 @@ section .section-title {
                                <th width="10%">Action</th>
                             </tr>
                             </thead>
-                          <tbody>
+                          <tbody id="doctor-list" name="doctor-list">
                            @foreach ($patient_notes as $patient_note)
                              @if($patient_note->role_type == "doctor")
-                              <tr id="{{$patient_note->id}}">
+                              <tr id="doctor_{{$patient_note->id}}">
                                     <td>{{$patient_note->date_time}}</td>
                                     <td>{{$patient_note->servicex->name}}</td>
                                     <td>{{$patient_note->notes}}</td>
@@ -95,7 +95,7 @@ section .section-title {
                 <div style="float:right;margin-bottom: 10px;margin-right: 10px;margin-top: 10px"><a data-patientid="{{$pats->id}}" data-doctorid="{{Auth::user()->id}}" data-toggle="modal" data-target="addNurseNotes"><button id="addNurseNotes" name="addNurseNotes" class="btn btn-success"><i class="fas fa-fw fa fa-plus"></i></button></a></div>
 
                  <div class="table-responsive scrollAble2">
-                       <table class="table table-bordered"  width="100%" style="font-size: 12px">
+                       <table class="table table-bordered" id="nurseTable"  width="100%" style="font-size: 12px">
                             <thead>
                               <tr>
                                <th width="15%">Date/Time</th>
@@ -105,19 +105,22 @@ section .section-title {
                                <th width="10%">Action</th>
                             </tr>
                             </thead>
-                          <tbody>
+                          <tbody id="nurse-list" name="nurse-list">
                               @foreach ($patient_notes as $patient_note)
                              @if($patient_note->role_type == "nurse")
                               <tr id="{{$patient_note->id}}">
                                     <td>{{$patient_note->date_time}}</td>
+                                    @if($patient_note->service_id)
                                     <td>{{$patient_note->servicex->name}}</td>
+                                    @else
+                                    <td></td>
+                                    @endif
                                     <td>{{$patient_note->notes}}</td>
                                     <td>{{$patient_note->userx->lname}}, {{$patient_note->userx->fname}}</td>
                                     <td>{{$patient_note->note_by}}</td>
                                 </tr>
                              @endif
                           @endforeach
-
                           </tbody>
                         </table>
                      </div>
@@ -132,7 +135,7 @@ section .section-title {
                 <div style="float:right;margin-bottom: 10px;margin-right: 10px;margin-top: 10px"><a data-patientid="{{$pats->id}}" data-doctorid="{{Auth::user()->id}}" data-toggle="modal" data-target="addDentalNotes"><button id="addDentalNotes" name="addDentalNotes" class="btn btn-success"><i class="fas fa-fw fa fa-plus"></i></button></a></div>
 
                  <div class="table-responsive scrollAble2">
-                       <table class="table table-bordered"  width="100%" style="font-size: 12px">
+                       <table class="table table-bordered"  id="dentalTable" width="100%" style="font-size: 12px">
                             <thead>
                              <tr>
                                <th width="10%">Date</th>
@@ -143,14 +146,14 @@ section .section-title {
                                 <th width="22%">Remarks</th>
                             </tr>
                             </thead>
-                          <tbody>
+                          <tbody id="dental-list" name="dental-list">
                               @foreach ($DentalNotes as $dental_notes)
-                               <tr id="{{$patient_note->id}}">
+                               <tr id="dental_{{$dental_notes->id}}">
                                     <td>{{$dental_notes->date_time}}</td>
                                     <td>{{$dental_notes->diagnose}}</td>
                                     <td>{{$dental_notes->tooth_no}}</td>
                                     <td>{{$dental_notes->service_rendered}}</td>
-                                    <td></td>
+                                    <td>{{$dental_notes->userxk->lname}}, {{$dental_notes->userxk->fname}}</td>
                                     <td>{{$dental_notes->remarks}}</td>  
                                 </tr>
 
@@ -170,7 +173,7 @@ section .section-title {
                 <div style="float:right;margin-bottom: 10px;margin-right: 10px;margin-top: 10px"><a data-patientid="{{$pats->id}}" data-doctorid="{{Auth::user()->id}}" data-toggle="modal" data-target="addPyschiatristNotes"><button id="addPyschiatristNotes" name="addPsychiatristNotes" class="btn btn-success"><i class="fas fa-fw fa fa-plus"></i></button></a></div>
 
                  <div class="table-responsive scrollAble2">
-                       <table class="table table-bordered"  width="100%" style="font-size: 12px">
+                       <table class="table table-bordered" id="psychiatristTable" width="100%" style="font-size: 12px">
                             <thead>
                              <tr>
                                <th width="15%">Date/Time</th>
@@ -180,13 +183,16 @@ section .section-title {
                                <th width="10%">Action</th>
                             </tr>
                             </thead>
-                          <tbody>
+                          <tbody id="psychiatrist-list" name="psychiatrist-list">
                               @foreach ($patient_notes as $patient_note)
                              @if($patient_note->role_type == "psychiatrist")
-                              <tr id="{{$patient_note->id}}">
+                              <tr id="psychiatrist_{{$patient_note->id}}">
                                     <td>{{$patient_note->date_time}}</td>
+                                    @if($patient_note->service_id)
                                     <td>{{$patient_note->servicex->name}}</td>
-                                    <td>{{$patient_note->notes}}</td>
+                                    @else
+                                    <td></td>
+                                    @endif                                    <td>{{$patient_note->notes}}</td>
                                     <td>{{$patient_note->userx->lname}}, {{$patient_note->userx->fname}}</td>
                                     <td>{{$patient_note->note_by}}</td>
                                 </tr>
@@ -205,7 +211,7 @@ section .section-title {
                 <div style="float:right;margin-bottom: 10px;margin-right: 10px;margin-top: 10px"><a data-patientid="{{$pats->id}}" data-doctorid="{{Auth::user()->id}}" data-toggle="modal" data-target="addSocialWorkerNotes"><button id="addSocialWorkerNotes" name="addSocialWorkerNotes" class="btn btn-success"><i class="fas fa-fw fa fa-plus"></i></button></a></div>
 
                  <div class="table-responsive scrollAble2">
-                       <table class="table table-bordered"  width="100%" style="font-size: 12px">
+                       <table class="table table-bordered"  id="socialworkerTable" width="100%" style="font-size: 12px">
                             <thead>
                              <tr>
                                <th width="15%">Date/Time</th>
@@ -215,10 +221,10 @@ section .section-title {
                                <th width="10%">Action</th>
                             </tr>
                             </thead>
-                          <tbody>
+                          <tbody id="socialworker-list" name="socialworker-list">
                               @foreach ($patient_notes as $patient_note)
                              @if($patient_note->role_type =="socialworker")
-                              <tr id="{{$patient_note->id}}">
+                              <tr id="socialworker_{{$patient_note->id}}">
                                     <td>{{$patient_note->date_time}}</td>
                                     <td>{{$patient_note->servicex->name}}</td>
                                     <td>{{$patient_note->notes}}</td>
@@ -240,7 +246,7 @@ section .section-title {
 
  </div>
 
-    <div class="modal fade" id="DoctorNotesModal" aria-hidden="true" >
+    <!--<div class="modal fade" id="DoctorNotesModal" aria-hidden="true" >
           <div class="modal-dialog">
                   <div class="modal-content"  style="width:980px;">
                               <div class="modal-header">
@@ -254,7 +260,7 @@ section .section-title {
 
                                   <div class="form-group">
                                     <h6>Service Type</h6>
-                                      <select class="form-control" id="patientList"  name="patientList" data-hide-disabled="true" style="font-size: 16px; width: 500px;margin-left: 0px">
+                                      <select class="form-control" id="doctorList"  name="doctorList" data-hide-disabled="true" style="font-size: 16px; width: 500px;margin-left: 0px">
                                           @foreach($service as $services)
                                           @if($services->role == 3)
                                           <option value="{{$services->services->id}}"> {{$services->services->name}}</option>
@@ -277,11 +283,12 @@ section .section-title {
                               <div class="modal-footer">
                                   <button type="button" class="btn btn-primary" id="btn-save" name ="btn-save" value="add">Save changes
                                   </button>
-                              </form>
                               </div>
+                          </form>
+
                   </div>
           </div>
-  </div>
+  </div>-->
 
    <div class="modal fade" id="NurseNotesModal" aria-hidden="true" >
           <div class="modal-dialog">
@@ -293,8 +300,8 @@ section .section-title {
                               <div class="modal-body">
                                   <div class="form-group">
                                     <h6>Service Type</h6>
-                                      <select class="form-control" id="patientList"  name="patientList" data-hide-disabled="true" style="font-size: 16px; width: 500px;margin-left: 0px">
-                                        <option value="">--NONE--</option>
+                                      <select class="form-control nurseList" id="nurseList"  name="nurseList" data-hide-disabled="true" style="font-size: 16px; width: 500px;margin-left: 0px">
+                                        <option value=" ">--NONE--</option>
                                           @foreach($service as $services)
                                           @if($services->role == 4)
                                           <option value="{{$services->services->id}}"> {{$services->services->name}}</option>
@@ -305,7 +312,7 @@ section .section-title {
 
                                   <div class="form-group">
                                         <h6>Notes</h6>
-                                           <textarea style="margin-left:0px;height: 150px;width:760px;margin-bottom: 10px" type="text" id="note" class="form-control" placeholder="Note" name="note" required="required"></textarea>
+                                           <textarea style="margin-left:0px;height: 150px;width:760px;margin-bottom: 10px" type="text" id="nursenote" class="form-control" placeholder="Note" name="nursenote" required="required"></textarea>
                                   </div>
                                   
 
@@ -318,9 +325,9 @@ section .section-title {
                                     <input type="hidden" id="note_by" name="note_by" value="{{Auth::user()->id}}">
                                     <input type="hidden" id="creator_role" name="creator_role" value="doctor">
 
-                           </form>
-
                               </div>
+                         </form>
+
                   </div>
           </div>
   </div>
@@ -380,7 +387,7 @@ section .section-title {
 
                                   <div class="form-group">
                                     <h6>Service Type</h6>
-                                      <select class="form-control" id="patientList"  name="patientList" data-hide-disabled="true" style="font-size: 16px; width: 500px;margin-left: 0px">
+                                      <select class="form-control doctorList" id="doctorList"  name="doctorList" data-hide-disabled="true" style="font-size: 16px; width: 500px;margin-left: 0px">
                                           @foreach($service as $services)
                                           @if($services->role == 3)
                                           <option value="{{$services->services->id}}"> {{$services->services->name}}</option>
@@ -468,7 +475,7 @@ section .section-title {
 
                                   <div class="form-group">
                                     <h6>Service Type</h6>
-                                      <select class="form-control" id="patientList"  name="patientList" data-hide-disabled="true" style="font-size: 16px; width: 500px;margin-left: 0px">
+                                      <select class="form-control" id="socialList"  name="socialList" data-hide-disabled="true" style="font-size: 16px; width: 500px;margin-left: 0px">
                                           @foreach($service as $services)
                                           @if($services->role == 3)
                                           <option value="{{$services->services->id}}"> {{$services->services->name}}</option>
@@ -513,7 +520,7 @@ section .section-title {
 
                                   <div class="form-group">
                                     <h6>Service Type</h6>
-                                      <select class="form-control" id="patientList"  name="patientList" data-hide-disabled="true" style="font-size: 16px; width: 500px;margin-left: 0px">
+                                      <select class="form-control" id="psychiatristList"  name="psychiatristList" data-hide-disabled="true" style="font-size: 16px; width: 500px;margin-left: 0px">
                                           @foreach($service as $services)
                                           @if($services->role == 3)
                                           <option value="{{$services->services->id}}"> {{$services->services->name}}</option>

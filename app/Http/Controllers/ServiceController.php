@@ -12,6 +12,7 @@ use App\Services;
 use App\Display;
 use App\Notify;
 use App\Transfer_Requests;
+use Response;
 use Session;
 
 class ServiceController extends Controller
@@ -88,6 +89,24 @@ class ServiceController extends Controller
             return back();
 
         }
+
+    }
+
+    public function viewService(Request $request)
+    {   
+        
+            $service_id = $request->id;
+            $services = Services::find($service_id);
+            $notify = Notify::where('service_id', $service_id)->get();
+            $display = Display::where('service_id', $service_id)->get();
+
+
+            $array = ['service'=> $services, 'notify'=> $notify, 'display'=> $display];
+
+
+                 return response::json($array);
+
+
 
     }
 

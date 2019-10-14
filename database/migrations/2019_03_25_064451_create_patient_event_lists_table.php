@@ -21,6 +21,8 @@ class CreatePatientEventListsTable extends Migration
             $table->integer('patient_id')->unsigned();
             $table->foreign('patient_id')->references('id')->on('patients');
             $table->integer('status');
+            $table->string('remarks')->nullable();
+
             $table->timestamps();
         });
     }

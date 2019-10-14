@@ -17,6 +17,7 @@ class CreateInterventions extends Migration
             $table->increments('id');
             $table->string('interven_name');
             $table->string('descrp');
+            $table->integer('inactive')->nullable();
             $table->timestamps();
         });
     }

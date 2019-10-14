@@ -20,6 +20,7 @@ use App\Patients;
 use App\Refers;
 use App\ProgressNotes;
 use App\DentalNotes;
+use App\Services;
 
 use Hash;
 use Session;
@@ -41,8 +42,14 @@ class ReferController extends Controller
 
          $socialworker = ProgressNotes::create($request->all());
 
+         $id = $socialworker->id;
+
+
+
+         $progress = ProgressNotes::where('id', $id)->with('userx')->with('servicex')->get();
+
         
-         return Response::json($socialworker);
+         return Response::json($progress);
 
     }
 
@@ -51,7 +58,13 @@ class ReferController extends Controller
 
 
          $dentalnotes = DentalNotes::create($request->all());
-         return Response::json($dentalnotes);
+
+         $id = $dentalnotes->id;
+
+
+          $dental = DentalNotes::where('id', $id)->with('userxk')->get();
+
+         return Response::json($dental);
 
     }
 
@@ -110,6 +123,30 @@ class ReferController extends Controller
         $id->save();
         return Response::json($id);
 
+
+    }
+
+    function putInactiveActive(Request $request, $id){
+
+        $newStat = $request->inactive;
+        $remarks = $request->remarks;
+
+      //  dd($id);
+
+
+        $id = Patients::find($id);
+
+    /*    $id->fill([
+            'inactive' => 
+           
+        ]);*/
+
+        $id->update(array('inactive' => $newStat, 'remarks' => $remarks));
+
+        //$id->save();
+
+
+        return Response::json($id);
 
     }
           

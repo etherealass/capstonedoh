@@ -5,14 +5,21 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use App\Events;
 use App\Patients;
-use App\Interventions;
+use App\ChildInterventions;
+use App\Patient_Event_List;
 
 
 class Visit_interven extends Model
 {
     protected $fillable = [
-        'id','patient_id','interven_id','event_id','remarks','child_interven_id', 'created_by', 'date'
+        'id','patient_event','patient_id','interven_id','event_id','remarks','child_interven_id', 'created_by', 'date'
     ];
+
+    public function patient_event()
+    {
+      return $this->belongsTo('App\Patient_Event_List','patient_event');
+
+    }
 
      public function patient()
     {
@@ -26,7 +33,7 @@ class Visit_interven extends Model
 
       public function childintervention()
     {
-       return $this->belongsTo('App\Interventions','child_interven_id');
+       return $this->belongsTo('App\ChildInterventions','child_interven_id');
     }
 
 

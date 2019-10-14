@@ -46,6 +46,11 @@ class DatabaseSeeder extends Seeder
             'name' =>'Physciatrist',
             'description' => 'Physciatrist',
         ]);
+         DB::table('user_roles')->insert([
+            'parent' => '0',
+            'name' =>'Dentist',
+            'description' => 'Dentist',
+        ]);
 
          DB::table('departments')->insert([
 
@@ -64,6 +69,14 @@ class DatabaseSeeder extends Seeder
                 'department_name' => 'Aftercare',
                 'description' => 'Aftercare'
          ]);
+
+        DB::table('departments')->insert([
+
+                'department_name' => 'Aftercare',
+                'description' => 'Aftercare'
+         ]);
+
+
 
          DB::table('case__types')->insert([
                 'case_id' => rand(),
