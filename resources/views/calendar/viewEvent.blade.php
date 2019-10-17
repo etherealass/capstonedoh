@@ -93,9 +93,10 @@ select
                                   <div class="row">
                                       <div class="col-md-12 col-md-offset-3" >
                                       <center>
+                                    @if($isEventExpired || $isPatientRemove)
+
                                       <div class="col-md-12">
                                       <div class="form-group">
-                                        
                                           <select class="selectpicker form-control col-md-6" id="patientList"  name="patientList"data-live-search-placeholder="Search" data-live-search="true" title="Select a Patient" data-hide-disabled="true">
                                           @foreach($patients as $pats_Evt)
                                             <option value="{{$pats_Evt->id}}">{{ $pats_Evt->lname }}, {{ $pats_Evt->fname }}</option>
@@ -105,6 +106,8 @@ select
                                             <i class="fa fa-plus" aria-hidden="true"></i></button>
                                           </div>
                                       </div>
+
+                                      @endif
 
                                         </center>
 
