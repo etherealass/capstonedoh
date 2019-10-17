@@ -1,0 +1,128 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\URL;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\Redirect;
+use Auth;
+use DB;
+use Calendar;
+use App\Users;
+use App\User_roles;
+use App\Departments;
+use App\Events;
+use App\Patients;
+use App\Interventions;
+use App\Patient_Event_List;
+use App\Transfer_Requests;
+use App\Visit_interven;
+
+use Hash;
+use Session;
+use PDF;
+use Carbon\Carbon;
+use Response;
+
+
+
+class EventController extends Controller
+{
+ 
+
+    public function delete_patient_event($id){
+
+
+             $patient = Patient_Event_List::destroy($id);
+             return Response::json($patient);
+
+    }
+
+    public function view_add_patient(Request $request){
+
+         $patient_list = Patient_Event_List::create($request->all());
+
+         $id = $patient_list->id;
+
+
+         $patient = Patient_Event_List::where('id',$id)->with('patients')->first();
+
+         return Response::json($patient);
+
+             
+    }
+
+    public function patient_attend_intervention(Request $request){
+
+            $data = $request->all();
+            $id = rand();
+            $items = array();
+
+             foreach ($data as $record) {
+                if (!$record['isChecked'] && $record['rec_id']) {
+
+                    $rec = Visit_interven::find($record['rec_id']);
+                    $rec->delete();
+
+                    $items[] =  $rec;
+
+
+
+
+                } else {
+
+                    if ($record['isChecked'] && empty($record['rec_id'])) {
+
+                        $rec = new Visit_interven;
+
+                         //   $rec->patient_event = $id;
+                            $rec->patient_id = $record['patient_id'];
+                            $rec->interven_id = $record['interven_id'];
+                            $rec->event_id = $record['event_id'];
+                            $rec->remarks = $record['remarks'];
+
+                            if(!empty( $record['child_interven_id'])){
+                            $rec->child_interven_id = $record['child_interven_id'];
+                            }
+                            $rec->created_by = 1;
+                            $rec->save();
+
+
+                    }else if ($record['isChecked'] && $record['rec_id']) {
+                        $rec = Visit_interven::find($record['rec_id']);
+
+                            $rec->patient_id = $record['patient_id'];
+                            $rec->interven_id = $record['interven_id'];
+                            $rec->event_id = $record['event_id'];
+                            $rec->remarks = $record['remarks'];
+                            if(!empty( $record['child_interven_id'])){
+                            $rec->child_interven_id = $record['child_interven_id'];
+                            }
+                            $rec->created_by = 1;
+                            $rec->save();
+
+
+                    }
+
+                   
+                }
+            }
+             
+         return Response::json($items);
+        
+    }
+
+    public function view_event_attended() {
+
+        $patient_id = isset($_GET['patient_id']) ? $_GET['patient_id'] : 0;
+        $event_id = isset($_GET['event_id']) ? $_GET['event_id'] : 0;
+        $eventsAttended = Visit_interven::where(['patient_id' => $patient_id, 'event_id' => $event_id])->get();
+
+        return Response::json($eventsAttended);
+    }
+
+
+}
