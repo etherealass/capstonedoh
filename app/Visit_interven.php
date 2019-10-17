@@ -31,12 +31,6 @@ class Visit_interven extends Model
        return $this->belongsTo('App\Interventions','interven_id');
     }
 
-      public function childintervention()
-    {
-       return $this->belongsTo('App\ChildInterventions','child_interven_id');
-    }
-
-
      public function events()
     {
        return $this->belongsTo('App\Events','event_id');

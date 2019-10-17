@@ -29,10 +29,13 @@
 
             </div>
         </div>
-        <div class="col-xl-4 col-sm-9 mb-10">
+
+        <div class="col-xl-8 col-sm-6 mb-10">
+        </div>
+        <div class="col-xl-4 col-sm-6 mb-10">
             <div class="mb-3 text-black o-hidden h-100">
               <div class="card-body">
-                <a style="color:white" href="{{URL::to('/add_intervention')}}"><button class="btn btn-dark btn-block" style="height: 50px; width:200px;float: right;margin-top: 0px;margin-left: 120px">New Intervention</button></a>
+                <a style="color:white" href="{{URL::to('/add_intervention')}}"><button class="btn btn-dark btn-block" style="height: 50px; width:200px;float: right;margin-top: 0px;">New Intervention</button></a>
               </div>
           </div>
         </div>
@@ -42,18 +45,30 @@
                   <table class="table table-bordered" id="InterventionTable" width="100%" cellspacing="0" style="text-align: center">
                       <thead>
                           <tr>
-                            <th>Intervention</th>
-                            <th>Action</th>
+                            <th width="70%">Intervention</th>
+                            <th width="30%">Action</th>
                           </tr>
                       </thead>
                       <tbody>
                          @foreach($inter as $intervention)
                             <tr>
                                 <td id="inteven_{{$intervention->id}}">{{$intervention->interven_name}}</td>
-                                <td>
-                                     <button class="btn btn-info editIntervention" id="editIntervention" name="editIntervention" value="{{$intervention->id}}">Edit</button>
+                                <td id="button_{{$intervention->id}}">
+                         
+                                    @if($intervention->inactive == 1)
+                                      <div class="forinactive">
+                                        <button class="btn btn-success deleteIntervention" id="deleteIntervention" name="deleteIntervention" value="{{$intervention->id}}">Active</button></td>
+
+                                    </div>
+                                    @else
+                                      <div class="foractive">
+                                      <button class="btn btn-info editIntervention" id="editIntervention" name="editIntervention" value="{{$intervention->id}}">Edit</button>
                                      <button class="btn btn-success" id="ViewIntervention" name="ViewIntervention" value="{{$intervention->id}}">View</button>
                                     <button class="btn btn-danger deleteIntervention" id="deleteIntervention" name="deleteIntervention" value="{{$intervention->id}}">Inactive</button></td>
+                                  </div>
+
+                                    @endif
+
 
                             </tr>
                          @endforeach
@@ -122,7 +137,7 @@
 
               $('#InterventionTable').DataTable();
 
-              $('.editIntervention').click(function (e) {
+          $("#editIntervention").click(function (e) {
                     
                   var id = $(this).val();
 
@@ -150,7 +165,6 @@
 
 
 
-
                    },
                   error: function (data) {
                     console.log('Error:', data);
@@ -160,7 +174,7 @@
 
               });
 
-              });
+      });
 
 
               $('.btn_update').click(function(){
@@ -189,7 +203,9 @@
 
                               success: function (data) {
 
-                                    
+                                var link = '<td id="inteven_'+data.id+'">'+data.interven_name+'</td>';
+
+                                   $('#inteven_'+data.id).replaceWith(link);
 
                                     $('#EditInterventioneModalData').trigger("reset");
                                     $('#EditInterventionModal').modal('hide');
@@ -210,15 +226,29 @@
 
 
 
-               $('.deleteIntervention').click(function (e) {
+               $("#deleteIntervention").click(function (e) {
                     
-                    var result = confirm('Your are about to Inactive this Intervention. Would you like to continue?');
+                var stat = $(this).text();
+
+                    var result = confirm('Your are about to '+stat+' this Intervention. Would you like to continue?');
     
-                          if(result = true){
+                          if(result == true){
 
-                               $id = $(this).val();
+                               var id = $(this).val();
 
+
+                               var set;
+
+
+                               if(stat == "Inactive"){
+
+                                  set = 1;
+                               }else{
+
+                                  set =0;
+                               }
                                
+
                             $.ajaxSetup({
                               headers: {
                                   'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -226,15 +256,37 @@
 
                              });
 
-                                var ajaxurl = '{{URL::to("/inactive/intervention")}}'+ '/' + id;
+                            var ajaxurl = '{{URL::to("/inactive/intervention")}}'+ '/' + id;
 
                          $.ajax({
+                            //contentType: "application/json; charset=utf-8",
                             type: "POST",
                             url: ajaxurl,
+                            data: {status: set},
 
                               success: function (data) {
 
-                                    
+                                var link ='<td id="button_'+data.id+'">';
+
+
+                                if(data.inactive == 1){
+
+                                   /* link += '<button class="btn btn-success deleteIntervention" id="deleteIntervention" name="deleteIntervention" value="'+data.id+'">Active</button></td>';*/
+
+
+
+
+
+                                }else{
+
+                                   link += '<button class="btn btn-info editIntervention" id="editIntervention" name="editIntervention" value="'+data.id+'">Edit</button>';
+                                     link += '<button class="btn btn-success" id="ViewIntervention" name="ViewIntervention" value="'+data.id+'">View</button>';
+                                    link += '<button class="btn btn-danger deleteIntervention" id="deleteIntervention" name="deleteIntervention" value="'+data.id+'">Inactive</button></td>';
+
+                                }
+
+                                      $('#button_'+data.id).replaceWith(link);
+
 
 
                                },
@@ -243,12 +295,14 @@
 
                             }
 
+              });
 
-                          }
 
-                
 
-                });
+                    
+                }
+
+              });
 
               
 

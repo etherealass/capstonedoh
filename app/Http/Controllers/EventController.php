@@ -59,21 +59,26 @@ class EventController extends Controller
 
             $data = $request->all();
             $id = rand();
+            $items = array();
 
              foreach ($data as $record) {
                 if (!$record['isChecked'] && $record['rec_id']) {
 
-                    //find record and delete
                     $rec = Visit_interven::find($record['rec_id']);
                     $rec->delete();
 
+                    $items[] =  $rec;
+
+
+
 
                 } else {
+
                     if ($record['isChecked'] && empty($record['rec_id'])) {
 
                         $rec = new Visit_interven;
 
-                            $rec->event_patient_id = $id;
+                         //   $rec->patient_event = $id;
                             $rec->patient_id = $record['patient_id'];
                             $rec->interven_id = $record['interven_id'];
                             $rec->event_id = $record['event_id'];
@@ -106,7 +111,7 @@ class EventController extends Controller
                 }
             }
              
-         return Response::json($rec);
+         return Response::json($items);
         
     }
 

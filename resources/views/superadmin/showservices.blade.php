@@ -101,7 +101,7 @@
 
                                         <label>Display</label>
                                       <div class="id_100">
-                                        <select id="display[]" class="selectpicker form-control display_{{$service->id}}" style="font-size: 18px; width: 500px;height: 100px" name="display[]" multiple="multiple">
+                                        <select id="display[]" class="selectpicker form-control display display_{{$service->id}}" style="font-size: 18px; width: 500px;height: 100px" name="display[]" multiple="multiple">
                                         @foreach($roles as $role)
                                             <option value="{{ $role->id}}">{{ $role['name'] }}</option>
                                         @endforeach
@@ -111,7 +111,7 @@
 
                                 <div class="form-group">
                                       <label>Notify</label>
-                                      <select id="notify[]" class="selectpicker form-control notif_{{$service->id}}" style="font-size: 18px; width: 500px;height: 100px" name="notify[]" multiple="multiple">
+                                      <select id="notify[]" class="notify form-control notify notif_{{$service->id}}" style="font-size: 18px; width: 500px;height: 100px" name="notify[]" multiple="multiple">
                                       @foreach($roles as $role)
                                        <option value="{{ $role->id}}">{{ $role['name'] }}</option>
                                       @endforeach
@@ -144,9 +144,15 @@
 
               $(".selectpicker").selectpicker();
 
+              $(".notify").selectpicker();
+
+
+
 
               $('.editServices').click(function () {
-                    
+
+                    $('#EditServiceModalData li').removeClass('selected');
+                    $('#EditServiceModalData').find("input, select").val("")
                  var service_id = $(this).val();
 
                   $('#EditServiceModalData').trigger("reset");
@@ -162,36 +168,56 @@
                 data: {'id': $(this).val()},
 
                success: function (data) {
-
+console.log('test', $('#EditServiceModalData li'));
+// setTimeout(function() {
+//   $('select[name="display[]"]').siblings('.dropdown-menu').find('a >span.text:contains("Admin")').parent().parent('li').addClass('selected');
+//   console.log($('select[name="display[]"]').siblings('.dropdown-menu').find('a >span.text:contains("Admin")').length);
+// }, 1000);
+                
+$('#EditServiceModalData li, #EditServiceModalData li a').removeClass('selected');
+                console.log('service_id', service_id);
+               
+                  console.log(data);
+        
                   $serivcename = data['service']['name'];
 
                   $description = data['service']['description'];
-
+                  var titles = "";
 
                  if (data['notify'].length> 0){ 
+              $('#EditServiceModalData .notify option').removeAttr('selected');
 
                       for(var a=0; a<data['notify'].length; a++) {
                           var notifId =data['notify'][a]['role'];
                         
 
-                          $('.notif_'+service_id+' option[value='+notifId+']').attr('selected','selected');
+                            console.log(notifId);
+
+                          $('#EditServiceModalData .notify option[value='+notifId+']').attr('selected','selected');
 
 
                       }
 
                   }
 
-                   if (data['display'].length> 0){ 
+                  
 
+                   if (data['display'].length> 0){ 
+                    $('#EditServiceModalData .display option').removeAttr('selected');
                       for(var a=0; a<data['display'].length; a++) {
                           var displayId =data['display'][a]['role'];
 
-                          $('.display'+service_id+' option[value='+displayId+']').attr('selected','selected');
+                          $('#EditServiceModalData .display option[value='+displayId+']').attr('selected','selected');
 
 
+                        //  $('.display'+service_id+' option[value='+displayId+']').attr('selected','selected');
+                      //   $('select[name="display[]"]').siblings('.dropdown-menu').find('a >span.text:contains("Admin")').parent().parent('li').addClass('selected');
                       }
 
                   }
+
+                  $('select[name="display[]"]').next('.btn').attr('title', 'sample');
+                  $('select[name="display[]"]').next('.btn').find('div.filter-option-inner-inner').text('sample')
 
 
 

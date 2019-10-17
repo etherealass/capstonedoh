@@ -133,7 +133,7 @@ Route::group(['middleware' =>'auth'], function()
 	 Route::any('/update/intervention/{id}', "InterventionController@updateintervention");
 
 
-	 	 Route::any('/inactive/intervention/{id}', "InterventionController@inactiveintervention");
+	 Route::any('/inactive/intervention/{id}', "InterventionController@inactiveintervention");
 
 
 

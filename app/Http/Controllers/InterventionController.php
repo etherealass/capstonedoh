@@ -185,9 +185,14 @@ class InterventionController extends Controller
 
      public function inactiveintervention(Request $request, $id){
 
+            $inactive = $request->status;
+
             $interven = Interventions::find($id);
 
-         $interven->update(array('inactive' => 1));
+         $interven->update(array('inactive' => $inactive));
+
+                  return Response::json($interven);
+
 
      }
    

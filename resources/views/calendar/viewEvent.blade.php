@@ -389,7 +389,8 @@ select
 
       var eventArr = [];
 
-      console.log()
+      var checked = $("input[type=checkbox]:checked").length;
+        
         var length = $("input[type=checkbox]").each(function(){
               var isChecked = $(this).is(':checked');
               var event = {};
@@ -405,6 +406,8 @@ select
               eventArr.push(event);
         });
 
+
+
        var type = "POST";
         var ajaxurl = '{{URL::to("/patient/attendIntervention")}}';
          $.ajax({
@@ -413,6 +416,26 @@ select
             url: ajaxurl,
             data: JSON.stringify(eventArr),
             success: function (data) {
+
+                 for(var a = 0; data.length > a; a++){
+
+
+                    $("#rec_id_"+data[a].interven_id).val("");
+                }
+
+
+                if(checked > 0){
+
+                      $("btn-attended").removeClass("btn-primary").addClass("btn-success");
+
+                
+                }else{
+
+                      $("btn-attended").addClass("btn-success").addClass("btn-primary");
+
+                }
+
+
                 $('#modalFormData').trigger("reset");
                 $('#linkEditor').modal('hide');
                
