@@ -1,8 +1,14 @@
 
 
+<<<<<<< HEAD
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.2/modernizr.js"></script>
+=======
  <!-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
   <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
   <script src="http://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.2/modernizr.js"></script>-->
+>>>>>>> erol_dev/master
   <script src="{{asset('vendor/fullcalendar/lib/jquery-ui.min.js')}}"></script>
   <script src="{{asset('vendor/fullcalendar/lib/moment.min.js')}}"></script>
   <script src="{{asset('vendor/jquery/jquery.min.js')}}"></script>
@@ -47,13 +53,21 @@
 
   <script>
     $('#flash-overlay-modal').modal();
+<<<<<<< HEAD
   </script>
+=======
+    </script>
+>>>>>>> erol_dev/master
     
   <script>
     $(window).on('load',function() {
       $('#loading').fadeOut('slow');
     });
+<<<<<<< HEAD
   </script>
+=======
+</script>
+>>>>>>> erol_dev/master
 
   <script>
 
@@ -85,6 +99,7 @@
     });
   });
 
+<<<<<<< HEAD
   $(document).ready(function(){  
 
     $('#getChecklist2').on('hidden.bs.modal', function(e)
@@ -132,6 +147,9 @@
 </script>
 
 </script>
+=======
+  </script>
+>>>>>>> erol_dev/master
 
   <script type="text/javascript">  
   $('#editModal').on('show.bs.modal', function (event) {
@@ -182,6 +200,7 @@
     modal.find('.modal-body #department').val(department);
   })
 
+<<<<<<< HEAD
   $('#uploadList').on('show.bs.modal', function (event) {
 
     var button = $(event.relatedTarget)
@@ -212,6 +231,8 @@
 
   })
 
+=======
+>>>>>>> erol_dev/master
   $('#deleteModal').on('show.bs.modal', function (event) {
 
     var button = $(event.relatedTarget)
@@ -733,5 +754,19 @@ $(function() {
 
     });
   });
+<<<<<<< HEAD
+=======
+
+/*$('#getChecklist').on('show.bs.modal', function (event) {
+
+    var button = $(event.relatedTarget);
+
+    var listname = button.data('listname');
+    var modal = $(this);
+
+     $("h5").append('<?php  echo $var = 1 ?>');
+  })
+
+>>>>>>> erol_dev/master
   
 </script>

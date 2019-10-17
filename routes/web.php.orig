@@ -85,9 +85,12 @@ Route::group(['middleware' =>'auth'], function()
 
 	 Route::any('/create_event/{date}', "CalendarController@create_event");
 
+<<<<<<< HEAD
+=======
 	 Route::get('/event_patient/{id}', "CalendarController@event_patient");
 
 
+>>>>>>> erol_dev/master
 	 Route::any('/add_event', "CalendarController@add_event");
 
 	 Route::get('/view_event/{id}', "CalendarController@viewevent");
@@ -128,6 +131,8 @@ Route::group(['middleware' =>'auth'], function()
 
 	 Route::any('/viewIntervention/{id}', "InterventionController@viewIntervention");
 
+<<<<<<< HEAD
+=======
 	 Route::any('/edit/intervention', "InterventionController@editintervention");
 
 	 Route::any('/update/intervention/{id}', "InterventionController@updateintervention");
@@ -140,6 +145,7 @@ Route::group(['middleware' =>'auth'], function()
 	// Route::get('/view/intervention', "InterventionController@findIntervention");
 
 
+>>>>>>> erol_dev/master
 	 Route::any('/patient/intervention', "InterventionController@patientInterven");
 
 
@@ -254,10 +260,13 @@ Route::group(['middleware' =>'auth'], function()
 
 	Route::put('/refers/{id?}', "ReferController@putRefer"); 
 
+<<<<<<< HEAD
+=======
 	Route::put('/activation/{id?}', "ReferController@putInactiveActive"); 
 
 
 
+>>>>>>> erol_dev/master
 
 	Route::post('/addsocialworkernotes', "ReferController@addsocialworkernotes");
 	Route::post('/addDentalNotes', "ReferController@addDentalNotes");
@@ -290,8 +299,11 @@ Route::group(['middleware' =>'auth'], function()
 
 	 Route::any('/show_services', "ServiceController@show_services");
 
+<<<<<<< HEAD
+=======
 	 Route::get('/view/service', "ServiceController@viewService");
 
+>>>>>>> erol_dev/master
 	 Route::post('/add_service', "ServiceController@add_service");
 
 	 Route::any('/show_jails', "ViewController@show_jails");
@@ -320,8 +332,11 @@ Route::group(['middleware' =>'auth'], function()
 
 	 Route::post('/add_cityjail',"OthersController@addjail");
 
+<<<<<<< HEAD
+=======
 	 Route::post('/delete_jail',"OthersController@deletejail");
 
+>>>>>>> erol_dev/master
 	 Route::any('/add_a_casetype',"OthersController@add_a_casetype");
 
 	 Route::get('/create_user/{id}', "UserController@create_user");
@@ -336,11 +351,15 @@ Route::group(['middleware' =>'auth'], function()
 
 	 Route::post('/deleteuser', "UserController@deleteuser");
 
+<<<<<<< HEAD
 	 Route::get('/getlist',"ViewController@getlist");
 
 	 Route::post('/upload_file_checklist',"UploadController@uploadfilechecklist");
 
 	 Route::post('/delete_file_checklist',"UploadController@deletefilechecklist");
+=======
+	 Route::post('/getlist',"ViewController@getlist");
+>>>>>>> erol_dev/master
 
 	 Route::post('/samplecsv',"ViewController@samplecsv");
 

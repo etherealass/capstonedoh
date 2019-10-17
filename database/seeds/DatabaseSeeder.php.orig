@@ -4,10 +4,7 @@ use Illuminate\Database\Seeder;
 use App\Users;
 use App\Departments;
 use App\User_roles;
-<<<<<<< HEAD
-=======
 use App\Checklist;
->>>>>>> 21be206bf59555f9fb188f183514af37f520f2be
 
 class DatabaseSeeder extends Seeder
 {
@@ -20,10 +17,6 @@ class DatabaseSeeder extends Seeder
     {
         DB::table('user_roles')->insert(
         [
-<<<<<<< HEAD
-
-=======
->>>>>>> 21be206bf59555f9fb188f183514af37f520f2be
             'parent' => '0',
             'name' =>'Superadmin',
             'description' => 'Superadmin',
@@ -53,7 +46,6 @@ class DatabaseSeeder extends Seeder
             'name' =>'Physciatrist',
             'description' => 'Physciatrist',
         ]);
-<<<<<<< HEAD
          DB::table('user_roles')->insert([
             'parent' => '0',
             'name' =>'Dentist',
@@ -62,32 +54,25 @@ class DatabaseSeeder extends Seeder
 
          DB::table('departments')->insert([
 
-                'department_name' => 'Inpatient',
-                'description' => 'Inpatient'
-=======
-
-         DB::table('departments')->insert([
-
+<<<<<<< HEAD
                 'department_name' => 'In-patient',
                 'description' => 'In-patient'
->>>>>>> 21be206bf59555f9fb188f183514af37f520f2be
+=======
+                'department_name' => 'Inpatient',
+                'description' => 'Inpatient'
          ]);
 
           DB::table('departments')->insert([
 
-<<<<<<< HEAD
                 'department_name' => 'Outpatient',
                 'description' => 'Outpatient'
+>>>>>>> erol_dev/master
          ]);
 
         DB::table('departments')->insert([
 
-                'department_name' => 'Aftercare',
-                'description' => 'Aftercare'
-=======
                 'department_name' => 'Out-patient',
                 'description' => 'Out-patient'
->>>>>>> 21be206bf59555f9fb188f183514af37f520f2be
          ]);
 
         DB::table('departments')->insert([
@@ -96,31 +81,20 @@ class DatabaseSeeder extends Seeder
                 'description' => 'Aftercare'
          ]);
 
-<<<<<<< HEAD
 
 
-=======
->>>>>>> 21be206bf59555f9fb188f183514af37f520f2be
          DB::table('case__types')->insert([
                 'case_id' => rand(),
                 'case_name' => 'Voluntary Submission',
                 'court_order' => 0
 
          ]);
-<<<<<<< HEAD
-=======
-
->>>>>>> 21be206bf59555f9fb188f183514af37f520f2be
          DB::table('case__types')->insert([
                 'case_id' => rand(),
                 'case_name' => 'Voluntary with Court Order',
                 'court_order' => 1
                 
          ]);
-<<<<<<< HEAD
-=======
-
->>>>>>> 21be206bf59555f9fb188f183514af37f520f2be
          DB::table('case__types')->insert([
                 'case_id' => rand(),
                 'case_name' => 'Plea Bargain',
@@ -128,8 +102,6 @@ class DatabaseSeeder extends Seeder
                 
          ]);
 
-<<<<<<< HEAD
-=======
          DB::table('dismissal__reasons')->insert([
                 'dismissal_id' => rand(),
                 'reason' => 'RELEASED AGAINST REHABILITATION ADVICE/ESCAPED',
@@ -530,7 +502,6 @@ class DatabaseSeeder extends Seeder
          ]);
         
 
->>>>>>> 21be206bf59555f9fb188f183514af37f520f2be
 
         $user = new Users([
             'user_id' => rand(),

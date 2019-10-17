@@ -27,15 +27,15 @@ use App\Logs;
 use App\Dismissal_Reason;
 use App\Doctors_Progress_Notes;
 use App\City_Jails;
-<<<<<<< HEAD
-use Hash;
-use Session;
-=======
 use App\Patients;
 use App\Patient_Intake_Information;
 use App\Patient_Information;
 use App\Patient_History;
 use App\Checklist;
+<<<<<<< HEAD
+use App\Checklist_Files;
+=======
+>>>>>>> erol_dev/master
 use Hash;
 use Session;
 use NumConvert;
@@ -43,7 +43,6 @@ use PHPExcel_Style_Border;
 use PHPExcel_Style_Alignment;
 use Carbon\Carbon;
 
->>>>>>> 21be206bf59555f9fb188f183514af37f520f2be
 
 class ViewController extends Controller
 {
@@ -233,11 +232,7 @@ class ViewController extends Controller
       $deps = Departments::all();
       $users = Users::find(Auth::user()->id);
       $transfer = Transfer_Requests::all();
-<<<<<<< HEAD
-      $case = Case_Type::where('flag',NULL)->get();
-=======
       $case = Case_Type::all();
->>>>>>> 21be206bf59555f9fb188f183514af37f520f2be
       $graduate = Graduate_Requests::all();
 
       if(Auth::user()->user_role()->first()->name == 'Superadmin'){
@@ -258,11 +253,7 @@ class ViewController extends Controller
       $deps = Departments::all();
       $users = Users::find(Auth::user()->id);
       $transfer = Transfer_Requests::all();
-<<<<<<< HEAD
-      $city = Cities::where('flag',NULL)->get();
-=======
       $city = Cities::all();
->>>>>>> 21be206bf59555f9fb188f183514af37f520f2be
       $graduate = Graduate_Requests::all();
 
       if(Auth::user()->user_role()->first()->name == 'Superadmin'){
@@ -281,11 +272,7 @@ class ViewController extends Controller
       $users = Users::find(Auth::user()->id);
       $transfer = Transfer_Requests::all();
       $graduate = Graduate_Requests::all();
-<<<<<<< HEAD
-      $jails = City_Jails::where('flag',NULL)->get();
-=======
       $jails = City_Jails::all();
->>>>>>> 21be206bf59555f9fb188f183514af37f520f2be
 
       if(Auth::user()->user_role()->first()->name == 'Superadmin'){
             return view('superadmin.jails')->with('roles' , $roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('graduate',$graduate)->with('jails',$jails);
@@ -295,8 +282,6 @@ class ViewController extends Controller
         }
    }
 
-<<<<<<< HEAD
-=======
     public function show_reports()
    {
 
@@ -315,7 +300,6 @@ class ViewController extends Controller
         }
    }
 
->>>>>>> 21be206bf59555f9fb188f183514af37f520f2be
     public function show_dismiss_reason()
    {
 
@@ -324,11 +308,7 @@ class ViewController extends Controller
       $users = Users::find(Auth::user()->id);
       $transfer = Transfer_Requests::all();
       $graduate = Graduate_Requests::all();
-<<<<<<< HEAD
-      $reasons = Dismissal_Reason::where('flag',NULL)->get();
-=======
       $reasons = Dismissal_Reason::all();
->>>>>>> 21be206bf59555f9fb188f183514af37f520f2be
 
       if(Auth::user()->user_role()->first()->name == 'Superadmin'){
             return view('superadmin.reasons')->with('roles' , $roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('reasons',$reasons)->with('graduate',$graduate);
@@ -338,8 +318,6 @@ class ViewController extends Controller
         }
    }
 
-<<<<<<< HEAD
-=======
     public function show_checklist()
    {
 
@@ -382,14 +360,52 @@ class ViewController extends Controller
     public function getlist(request $request)
    {
 
+<<<<<<< HEAD
+    $listname = Checklist::where('id',$request->id)->get();
+    $checklist = Checklist_Files::where('checklist_id',$request->id)->get();
+    foreach($listname as $name)
+    $output = '';
+
+    $output .= '<div class="container" style="margin-left: 0px">
+                  <div class="row">
+                    <div class="col-md-12">
+                    <button style="margin-left:900px" class="btn btn-primary" onclick="myFunction()"><-Back</button>
+                    <h3 style="margin-left:5px">'.$name->name.'</h3>
+                      <div class="table-responsive checklistTable" id="checklistTable">
+                        <table class="table table-bordered"  width="100%" cellspacing="0" style="font-size: 12px">
+                        <thead style="width:200px">
+                        <tr>
+                          <th style="width:200px">Name</th>
+                          <th style="width:200px">Path</th>
+                          <th style="width:200px">Action</th>
+                        </tr>
+                      </thead>
+                      <tbody id="sampleTable" name="sampleTable">';
+    
+                  foreach($checklist as $list)
+                  {
+
+                      $output .= '<tr><td style="width:200px">'.$list->name.'</td><td style="width:200px"><a href="http://localhost/capstone/public/'.$list->location.'">'.$list->location.'</a></td><td style="width:200px"><button class="btn btn-danger" data-toggle="modal" data-target="#deleteFile" data-fileid="'.$list->id.'" style="margin-left:100px">Delete</button></td></tr>';
+
+                  }
+
+    $output .= "</tbody>
+                  </table>
+              </div>
+            </div>
+          </div>
+        </div>";
+
+    return \Response::json($output);
+=======
     $checklist = Checklist::where('id',$request->input('listid'))->pluck('name');
 
     foreach($checklist as $list)
     return \Response::json(['list' => $list]);
+>>>>>>> erol_dev/master
     
    }
 
->>>>>>> 21be206bf59555f9fb188f183514af37f520f2be
    public function sampleform($id)
    {
       $notes = $this->get_notes($id);
@@ -399,18 +415,6 @@ class ViewController extends Controller
       return $pdf->stream();
    }
 
-<<<<<<< HEAD
-   public function samplecsv()
-   {
-      //libxml_use_internal_errors(true);
-
-       return Excel::download(new PnotesExport, 'notes.xls');
-
-       //libxml_use_internal_errors(false);
-
-   }
-
-=======
    public function samplecsv(request $request)
    {
 
@@ -652,7 +656,6 @@ class ViewController extends Controller
   }
 
 
->>>>>>> 21be206bf59555f9fb188f183514af37f520f2be
    public function get_notes($id)
    {
      $notes = Doctors_Progress_Notes::where('patient_id',$id)->get();
