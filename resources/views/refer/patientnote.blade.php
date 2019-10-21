@@ -59,7 +59,7 @@ section .section-title {
                 <div style="float:right;margin-bottom: 10px;margin-right: 10px;margin-top: 10px"><a data-patientid="{{$pats->id}}" data-doctorid="{{Auth::user()->id}}" data-toggle="modal" data-target="addDoctortNotes"><button id="addDoctortNotes" name="addDoctortNotes" class="btn btn-success"><i class="fas fa-fw fa fa-plus"></i></button></a></div>
 
                  <div class="table-responsive scrollAble2">
-                       <table class="table table-bordered"  width="100%" style="font-size: 12px">
+                       <table class="table table-bordered" id="doctorsTable" width="100%" style="font-size: 12px">
                             <thead>
                              <tr>
                                <th width="15%">Date/Time</th>
@@ -92,9 +92,25 @@ section .section-title {
   <!--nurse-->
           <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
              <div class="container">
+                  <div class="form-group">
+                     <div class="form-row">
+                        <div class="col-md-5">
 
-                <div style="float:right;margin-bottom: 10px;margin-right: 10px;margin-top: 10px"><a data-patientid="{{$pats->id}}" data-doctorid="{{Auth::user()->id}}" data-toggle="modal" data-target="addNurseNotes"><button id="addNurseNotes" name="addNurseNotes" class="btn btn-success"><i class="fas fa-fw fa fa-plus"></i></button></a></div>
+                             <select class="form-control" id="tableType" placeholder="tableType"name="tableType">
+                                <option value="">Services</option>
+                                <option value="M">Medication Records</option>
+                                <option value="F">BMI</option>
+                                <option value="Others"></option>
+                              </select>
 
+                        </div>
+
+                       <div class="col-md-6">
+
+                          <div style="float:right;margin-bottom: 10px;margin-right: 10px;"><a data-patientid="{{$pats->id}}" data-doctorid="{{Auth::user()->id}}" data-toggle="modal" data-target="addNurseNotes"><button id="addNurseNotes" name="addNurseNotes" class="btn btn-success"><i class="fas fa-fw fa fa-plus"></i></button></a></div>
+                  </div>
+                </div>
+                </div>
                  <div class="table-responsive scrollAble2">
                        <table class="table table-bordered" id="nurseTable"  width="100%" style="font-size: 12px">
                             <thead>
@@ -134,7 +150,7 @@ section .section-title {
              <div class="container">
 
                 <div style="float:right;margin-bottom: 10px;margin-right: 10px;margin-top: 10px"><a data-patientid="{{$pats->id}}" data-doctorid="{{Auth::user()->id}}" data-toggle="modal" data-target="addDentalNotes"><button id="addDentalNotes" name="addDentalNotes" class="btn btn-success"><i class="fas fa-fw fa fa-plus"></i></button></a></div>
-
+                      
                  <div class="table-responsive scrollAble2">
                        <table class="table table-bordered"  id="dentalTable" width="100%" style="font-size: 12px">
                             <thead>

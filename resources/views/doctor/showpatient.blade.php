@@ -53,7 +53,7 @@
                 </thead>
                 <tbody>
                 @foreach($pat as $pats)  
-                  @if(Auth::user()->department == $pats->department_id) 
+                  @if(in_array($pats->department_id, $user_dept)) 
                     @if($pats->flag != 'deleted')    
                   <tr>
                     <td>{{$pats->fname}} {{$pats->mname}}. {{$pats->lname}}</td>

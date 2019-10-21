@@ -55,13 +55,20 @@ class EventController extends Controller
              
     }
 
-    public function patient_attend_intervention(Request $request){
+    public function patient_attend_intervention(Request $request, $peID){
 
             $data = $request->all();
             $id = rand();
             $items = array();
+            $cnt = 0;
+
 
              foreach ($data as $record) {
+                if($record['isChecked']){
+
+                    $cnt++;
+
+                }
                 if (!$record['isChecked'] && $record['rec_id']) {
 
                     $rec = Visit_interven::find($record['rec_id']);
@@ -110,7 +117,19 @@ class EventController extends Controller
                    
                 }
             }
-             
+
+                if($cnt > 0){
+
+                     $interven = Patient_Event_List::find($peID)->update(array('status'=> 1));
+
+
+                }else{
+                     $interven = Patient_Event_List::find($peID)->update(array('status'=> 0));
+
+
+                }
+
+
          return Response::json($items);
         
     }

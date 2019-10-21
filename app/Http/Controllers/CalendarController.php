@@ -142,7 +142,7 @@ class CalendarController extends Controller
         'end_date' => $request->input('end_date'),
         'start_time' => $request->input('start_time'),
         'end_time' => $request->input('end_time'),
-        'status' => 1,
+        'status' => 0,
         'color' => $color
 
         ]);

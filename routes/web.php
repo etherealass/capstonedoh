@@ -113,7 +113,7 @@ Route::group(['middleware' =>'auth'], function()
 
 	 Route::get('/view/vieweventattended', "EventController@view_event_attended");
 	 
-	 Route::post('/patient/attendIntervention', "EventController@patient_attend_intervention");
+	 Route::post('/patient/attendIntervention/{id}', "EventController@patient_attend_intervention");
 
 	Route::post('/event_save_edit', "EventController@event_save_edit");
 

@@ -69,12 +69,14 @@ select
               </div>
               <div class="col-md-2">
                 <p style="font-size: 15px"><h5>Start Date:</h5> {{$evt->start_date}}</p>
+                <input style="margin-left:0px" type="text" class="form-control" placeholder="Remarks" name="start-date" id="start-date" value="{{$evt->start_date}}" hidden="hidden">
               </div>
               <div class="col-md-3">
                 <p style="font-size: 15px"><h5>End Date:</h5> {{$evt->end_date}}</p>
               </div>
                <div class="col-md-2">
                 <p style="font-size: 15px"><h5>Start Time:</h5> {{$evt->start_time}}</p>
+
               </div>
                <div class="col-md-2">
                 <p style="font-size: 15px"><h5>End Time:</h5><span id="datetime">{{$evt->end_time}}</span></p>
@@ -128,11 +130,17 @@ select
                                              <td height="20"><a>{{ $patients->patients->contact}}</a></td>
                                              <td>
                                             @if($isEventExpired)
-                                            <button class="btn btn-info  open-modal" value="{{$patients->patient_id}}" data-id="{{$patients->id}}"><i class="far fa-calendar-check" aria-hidden="true"></i></button>
+
+                                              @if($patients->status == 0)
+                                            <button class="btn btn-info  open-modal" value="{{$patients->patient_id}}" data-id="{{$patients->id}}" id="attend_btn"  name="attend_btn"><i class="far fa-calendar-check" aria-hidden="true"></i></button>
+                                            @else
+                                             <button class="btn btn-success  open-modal" value="{{$patients->patient_id}}" data-id="{{$patients->id}}" id="attend_btn"  name="attend_btn"><i class="far fa-calendar-check" aria-hidden="true"></i></button>
+                                             @endif
+
                                             @endif
 
                                               @if($isPatientRemove)
-                                            <button class="btn btn-danger delete_link" value="{{$patients->id}}" data-name="{{ $patients->patients->lname }}, {{ $patients->patients->fname }}"><i class="fa fa-times" aria-hidden="true"></i></button>
+                                            <button class="btn btn-danger delete_link" value="{{$patients->id}}" data-id="{{$patients->id}} data-name="{{ $patients->patients->lname }}, {{ $patients->patients->fname }}"><i class="fa fa-times" aria-hidden="true"></i></button>
                                             @endif
                                               </td>
 
@@ -193,7 +201,7 @@ select
                             </button>
                             <input type="hidden" id="evts_id" name="evts_id" value="">
                             <input type="hidden" id="patient_interven_id" name="patient_interven_id" value="">
-                            <input type="hidden" id="patient_interven_id" name="patient_interven_id" value="">
+                            <input type="hidden" id="patient_event_id" name="patient_event_id" value="">
 
 
                         </div>
@@ -302,7 +310,12 @@ select
           $('body').on('click', '.open-modal', function () {
               var evt_id = $('#event_id').val();
               $('#evts_id').val(evt_id);
+
+
+
+              console.log($(this).attr("data-id"));
               $('#patient_interven_id').val($(this).val());
+              $('#patient_event_id').val($(this).attr("data-id"));
               $('#btn-save').val("add");
               $('#modalFormData').trigger("reset");
               $('#linkEditor').modal('show');
@@ -377,6 +390,10 @@ select
 
     $('#btn-attended').click(function(e){
 
+          var event_patient = $('#patient_event_id').val();
+
+       //   console.log(event_patient);
+
          $.ajaxSetup({
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -393,7 +410,10 @@ select
       var eventArr = [];
 
       var checked = $("input[type=checkbox]:checked").length;
-        
+
+      console.log(checked);
+
+
         var length = $("input[type=checkbox]").each(function(){
               var isChecked = $(this).is(':checked');
               var event = {};
@@ -412,7 +432,7 @@ select
 
 
        var type = "POST";
-        var ajaxurl = '{{URL::to("/patient/attendIntervention")}}';
+        var ajaxurl = '{{URL::to("/patient/attendIntervention")}}/'+event_patient;
          $.ajax({
             contentType: "application/json; charset=utf-8",
             type: type,
@@ -429,12 +449,12 @@ select
 
                 if(checked > 0){
 
-                      $("btn-attended").removeClass("btn-primary").addClass("btn-success");
+                      $("#attend_btn").addClass("btn-success").removeClass("btn-info");
 
                 
                 }else{
 
-                      $("btn-attended").addClass("btn-success").addClass("btn-primary");
+                      $("#attend_btn").addClass("btn-info").removeClass("btn-success");
 
                 }
 
@@ -455,6 +475,7 @@ select
 
 
          var patient = $('#patientList').val();
+         var dateattend = $('#start-date').val();
 
          if(patient == ''){
 
@@ -478,9 +499,10 @@ select
         });
         e.preventDefault();
          var formData = {
+            date: dateattend,
             event_id: event_id,
             patient_id: patient,
-            status: 1
+            status: 0
          }
 
         var type = "POST";
@@ -493,7 +515,7 @@ select
             dataType: 'json',
             success: function (data) {
 
-              console.log(data);
+          
 
                  var link = '<tr id="patient' + data[0].id + '"><td>' + data.ref_date + '</td><td>' + + '</td><td>' + data.ref_reason + '</td><td>' + data.ref_by + '</td>';
                 link += '<td><button class="btn btn-info open-modal" value="' + data.id + '">Edit</button>';
@@ -501,6 +523,7 @@ select
                  link += '<button class="btn btn-light print-link" id="btn-ptint" name ="btn-print" value="' + data.id + '">Print</button>';
 
                     $('#links-list').append(link);
+
                 alert('successfully added');
                
             },
@@ -541,8 +564,7 @@ select
                 $("#patient" +  patient_id).remove();
 
                 location.reload();
-                // console.log("delete");
-                // $('#patientList').siblings('.dropdown-menu').find('ul.dropdown-menu.inner.show').append('<li><a role="option" class="dropdown-item" aria-disabled="false" tabindex="0" aria-selected="false"><span class="text">' + patient_name + '</span></a></li>');
+              
 
             },
             error: function (data) {

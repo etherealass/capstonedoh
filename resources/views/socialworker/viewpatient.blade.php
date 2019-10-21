@@ -15,7 +15,7 @@
         <!-- Breadcrumbs-->
       @if($pid)
         @foreach($pat as $pats)
-          @if($pats->department_id != Auth::user()->department)
+          @if(in_array($pats->department_id, $user_dept))
             @foreach($transfers as $trans)
               @if($trans->status == "")
         <ol class="breadcrumb" style="height: 100px;font-size:50px;text-align: center">
@@ -93,7 +93,7 @@
         @endforeach
       @elseif($pid == '0')
         @foreach($pat as $pats) 
-          @if($pats->department_id == Auth::user()->department)
+          @if(in_array($pats->department_id, $user_dept))
         @if($pats->status == 'Enrolled')
         <div class="row">
           <div class="col-md-4" style="margin-left: 28px;margin-right: 60px">
@@ -722,7 +722,7 @@
   </div>
       </div>
     </div>
-    @elseif($pats->department_id != Auth::user()->department)
+    @elseif(in_array($pats->department_id, $user_dept))
     <h1>Patient Not Found/Transfered/Deleted</h1>
     @endif
     @endforeach
