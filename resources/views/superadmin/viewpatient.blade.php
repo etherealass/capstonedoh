@@ -1186,7 +1186,7 @@ $today = $year . '-' . $month . '-' . $day;
                           @if($pats->inactive != 1)
                             <a class="dropdown-item visit_btn" id="a-visit" name="a-visit" href="#"><button id="btn-visit" name="btn-visit" class="btn">Patient Visit</button></a>
                           @endif
-                            <a class="dropdown-item inactive_btn"  id="a-inactive" name="a-inactive" href="#"><button id="btn-inactive" name="btn-inactive" class="btn" value="{{$pats->inactive}}">
+                            <a class="dropdown-item inactive_btn"  id="a-inactive" name="a-inactive" href="#"><button id="btn-inactive" name="btn-inactive" class="btn btn-inactive" value="{{$pats->inactive}}">
                              @if($pats->inactive != 1)
                              Inactive
                              @else
@@ -1196,8 +1196,36 @@ $today = $year . '-' . $month . '-' . $day;
                           </div>
                       </div>
                         <br>
+                      </br>
 
-                        <div class="row" style="margin-left: 10px;margin-bottom: 50px; margin-top: 70px">
+
+                        <div class="card-body" style="margin-left: 10px">
+                          <div class="table-responsive">
+                              <table class="table table-bordered" id="patientTable" width="100%" cellspacing="0">
+                                <thead>
+                                  <tr>
+                                    <th>Date</th>
+                                    <th>Event Name</th>
+                                    <th>Status</th>
+                                    <th>Action</th>
+                                  </tr>
+                                </thead>
+                                <tbody id="visit-list" name="visit-list">
+                                    @foreach ($visits as $pat_visit)
+                                    <tr id="visit{{$pat_visit->id}}">
+                                    <td>{{$pat_visit->date}}</td>
+                                    <td>{{$pat_visit->events->title}}</td>
+                                    <td></td>
+                                    <td></td>
+                         
+                          </tr>
+                          @endforeach
+                                </tbody>
+                              </table>
+                            </div>
+                          </div>
+
+                       <!-- <div class="row" style="margin-left: 10px;margin-bottom: 50px; margin-top: 70px">
                         
                         @foreach ($visits as $pat_visit)
                          
@@ -1210,7 +1238,7 @@ $today = $year . '-' . $month . '-' . $day;
                         </div>
                       </div>
                       @endforeach
-                      </div>          
+                      </div> -->         
 
      </div>
 
@@ -3493,6 +3521,10 @@ $today = $year . '-' . $month . '-' . $day;
 
             $('#socialworkerTable').DataTable();
 
+            $('#patientTable').DataTable({
+               "order": [[0, "desc"]]
+            });
+
 
 
     $('body').on('click', '.open_modal', function () {
@@ -3556,6 +3588,8 @@ $today = $year . '-' . $month . '-' . $day;
             }
         
            })
+
+    
       
 
      $('#btn-visit').click(function(e){
@@ -3576,9 +3610,9 @@ $today = $year . '-' . $month . '-' . $day;
     });
 
 
-    $('#btn-inactive').click(function () {
+    $('.menu_btn > a > button').on('click', function(){
         var activate = $(this).val();
-
+console.log('active');
             $('#inactivemodalFormData').trigger("reset");
             $('#inactiveEditorModal').modal('show');
         
@@ -3630,6 +3664,8 @@ $('#addSocialWorkerNotes').click(function () {
         $('#AddSocialWorkerNotesModal').modal('show');
     
   });
+
+
 
 $("#btn-save").click(function (e) {
 
@@ -3741,21 +3777,21 @@ $("#btn_activate").click(function (e) {
                       $('#inactivemodalFormData').trigger("reset");
                       $('#inactiveEditorModal').modal('hide');
 
-                          var link = '<div class="dropdown-menu menu_btn2" aria-labelledby="dropdownMenuButton">';
-                       
+                          var link = '';
+                       $('.menu_btn').html("");
 
                        if(curStat == 1){
                            link += ' <a class="dropdown-item visit_btn" id="a-visit" name="a-visit" href="#"><button id="btn-visit" name="btn-visit" class="btn">Patient Visit</button></a>';
-                            link += '<a class="dropdown-item inactive_btn"  id="a-inactive" name="a-inactive" href="#"><button id="btn-inactive" name="btn-inactive" class="btn" value="{{$pats->inactive}}">Inactive</button></a>';
+                            link += '<a class="dropdown-item inactive_btn"  id="a-inactive" name="a-inactive" href="#"><button id="btn-inactive" name="btn-inactive" class="btn btn-inactive" value="{{$pats->inactive}}">Inactive</button></a>';
 
 
                         
                         }else{
-                             link += '<a class="dropdown-item inactive_btn"  id="a-inactive" name="a-inactive" href="#"><button id="btn-inactive" name="btn-inactive" class="btn" value="{{$pats->inactive}}">Active</button></a>';
+                             link += '<a class="dropdown-item inactive_btn"  id="a-inactive" name="a-inactive" href="#"><button id="btn-inactive" name="btn-inactive" class="btn btn-inactive" value="{{$pats->inactive}}">Active</button></a>';
 
                         }
 
-                       $('.menu_btn').replaceWith(link);
+                       $('.menu_btn').append(link);
 
 
                  

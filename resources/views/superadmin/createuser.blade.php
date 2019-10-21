@@ -94,6 +94,17 @@
                 </select>
                 </div>
               </div>
+              <div class="col-md-6">
+                <div class="form-label-group">
+                 <select class="form-control selectpicker" id="depart[]" placeholder="Department" required="required" name="depart[]" multiple="multiple">
+                  <label for="department">Department</label>
+                  @foreach($deps as $dep)
+                    <option value="{{$dep->id}}">{{$dep->department_name}} Department</option>
+                  @endforeach
+                    <option value="0">--ALL--</option>
+                </select>
+                </div>
+              </div>
               @endif
               @if($rolex->name != 'Admin' && $rolex->name != 'Social Worker' && $rolex->name != 'Nurse')
                <div class="col-md-6">
@@ -116,7 +127,7 @@
             <div class="form-row">
               <div class="col-md-6">
                 <div class="form-label-group" id="design" style="display:none">
-                  <input type="text" id="designat" class="form-control" placeholder="Designation" required="required" name="designat">
+                  <input type="text" id="designat" class="form-control" placeholder="Designation" name="designat">
                   <label for="designat">Please specify designation</label>
                 </div>
               </div>
