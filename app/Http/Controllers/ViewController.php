@@ -404,6 +404,27 @@ class ViewController extends Controller
       $pdf = PDF::loadView('pdf.hello',compact('notes'));
       return $pdf->stream();
    }
+ public function pdfdde($id)
+   {
+      $pat = Patients::where('id',$id)->get();
+      $patis = Patient_Information::with('informants')->where('patient_id',$id)->get();
+      $history = Patient_History::where('patient_id',$id)->get();
+
+      $pdf = \App::make('dompdf.wrapper');
+      $pdf = PDF::loadView('pdf.pdfdde',compact(['patis','history','pat']));
+      return $pdf->stream();
+   }
+
+ public function pdfintake($id)
+   {
+      
+      $pat = Patients::where('id',$id)->get();
+      $patos = Patient_Intake_Information::where('patient_id',$id)->get();
+
+      $pdf = \App::make('dompdf.wrapper');
+      $pdf = PDF::loadView('pdf.pdfintake',compact(['patos','pat']));
+      return $pdf->stream();
+   }
 
    public function samplecsv(request $request)
    {

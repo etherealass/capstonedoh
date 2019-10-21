@@ -372,6 +372,10 @@ Route::group(['middleware' =>'auth'], function()
 
 	 Route::any('/sampleform/{id}',"ViewController@sampleform");
 
+	 Route::any('/pdfintake/{id}',"ViewController@pdfintake");
+
+	 Route::any('/pdfdde/{id}',"ViewController@pdfdde");
+
 	 Route::post('/reenroll_patient',"PatientController@reenroll_patient");
 
 	 Route::post('/add_notes',"PatientController@doctor_notes");

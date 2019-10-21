@@ -78,7 +78,7 @@
               </div>
               <div class="col-md-6">
                 <div class="form-label-group">
-                  <select class="form-control" id="designation" placeholder="Designation" required="required" name="designation">
+                  <select class="form-control" id="designation" placeholder="Designation" name="designation">
                   <label for="department">Designation</label>
                     <option selected hidden disabled>Designation/Position</option>
                   @foreach($designation as $des)

@@ -19,7 +19,7 @@
                 <div class="mr-5">{{$dep->description}}</div>
               </div>
               <a style="color:black" class="card-footer text-white clearfix small z-1" href="#">
-                <span style="color:black" class="float-left">View Details</span>
+                <span style="color:black" class="float-left" >View Details</span>
                 <span  style="color:black" class="float-right">
                   <i class="fas fa-angle-right"></i>
                 </span>
