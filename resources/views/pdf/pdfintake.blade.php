@@ -35,8 +35,8 @@
                 <div class="col-md-12"><p><b>Parents: </b></p></div>
               </div>
               <div class="row" style="font-size: 12px">
-                <div class="col-md-12"><p><b>Father's Name: </b><u style="font-size: 15px">_______{{$patss->father}}_______</u></p></div>
-                <div class="col-md-12"><p><b>Mother's Name: </b><u style="font-size: 15px">_______{{$patss->mother}}_______</u></p></div>
+                <div class="col-md-12"><p><b>Father's Name: </b><u style="font-size: 15px">______________{{$patss->father}}______________</u></p></div>
+                <div class="col-md-12"><p><b>Mother's Name: </b><u style="font-size: 15px">______________{{$patss->mother}}______________</u></p></div>
               </div>
               <div class="row" style="font-size: 12px">
                 <div class="col-md-12"><p><b>Whom to notify in case of emergency: </b><u style="font-size: 15px">________{{$patss->eperson->name}}_______</u></p></div>
@@ -48,10 +48,10 @@
                 <div class="col-md-4"><p><b>Phone No. (Home): </b><u style="font-size: 15px">___{{$patss->eperson->phone}}___</u><b>Cellphone No.:</b><u style="font-size: 15px">___{{$patss->eperson->cellphone}}___</u><b>Email add: </b><u style="font-size: 15px">{{$patss->eperson->email}}</u></p></div>
               </div>
                <div class="row" style="font-size: 12px">
-                <div class="col-md-12"><p><b>Presenting Problems: </b><br><u style="font-size: 15px">{{$patss->presenting_problems}}____________________________________________</u></p></div>
+                <div class="col-md-12"><p><b>Presenting Problems: </b><br><u style="font-size: 15px">{{$patss->presenting_problems}}_____________________________________________________________</u></p></div>
               </div>
                <div class="row" style="font-size: 12px">
-                <div class="col-md-12"><p><b>Impression: </b><br><u style="font-size: 15px">{{$patss->impression}}____________________________________________</u></p></div>
+                <div class="col-md-12"><p><b>Impression: </b><br><u style="font-size: 15px">{{$patss->impression}}_____________________________________________________________</u></p></div>
               </div>
               <div class="row" style="font-size: 12px">
                 <div class="col-md-6"><p><b>Intake Officer Signature: </b><u>____________________________</u><span style="float: right;margin-right:120px"><b>Date:</b> <u>____________________________</u></span></p></div>

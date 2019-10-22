@@ -101,7 +101,7 @@
 
                                         <label>Display</label>
                                       <div class="id_100">
-                                        <select id="display[]" class="selectpicker form-control display display_{{$service->id}}" style="font-size: 18px; width: 500px;height: 100px" name="display[]" multiple="multiple">
+                                        <select id="display[]" class="selectpicker form-control display" style="font-size: 18px; width: 500px;height: 100px" name="display[]" multiple="multiple">
                                         @foreach($roles as $role)
                                             <option value="{{ $role->id}}">{{ $role['name'] }}</option>
                                         @endforeach
@@ -111,7 +111,7 @@
 
                                 <div class="form-group">
                                       <label>Notify</label>
-                                      <select id="notify[]" class="notify form-control notify notif_{{$service->id}}" style="font-size: 18px; width: 500px;height: 100px" name="notify[]" multiple="multiple">
+                                      <select id="notify[]" class="notify form-control notify " style="font-size: 18px; width: 500px;height: 100px" name="notify[]" multiple="multiple">
                                       @foreach($roles as $role)
                                        <option value="{{ $role->id}}">{{ $role['name'] }}</option>
                                       @endforeach

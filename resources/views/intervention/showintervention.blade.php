@@ -117,7 +117,7 @@
                                     </form>
                                   </div>
                                   <div class="modal-footer">
-                                      <button type="button" class="btn btn-primary btn_update"  id="btn_update" name ="btn_update" value="{{$intervention->id}}">Save changes
+                                      <button type="button" class="btn btn-primary btn_update"  id="btn_update" name ="btn_update">Save changes
                                       </button>
 
                                     
