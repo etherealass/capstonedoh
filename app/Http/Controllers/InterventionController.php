@@ -16,6 +16,7 @@ use App\Interventions;
 use App\Departments;
 use App\Transfer_Requests;
 use App\ChildInterventions;
+use App\IntervenDept;
 use Session;
 use Response;
 
@@ -73,6 +74,7 @@ class InterventionController extends Controller
         $deps = Departments::all();
         $inter = Interventions::all();
         $users = Users::find(Auth::user()->id);
+        $depts = $request->input('depart');
 
         $child = ChildInterventions::all();
 
@@ -90,6 +92,20 @@ class InterventionController extends Controller
                 ]);
 
       $interven->save();
+
+      if($depts){
+      foreach($depts as $dept){
+
+
+                $user_department = new IntervenDept([
+                    'user_id' => $user->id,
+                    'department_id' => $dept
+                ]);
+
+                $user_department->save();
+         }
+
+      }   
       Session::flash('alert-class', 'success'); 
       flash('Intervention Created', '')->overlay();
 

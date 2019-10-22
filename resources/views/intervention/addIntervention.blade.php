@@ -30,7 +30,7 @@
             <div class="form-group">         
                   <div class="form-label-group">
                     <h6>Parent Intervention</h6>
-                   <select class="form-control" id="parent" placeholder="Civil Status" name="parent">
+                   <select class="form-control parent" id="parent" placeholder="Civil Status" name="parent">
                         <option value="0">--NONE--</option>
                        @foreach($inter as $interven)
                           <option value="{{ $interven->id }}">{{ $interven->interven_name}}</option>
@@ -44,6 +44,17 @@
                       <input type="text" id="name" class="form-control" placeholder="Name" required="required" name="name">
                   </div>
                 </div>
+                <div class="form-group depts">
+                <div class="form-label-group">
+                  <h6>Department</h6>
+                 <select class="form-control selectpicker department" id="depart[]" placeholder="Department" name="depart[]" multiple="multiple" required="required">
+                  <label for="department">Department</label>
+                  @foreach($deps as $dep)
+                    <option value="{{$dep->id}}">{{$dep->department_name}} Department</option>
+                  @endforeach
+                </select>
+                </div>
+              </div>
              <div class="form-group">
             <div class="form-label-group">
                <h6>Description</h6>
@@ -56,5 +67,38 @@
       </div>
     </div> 
   </div>
+
+@endsection
+
+@section('script')
+<script>
+      
+  $(document).ready(function () {
+
+      $('.parent').change(function() {
+
+          var parentVal = $(this).val();
+
+            if(parentVal != 0){
+
+                $('.depts').hide(); 
+                $('.department').removeAttr('required');    
+
+
+            }
+            else{
+
+              $('.depts').show();
+              $('.department').prop('required',true);   
+
+
+            }
+
+
+      });
+
+  })
+
+</script>
 
 @endsection
