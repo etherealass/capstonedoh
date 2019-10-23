@@ -81,6 +81,9 @@ select
                <div class="col-md-2">
                 <p style="font-size: 15px"><h5>End Time:</h5><span id="datetime">{{$evt->end_time}}</span></p>
               </div>
+
+               <input type="hidden" id="department_id" name="department_id" value="{{$evt->department_id}}">
+
           </div>
       </fieldset>
 
@@ -203,7 +206,6 @@ select
                             <input type="hidden" id="patient_interven_id" name="patient_interven_id" value="">
                             <input type="hidden" id="patient_event_id" name="patient_event_id" value="">
 
-
                         </div>
                     </div>
                 </div>
@@ -310,7 +312,7 @@ select
           $('body').on('click', '.open-modal', function () {
               var evt_id = $('#event_id').val();
               $('#evts_id').val(evt_id);
-
+              var depart_id = $("#department_id").val();
 
 
               console.log($(this).attr("data-id"));
@@ -327,7 +329,7 @@ select
                 contentType: "application/json; charset=utf-8",
                 type: type,
                 url: ajaxurl,
-                data: {'event_id': evt_id, 'patient_id': $(this).val()},
+                data: {'event_id': evt_id, 'patient_id': $(this).val(), 'department_id': depart_id},
                // dataType: 'json',
                 success: function (data) {
                  

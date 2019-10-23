@@ -136,6 +136,7 @@ class EventController extends Controller
 
     public function view_event_attended() {
 
+
         $patient_id = isset($_GET['patient_id']) ? $_GET['patient_id'] : 0;
         $event_id = isset($_GET['event_id']) ? $_GET['event_id'] : 0;
         $eventsAttended = Visit_interven::where(['patient_id' => $patient_id, 'event_id' => $event_id])->get();

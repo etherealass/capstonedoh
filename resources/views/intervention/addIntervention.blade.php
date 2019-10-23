@@ -47,7 +47,7 @@
                 <div class="form-group depts">
                 <div class="form-label-group">
                   <h6>Department</h6>
-                 <select class="form-control selectpicker department" id="depart[]" placeholder="Department" name="depart[]" multiple="multiple" required="required">
+                 <select class="form-control department" id="department" placeholder="Department" name="department" required="required">
                   <label for="department">Department</label>
                   @foreach($deps as $dep)
                     <option value="{{$dep->id}}">{{$dep->department_name}} Department</option>
