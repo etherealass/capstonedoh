@@ -97,10 +97,11 @@ class ServiceController extends Controller
         
             $service_id = $request->id;
             $services = Services::find($service_id);
-            $notify = Notify::where('service_id', $service_id)->get();
-            $display = Display::where('service_id', $service_id)->get();
+            $notify = Notify::where('service_id', $service_id)->with('rolesx')->get();
+            $display = Display::where('service_id', $service_id)->with('rolesxe')->get();
 
 
+               // dd($display);
             $array = ['service'=> $services, 'notify'=> $notify, 'display'=> $display];
 
 

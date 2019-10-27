@@ -21,7 +21,9 @@ use App\Refers;
 use App\ProgressNotes;
 use App\DentalNotes;
 use App\Services;
-
+use App\Bmi_records;
+use App\Blood_sugar_records;
+use App\Medical_records;
 use Hash;
 use Session;
 
@@ -48,6 +50,50 @@ class ReferController extends Controller
 
          $progress = ProgressNotes::where('id', $id)->with('userx')->with('servicex')->get();
 
+        
+         return Response::json($progress);
+
+    }
+
+     public function addRecords(Request $request, $recordType)
+    {
+
+
+
+        if($recordType == "BMIRecords"){
+
+            $record = Bmi_records::create($request->all());
+
+            $id = $record->id;
+
+
+
+          $progress = Bmi_records::where('id', $id)->with('patientx')->with('userxe')->get();
+
+        }else if($recordType == "BloodSugar"){
+
+            $record = Blood_sugar_records::create($request->all());
+
+            $id = $record->id;
+
+
+
+          $progress = Blood_sugar_records::where('id', $id)->with('patientx')->with('userxe')->get();
+
+        }else{
+
+               $record = Medical_records::create($request->all());
+
+            $id = $record->id;
+
+
+
+          $progress = Medical_records::where('id', $id)->with('patientx')->with('userxe')->get();
+
+
+        }
+
+    
         
          return Response::json($progress);
 

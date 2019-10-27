@@ -115,8 +115,12 @@ Route::group(['middleware' =>'auth'], function()
 	 
 	 Route::post('/patient/attendIntervention/{id}', "EventController@patient_attend_intervention");
 
+	 	 Route::post('/patient/visitNoEvent/{id}', "EventController@patient_visit_noEvent");
+
+
 	Route::post('/event_save_edit', "EventController@event_save_edit");
 
+	Route::get('/getCurrentEvent/{id}', "EventController@getCurrentEvent");
 
 
 
@@ -261,6 +265,7 @@ Route::group(['middleware' =>'auth'], function()
 
 	Route::post('/addsocialworkernotes', "ReferController@addsocialworkernotes");
 	Route::post('/addDentalNotes', "ReferController@addDentalNotes");
+	Route::post('/addBMIrecords/{id}', "ReferController@addRecords");
 
 
 

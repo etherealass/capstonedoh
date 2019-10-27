@@ -167,7 +167,7 @@ class CalendarController extends Controller
                 'date' => $date,
                 'event_id' =>  $eventid,
                 'patient_id' => $pat,
-                'status' => 1
+                'status' => 0
 
             ]);
             $patient_event->save();

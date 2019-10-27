@@ -32,6 +32,40 @@ use Response;
 class EventController extends Controller
 {
  
+    public function getCurrentEvent($patientId) {
+
+
+        $curdate = Carbon::today()->format('Y-m-d');
+        $patientEvent = Patient_Event_List::where(['patient_id' => $patientId, 'date' => $curdate])->first();
+
+
+        if ($patientEvent) {
+            $visitIntervens = Visit_interven::where(['patient_event' => $patientEvent->id])->get();
+
+
+
+            if ($visitIntervens) {
+                return Response::json([
+                    'visitIntervens' => $visitIntervens,
+                    'patientEventId' => $patientEvent->id,
+                    'eventId' => $patientEvent->event_id,
+                    'hasEvent' => true
+                ]);
+            } else {
+
+                return Response::json([
+                    'patientEventId' => $patientEvent->id,
+                    'eventId' => $patientEvent->event_id,
+                    'hasEvent' => true
+                ]);
+            }
+            
+        } else {
+            return Response::json([
+                'hasEvent' => false
+            ]);
+        }
+    }
 
     public function delete_patient_event($id){
 
@@ -55,6 +89,51 @@ class EventController extends Controller
              
     }
 
+    public function patient_visit_noEvent(Request $request, $pID){
+
+        $curdate = Carbon::today()->format('Y-m-d');
+        $data = $request->all();
+
+         $patient_list = new Patient_Event_List([
+
+                 'date' => $curdate,
+                 'patient_id' => $pID,
+                 'status' => 1
+            ]);
+
+         $patient_list->save();
+
+           if($patient_list->id){
+
+            foreach ($data as $record) {
+
+                if ($record['isChecked']){
+
+                 $rec = new Visit_interven;
+
+                        $rec->patient_event = $patient_list->id;
+                            $rec->patient_id = $pID;
+                            $rec->interven_id = $record['interven_id'];
+                            $rec->remarks = $record['remarks'];
+
+                            if(!empty( $record['child_interven_id'])){
+                            $rec->child_interven_id = $record['child_interven_id'];
+                            }
+                            $rec->created_by = 1;
+                            $rec->save();
+
+                }
+
+           }
+       }
+
+
+            return Response::json($patient_list);
+
+
+
+    }
+
     public function patient_attend_intervention(Request $request, $peID){
 
             $data = $request->all();
@@ -69,7 +148,13 @@ class EventController extends Controller
                     $cnt++;
 
                 }
-                if (!$record['isChecked'] && $record['rec_id']) {
+
+                if($peID == 0){
+
+                        dd('sample');
+
+                }
+                else if (!$record['isChecked'] && $record['rec_id']) {
 
                     $rec = Visit_interven::find($record['rec_id']);
                     $rec->delete();
@@ -85,7 +170,7 @@ class EventController extends Controller
 
                         $rec = new Visit_interven;
 
-                         //   $rec->patient_event = $id;
+                            $rec->patient_event = $record['patient_event_id'];
                             $rec->patient_id = $record['patient_id'];
                             $rec->interven_id = $record['interven_id'];
                             $rec->event_id = $record['event_id'];
@@ -101,6 +186,7 @@ class EventController extends Controller
                     }else if ($record['isChecked'] && $record['rec_id']) {
                         $rec = Visit_interven::find($record['rec_id']);
 
+                            $rec->patient_event = $record['patient_event_id'];
                             $rec->patient_id = $record['patient_id'];
                             $rec->interven_id = $record['interven_id'];
                             $rec->event_id = $record['event_id'];

@@ -195,7 +195,7 @@
                                   <div>
                                     <input type="hidden" name="rec_id_{{$interven->id}}" id="rec_id_{{$interven->id}}" value="">
                                     <div class="checkboxs" id="checkboxes_{{$interven->id}}">
-                                      <label><input type="checkbox" class="checkitems" id="checkitem[]" name="checkitem[]" style="zoom:1.5;font-size: 28px;"  value="{{$interven->id}}">{{$interven->interven_name}}</label>
+                                      <label><input type="checkbox" class="checkitems item_{{$interven->id}}" id="checkitem[]" name="checkitem[]" style="zoom:1.5;font-size: 28px;"  value="{{$interven->id}}">{{$interven->interven_name}}</label>
                                     </div>
 
                                   @foreach($childIntervens->groupby('parent') as  $name => $member)
@@ -206,7 +206,7 @@
 
                                   <select class="form-control col-md-6" id="childInterven_{{$interven->id}}"  name="childInterven_{{$interven->id}}" style=" margin-bottom: 10px">
                                     @foreach($member as $item)
-                                      <option value="{{ $item['id']}}">{{  $item['interven_name'] }}</option>
+                                      <option value="{{$item['id']}}">{{  $item['interven_name'] }}</option>
                                           @endforeach
                                     </select>
                                   </div>
@@ -225,9 +225,9 @@
                         <div class="modal-footer">
                             <button type="button" class="btn btn-primary"  id="btn-attended" name ="btn-attended" value="add">Save changes
                             </button>
-                            <input type="hidden" id="evts_id" name="evts_id" value="">
-                            <input type="hidden" id="patient_interven_id" name="patient_interven_id" value="">
-                            <input type="hidden" id="patient_interven_id" name="patient_interven_id" value="">
+                            <input type="hidden" id="hasevent" name="hasevent" value="">
+                            <input type="text" id="patientEventId" name="patientEventId" hidden="hidden">
+                            <input type="text" id="eventId" name="eventId" hidden="hidden">
 
 
                         </div>
@@ -271,7 +271,7 @@
                               </div>
                              @endif
                               <div class="modal-footer">
-                                  <button type="button" class="btn btn-primary" id="btn_activate" name ="btn_activate" value="{{$pats->inactive}}"">Procceed
+                                  <button type="button" class="btn btn-primary" id="btn_activate" name ="btn_activate" value="{{$pats->inactive}}"">Proceed
                                   </button>
                                   <input type="hidden" id="patient-id" name="patient-id" value="{{$pats->id}}">
 
@@ -280,55 +280,4 @@
           </div>
   </div>
 
- <div class="modal fade" id="VisitlinkEditor" aria-hidden="true" >
-                <div class="modal-dialog">
-                    <div class="modal-content" >
-                        <div class="modal-header">
-                            <h4 class="modal-title" id="linkEditorModalLabel">Patient Visit</h4>
-                        </div>
-                        <div class="modal-body">
-                            <form id="VisitmodalFormData" name="VisitmodalFormData" class="form-horizontal" novalidate="">
-
-                                @foreach($intv as $interven)
-                                  <div>
-                                    <input type="hidden" name="rec_id_{{$interven->id}}" id="rec_id_{{$interven->id}}" value="">
-                                    <div class="checkboxs" id="checkboxes_{{$interven->id}}">
-                                      <label><input type="checkbox" class="checkitems" id="checkitem[]" name="checkitem[]" style="zoom:1.5;font-size: 28px;"  value="{{$interven->id}}">{{$interven->interven_name}}</label>
-                                    </div>
-
-                                  @foreach($childIntervens->groupby('parent') as  $name => $member)
-
-                                    @if($name  == $interven->id)
-
-                                <div class="form-label-group select1" id="select_{{$interven->id}}" name="select_{{$interven->id}}"  style="display: none;">
-
-                                  <select class="form-control col-md-6" id="childInterven_{{$interven->id}}"  name="childInterven_{{$interven->id}}" style=" margin-bottom: 10px">
-                                    @foreach($member as $item)
-                                      <option value="{{ $item['id']}}">{{  $item['interven_name'] }}</option>
-                                          @endforeach
-                                    </select>
-                                  </div>
-                                    @endif
-
-                                  @endforeach
-                                    <div class="form-label-group textboxes" id="textboxes_{{$interven->id}}" style="display: none;">
-                                        <input style="margin-left:0px" type="text" class="form-control" placeholder="Remarks" name="remarks_{{$interven->id}}" id="remarks_{{$interven->id}}">
-                                     </div>
-                                   </br>
-                                  </div>
-                                @endforeach
-                                  
-                          </form>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-primary"  id="btn-attended" name ="btn-attended" value="add">Save changes
-                            </button>
-                            <input type="hidden" id="evts_id" name="evts_id" value="">
-                            <input type="hidden" id="patient_interven_id" name="patient_interven_id" value="">
-                            <input type="hidden" id="patient_interven_id" name="patient_interven_id" value="">
-
-
-                        </div>
-                    </div>
-                </div>
-            </div>
+ 

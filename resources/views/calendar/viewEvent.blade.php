@@ -421,8 +421,9 @@ select
               var event = {};
               var value = $(this).val();
               event['isChecked'] = isChecked;
+              event['patient_event_id'] = $('#patient_event_id').val();
               event['rec_id'] = $('#rec_id_'+value).val();
-              event['child_interven_id'] =  $('#childInterven_'+value).val();;
+              event['child_interven_id'] =  $('#childInterven_'+value).val();
               event['patient_id'] = patient_inter;
               event['interven_id'] = value;
               event['event_id'] = events;

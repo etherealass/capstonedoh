@@ -50,7 +50,7 @@ section .section-title {
             <a class="nav-item nav-link" id="nav-social-worker-tab" data-toggle="tab" href="#nav-social-worker" role="tab" aria-controls="nav-social-worker" aria-selected="false"><i class="fas fa-user-check" style="font-size:32px;"></i></a>
           </div>
         </nav>
-        <div class="tab-content py-3 px-3 px-sm-0" id="nav-tabContent">
+      <div class="tab-content py-3 px-3 px-sm-0" id="nav-tabContent">
 
   <!--DOCTOR-->
           <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
@@ -58,8 +58,8 @@ section .section-title {
 
                 <div style="float:right;margin-bottom: 10px;margin-right: 10px;margin-top: 10px"><a data-patientid="{{$pats->id}}" data-doctorid="{{Auth::user()->id}}" data-toggle="modal" data-target="addDoctortNotes"><button id="addDoctortNotes" name="addDoctortNotes" class="btn btn-success"><i class="fas fa-fw fa fa-plus"></i></button></a></div>
 
-                 <div class="table-responsive scrollAble2">
-                       <table class="table table-bordered" id="doctorsTable" width="100%" style="font-size: 12px">
+                 <div class="table-responsive scrollAble2" id="doctorTablediv">
+                       <table class="table table-bordered doctorsTable" id="doctorsTable" width="100%" style="font-size: 12px">
                             <thead>
                              <tr>
                                <th width="15%">Date/Time</th>
@@ -69,7 +69,6 @@ section .section-title {
                                <th width="10%">Action</th>
                             </tr>
                             </thead>
-                          <tbody>
                           <tbody id="doctor-list" name="doctor-list">
                            @foreach ($patient_notes as $patient_note)
                              @if($patient_note->role_type == "doctor")
@@ -94,29 +93,29 @@ section .section-title {
              <div class="container">
                   <div class="form-group">
                      <div class="form-row">
-                        <div class="col-md-5">
+                        <div class="col-md-6">
 
                              <select class="form-control" id="tableType" placeholder="tableType"name="tableType">
-                                <option value="">Services</option>
+                                <option value="S">Services</option>
                                 <option value="M">Medication Records</option>
                                 <option value="F">BMI</option>
-                                <option value="Others"></option>
+                                <option value="BS">Blood Sugar Dailt Monitoring</option>
                               </select>
 
                         </div>
 
                        <div class="col-md-6">
 
-                          <div style="float:right;margin-bottom: 10px;margin-right: 10px;"><a data-patientid="{{$pats->id}}" data-doctorid="{{Auth::user()->id}}" data-toggle="modal" data-target="addNurseNotes"><button id="addNurseNotes" name="addNurseNotes" class="btn btn-success"><i class="fas fa-fw fa fa-plus"></i></button></a></div>
+                          <div style="float:right;margin-bottom: 10px;"><a data-patientid="{{$pats->id}}" data-doctorid="{{Auth::user()->id}}" data-toggle="modal" data-target="addNurseNotes"><button id="addNurseNotes" name="addNurseNotes" class="btn btn-success"><i class="fas fa-fw fa fa-plus"></i></button></a></div>
                   </div>
                 </div>
                 </div>
-                 <div class="table-responsive scrollAble2">
-                       <table class="table table-bordered" id="nurseTable"  width="100%" style="font-size: 12px">
+                 <div class="table-responsive scrollAble2" id="nurseTablediv">
+                       <table class="table table-bordered nurseTable" id="nurseTable"  width="100%" style="font-size: 12px">
                             <thead>
                               <tr>
                                <th width="15%">Date/Time</th>
-                               <th width="15%">Service Type</th>
+                               <th width=m"15%">Service Type</th>
                                <th>Notes</th>
                                <th width="15%">By</th>
                                <th width="10%">Action</th>
@@ -138,6 +137,80 @@ section .section-title {
                                 </tr>
                              @endif
                           @endforeach
+                          </tbody>
+                        </table>
+                     </div>
+                      <div class="table-responsive scrollAble2" id="BloodSugarTablediv" hidden="hidden">
+                       <table class="table table-bordered BloodSugarTable" id="BloodSugarTable"  width="100%" style="font-size: 12px" >
+                            <thead>
+                              <tr>
+                               <th width="15%">Date/Time</th>
+                               <th width="10%">Reading (Before Breakfast)</th>
+                               <th>Notes</th>
+                               <th width="15%">By</th>
+                               <th width="10%">Action</th>
+                            </tr>
+                            </thead>
+                          <tbody id="nurse-list" name="nurse-list">
+                            <tr>
+                              <td></td>
+                              <td></td>
+                              <td></td>
+                              <td></td>
+                              <td></td>
+
+                            </tr>
+                            
+                          </tbody>
+                        </table>
+                     </div>
+                      <div class="table-responsive scrollAble2" id="BMIMonitoringdiv" hidden="hidden">
+                       <table class="table table-bordered BMIMonitoring" id="BMIMonitoring"  width="100%" style="font-size: 12px" >
+                            <thead>
+                              <tr>
+                               <th width="15%">Date</th>
+                               <th width="10%">Weight(KG)</th>
+                               <th width="10%">BMI</th>
+                               <th width="40%">Remarks</th>
+                              <th width="15%">By</th>
+                               <th width="10%">Action</th>
+                            </tr>
+                            </thead>
+                          <tbody id="nurse-list" name="nurse-list">
+                              <tr>
+                              <td></td>
+                              <td></td>
+                              <td></td>
+                              <td></td>
+                              <td></td>
+                              <td></td>
+                            </tr>
+                          </tbody>
+                        </table>
+                     </div>
+
+
+                      <div class="table-responsive scrollAble2" id="MedicationRecordsdiv" hidden="hidden">
+                       <table class="table table-bordered MedicationRecords" id="MedicationRecords"  width="100%" style="font-size: 12px" >
+                            <thead>
+                              <tr>
+                               <th width="15%">Date</th>
+                               <th width="15%">Time</th>
+                               <th width="15%">Medications</th>
+                               <th width="30%">Remarks</th>
+                              <th width="15%">By</th>
+                               <th width="10%">Action</th>
+                            </tr>
+                            </thead>
+                          <tbody id="nurse-list" name="nurse-list">
+                               <tr>
+                              <td></td>
+                              <td></td>
+                              <td></td>
+                              <td></td>
+                              <td></td>
+                              <td></td>
+                            </tr>
                           </tbody>
                         </table>
                      </div>
@@ -209,7 +282,8 @@ section .section-title {
                                     <td>{{$patient_note->servicex->name}}</td>
                                     @else
                                     <td></td>
-                                    @endif                                    <td>{{$patient_note->notes}}</td>
+                                    @endif 
+                                    <td>{{$patient_note->notes}}</td>
                                     <td>{{$patient_note->userx->lname}}, {{$patient_note->userx->fname}}</td>
                                     <td>{{$patient_note->note_by}}</td>
                                 </tr>
@@ -263,223 +337,6 @@ section .section-title {
 
  </div>
 
-    <!--<div class="modal fade" id="DoctorNotesModal" aria-hidden="true" >
-          <div class="modal-dialog">
-                  <div class="modal-content"  style="width:980px;">
-                              <div class="modal-header">
-                                  <h4 class="modal-title" id="DoctorNotesModal">Add Doctor Notes</h4>
-                              </div>
-
-                            <form id="DocotorNotesFormData" name="DoctorNotesFormData" class="form-horizontal" novalidate="">
-
-                              <div class="modal-body">
-                                 <div class="modal-body" style="width:800px">
-
-                                  <div class="form-group">
-                                    <h6>Service Type</h6>
-                                      <select class="form-control" id="doctorList"  name="doctorList" data-hide-disabled="true" style="font-size: 16px; width: 500px;margin-left: 0px">
-                                          @foreach($service as $services)
-                                          @if($services->role == 3)
-                                          <option value="{{$services->services->id}}"> {{$services->services->name}}</option>
-                                          @endif
-                                          @endforeach
-                                          </select>
-                                  </div>
-
-                                  <div class="form-group">
-                                        <h6>Notes</h6>
-                                           <textarea style="margin-left:0px;height: 150px;width:760px;margin-bottom: 10px" type="text" id="note" class="form-control" placeholder="Note" name="note" required="required"></textarea>
-                                  </div>
-
-
-                                    
-                              </div>    
-                                  
-
-                              </div>
-                              <div class="modal-footer">
-                                  <button type="button" class="btn btn-primary" id="btn-save" name ="btn-save" value="add">Save changes
-                                  </button>
-                              </div>
-                          </form>
-
-                  </div>
-          </div>
-  </div>-->
-
-   <div class="modal fade" id="NurseNotesModal" aria-hidden="true" >
-          <div class="modal-dialog">
-                  <div class="modal-content"  style="width:980px;">
-                              <div class="modal-header">
-                                  <h4 class="modal-title" id="NurseNotesModal">Add Nurse Notes</h4>
-                              </div>
-                          <form id="NurseNotesFormData" name="NurseNotesFormData" class="form-horizontal" novalidate="">
-                              <div class="modal-body">
-                                  <div class="form-group">
-                                    <h6>Service Type</h6>
-                                      <select class="form-control nurseList" id="nurseList"  name="nurseList" data-hide-disabled="true" style="font-size: 16px; width: 500px;margin-left: 0px">
-                                        <option value=" ">--NONE--</option>
-                                          @foreach($service as $services)
-                                          @if($services->role == 4)
-                                          <option value="{{$services->services->id}}"> {{$services->services->name}}</option>
-                                          @endif
-                                          @endforeach
-                                          </select>
-                                  </div>
-
-                                  <div class="form-group">
-                                        <h6>Notes</h6>
-                                           <textarea style="margin-left:0px;height: 150px;width:760px;margin-bottom: 10px" type="text" id="nursenote" class="form-control" placeholder="Note" name="nursenote" required="required"></textarea>
-                                  </div>
-                                  
-
-                              </div>
-                              <div class="modal-footer">
-                                  <button type="button" class="btn btn-primary" id="btn-save-nursenotes" name ="btn-save-nursenotes" value="add">Save changes
-                                  </button>
-                                    <input type="hidden" id="id" name="id" value="0">
-                                    <input type="hidden" id="patient_id" name="patient_id" value="{{$pats->id}}">
-                                    <input type="hidden" id="note_by" name="note_by" value="{{Auth::user()->id}}">
-                                    <input type="hidden" id="creator_role" name="creator_role" value="doctor">
-
-                              </div>
-                         </form>
-
-                  </div>
-          </div>
-  </div>
-
-<!--Modal for the Check up button-->
-<!--   <div class="modal fade" id="AddServiceNotesModal" aria-hidden="true" >
-          <div class="modal-dialog">
-                  <div class="modal-content" style="width:800px" >
-                              <div class="modal-header" style="width:800px">
-                                  <h4 class="modal-title" id="AddServiceNotesModal">Add Patient Service</h4>
-                              </div>
-                              <form id="AddServiceFormData" name="AddServiceFormData" class="form-horizontal" novalidate="">
-                                    
-                              <div class="modal-body" style="width:800px">
-
-                                  <div class="form-group">
-                                    <h6>Service Type</h6>
-                                      <select class="form-control" id="patientList"  name="patientList" data-hide-disabled="true" style="font-size: 16px; width: 500px;margin-left: 0px">
-                                      @foreach($service as $services)
-                                          <option value="{{$services->id}}"> {{$services->name}}</option>
-                                          @endforeach
-                                          </select>
-                                  </div>
-
-                                  <div class="form-group">
-                                        <h6>Notes</h6>
-                                           <textarea style="margin-left:0px;height: 150px;width:760px;margin-bottom: 10px" type="text" id="note" class="form-control" placeholder="Note" name="note"></textarea>
-                                  </div>
-                                    
-                              </div>
-                            </form>
-                              <div class="modal-footer">
-                                  <button type="button" class="btn btn-primary" id="btn-save-patientnotes" name ="btn-save-patientnotes" value="add">Save changes
-                                  </button>
-                                  <input type="hidden" id="id" name="id" value="0">
-                                  <input type="hidden" id="patient_id" name="patient_id" value="{{$pats->id}}">
-                                  <input type="hidden" id="note_by" name="note_by" value="{{Auth::user()->id}}">
-
-                                  <input type="hidden" id="creator_role" name="creator_role" value="doctor">
-
-
-
-                              </div>
-                  </div>
-          </div>
-  </div>-->
-
- <div class="modal fade" id="AddDoctorNotesModal" aria-hidden="true" >
-          <div class="modal-dialog">
-                  <div class="modal-content" style="width:800px" >
-                              <div class="modal-header" style="width:800px">
-                                  <h4 class="modal-title" id="AddDoctorNotesModal">Add Doctor Service</h4>
-                              </div>
-                              <form id="AddDoctorFormData" name="AddDoctorFormData" class="form-horizontal" novalidate="">
-                                    
-                              <div class="modal-body" style="width:800px">
-
-                                  <div class="form-group">
-                                    <h6>Service Type</h6>
-                                      <select class="form-control doctorList" id="doctorList"  name="doctorList" data-hide-disabled="true" style="font-size: 16px; width: 500px;margin-left: 0px">
-                                          @foreach($service as $services)
-                                          @if($services->role == 3)
-                                          <option value="{{$services->services->id}}"> {{$services->services->name}}</option>
-                                          @endif
-                                          @endforeach
-                                          </select>
-                                  </div>
-
-                                  <div class="form-group">
-                                        <h6>Notes</h6>
-                                           <textarea style="margin-left:0px;height: 150px;width:760px;margin-bottom: 10px" type="text" id="notes" class="form-control" placeholder="Note" name="notes" required="required"></textarea>
-                                  </div>
-
-
-                                    
-                              </div>
-                            </form>
-                              <div class="modal-footer">
-                                  <button type="button" class="btn btn-primary" id="btn-save-doctornotes" name ="btn-save-doctornotes" value="add">Save changes
-                                  </button>
-                                 <input type="hidden" id="id" name="id" value="0">
-                                  <input type="hidden" id="patient_id" name="patient_id" value="{{$pats->id}}">
-                                  <input type="hidden" id="note_by" name="note_by" value="{{Auth::user()->id}}">
-                                  <input type="hidden" id="creator_role" name="creator_role" value="doctor">
-
-
-                              </div>
-                  </div>
-          </div>
-  </div>
-
- <div class="modal fade" id="AddDentalNotesModal" aria-hidden="true" >
-      <div class="modal-dialog">
-            <div class="modal-content" style="width:800px" >
-                  <div class="modal-header" style="width:800px">
-                       <h4 class="modal-title" id="AddDentalNotesModal">Add Dental Service</h4>
-                  </div>
-                       <form id="AddDentalFormData" name="AddDentalFormData" class="form-horizontal" novalidate="">
-                  <div class="modal-body" style="width:800px">
-                         <div class="form-group">
-                                <div class="form-label-group">
-                                  <h6>Tooth No.</h6>
-                                  <input style="width:30%;" type="number" id="tooth_no" class="form-control" placeholder="Description" required="required" name="tooth_no">
-                                </div>
-                            </div>
-                        <div class="form-group">
-                                <div class="form-label-group">
-                                  <h6>Diagnosis</h6>
-                                  <input style="height:100px;word-wrap: break-word;" type="textbox" id="diagnosis" class="form-control" placeholder="Description" required="required" name="diagnosis">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <div class="form-label-group">
-                                  <h6>Service Rendered</h6>
-                                  <input style="height:100px;word-wrap: break-word;" type="textbox" id="service_rendered" class="form-control" placeholder="Service Rendered" required="required" name="service_rendered">
-                                </div>
-                              </div>
-                            <div class="form-group">
-                                        <h6>Remarks</h6>
-                                           <textarea style="margin-left:0px;height: 150px;width:760px;margin-bottom: 10px;word-wrap: break-word;" type="text" id="remarks" class="form-control" placeholder="Note" name="remarks" required="required"></textarea>
-                                  </div>
-
-                        </div>
-                       </form>
-                  <div class="modal-footer">
-                                  <button type="button" class="btn btn-primary" id="btn-save-dentalServices" name ="btn-save" value="add">Save changes
-                                  </button>
-                                  <input type="hidden" id="patient_id" name="patient_id" value="{{$pats->id}}">
-                                  <input type="hidden" id="note_by" name="note_by" value="{{Auth::user()->id}}">
-                                  <input type="hidden" id="creator_role" name="creator_role" value="social_worker">
-                  </div>
-          </div>
-      </div>
-  </div>
-
   <div class="modal fade" id="AddSocialWorkerNotesModal" aria-hidden="true" >
           <div class="modal-dialog">
                   <div class="modal-content" style="width:800px" >
@@ -494,7 +351,7 @@ section .section-title {
                                     <h6>Service Type</h6>
                                       <select class="form-control" id="socialList"  name="socialList" data-hide-disabled="true" style="font-size: 16px; width: 500px;margin-left: 0px">
                                           @foreach($service as $services)
-                                          @if($services->role == 3)
+                                          @if($services->role == 5)
                                           <option value="{{$services->services->id}}"> {{$services->services->name}}</option>
                                           @endif
                                           @endforeach
@@ -539,7 +396,7 @@ section .section-title {
                                     <h6>Service Type</h6>
                                       <select class="form-control" id="psychiatristList"  name="psychiatristList" data-hide-disabled="true" style="font-size: 16px; width: 500px;margin-left: 0px">
                                           @foreach($service as $services)
-                                          @if($services->role == 3)
+                                          @if($services->role == 6)
                                           <option value="{{$services->services->id}}"> {{$services->services->name}}</option>
                                           @endif
                                           @endforeach
@@ -571,3 +428,164 @@ section .section-title {
   </div>
 
   
+
+   <div class="modal fade" id="NurseNotesModal" aria-hidden="true" >
+          <div class="modal-dialog">
+                  <div class="modal-content"  style="width:760px;">
+                              <div class="modal-header">
+                                  <h4 class="modal-title" id="NurseNotesModal">Add Nurse Notes</h4>
+                              </div>
+
+                          <form id="NurseNotesFormData" name="NurseNotesFormData">
+                              <div class="modal-body">
+                                  <div class="form-group">
+                                    <h6>Service Type</h6>
+                                      <select class="form-control nurseList" id="nurseList"  name="nurseList" data-hide-disabled="true" style="font-size: 16px; width: 500px;margin-left: 0px">
+                                        <option value=" ">--NONE--</option>
+                                        <option value="M">Medication Records</option>
+                                        <option value="F">BMI</option>
+                                        <option value="BS">Blood Sugar Daily Monitoring</option>
+                                          @foreach($service as $services)
+                                          @if($services->role == 4)
+                                          <option value="{{$services->services->id}}"> {{$services->services->name}}</option>
+                                          @endif
+                                          @endforeach
+                                        </select>
+                                 
+                                      
+                                   <div class="medicalRecords" hidden="hidden">
+
+                                        <h6>Medication</h6>
+                                         <input style="word-wrap: break-word;" type="text" id="medication_record" class="form-control has-error" placeholder="Description" required name="medication_record">
+
+                                  </div>
+
+                                  <div class="BloodSugarRecords" hidden="hidden">
+
+                                          <h6>Reading (Before Breakfast)</h6>
+
+                                           <input type="number" style="width:40%;" id="reading_bbreakfast" class="form-control has-error reading_bbreakfast" placeholder="Reading (Before Breakfast)" required name="reading_bbreakfast">
+                                  </div>
+
+                                  <div class="BMIRecords" hidden="hidden">
+                                    <div class="form-group has-error">
+                                    <div class="form-row">
+                                     <div class="col-md-6">
+
+                                      <h6>Weight (KG)</h6>
+
+                                           <input type="number" style="width:80%;" id="weight_kg" class="form-control has-error weight_kg" placeholder="Weight(KG)" required name="weight_kg">
+                                      </div>
+                                   <div class="col-md-6">
+
+                                       <h6>BMI</h6>
+
+                                           <input type="number" style="width:80%;" id="bmi_record" class="form-control has-error" placeholder="Description" required name="bmi_record">
+                                      </div>
+                                    </div>
+                                  </div>
+                                  </div>
+
+                                   
+
+                                    <h6>Notes</h6>
+                                           <textarea style="margin-left:0px;height: 150px;width:720px;margin-bottom: 10px" type="text" id="nursenote" class="form-control has-error nursenote" placeholder="Note" name="nursenote" required="required"></textarea>
+                                 </div>
+
+
+                          </div>
+                              <div class="modal-footer">
+                                  <button type="submit" class="btn btn-primary" id="btn-save-nursenotes" name ="btn-save-nursenotes" value="add">Save changes
+                                  </button>
+                                    <input type="hidden" id="id" name="id" value="0">
+                                    <input type="hidden" id="patient_id" name="patient_id" value="{{$pats->id}}">
+                                    <input type="hidden" id="note_by" name="note_by" value="{{Auth::user()->id}}">
+                                    <input type="hidden" id="creator_role" name="creator_role" value="doctor">
+
+                              </div>
+                         </form>
+
+                  </div>
+          </div>
+  </div>
+
+
+ <div class="modal fade" id="AddDoctorNotesModal" aria-hidden="true" >
+          <div class="modal-dialog">
+                  <div class="modal-content" style="width:800px" >
+                              <div class="modal-header" style="width:800px">
+                                  <h4 class="modal-title" id="AddDoctorNotesModal">Add Doctor Service</h4>
+                              </div>
+                              <form id="AddDoctorFormData" name="AddDoctorFormData" class="form-horizontal" novalidate="">
+                                    
+                              <div class="modal-body" style="width:800px">
+
+                                  <div class="form-group">
+                                    <h6>Service Type</h6>
+                                      <select class="form-control doctorList" id="doctorList"  name="doctorList" data-hide-disabled="true" style="font-size: 16px; width: 500px;margin-left: 0px">
+                                          @foreach($service as $services)
+                                          @if($services->role == 3)
+                                          <option value="{{$services->services->id}}"> {{$services->services->name}}</option>
+                                          @endif
+                                          @endforeach
+                                          </select>
+                                  </div>
+
+                                  <div class="form-group">
+                                        <h6>Notes</h6>
+                                           <textarea style="margin-left:0px;height: 150px;width:760px;margin-bottom: 10px" type="text" id="notes" class="form-control has-error" placeholder="Note" name="notes" required="required"></textarea>
+                                  </div>
+
+
+                                    
+                              </div>
+                            </form>
+                              <div class="modal-footer">
+                                  <button type="button" class="btn btn-primary" id="btn-save-doctornotes" name ="btn-save-doctornotes" value="add">Save changes
+                                  </button>
+                                 <input type="hidden" id="id" name="id" value="0">
+                                  <input type="hidden" id="patient_id" name="patient_id" value="{{$pats->id}}">
+                                  <input type="hidden" id="note_by" name="note_by" value="{{Auth::user()->id}}">
+                                  <input type="hidden" id="creator_role" name="creator_role" value="doctor">
+
+
+                              </div>
+                  </div>
+          </div>
+  </div>
+
+ <div class="modal fade" id="AddDentalNotesModal" aria-hidden="true" >
+      <div class="modal-dialog">
+            <div class="modal-content" style="width:800px" >
+                  <div class="modal-header" style="width:800px">
+                       <h4 class="modal-title" id="AddDentalNotesModal">Add Dental Service</h4>
+                  </div>
+                       <form id="AddDentalFormData" name="AddDentalFormData" class="form-horizontal" novalidate="">
+                  <div class="modal-body" style="width:800px">
+
+                                  <h6>Tooth No.</h6>
+                                  <input style="width:30%;" type="number" id="tooth_no" class="form-control" placeholder="Tooth No." required="required" name="tooth_no">
+
+                                  <h6>Diagnosis</h6>
+                                  <input style="height:100px;word-wrap: break-word;" type="textbox" id="diagnosis" class="form-control" placeholder="Diagnoses" required="required" name="diagnosis">
+
+
+
+                                  <h6>Service Rendered</h6>
+                                  <input style="height:100px;word-wrap: break-word;" type="textbox" id="service_rendered" class="form-control" placeholder="Service Rendered" required="required" name="service_rendered">
+                          
+                                        <h6>Remarks</h6>
+                                           <textarea style="margin-left:0px;height: 150px;width:760px;margin-bottom: 10px;word-wrap: break-word;" type="text" id="remarks" class="form-control" placeholder="Note" name="remarks" required="required"></textarea>
+        
+                       </form>
+                  <div class="modal-footer">
+                                  <button type="button" class="btn btn-primary" id="btn-save-dentalServices" name ="btn-save" value="add">Save changes
+                                  </button>
+                                  <input type="hidden" id="patient_id" name="patient_id" value="{{$pats->id}}">
+                                  <input type="hidden" id="note_by" name="note_by" value="{{Auth::user()->id}}">
+                                  <input type="hidden" id="creator_role" name="creator_role" value="social_worker">
+                  </div>
+          </div>
+      </div>
+  </div>
+
