@@ -45,14 +45,16 @@
                   <table class="table table-bordered" id="InterventionTable" width="100%" cellspacing="0" style="text-align: center">
                       <thead>
                           <tr>
-                            <th width="70%">Intervention</th>
-                            <th width="30%">Action</th>
+                            <th width="40%">Intervention</th>
+                            <th width="20%">Department</th>
+                            <th width="20%">Action</th>
                           </tr>
                       </thead>
                       <tbody>
                          @foreach($inter as $intervention)
                             <tr>
-                                <td id="inteven_{{$intervention->id}}">{{$intervention->interven_name}}</td>
+                                <td id="inteven_{{$intervention->id}}" >{{$intervention->interven_name}}</td>
+                                <td id="inteven_depart_{{$intervention->id}}">{{$intervention->deptxs->department_name}}</td>
                                 <td id="button_{{$intervention->id}}">
                          
                                     @if($intervention->inactive == 1)
@@ -112,12 +114,18 @@
                                               <label for="interven_name">Intervention Name</label>
                                                <input type="text" id="interven_name" class="form-control" required="required" autofocus="autofocus" name="name">
                                               <label for="interventiondesc">Description</label>
-                                                <input style="height:100px;" type="textbox" id="interventiondesc" class="form-control" required="required" name="description">                              
+                                                <input style="height:100px;" type="textbox" id="interventiondesc" class="form-control" required="required" name="description">
+                                                <label for="department">Department</label>
+                                                <select class="form-control department" id="department" placeholder="Department" name="department" required="required">
+                                                @foreach($deps as $dep)
+                                                  <option value="{{$dep->id}}">{{$dep->department_name}} Department</option>
+                                                @endforeach
+                                              </select>                              
                                             </div>   
                                     </form>
                                   </div>
                                   <div class="modal-footer">
-                                      <button type="button" class="btn btn-primary btn_update"  id="btn_update" name ="btn_update" value="{{$intervention->id}}">Save changes
+                                      <button type="button" class="btn btn-primary btn_update"  id="btn_update" name ="btn_update">Save changes
                                       </button>
 
                                     
@@ -137,7 +145,7 @@
 
               $('#InterventionTable').DataTable();
 
-          $("#editIntervention").click(function (e) {
+          $(".editIntervention").click(function (e) {
                     
                   var id = $(this).val();
 
@@ -157,11 +165,13 @@
 
                        $interven_name = data['interven_name'];
                        $decrpt = data['descrp'];
-
+                       $deparment = data['department_id'];
 
                        $('#interven_name').val($interven_name);
                        $('#interventiondesc').val($decrpt);
                        $('#btn_update').val(id);
+                       $('.department option[value='+$deparment+']').attr('selected','selected');
+
 
 
 
@@ -183,6 +193,8 @@
 
                       $interven_name = $('#interven_name').val();
                       $decription = $('#interventiondesc').val();
+                      $department = $('#department').val();
+
 
                       console.log($interven_name)
 
@@ -199,13 +211,19 @@
                             //contentType: "application/json; charset=utf-8",
                             type: "POST",
                             url: ajaxurl,
-                            data: {interven_name: $interven_name, descrp: $decription},
+                            data: {interven_name: $interven_name, descrp: $decription, department_id: $department},
 
                               success: function (data) {
 
-                                var link = '<td id="inteven_'+data.id+'">'+data.interven_name+'</td>';
+                                var link = '<td id="inteven_'+data[0].id+'">'+data[0].interven_name+'</td>';
 
-                                   $('#inteven_'+data.id).replaceWith(link);
+                                   $('#inteven_'+data[0].id).replaceWith(link);
+
+                                   console.log(data[0]);
+
+                                var depart = '<td id="inteven_depart_'+data[0].id+'">'+data[0].deptxs.department_name+'</td>';
+
+                                  $('#inteven_depart_'+data[0].id).replaceWith(depart);
 
                                     $('#EditInterventioneModalData').trigger("reset");
                                     $('#EditInterventionModal').modal('hide');
@@ -226,7 +244,7 @@
 
 
 
-               $("#deleteIntervention").click(function (e) {
+               $(".deleteIntervention").click(function (e) {
                     
                 var stat = $(this).text();
 

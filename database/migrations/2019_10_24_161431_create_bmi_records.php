@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateChecklistStatusesTable extends Migration
+class CreateBmiRecords extends Migration
 {
     /**
      * Run the migrations.
@@ -13,15 +13,16 @@ class CreateChecklistStatusesTable extends Migration
      */
     public function up()
     {
-        Schema::create('checklist__statuses', function (Blueprint $table) {
+        Schema::create('bmi_records', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('checklist_id')->unsigned();
-            $table->foreign('checklist_id')->references('id')->on('checklists');
             $table->integer('patient_id')->unsigned();
             $table->foreign('patient_id')->references('id')->on('patients');
-            $table->integer('department_id')->unsigned();
-            $table->foreign('department_id')->references('id')->on('departments');
-            $table->integer('has_files');
+            $table->date('date');
+            $table->integer('weight');
+            $table->integer('bmi');
+            $table->text('remarks')->nullable();
+            $table->integer('created_by')->unsigned();
+            $table->foreign('created_by')->references('id')->on('users');
             $table->timestamps();
         });
     }
@@ -33,9 +34,6 @@ class CreateChecklistStatusesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('checklist__statuses');
-    }
-}
-
+        Schema::dropIfExists('bmi_records');
     }
 }

@@ -497,7 +497,12 @@
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.3.2"
+                "php": "^7.2"
+            },
+            "require-dev": {
+                "doctrine/coding-standard": "^6.0",
+                "phpstan/phpstan": "^0.11.8",
+                "phpunit/phpunit": "^8.2"
             },
             "require-dev": {
                 "phpunit/phpunit": "^4.5"
@@ -505,7 +510,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.0.x-dev"
+                    "dev-master": "1.1.x-dev"
                 }
             },
             "autoload": {
@@ -525,6 +530,10 @@
                 {
                     "name": "Guilherme Blanco",
                     "email": "guilhermeblanco@gmail.com"
+                },
+                {
+                    "name": "Roman Borschel",
+                    "email": "roman@code-factory.org"
                 },
                 {
                     "name": "Johannes Schmitt",
@@ -1067,21 +1076,20 @@
         },
         {
             "name": "hnhdigital-os/php-number-converter",
-            "version": "1.0.0",
+            "version": "1.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/hnhdigital-os/php-number-converter.git",
-                "reference": "d12226c945ec7d0e1c602972a11604d5c7cfc452"
+                "reference": "c10cea7210dcbd816837c3e6e15298260e791247"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/hnhdigital-os/php-number-converter/zipball/d12226c945ec7d0e1c602972a11604d5c7cfc452",
-                "reference": "d12226c945ec7d0e1c602972a11604d5c7cfc452",
+                "url": "https://api.github.com/repos/hnhdigital-os/php-number-converter/zipball/c10cea7210dcbd816837c3e6e15298260e791247",
+                "reference": "c10cea7210dcbd816837c3e6e15298260e791247",
                 "shasum": ""
             },
             "require": {
-                "illuminate/support": "5.*",
-                "php": ">=5.6.0"
+                "php": "^7.2"
             },
             "require-dev": {
                 "phpmd/phpmd": "~2.0",
@@ -1117,7 +1125,7 @@
                 "roman",
                 "word"
             ],
-            "time": "2019-02-04T01:23:56+00:00"
+            "time": "2019-09-05T01:02:38+00:00"
         },
         {
             "name": "jakub-onderka/php-console-color",
@@ -1997,7 +2005,7 @@
         },
         {
             "name": "nexmo/client",
-            "version": "1.7.0",
+            "version": "1.6.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Nexmo/nexmo-php.git",
@@ -2005,8 +2013,8 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Nexmo/nexmo-php/zipball/f8582d2361382e2b02352b1cb96c69ce2a2c7360",
-                "reference": "f8582d2361382e2b02352b1cb96c69ce2a2c7360",
+                "url": "https://api.github.com/repos/Nexmo/nexmo-php/zipball/2f79f67f24225ea627ee14578e98c96276cdd4c5",
+                "reference": "2f79f67f24225ea627ee14578e98c96276cdd4c5",
                 "shasum": ""
             },
             "require": {
@@ -2689,16 +2697,16 @@
         },
         {
             "name": "psr/log",
-            "version": "1.1.0",
+            "version": "1.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-fig/log.git",
-                "reference": "6c001f1daafa3a3ac1d8ff69ee4db8e799a654dd"
+                "reference": "bf73deb2b3b896a9d9c75f3f0d88185d2faa27e2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-fig/log/zipball/6c001f1daafa3a3ac1d8ff69ee4db8e799a654dd",
-                "reference": "6c001f1daafa3a3ac1d8ff69ee4db8e799a654dd",
+                "url": "https://api.github.com/repos/php-fig/log/zipball/bf73deb2b3b896a9d9c75f3f0d88185d2faa27e2",
+                "reference": "bf73deb2b3b896a9d9c75f3f0d88185d2faa27e2",
                 "shasum": ""
             },
             "require": {
@@ -2707,7 +2715,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.0.x-dev"
+                    "dev-master": "1.1.x-dev"
                 }
             },
             "autoload": {
@@ -2732,7 +2740,7 @@
                 "psr",
                 "psr-3"
             ],
-            "time": "2018-11-20T15:27:04+00:00"
+            "time": "2019-10-25T08:06:51+00:00"
         },
         {
             "name": "psr/simple-cache",

@@ -15,7 +15,12 @@ class IntervenDept extends Model
 
     public function interven()
 	{
-	   return $this->belongsTo('Interventions::class');
+	   return $this->belongsTo('App\Interventions', 'interven');
 	}
+
+	 public function depatmentxc()
+    {
+        return $this->belongsTo('App\Departments','department_id');
+    }
 
 }

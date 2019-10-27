@@ -19,6 +19,7 @@ use App\Transfer_Requests;
 use App\Graduate_Requests;
 use App\Employees;
 use App\Logs;
+use App\User_departments;
 use Notification;
 use Hash;
 use Session;
@@ -28,7 +29,10 @@ class RegisterController extends Controller
     public function registernow(request $request)
     {
 
-     $id = rand();
+    $id = rand();
+
+    $depts = $request->input('depart');
+
 
      if($request->input('designat')){
         $role = new User_roles([
@@ -82,9 +86,22 @@ class RegisterController extends Controller
 
          $user->save();
 
+
         }
 
         $users = Users::where('user_id',$id)->with('user_departments')->with('user_roles')->get();
+
+         foreach($depts as $dept){
+
+
+                $user_department = new User_departments([
+                    'user_id' => $user->id,
+                    'department_id' => $dept
+                ]);
+
+                $user_department->save();
+         }
+
 
         foreach($users as $usz)
         {   
@@ -95,8 +112,13 @@ class RegisterController extends Controller
             }
             else{
                 $department = $usz->user_departments->department_name;
-            }   
+            } 
+
+           
+
+
         }
+
 
         date_default_timezone_set('Asia/Singapore');
 

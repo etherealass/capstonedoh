@@ -1759,11 +1759,16 @@ $today = $year . '-' . $month . '-' . $day;
                  </div> 
           </fieldset>
       </div>
+<<<<<<< HEAD
   @include('refer.patientnote')        
   </div>
   @include('refer.tabform')
   </div>
+    @elseif($pats->department_id != Auth::user()->department)
+=======
+    </div>
     @elseif(in_array($pats->department_id, $user_dept))
+>>>>>>> 92bec50b2832363e45a3d1693d936b9601b1f25f
     <h1>Patient Not Found/Transfered/Deleted</h1>
     @endif
     @endforeach

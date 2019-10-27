@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateIntervenDept extends Migration
+class CreateUserDepartmentTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,12 @@ class CreateIntervenDept extends Migration
      */
     public function up()
     {
-        Schema::create('interven_dept', function (Blueprint $table) {
+        Schema::create('user_departments', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('department_id')->unsigned();
             $table->foreign('department_id')->references('id')->on('departments');
-            $table->integer('interven')->unsigned();
-            $table->foreign('interven')->references('id')->on('interventions');
+            $table->integer('user_id')->unsigned();
+            $table->foreign('user_id')->references('id')->on('users');
             $table->timestamps();
         });
     }
@@ -30,6 +30,6 @@ class CreateIntervenDept extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('interven_dept');
+        Schema::dropIfExists('user_departments');
     }
 }

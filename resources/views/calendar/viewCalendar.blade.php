@@ -80,7 +80,7 @@
       header: {
         left: 'prev,next today',
         center: 'title',
-        right: 'month,agendaWeek,listWeek'
+        right: 'month,listWeek'
       },
 
       eventTextColor: '#FFFFFF',

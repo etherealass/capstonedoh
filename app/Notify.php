@@ -17,4 +17,9 @@ class Notify extends Model
 	{
 	   return $this->belongsTo('Services::class');
 	}
+
+	public function rolesx()
+	{
+	  return $this->belongsTo('App\User_roles', 'role');
+	}
 }

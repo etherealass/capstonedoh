@@ -113,10 +113,14 @@ Route::group(['middleware' =>'auth'], function()
 
 	 Route::get('/view/vieweventattended', "EventController@view_event_attended");
 	 
-	 Route::post('/patient/attendIntervention', "EventController@patient_attend_intervention");
+	 Route::post('/patient/attendIntervention/{id}', "EventController@patient_attend_intervention");
+
+	 	 Route::post('/patient/visitNoEvent/{id}', "EventController@patient_visit_noEvent");
+
 
 	Route::post('/event_save_edit', "EventController@event_save_edit");
 
+	Route::get('/getCurrentEvent/{id}', "EventController@getCurrentEvent");
 
 
 
@@ -288,6 +292,7 @@ Route::group(['middleware' =>'auth'], function()
 	 Route::put('/activation/{id?}', "ReferController@putInactiveActive"); 
 
 	 Route::post('/addsocialworkernotes', "ReferController@addsocialworkernotes");
+	Route::post('/addBMIrecords/{id}', "ReferController@addRecords");
 	 
 	 Route::post('/addDentalNotes', "ReferController@addDentalNotes");
 
@@ -426,6 +431,10 @@ Route::group(['middleware' =>'auth'], function()
 	 Route::get('/show_sub_checklist/{id}', "ViewController@show_sub_checklist");
 
 	 Route::any('/sampleform/{id}',"ViewController@sampleform");
+
+	 Route::any('/pdfintake/{id}',"ViewController@pdfintake");
+
+	 Route::any('/pdfdde/{id}',"ViewController@pdfdde");
 
 	 Route::post('/reenroll_patient',"PatientController@reenroll_patient");
 

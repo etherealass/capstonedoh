@@ -17,6 +17,8 @@ class CreateInterventions extends Migration
             $table->increments('id');
             $table->string('interven_name');
             $table->string('descrp');
+            $table->integer('department_id')->unsigned();
+            $table->foreign('department_id')->references('id')->on('departments');
             $table->integer('inactive')->nullable();
             $table->timestamps();
         });

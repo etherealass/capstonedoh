@@ -16,6 +16,8 @@ use App\Interventions;
 use App\Departments;
 use App\Transfer_Requests;
 use App\ChildInterventions;
+use App\IntervenDept;
+use App\Graduate_Requests;
 use Session;
 use Response;
 
@@ -29,14 +31,15 @@ class InterventionController extends Controller
         
         $roles = User_roles::all();
         $deps = Departments::all();
-        $inter = Interventions::all();
+        $inter = Interventions::with('deptxs')->get();
         $users = Users::find(Auth::user()->id);
         $transfer = Transfer_Requests::all();
         $child = ChildInterventions::all();
+        $graduate = Graduate_Requests::all();
 
 
         if(Auth::user()->user_role()->first()->name == 'Superadmin'){
-            return view('intervention.showintervention')->with('roles',$roles)->with('deps',$deps)->with('inter', $inter)->with('users',$users)->with('transfer',$transfer)->with('child', $child);
+            return view('intervention.showintervention')->with('roles',$roles)->with('deps',$deps)->with('inter', $inter)->with('users',$users)->with('transfer',$transfer)->with('child', $child)->with('graduate',$graduate);
         }
         else{
             return abort(404);
@@ -90,6 +93,9 @@ class InterventionController extends Controller
                 ]);
 
       $interven->save();
+
+
+
       Session::flash('alert-class', 'success'); 
       flash('Intervention Created', '')->overlay();
 
@@ -100,6 +106,9 @@ class InterventionController extends Controller
            return view('intervention.addIntervention')->with('roles',$roles)->with('deps',$deps)->with('inter', $inter)->with('users',$users)->with('transfer',$transfer);
         }
         }else{
+
+                  $depts = $request->input('depart');
+
             
              $interven = new Interventions([
               //  'parent' => $request->input('parent'),
@@ -108,6 +117,20 @@ class InterventionController extends Controller
                 ]);
 
       $interven->save();
+
+      if($depts){
+      foreach($depts as $dept){
+
+
+                $user_department = new IntervenDept([
+                    'interven' => $interven->id,
+                    'department_id' => $dept
+                ]);
+
+                $user_department->save();
+         }
+
+      }   
       Session::flash('alert-class', 'success'); 
       flash('Intervention Created', '')->overlay();
 
@@ -170,16 +193,20 @@ class InterventionController extends Controller
 
         $interven_name = $request->interven_name;
         $descrpt = $request->descrp;
+        $dept_id = $request->department_id;
+
 
 
          $interven = Interventions::find($id);
 
-         $interven->update(array('interven_name' => $interven_name, 'descrp' => $descrpt));
+         $interven->update(array('interven_name' => $interven_name, 'descrp' => $descrpt, 'department_id' => $dept_id));
 
 
 
+         $intervention = Interventions::where('id', $interven->id)->with('deptxs')->get();
 
-         return Response::json($interven);
+
+         return Response::json($intervention);
 
      }
 

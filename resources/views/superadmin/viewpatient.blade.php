@@ -32,6 +32,7 @@ $day = date('d');
 $year = date('Y');
 
 $today = $year . '-' . $month . '-' . $day;
+
 ?>
 
     @if($pid)
@@ -2096,7 +2097,7 @@ $today = $year . '-' . $month . '-' . $day;
                           </button>
                           <div class="dropdown-menu menu_btn" aria-labelledby="dropdownMenuButton">
                           @if($pats->inactive != 1)
-                            <a class="dropdown-item visit_btn" id="a-visit" name="a-visit" href="#"><button id="btn-visit" name="btn-visit" class="btn">Patient Visit</button></a>
+                            <a class="dropdown-item btn-visit" id="a-visit" name="a-visit" href="#"><button id="btn-visit" name="btn-visit" class="btn">Patient Visit</button></a>
                           @endif
                             <a class="dropdown-item inactive_btn"  id="a-inactive" name="a-inactive" href="#"><button id="btn-inactive" name="btn-inactive" class="btn" value="{{$pats->inactive}}">
                              @if($pats->inactive != 1)
@@ -2109,27 +2110,52 @@ $today = $year . '-' . $month . '-' . $day;
                       </div>
                         <br>
 
-                        <div class="row" style="margin-left: 10px;margin-bottom: 50px; margin-top: 70px">
-                        
-                        @foreach ($visits as $pat_visit)
+                        <div class="card-body" style="margin-left: 10px;margin-top: 20px">
+                         <div class="table-responsive">
+                              <table class="table table-bordered" id="patientTable" width="100%" cellspacing="0">
+                                <thead>
+                                  <tr>
+                                    <th>Date</th>
+                                    <th>Event Name</th>
+                                    <th>Status</th>
+                                    <th>Action</th>
+                                  </tr>
+                                </thead>
+                               <tbody id="visit-list" name="visit-list">
+                                    @foreach ($visits as $pat_visit)
+                                  <tr id="visit{{$pat_visit->id}}">
+                                    <td>{{$pat_visit->date}}</td>
+                                    <td>@if($pat_visit->events)
+                                      {{$pat_visit->events->title}}
+                                        @else
+                                        Patient Visit
+                                      @endif</td>
+                                    <td>@if($pat_visit->status == 1)
+                                    Attended
+                                    @else
+                                    Not Attended
+                                    @endif</td>
+                                    <td><input type="hidden" class="visit_event_date_{{$pat_visit->id}}" id="visit_event_date" name="visit_event_date" value="{{$pat_visit->date}}">
+                                      @if($pat_visit->status == 1 && $pat_visit->date == $today)
+                                        <button class="btn btn-success btn-visit" value="edit" id="attend_btn"  name="attend_btn"><i class="far fa-calendar-check" aria-hidden="true"></i></button>
+                                        @else
+                                         <button class="btn btn-info btn-visit-view" value="edit" id="btn-visit-view"  name="btn-visit-view"><i class="far fa-calendar-check" aria-hidden="true"></i></button>
+                                      @endif
+                                    </td>
                          
-                        <div class="col-xl-2 col-sm-3 mb-5" style="height: 5rem;margin-top: 2px">
-                        <div class="card border-dark mb-3 text-black o-hidden h-100">
-                          <div class="card-body open_modal">
-                           <a href="#"><p style="font-size: 12px;margin-top: 2px">{{$pat_visit->date}}<br> {{$pat_visit->events->title}}</p></a>
-                          <div class="mr-5"></div>
-                          </div>
-                        </div>
-                      </div>
-                      @endforeach
-                      </div>          
-                   </div>
+                                  </tr>
+                                    @endforeach
+                                </tbody>
+                              </table>
+                            </div>
+                         </div>     
+                    </div>
 
 
        <div class="tab-pane fade" id="v-pills-intake" role="tabpanel" aria-labelledby="v-pills-intake-tab">
           <fieldset style="margin-bottom: 10px;margin-left: 0px;border:solid thin gray;border-radius: 10px">
             <legend style="color:white;text-indent: 20px;width:900px;margin-bottom: 10px;border-radius: 5px" class="bg bg-dark">Intake Form </legend>
-            <div style="float:right;margin-bottom: 10px;margin-right: 10px;margin-top: 10px"><a href="{{URL::to('sampleform/'.$pats->id)}}" target="_blank"><button class="btn btn-danger"><i class="fas fa-fw fa fa-file-pdf"></i>Print</button></a></div>
+            <div style="float:right;margin-bottom: 10px;margin-right: 10px;margin-top: 10px"><a href="{{URL::to('pdfintake/'.$pats->id)}}" target="_blank"><button class="btn btn-danger"><i class="fas fa-fw fa fa-file-pdf"></i>Print</button></a></div>
             @if(Auth::user()->user_role->name == 'Superadmin' || Auth::user()->user_role->name == 'Admin')
             <div style="float:right;margin-bottom: 10px;margin-right: 10px;margin-top: 10px"><button class="btn btn-success" data-toggle="modal" data-target="#intakeFormEdit"><i class="fas fa-fw fa fa-pen"></i>Edit</button></div>
             @endif
@@ -2220,242 +2246,242 @@ $today = $year . '-' . $month . '-' . $day;
           <div class="tab-pane fade" id="v-pills-dde" role="tabpanel" aria-labelledby="v-pills-dde-tab">
             <fieldset style="margin-bottom: 30px;margin-left: 0px;border:solid thin gray;border-radius: 10px">
               <legend style="color:white;text-indent: 20px;width:900px;margin-bottom: 20px;border-radius: 5px" class="bg bg-dark">Drug Dependency Examination Report</legend>
-                <div style="float:right;margin-bottom: 10px;margin-right: 10px;margin-top: 10px"><a href="{{URL::to('sampleform/'.$pats->id)}}" target="_blank"><button class="btn btn-danger"><i class="fas fa-fw fa fa-file-pdf"></i>Print</button></a></div>
+                <div style="float:right;margin-bottom: 10px;margin-right: 10px;margin-top: 10px"><a href="{{URL::to('pdfdde/'.$pats->id)}}" target="_blank"><button class="btn btn-danger"><i class="fas fa-fw fa fa-file-pdf"></i>Print</button></a></div>
                 @if(Auth::user()->user_role->name == 'Superadmin' || Auth::user()->user_role->name == 'Admin')
                 <div style="float:right;margin-bottom: 10px;margin-right: 10px;margin-top: 10px"><button class="btn btn-success" data-toggle="modal" data-target="#ddeFormEdit"><i class="fas fa-fw fa fa-pen"></i>Edit</button></div>
                 @endif
-                    <div class="container" style="margin-top: 60px;margin-bottom: 30px">
-                      <div class="container">
-                        <div style="margin-top:30px">
-                          <img src="http://localhost/capstone/public/images/logo3.png" height="100px" width="100px" style="float:left;">
-                          <p style="text-align:center;position:relative;"><b style="font-size: 25px">TREATMENT & REHABILITATION CENTER - CEBU</b><br><span style="font-size:20px">Drug Dependency Examination Report</span></p>
-                        </div>
-  
-            <div class="row" style="margin-top: 50px;padding:20px">
-              <div class="col-md-6" style="border: solid gray 1px;padding:20px;font-size: 12px;border-right: none">
-                <div class="form-label-group">
-                  <div class="custom-control custom-checkbox custom-control-inline">
-                  <?php $count = 0 ?>
-                  @foreach($history as $hist)
-                    @if($hist->type == 'Enrolled')
-                      @if($hist->deps->department_name == $pats->departments->department_name)
-                      <?php $count++; ?>
+                      <div class="container" style="margin-top: 60px;margin-bottom: 30px">
+                        <div class="container">
+                          <div style="margin-top:30px">
+                            <img src="http://localhost/capstone/public/images/logo3.png" height="100px" width="100px" style="float:left;">
+                            <p style="text-align:center;position:relative;"><b style="font-size: 25px">TREATMENT & REHABILITATION CENTER - CEBU</b><br><span style="font-size:20px">Drug Dependency Examination Report</span></p>
+                          </div>
+    
+              <div class="row" style="margin-top: 50px;padding:20px">
+                <div class="col-md-6" style="border: solid gray 1px;padding:20px;font-size: 12px;border-right: none">
+                  <div class="form-label-group">
+                    <div class="custom-control custom-checkbox custom-control-inline">
+                    <?php $count = 0 ?>
+                    @foreach($history as $hist)
+                      @if($hist->type == 'Enrolled')
+                        @if($hist->deps->department_name == $pats->departments->department_name)
+                        <?php $count++; ?>
+                        @endif
                       @endif
+                    @endforeach
+                      <input type="checkbox" class="custom-control-input" id="new case" name="casetype" value="New Case" {{ ($count != 1)? "checked" : "" }} disabled="true">
+                      <label class="custom-control-label" for="new case"><b>Old Case</b></label>
+                    </div>
+                  </div>
+                  <div class="form-label-group">
+                    <div class="custom-control custom-checkbox custom-control-inline">
+                      <input type="checkbox" class="custom-control-input" id="old case" name="casetype" value="Old Case" {{ ($count == 1)? "checked" : "" }} disabled="true">
+                      <label class="custom-control-label" for="old case"><b>New Case</b></label>
+                    </div>
+                  </div>
+                  <div class="form-label-group">
+                    <div class="custom-control custom-checkbox custom-control-inline">
+                      <input type="checkbox" class="custom-control-input" id="case" name="casetype" value="With Court Case" {{ ($pats->caseno != NULL)? "checked" : "" }} disabled="true">
+                      <label class="custom-control-label" for="case"><b>With Court Case:</b>
+                    @if($pats->caseno != NULL)
+                      <b><u> {{$pats->caseno}}</u></b>
+                    @else
+                      ________________________________________
                     @endif
-                  @endforeach
-                    <input type="checkbox" class="custom-control-input" id="new case" name="casetype" value="New Case" {{ ($count != 1)? "checked" : "" }} disabled="true">
-                    <label class="custom-control-label" for="new case"><b>Old Case</b></label>
+                      </label>
+                     </div>  
+                    </div>
                   </div>
-                </div>
-                <div class="form-label-group">
-                  <div class="custom-control custom-checkbox custom-control-inline">
-                    <input type="checkbox" class="custom-control-input" id="old case" name="casetype" value="Old Case" {{ ($count == 1)? "checked" : "" }} disabled="true">
-                    <label class="custom-control-label" for="old case"><b>New Case</b></label>
-                  </div>
-                </div>
-                <div class="form-label-group">
-                  <div class="custom-control custom-checkbox custom-control-inline">
-                    <input type="checkbox" class="custom-control-input" id="case" name="casetype" value="With Court Case" {{ ($pats->caseno != NULL)? "checked" : "" }} disabled="true">
-                    <label class="custom-control-label" for="case"><b>With Court Case:</b>
-                  @if($pats->caseno != NULL)
-                    <b><u> {{$pats->caseno}}</u></b>
-                  @else
-                    ________________________________________
-                  @endif
-                    </label>
-                   </div>  
-                  </div>
-                </div>
-                <div class="col-md-6" style="border: solid gray 1px;padding:20px;font-size: 12px">
-                <div class="form-label-group">
-                  <div class="custom-control custom-checkbox custom-control-inline" style="font-size: 50px">
-                    <input type="checkbox" class="custom-control-input" id="Voluntary Submission" name="type" value="Voluntary Submission" {{ ($pats->type->case_name == 'Voluntary' || $pats->type->case_name == 'Voluntary with Court Order')? "checked" : "" }} disabled="true">
-                    <label class="custom-control-label" for="Voluntary Submission"><b>Voluntary Submission</b></label>
-                  </div>
-                </div>
+                  <div class="col-md-6" style="border: solid gray 1px;padding:20px;font-size: 12px">
                   <div class="form-label-group">
-                  <div class="custom-control custom-checkbox custom-control-inline">
-                    <input type="checkbox" class="custom-control-input" id="Compulsory Submission" name="type" value="Compulsory Submission" {{ ($pats->type->case_name == 'Plea Bargain')? "checked" : "" }} disabled="true">
-                    <label class="custom-control-label" for="Compulsory Submission"><b>Compulsory Submission</b></label>
+                    <div class="custom-control custom-checkbox custom-control-inline" style="font-size: 50px">
+                      <input type="checkbox" class="custom-control-input" id="Voluntary Submission" name="type" value="Voluntary Submission" {{ ($pats->type->case_name == 'Voluntary' || $pats->type->case_name == 'Voluntary with Court Order')? "checked" : "" }} disabled="true">
+                      <label class="custom-control-label" for="Voluntary Submission"><b>Voluntary Submission</b></label>
+                    </div>
                   </div>
+                    <div class="form-label-group">
+                    <div class="custom-control custom-checkbox custom-control-inline">
+                      <input type="checkbox" class="custom-control-input" id="Compulsory Submission" name="type" value="Compulsory Submission" {{ ($pats->type->case_name == 'Plea Bargain')? "checked" : "" }} disabled="true">
+                      <label class="custom-control-label" for="Compulsory Submission"><b>Compulsory Submission</b></label>
+                    </div>
+                    </div>
+                    <div class="form-label-group">
+                    <div class="custom-control custom-checkbox custom-control-inline">
+                      <input type="checkbox" class="custom-control-input" id="others" name="type" value="Others" {{ (old('type') == 'Others') ? 'checked' : '' }} disabled="true">
+                      <label class="custom-control-label" for="others"><b>Others: ___________________________________</b></label>
+                     </div>  
+                    </div>
                   </div>
-                  <div class="form-label-group">
-                  <div class="custom-control custom-checkbox custom-control-inline">
-                    <input type="checkbox" class="custom-control-input" id="others" name="type" value="Others" {{ (old('type') == 'Others') ? 'checked' : '' }} disabled="true">
-                    <label class="custom-control-label" for="others"><b>Others: ___________________________________</b></label>
-                   </div>  
-                  </div>
-                </div>
-                <div class="col-md-12" style="border: solid gray 1px;font-size: 12px;border-top:none;border-right:none">
-                <div class="row">
-                  <div class="col-md-3" style="border-right: solid gray 1px;border-bottom: solid gray 1px">
-                    <b><p>Last name:</p></b>
-                  </div>
-                  <div class="col-md-3" style="border-bottom: solid gray 1px;border-right: solid gray 1px">
-                    <p>{{$pats->lname}}</p>
-                  </div>
-                  <div class="col-md-6" style="border-right: solid gray 1px;">
-                    <b><p>Address:</p></b>
-                  </div>
-                 </div>
-                 <div class="row">
-                  <div class="col-md-3" style="border-right: solid gray 1px;border-bottom: solid gray 1px">
-                    <p><b>First name:</b></p>
-                  </div>
-                  <div class="col-md-3" style="border-bottom: solid gray 1px;border-right: solid gray 1px">
-                    <p>{{$pats->fname}}</p>
-                  </div>
-                  <div class="col-md-6" style="border-right: solid gray 1px;border-bottom: solid gray 1px;">
-                    <p>{{$pats->address->street}} {{$pats->address->barangay}} {{$pats->address->city}}</p>
-                  </div>
-                 </div>
+                  <div class="col-md-12" style="border: solid gray 1px;font-size: 12px;border-top:none;border-right:none">
                   <div class="row">
-                  <div class="col-md-3" style="border-right: solid gray 1px;border-bottom: solid gray 1px">
-                    <p><b>Middle name:</b></p>
-                  </div>
-                  <div class="col-md-3" style="border-bottom: solid gray 1px;border-right: solid gray 1px">
-                    <p>{{$pats->mname}}</p>
-                  </div>
-                  <div class="col-md-3" style="border-right: solid gray 1px;border-bottom: solid gray 1px">
-                    <p><b>Contact Number:</b></p>
-                  </div>
-                  <div class="col-md-3" style="border-bottom: solid gray 1px;border-right: solid gray 1px">
-                    <p>{{$pats->contact}}</p>
-                  </div>
-                 </div>
-                 <div class="row">
-                  <div class="col-md-3" style="border-right: solid gray 1px;border-bottom: solid gray 1px">
-                    <p><b>Age:</b></p>
-                  </div>
-                  <div class="col-md-3" style="border-bottom: solid gray 1px;border-right: solid gray 1px">
-                    <p>{{\Carbon\Carbon::parse($pats->birthdate)->age}}</p>
-                  </div>
-                   <div class="col-md-3" style="border-right: solid gray 1px;border-bottom: solid gray 1px">
-                    <p><b>Gender:</b></p>
-                  </div>
+                    <div class="col-md-3" style="border-right: solid gray 1px;border-bottom: solid gray 1px">
+                      <b><p>Last name:</p></b>
+                    </div>
+                    <div class="col-md-3" style="border-bottom: solid gray 1px;border-right: solid gray 1px">
+                      <p>{{$pats->lname}}</p>
+                    </div>
+                    <div class="col-md-6" style="border-right: solid gray 1px;">
+                      <b><p>Address:</p></b>
+                    </div>
+                   </div>
+                   <div class="row">
+                    <div class="col-md-3" style="border-right: solid gray 1px;border-bottom: solid gray 1px">
+                      <p><b>First name:</b></p>
+                    </div>
+                    <div class="col-md-3" style="border-bottom: solid gray 1px;border-right: solid gray 1px">
+                      <p>{{$pats->fname}}</p>
+                    </div>
+                    <div class="col-md-6" style="border-right: solid gray 1px;border-bottom: solid gray 1px;">
+                      <p>{{$pats->address->street}} {{$pats->address->barangay}} {{$pats->address->city}}</p>
+                    </div>
+                   </div>
+                    <div class="row">
+                    <div class="col-md-3" style="border-right: solid gray 1px;border-bottom: solid gray 1px">
+                      <p><b>Middle name:</b></p>
+                    </div>
+                    <div class="col-md-3" style="border-bottom: solid gray 1px;border-right: solid gray 1px">
+                      <p>{{$pats->mname}}</p>
+                    </div>
+                    <div class="col-md-3" style="border-right: solid gray 1px;border-bottom: solid gray 1px">
+                      <p><b>Contact Number:</b></p>
+                    </div>
+                    <div class="col-md-3" style="border-bottom: solid gray 1px;border-right: solid gray 1px">
+                      <p>{{$pats->contact}}</p>
+                    </div>
+                   </div>
+                   <div class="row">
+                    <div class="col-md-3" style="border-right: solid gray 1px;border-bottom: solid gray 1px">
+                      <p><b>Age:</b></p>
+                    </div>
+                    <div class="col-md-3" style="border-bottom: solid gray 1px;border-right: solid gray 1px">
+                      <p>{{\Carbon\Carbon::parse($pats->birthdate)->age}}</p>
+                    </div>
+                     <div class="col-md-3" style="border-right: solid gray 1px;border-bottom: solid gray 1px">
+                      <p><b>Gender:</b></p>
+                    </div>
                 @if($pats->gender != NULL)
                   <div class="col-md-3" style="border-bottom: solid gray 1px;border-right: solid gray 1px">
                     <p>{{$pats->genders->name}}</p>
                 @else
-                  <div class="col-md-3" style="border-bottom: solid gray 1px;border-right: solid gray 1px">
-                    <p></p>
+                    <div class="col-md-3" style="border-bottom: solid gray 1px;border-right: solid gray 1px">
+                      <p></p>
                 @endif
-                  </div>
-                 </div>
-                 <div class="row">
-                  <div class="col-md-3" style="border-right: solid gray 1px;border-bottom: solid gray 1px">
-                    <p><b>Birthdate:</b></p>
-                  </div>
-                  <div class="col-md-3" style="border-bottom: solid gray 1px;border-right: solid gray 1px">
-                    <p>{{$pats->birthdate}}</p>
-                  </div>
-                   <div class="col-md-3" style="border-right: solid gray 1px;border-bottom: solid gray 1px">
-                    <p><b>Civil Status:</b></p>
-                  </div>
-                  <div class="col-md-3" style="border-bottom: solid gray 1px;border-right: solid gray 1px">
+                    </div>
+                   </div>
+                   <div class="row">
+                    <div class="col-md-3" style="border-right: solid gray 1px;border-bottom: solid gray 1px">
+                      <p><b>Birthdate:</b></p>
+                    </div>
+                    <div class="col-md-3" style="border-bottom: solid gray 1px;border-right: solid gray 1px">
+                      <p>{{$pats->birthdate}}</p>
+                    </div>
+                     <div class="col-md-3" style="border-right: solid gray 1px;border-bottom: solid gray 1px">
+                      <p><b>Civil Status:</b></p>
+                    </div>
+                    <div class="col-md-3" style="border-bottom: solid gray 1px;border-right: solid gray 1px">
                     <p>{{$pats->cstatus->name}}</p>
-                  </div>
-                 </div>
-                 <div class="row">
-                  <div class="col-md-3" style="border-right: solid gray 1px;border-bottom: solid gray 1px">
-                    <p><b>Birth Order:</b></p>
-                  </div>
-                  <div class="col-md-3" style="border-bottom: solid gray 1px;border-right: solid gray 1px">
+                    </div>
+                   </div>
+                   <div class="row">
+                    <div class="col-md-3" style="border-right: solid gray 1px;border-bottom: solid gray 1px">
+                      <p><b>Birth Order:</b></p>
+                    </div>
+                    <div class="col-md-3" style="border-bottom: solid gray 1px;border-right: solid gray 1px">
                     <p>{{NumConvert::numberOrdinal($pats->birthorder)}}</p>
-                  </div>
-                  <div class="col-md-3" style="border-right: solid gray 1px;border-bottom: solid gray 1px">
-                    <p><b>Nationality:</b></p>
-                  </div>
-                  <div class="col-md-3" style="border-right: solid gray 1px;border-bottom: solid gray 1px">
+                    </div>
+                    <div class="col-md-3" style="border-right: solid gray 1px;border-bottom: solid gray 1px">
+                      <p><b>Nationality:</b></p>
+                    </div>
+                    <div class="col-md-3" style="border-right: solid gray 1px;border-bottom: solid gray 1px">
                     <p>{{$pats->nationality}}</p>
-                  </div>
-                 </div>
-                 <div class="row">
-                  <div class="col-md-3" style="border-right: solid gray 1px">
-                    <p></p>
-                  </div>
-                  <div class="col-md-3" style="border-right: solid gray 1px">
-                    <p></p>
-                  </div>
-                  <div class="col-md-3" style="border-right: solid gray 1px;">
-                    <p><b>Religion:</b></p>
-                  </div>
-                  <div class="col-md-3" style="border-right: solid gray 1px">
+                    </div>
+                   </div>
+                   <div class="row">
+                    <div class="col-md-3" style="border-right: solid gray 1px">
+                      <p></p>
+                    </div>
+                    <div class="col-md-3" style="border-right: solid gray 1px">
+                      <p></p>
+                    </div>
+                    <div class="col-md-3" style="border-right: solid gray 1px;">
+                      <p><b>Religion:</b></p>
+                    </div>
+                    <div class="col-md-3" style="border-right: solid gray 1px">
                     <p>{{$pats->religion}}</p>
-                  </div>
-                 </div>
-                </div> 
-              </div>
-              <div class="row" style="padding:20px">
-                <div class="col-md-12" style="border: solid gray 1px;font-size: 12px">
-                <div class="row">
-                  <div class="col-md-3" style="border-right: solid gray 1px;">
-                    <p><b>Referred by:</b></p>
-                  </div>
-                  <div class="col-md-9" style="border-right: none">
-                    <p></p>
-                  </div>
+                    </div>
+                   </div>
+                  </div> 
                 </div>
-              @if($patis != '[]')
-                @foreach($patis as $patin)
-                <div class="row">
-                  <div class="col-md-3" style="border-right: solid gray 1px;border-top: solid gray 1px;padding:10px">
-                    <p><b>Accompanied By/<br>Informant</b></p>
-                  </div>
-                  <div class="col-md-9" style="border-top: solid gray 1px;padding-top: 10px">
-                    <div class="row">
-                      <div class="col-md-6"><b>Name:</b> {{$patin->informants->name}}</div>
+                <div class="row" style="padding:20px">
+                  <div class="col-md-12" style="border: solid gray 1px;font-size: 12px">
+                  <div class="row">
+                    <div class="col-md-3" style="border-right: solid gray 1px;">
+                      <p><b>Referred by:</b></p>
                     </div>
-                    <div class="row">
-                      <div class="col-md-6"><b>Address:</b> {{$patin->informants->address}}</div>
-                    </div>
-                    <div class="row">
-                      <div class="col-md-5"><b>Signature:</b> _____________________________</div>
-                      <div class="col-md-5"><b>Contact no:</b> {{$patin->informants->contact}}</div>
+                    <div class="col-md-9" style="border-right: none">
+                      <p></p>
                     </div>
                   </div>
-                   <div class="col-md-3" style="border-right: solid gray 1px;border-top: solid gray 1px;padding:10px">
-                    <p><b>DRUGS ABUSED<br>(Present)</b></p>
+                @if($patis != '[]')
+                  @foreach($patis as $patin)
+                  <div class="row">
+                    <div class="col-md-3" style="border-right: solid gray 1px;border-top: solid gray 1px;padding:10px">
+                      <p><b>Accompanied By/<br>Informant</b></p>
+                    </div>
+                    <div class="col-md-9" style="border-top: solid gray 1px;padding-top: 10px">
+                      <div class="row">
+                        <div class="col-md-6"><b>Name:</b> {{$patin->informants->name}}</div>
+                      </div>
+                      <div class="row">
+                        <div class="col-md-6"><b>Address:</b> {{$patin->informants->address}}</div>
+                      </div>
+                      <div class="row">
+                        <div class="col-md-5"><b>Signature:</b> _____________________________</div>
+                        <div class="col-md-5"><b>Contact no:</b> {{$patin->informants->contact}}</div>
+                      </div>
+                    </div>
+                     <div class="col-md-3" style="border-right: solid gray 1px;border-top: solid gray 1px;padding:10px">
+                      <p><b>DRUGS ABUSED<br>(Present)</b></p>
+                    </div>
+                    <div class="col-md-9" style="border-top: solid gray 1px;padding-top: 10px">
+                      <div class="row">
+                       <div class="col-md-9">{{$patin->drugs_abused}}</div>
+                     </div>
+                    </div>
+                     <div class="col-md-3" style="border-right: solid gray 1px;border-top: solid gray 1px;padding:10px">
+                      <p><b>Chief Complaint</b></p>
+                    </div>
+                    <div class="col-md-9" style="border-top: solid gray 1px;padding-top: 10px">
+                      <div class="row">
+                       <div class="col-md-9">{{$patin->chief_complaint}}</div>
+                     </div>
+                    </div>
+                    <div class="col-md-3" style="border-right: solid gray 1px;border-top: solid gray 1px;padding:10px">
+                      <p><b>History of Present<br>Illness</b></p>
+                    </div>
+                     <div class="col-md-9" style="border-top: solid gray 1px;padding-top: 10px">
+                      <div class="row">
+                       <div class="col-md-9">{{$patin->h_present_illness}}</div>
+                     </div>
+                    </div>
+                     <div class="col-md-3" style="border-right: solid gray 1px;border-top: solid gray 1px;padding:10px;height: 100px">
+                      <p><b>History of Drug<br>Use</b></p>
+                    </div>
+                    <div class="col-md-9" style="border-top: solid gray 1px;padding-top: 10px">
+                      <div class="row">
+                       <div class="col-md-9">{{$patin->h_drug_abuse}}</div>
+                     </div>
+                    </div>
+                    <div class="col-md-3" style="border-right: solid gray 1px;border-top: solid gray 1px;padding:10px;height: 100px">
+                      <p><b>Family/Personal<br>History</b></p>
+                    </div>
+                    <div class="col-md-9" style="border-top: solid gray 1px;padding-top: 10px">
+                      <div class="row">
+                       <div class="col-md-9">{{$patin->famper_history}}</div>
+                     </div>
+                    </div>
                   </div>
-                  <div class="col-md-9" style="border-top: solid gray 1px;padding-top: 10px">
-                    <div class="row">
-                     <div class="col-md-9">{{$patin->drugs_abused}}</div>
-                   </div>
-                  </div>
-                   <div class="col-md-3" style="border-right: solid gray 1px;border-top: solid gray 1px;padding:10px">
-                    <p><b>Chief Complaint</b></p>
-                  </div>
-                  <div class="col-md-9" style="border-top: solid gray 1px;padding-top: 10px">
-                    <div class="row">
-                     <div class="col-md-9">{{$patin->chief_complaint}}</div>
-                   </div>
-                  </div>
-                  <div class="col-md-3" style="border-right: solid gray 1px;border-top: solid gray 1px;padding:10px">
-                    <p><b>History of Present<br>Illness</b></p>
-                  </div>
-                   <div class="col-md-9" style="border-top: solid gray 1px;padding-top: 10px">
-                    <div class="row">
-                     <div class="col-md-9">{{$patin->h_present_illness}}</div>
-                   </div>
-                  </div>
-                   <div class="col-md-3" style="border-right: solid gray 1px;border-top: solid gray 1px;padding:10px;height: 100px">
-                    <p><b>History of Drug<br>Use</b></p>
-                  </div>
-                  <div class="col-md-9" style="border-top: solid gray 1px;padding-top: 10px">
-                    <div class="row">
-                     <div class="col-md-9">{{$patin->h_drug_abuse}}</div>
-                   </div>
-                  </div>
-                  <div class="col-md-3" style="border-right: solid gray 1px;border-top: solid gray 1px;padding:10px;height: 100px">
-                    <p><b>Family/Personal<br>History</b></p>
-                  </div>
-                  <div class="col-md-9" style="border-top: solid gray 1px;padding-top: 10px">
-                    <div class="row">
-                     <div class="col-md-9">{{$patin->famper_history}}</div>
-                   </div>
-                  </div>
-                </div>
-                 @endforeach
+                   @endforeach
                 @elseif($patis == '[]')
                     <div class="row">
                   <div class="col-md-3" style="border-right: solid gray 1px;border-top: solid gray 1px;padding:10px">
@@ -4494,14 +4520,118 @@ $today = $year . '-' . $month . '-' . $day;
   $(document).ready(function () {
     ////----- Open the modal to CREATE a link -----////
 
-              $('#doctorsTable').DataTable();
 
             $('#nurseTable').DataTable();
+
             $('#dentalTable').DataTable();
 
             $('#psychiatristTable').DataTable();
 
             $('#socialworkerTable').DataTable();
+
+            $('#BMIMonitoring').DataTable();
+
+            $('#doctorsTable').DataTable();
+
+
+            $('#MedicationRecords').DataTable();
+
+            
+            $('#BloodSugarTable').DataTable();
+
+            $('#patientTable').DataTable({
+               "order": [[0, "desc"]]
+            });
+
+              $('#addNurseNotes').click(function () {
+
+        $('#NurseNotesFormData').trigger("reset");
+        $('#NurseNotesModal').modal('show');
+    
+
+    });
+
+              $('#tableType').change(function() {
+   var id = $(this).val();
+
+      if(id == 'BS'){
+
+            $('#BloodSugarTablediv').removeAttr('hidden');
+            $('#BloodSugarTablediv').show();
+
+            $('#BMIMonitoringdiv').hide();
+            $('#MedicationRecordsdiv').hide();
+            $('#nurseTablediv').hide();
+
+
+      }else if(id == 'F'){
+
+              $('#BMIMonitoringdiv').removeAttr('hidden');
+              $('#BMIMonitoringdiv').show();
+
+
+             $('#BloodSugarTablediv').hide();
+             $('#MedicationRecordsdiv').hide();
+              $('#nurseTablediv').hide();
+
+      }else if(id == 'M'){
+
+              $('#MedicationRecordsdiv').removeAttr('hidden');
+              $('#MedicationRecordsdiv').show();
+
+
+             $('#BloodSugarTablediv').hide();
+             $('#BMIMonitoringdiv').hide();
+              $('#nurseTablediv').hide();
+
+      }else{
+
+                      $('#nurseTablediv').removeAttr('hidden');
+              $('#nurseTablediv').show();
+
+            
+             $('#BloodSugarTablediv').hide();
+              $('#MedicationRecordsdiv').hide();
+             $('#BMIMonitoringdiv').hide();
+      }
+});
+
+
+    $('#add_service').click(function () {
+
+        $('#AddServiceFormData').trigger("reset");
+        $('#AddServiceNotesModal').modal('show');
+    
+    });
+
+    $('#addDoctortNotes').click(function () {
+
+        $('#AddDoctorFormData').trigger("reset");
+        $('#AddDoctorNotesModal').modal('show');
+    
+    });
+
+ $('#addDentalNotes').click(function () {
+
+        $('#AddDentalFormData').trigger("reset");
+        $('#AddDentalNotesModal').modal('show');
+    
+  });
+
+  $('#addPyschiatristNotes').click(function () {
+
+        $('#AddPsychiatristFormData').trigger("reset");
+        $('#AddPsychiatristNotesModal').modal('show');
+    
+  });
+
+
+$('#addSocialWorkerNotes').click(function () {
+
+        $('#AddSocialWorkerFormData').trigger("reset");
+        $('#AddSocialWorkerNotesModal').modal('show');
+    
+  });
 
 
 
@@ -4554,6 +4684,80 @@ $today = $year . '-' . $month . '-' . $day;
     
     });
 
+
+    $(".nurseList").change(function (e){
+
+         var selected = $(this).val();
+
+                       $('.medication_record').addClass('has-error');   
+
+
+
+          if(selected == 'M'){
+
+
+
+            $('.medicalRecords').removeAttr('hidden');
+            $('.medicalRecords').show();
+
+            $('.note_modal').hide();
+            $('.BMIRecords').hide();
+            $('.BloodSugarRecords').hide();
+
+              $('.medication_record').addClass('has-error');   
+
+              $('.weight_kg').removeClass('has-error'); 
+              $('.bmi_record').removeClass('has-error');    
+              $('.reading_bbreakfast').removeClass('has-error');    
+
+
+          }else if(selected == 'BS'){
+
+            $('.BloodSugarRecords').removeAttr('hidden');
+            $('.BloodSugarRecords').show();
+
+            $('.note_modal').hide();
+            $('.BMIRecords').hide();
+            $('.medicalRecords').hide();
+
+             // $('.reading_bbreakfast').addClass('has-error'); 
+
+             //  $('.weight_kg').removeClass('has-error');  
+             //  $('.bmi_record').removeClass('has-error');    
+             //  $('.medication_record').removeClass('has-error'); 
+
+
+          }else if(selected == 'F'){
+
+            $('.BMIRecords').removeAttr('hidden');
+            $('.BMIRecords').show();
+
+            $('.note_modal').hide();
+            $('.BloodSugarRecords').hide();
+            $('.medicalRecords').hide();
+
+             $('.bmi_record').addClass('has-error');  
+             $('.weight_kg').addClass('has-error');    
+
+              $('.reading_bbreakfast').removeClass('has-error');   
+              $('.medication_record').removeClass('has-error');  
+
+
+          }else{
+
+            $('.note_modal').removeAttr('hidden');
+            $('.note_modal').show();
+
+            $('.medicalRecords').hide();
+            $('.BMIRecords').hide();
+            $('.BloodSugarRecords').hide();
+
+
+
+          }
+
+    });
+
       $("input[type='checkbox']").click(function (e) {
             var id = $(this).val();
             if ($(this).is(':checked')) {
@@ -4566,15 +4770,185 @@ $today = $year . '-' . $month . '-' . $day;
             }
         
            })
-      
 
-     $('#btn-visit').click(function(e){
+   $('#linkEditor').on('hidden.bs.modal', function () {
+        //$(this).removeData('bs.modal');
+        console.log('hide');
+        $(this).find('form').trigger("reset");
+    });
+
+ $('#NurseNotesModal').on('hidden.bs.modal', function () {
+
+  console.log("hide");
+
+        $(this).find('form').trigger("reset");
+
+            $('.medicalRecords').hide();
+            $('.BMIRecords').hide();
+            $('.BloodSugarRecords').hide();
 
 
-             $('#VisitmodalFormData').trigger("reset");
-             $('#VisitlinkEditor').modal('show');
+  });
+
+
+   $(".btn-visit-view").click(function(e){
+
+   });
+
+     $('.btn-visit').click(function(e){
+     
+        var date = $('.visit_event_date').val();
+
+
+        var patient_id = $('#patient_id').val();
+        var ajaxurl = '{{ URL::to("/getCurrentEvent") }}/' + patient_id;
+              $.ajax({
+                contentType: "application/json; charset=utf-8",
+                type: 'GET',
+                url: ajaxurl,
+                data: {'date': date},
+                success: function (data) {
+
+                 
+                  if(data.hasEvent && data.visitIntervens != null) {
+                    var visitIntervens = data.visitIntervens;
+
+                    
+
+                    $('#linkEditor input:text[name="patientEventId"]').val(data.patientEventId);
+                    $('#linkEditor input:text[name="eventId"]').val(data.eventId);
+
+                    var i;
+                    for (i = 0; i < visitIntervens.length; ++i) {
+
+                      var interven_id = visitIntervens[i].interven_id;
+
+                        $('#linkEditor input:checkbox[value='+ visitIntervens[i].interven_id +']').click();
+
+
+                        //.prop('checked', true);
+
+                        var remarks = visitIntervens[i].remarks;
+                        var id = visitIntervens[i].id;
+
+                      $("input[name=remarks_" + interven_id + "]").val(remarks);
+                      $("input[name=rec_id_" + interven_id + "]").val(id);
+
+                            $('#modalFormData').trigger("reset");
+                            $('#linkEditor').modal('show');
+                    }
+
+                  } else {
+                      $('#linkEditor input:text[name="patientEventId"]').val();
+
+                            $('#modalFormData').trigger("reset");
+                            $('#linkEditor').modal('show');
+
+                  }
+                },
+               error: function (data) {
+                    console.log('Error:', data);
+                }
+
+            });
+
+              
 
     });
+
+ 
+      
+
+
+     $('#btn-attended').click(function (e){
+
+    $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+            
+        });
+
+          var eventArr = [];
+
+      var checked = $("input[type=checkbox]:checked").length;
+
+          var event_patient = $('#linkEditor input:text[name="patientEventId"]').val();
+           var patient_id = $('#patient_id').val();
+
+
+        var length = $("input:checkbox[name='checkitem[]']").each(function(){
+              var isChecked = $(this).is(':checked');
+              var event = {};
+              var value = $(this).val();
+              event['isChecked'] = isChecked;
+              event['patient_event_id'] = $('#linkEditor input:text[name="patientEventId"]').val();
+              event['rec_id'] = $('#rec_id_'+value).val();
+              event['child_interven_id'] =  $('#childInterven_'+value).val();
+              event['patient_id'] = $('#patient_id').val();
+              event['event_id'] = $('#linkEditor input:text[name="eventId"]').val();;
+              event['interven_id'] = value;
+              event['remarks'] = $('#remarks_'+value).val();
+
+              eventArr.push(event);
+        });
+
+               var ajaxurl;  
+
+        if(event_patient){
+
+            ajaxurl = '{{URL::to("/patient/attendIntervention")}}/'+event_patient;
+
+         }else{
+
+            ajaxurl  = '{{URL::to("/patient/visitNoEvent")}}/'+patient_id;
+
+       }
+
+
+       var type = "POST";
+      //  var ajaxurl = '{{URL::to("/patient/attendIntervention")}}/'+event_patient;
+         $.ajax({
+            contentType: "application/json; charset=utf-8",
+            type: type,
+            url: ajaxurl,
+            data: JSON.stringify(eventArr),
+            success: function (data) {
+
+                 for(var a = 0; data.length > a; a++){
+
+
+                    $("#rec_id_"+data[a].interven_id).val("");
+                }
+
+
+                if(checked > 0){
+
+                      $("#attend_btn").addClass("btn-success").removeClass("btn-info");
+
+                
+                }else{
+
+                      $("#attend_btn").addClass("btn-info").removeClass("btn-success");
+
+                }
+
+
+                $('#modalFormData').trigger("reset");
+                $('#linkEditor').modal('hide');
+               
+            },
+           error: function (data) {
+                console.log('Error:', data);
+            }
+
+        });
+
+       $('#modalFormData').trigger("reset");
+       $('#linkEditor').modal('hide');
+
+
+});
 
 
    
@@ -4597,49 +4971,7 @@ $today = $year . '-' . $month . '-' . $day;
      
     });
 
-    $('#addNurseNotes').click(function () {
-
-        $('#NurseNotesFormData').trigger("reset");
-        $('#NurseNotesModal').modal('show');
-    
-
-    });
-
-    $('#add_service').click(function () {
-
-        $('#AddServiceFormData').trigger("reset");
-        $('#AddServiceNotesModal').modal('show');
-    
-    });
-
-    $('#addDoctortNotes').click(function () {
-
-        $('#AddDoctorFormData').trigger("reset");
-        $('#AddDoctorNotesModal').modal('show');
-    
-    });
-
- $('#addDentalNotes').click(function () {
-
-        $('#AddDentalFormData').trigger("reset");
-        $('#AddDentalNotesModal').modal('show');
-    
-  });
-
-  $('#addPyschiatristNotes').click(function () {
-
-        $('#AddPsychiatristFormData').trigger("reset");
-        $('#AddPsychiatristNotesModal').modal('show');
-    
-  });
-
-
-$('#addSocialWorkerNotes').click(function () {
-
-        $('#AddSocialWorkerFormData').trigger("reset");
-        $('#AddSocialWorkerNotesModal').modal('show');
-    
-  });
+  
 
 $("#btn-save").click(function (e) {
 
@@ -4850,14 +5182,178 @@ $("#btn-save-nursenotes").click(function (e) {
             
         });
 
+
+
      var today = new Date();
     var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
     var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
     var dateTime = date+' '+time;
 
-  
+   var selectVal = $('#nurseList').val();
+
+   var weight_kg = $('.weight_kg').val();
+   var bmi_record = $('#bmi_record').val();
+   var reading_bbreakfast = $('#reading_bbreakfast').val();
+   var medication_record = $('#medication_record').val();
+   var nursenote =$('#nursenote').val();
+
+   if(selectVal == 'F'){
+
+      if(weight_kg == null  || weight_kg == "" || bmi_record == null  || bmi_record == "" || nursenote == null  || nursenote == ""){
+              console.log("sulod");
+      }else{
+
+        e.preventDefault();
+         var formData = {
+            date: date,
+            patient_id: $('#patient_id').val(),
+            weight: $('#weight_kg').val(),
+            bmi: $('#bmi_record').val(),
+            created_by: $('#note_by').val(),
+            remarks: $('#nursenote').val()
+        };
 
 
+        var type = "POST";
+        var id = $('#id').val();
+        var ajaxurl = '{{URL::to("/addBMIrecords")}}/BMIRecords';
+
+
+     $.ajax({
+                type: type,
+            url: ajaxurl,
+            data: formData,
+            dataType: 'json',
+            success: function (data) {
+
+             
+               
+
+                $('#NurseNotesFormData').trigger("reset");
+                $('#NurseNotesModal').modal('hide');
+        },
+           error: function (data) {
+                console.log('Error:', data);
+            }
+
+          
+
+        });
+
+
+        
+      }
+
+   }else if(selectVal == 'BS'){
+
+     if( reading_bbreakfast == null  || reading_bbreakfast == "" || nursenote == null  || nursenote == ""){
+              console.log("sulod");
+      }else{
+
+        e.preventDefault();
+         var formData = {
+            dateTime: dateTime,
+            patient_id: $('#patient_id').val(),
+            reading: $('#reading_bbreakfast').val(),
+            created_by: $('#note_by').val(),
+            notes: $('#nursenote').val()
+        };
+
+
+        var type = "POST";
+        var id = $('#id').val();
+        var ajaxurl = '{{URL::to("/addBMIrecords")}}/BloodSugar';
+
+
+     $.ajax({
+                type: type,
+            url: ajaxurl,
+            data: formData,
+            dataType: 'json',
+            success: function (data) {
+
+             
+               
+
+                $('#NurseNotesFormData').trigger("reset");
+                $('#NurseNotesModal').modal('hide');
+        },
+           error: function (data) {
+                console.log('Error:', data);
+            }
+
+          
+
+        });
+
+
+
+        
+      }
+
+
+   }else if(selectVal == 'M'){
+
+        if( medication_record == null  || medication_record == "" || nursenote == null  || nursenote == ""){
+              console.log("sulod");
+      }else{
+
+             e.preventDefault();
+         var formData = {
+            intake_date: date,
+            intake_time: time,
+            patient_id: $('#patient_id').val(),
+            medication: $('#medication_record').val(),
+            created_by: $('#note_by').val(),
+            notes: $('#nursenote').val()
+        };
+
+
+        var type = "POST";
+        var id = $('#id').val();
+        var ajaxurl = '{{URL::to("/addBMIrecords")}}/medicalRecords';
+
+
+     $.ajax({
+                type: type,
+            url: ajaxurl,
+            data: formData,
+            dataType: 'json',
+            success: function (data) {
+
+             
+               
+
+                $('#NurseNotesFormData').trigger("reset");
+                $('#NurseNotesModal').modal('hide');
+        },
+           error: function (data) {
+                console.log('Error:', data);
+            }
+
+          
+
+        });
+
+
+
+
+        
+      }
+
+
+       
+   }else{
+
+
+    if($('.nursenote').val() == null || $('.nursenote').val() == ""){
+
+          console.log("sulod");
+
+    }else{
+
+
+    console.log("nursenote", $('.nursenote').val());
 
       e.preventDefault();
          var formData = {
@@ -4909,7 +5405,12 @@ $("#btn-save-nursenotes").click(function (e) {
 
         });
 
+    }
+  }
+
 });
+
+
 
 $("#btn-save-psychiatristnotes").click(function (e) {
    
@@ -5199,7 +5700,6 @@ $('body').on('click', '.edit-refer-modal', function () {
             
         })
 });
-
 
 
 

@@ -142,7 +142,7 @@ class CalendarController extends Controller
         'end_date' => $request->input('end_date'),
         'start_time' => $request->input('start_time'),
         'end_time' => $request->input('end_time'),
-        'status' => 1,
+        'status' => 0,
         'color' => $color
 
         ]);
@@ -167,7 +167,7 @@ class CalendarController extends Controller
                 'date' => $date,
                 'event_id' =>  $eventid,
                 'patient_id' => $pat,
-                'status' => 1
+                'status' => 0
 
             ]);
             $patient_event->save();
@@ -213,12 +213,16 @@ class CalendarController extends Controller
         $evts = Events::where('id', $id)->with('Departments')->get();
         $assignee = EventAssignee::where('event_id', $id)->with('assignee')->get();
 
-       // dd($evts)
         $graduate = Graduate_Requests::all();
 
         $roles = User_roles::all();
         $deps = Departments::all();
-        $interven = Interventions::all();
+        $interven = Interventions::where('department_id', $evt->department_id)->where(function ($query) {
+        $query->where('inactive', '!=', 1)
+            ->orWhereNull('inactive');
+        })->get();
+
+
         $childInterven = ChildInterventions::all();
 
         $users = Users::find(Auth::user()->id);

@@ -38,27 +38,6 @@
               </div>
             </div>
          </div>
-        <!-- <div class="card-body" style="margin-left: 10px">
-               <div class="row" style="margin-left: 10px;">
-                       @foreach($services as $service)
-                      <div class="col-xl-4 col-sm-9 mb-10" style="height: 14rem;margin-top: 30px">
-                        <div class="card border-dark mb-3 text-black o-hidden h-100">
-                          <div class="card-body">
-                              <p style="font-size: 40px;margin-top: 7px">{{$service->name}}</p>
-                            <div class="mr-5"></div>
-                          </div>
-                          <a style="color:black" class="card-footer text-white clearfix small z-1" href="{{URL::to('/viewservice', $service->id)}}">
-                            <span style="color:black" class="float-left">View Details</span>
-                            <span  style="color:black" class="float-right">
-                              <i class="fas fa-angle-right"></i>
-                            </span>
-                          </a>
-                        </div>
-                    </div>
-                    @endforeach
-                  </div> 
-          </div>-->
-
           <div class="card-body" style="margin-left: 10px">
             <div class="table-responsive">
                   <table class="table table-bordered" id="serviceTable" width="100%" cellspacing="0" style="text-align: center">
@@ -101,7 +80,7 @@
 
                                         <label>Display</label>
                                       <div class="id_100">
-                                        <select id="display[]" class="selectpicker form-control display display_{{$service->id}}" style="font-size: 18px; width: 500px;height: 100px" name="display[]" multiple="multiple">
+                                        <select id="display[]" class="selectpicker form-control display" style="font-size: 18px; width: 500px;height: 100px" name="display[]" multiple="multiple">
                                         @foreach($roles as $role)
                                             <option value="{{ $role->id}}">{{ $role['name'] }}</option>
                                         @endforeach
@@ -111,7 +90,7 @@
 
                                 <div class="form-group">
                                       <label>Notify</label>
-                                      <select id="notify[]" class="notify form-control notify notif_{{$service->id}}" style="font-size: 18px; width: 500px;height: 100px" name="notify[]" multiple="multiple">
+                                      <select id="notify[]" class="notify form-control notify " style="font-size: 18px; width: 500px;height: 100px" name="notify[]" multiple="multiple">
                                       @foreach($roles as $role)
                                        <option value="{{ $role->id}}">{{ $role['name'] }}</option>
                                       @endforeach
@@ -148,11 +127,24 @@
 
 
 
+   $('#EditServiceModal').on('hidden.bs.modal', function () {
+        //$(this).removeData('bs.modal');
+        console.log('hide');
+        $(this).find('form').trigger("reset");
+        $(this).find('select').removeAttr('selected');
+          $('#EditServiceModalData .display option').removeAttr('selected','selected');
+          $('#EditServiceModalData .notify option').removeAttr('selected','selected');
+          $('select[name="notify[]"]').next('.btn').attr('title', "Nothing selected");
+          $('select[name="notify[]"]').next('.btn').find('div.filter-option-inner-inner').text("Nothing selected")
 
-              $('.editServices').click(function () {
+      });
 
-                    $('#EditServiceModalData li').removeClass('selected');
-                    $('#EditServiceModalData').find("input, select").val("")
+
+        $('.editServices').click(function () {
+
+
+                    $('#EditServiceModalData').find("input, select").val("");
+                 
                  var service_id = $(this).val();
 
                   $('#EditServiceModalData').trigger("reset");
@@ -168,56 +160,64 @@
                 data: {'id': $(this).val()},
 
                success: function (data) {
-console.log('test', $('#EditServiceModalData li'));
-// setTimeout(function() {
-//   $('select[name="display[]"]').siblings('.dropdown-menu').find('a >span.text:contains("Admin")').parent().parent('li').addClass('selected');
-//   console.log($('select[name="display[]"]').siblings('.dropdown-menu').find('a >span.text:contains("Admin")').length);
-// }, 1000);
                 
-$('#EditServiceModalData li, #EditServiceModalData li a').removeClass('selected');
-                console.log('service_id', service_id);
-               
-                  console.log(data);
+              $('#EditServiceModalData li, #EditServiceModalData li a').removeClass('selected');
         
                   $serivcename = data['service']['name'];
 
                   $description = data['service']['description'];
-                  var titles = "";
 
-                 if (data['notify'].length> 0){ 
-              $('#EditServiceModalData .notify option').removeAttr('selected');
+                  var displaytitles = [];
+                  var notifytitles = [];
+
+
+                 if (data['notify'].length> 0){
+
+                  $('#EditServiceModalData .notify option').removeAttr('selected');
 
                       for(var a=0; a<data['notify'].length; a++) {
                           var notifId =data['notify'][a]['role'];
-                        
+                          var notifyName =data['notify'][a]['rolesx']['name'];
 
-                            console.log(notifId);
+                        
 
                           $('#EditServiceModalData .notify option[value='+notifId+']').attr('selected','selected');
 
-
+                          notifytitles.push(" "+notifyName);
                       }
+                      $('select[name="notify[]"]').next('.btn').attr('title', notifytitles);
+                      $('select[name="notify[]"]').next('.btn').find('div.filter-option-inner-inner').text(notifytitles);
 
                   }
 
-                  
+                
+
 
                    if (data['display'].length> 0){ 
-                    $('#EditServiceModalData .display option').removeAttr('selected');
-                      for(var a=0; a<data['display'].length; a++) {
-                          var displayId =data['display'][a]['role'];
 
+
+                    $('#EditServiceModalData .display option').removeAttr('selected');
+
+
+                      for(var a=0; a<data['display'].length; a++) {
+
+                          var displayId =data['display'][a]['role'];
+                          var displayName =data['display'][a]['rolesxe']['name'];
+
+                          //console.log(displayName);
                           $('#EditServiceModalData .display option[value='+displayId+']').attr('selected','selected');
 
+                            displaytitles.push(" "+displayName);
 
-                        //  $('.display'+service_id+' option[value='+displayId+']').attr('selected','selected');
-                      //   $('select[name="display[]"]').siblings('.dropdown-menu').find('a >span.text:contains("Admin")').parent().parent('li').addClass('selected');
+                            
+
                       }
+                         $('select[name="display[]"]').next('.btn').attr('title', displaytitles);
+                  $('select[name="display[]"]').next('.btn').find('div.filter-option-inner-inner').text(displaytitles)
 
                   }
 
-                  $('select[name="display[]"]').next('.btn').attr('title', 'sample');
-                  $('select[name="display[]"]').next('.btn').find('div.filter-option-inner-inner').text('sample')
+               
 
 
 
