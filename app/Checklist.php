@@ -10,3 +10,4 @@ class Checklist extends Model
     	'parent','name','has_sublist','flag',
     ];
 }
+ 

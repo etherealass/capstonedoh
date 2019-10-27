@@ -7,6 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 class Case_Type extends Model
 {
     protected $fillable = [
-    	'case_id','case_name','court_order',
+    	'case_name','court_order',
     ];
 }

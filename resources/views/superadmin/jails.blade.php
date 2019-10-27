@@ -51,7 +51,7 @@
                 <tr>
                   <td>{{$jail->name}}</td>
                   @if($jail->flag != 'deleted')
-                  <td><button class="btn btn-danger" data-toggle="modal" data-target="#deleteJail" data-jailid="{{$jail->id}}">Delete</button></td>
+                  <td><button class="btn btn-primary" style="margin-right: 20px" data-toggle="modal" data-target="#updateJail" data-jailid="{{$jail->id}}" data-jailname="{{$jail->name}}">Update</button><button class="btn btn-danger" data-toggle="modal" data-target="#deleteJail" data-jailid="{{$jail->id}}">Delete</button></td>
                   @else
                   <td><button class="btn btn-success" data-toggle="modal" data-target="#activateJail" data-jailid="{{$jail->id}}">Acivate</button></td>
                   @endif
@@ -62,6 +62,31 @@
             </div>
           </div>
         </div>
+
+<div class="modal fade" id="updateJail" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Edit City</h5>
+          <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <form action="{{URL::to('/update_jail')}}" method="post">
+          {{csrf_field()}} 
+          <div class="modal-body">
+          <input type="hidden" id="jailid" name="jailid" class="form-control" value="">
+          <input type="text" id="jailname" name="jailname" class="form-control" value="">
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-primary" data-dismiss="modal">Cancel</button>
+            <button type="submit" class="btn btn-success">Edit</button>  
+          </div>
+        </form>
+      </div>
+    </div>
+</div>
+
 
  <div class="modal fade" id="deleteJail" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">

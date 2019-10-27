@@ -22,6 +22,7 @@ use App\Graduate_Requests;
 use App\Patients;
 use App\Checklist;
 use App\Checklist_Files;
+use App\Checklist_Status;
 use Session;
 use Carbon\Carbon;
 
@@ -33,6 +34,10 @@ class UploadController extends Controller
     $checklist = Checklist::where('id',$request->input('checklistid'))->get();
     $pat = Patients::where('id',$request->input('patientid'))->get();
     $dep = Departments::where('id',$request->input('departmentid'))->get();
+
+    $checkfiles = Checklist_Files::where('checklist_id',$request->input('checklistid'))->where('patient_id',$request->input('patientid'))->where('department_id',$request->input('departmentid'))->get();
+
+    $stat = Checklist_Status::where('checklist_id',$request->input('checklistid'))->where('patient_id',$request->input('patientid'))->where('department_id',$request->input('departmentid'))->update(['has_files' => 1]);
 
     foreach($pat as $pats)
     foreach($dep as $deps)
@@ -68,16 +73,28 @@ class UploadController extends Controller
         $list = Checklist_Files::where('id',$request->input('fileid'))->get();
 
         foreach($list as $lists)
-        
+
+        $checklists = Checklist_Files::where('checklist_id',$lists->checklist_id)->where('department_id',$lists->department_id)->where('patient_id',$lists->patient_id)->get();
+
+        foreach($checklists as $listz)
+
         unlink(public_path($lists->location));
 
         $checklist = Checklist_Files::where('id',$request->input('fileid'))->delete();
+
+        if(count($checklists) != 0){
+
+           Checklist_Status::where('checklist_id',$listz->checklist_id)->where('department_id',$listz->department_id)->where('patient_id',$listz->patient_id)->update(['has_files' => 0]);
+        }
+        else{
+
+           Checklist_Status::where('checklist_id',$listz->checklist_id)->where('department_id',$listz->department_id)->where('patient_id',$listz->patient_id)->update(['has_files' => 1]);
+        }
 
         Session::flash('alert-class', 'danger'); 
         flash('File Deleted', '')->overlay();
 
         return back();
-
 
 
     }

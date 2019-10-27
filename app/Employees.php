@@ -9,7 +9,7 @@ class Employees extends Model
 {
 	use Notifiable;
 
-    protected $fillable = ['employee_id','fname','lname','mname','email','contact','designation','department','flag'];
+    protected $fillable = ['fname','lname','mname','email','contact','designation','department','flag'];
 
     public function emp_department()
     {

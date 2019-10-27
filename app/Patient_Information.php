@@ -14,4 +14,9 @@ class Patient_Information extends Model
     {
     	return $this->belongsTo('App\Patient_Informant','informant_id');
     }
+
+    public function dabused()
+    {
+    	return $this->belongsTo('App\Drugs_Abused','drugs_abused');
+    }
 }

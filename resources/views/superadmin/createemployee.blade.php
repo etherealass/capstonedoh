@@ -78,19 +78,30 @@
               </div>
               <div class="col-md-6">
                 <div class="form-label-group">
-                  <select class="form-control" id="designation" placeholder="Designation" required="required" name="designation">
-                  <label for="department">Designation</label>
+                  <select class="form-control" id="designation" placeholder="Designation" name="designation">
+                  <label for="designation">Designation</label>
                     <option selected hidden disabled>Designation/Position</option>
                   @foreach($designation as $des)
                     <option value="{{$des->id}}">{{$des->name}}</option>
                   @endforeach
+                    <option value="Others">Others</option>
                     <option value="0">None</option>
                 </select>
                 </div>
               </div>
             </div>
+          </div>
+          <div class="form-group">
+            <div class="form-row">
+              <div class="col-md-6">
+                <div class="form-label-group" id="design" style="display:none">
+                  <input type="text" id="designat" class="form-control" placeholder="Designation" required="required" name="designat">
+                  <label for="designat">Please specify designation</label>
+                </div>
+              </div>
             </div>
-           <input class="btn btn-primary btn-block" type="submit" name="submit" value="Create">
+          </div>
+        <input class="btn btn-primary btn-block" type="submit" name="submit" value="Create">
         </form>
       </div>
     </div> 

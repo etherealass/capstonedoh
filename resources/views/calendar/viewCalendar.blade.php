@@ -27,7 +27,7 @@
                   <button type="button" class="btn btn-outline-secondary" style="margin-top: 100px">Secondary</button>
 
                     <div class="card border-dark mb-3" style="max-width: 18rem; margin-top: 50px;">
-                      <div class="card-header">Calendar</div>
+                      <div class="card-header" style="background-color: #343a40;color: white">Calendar</div>
                       <div class="card-body text-dark">
 
                           <p style="text-align: left; margin-left: 20px"><span class="dot"  style="background-color: #32CD32;" ></span>&nbsp;&nbsp;&nbsp;Inpatient Events</p>
@@ -40,9 +40,11 @@
                         </div>
                     </div>
               </div>
-     
-     <div  class="col-md-8" id='calendar'>
-  </div>
+          <div class="col-md-9" style="border: solid black 2px;border-radius: 5px;padding:10px">
+            <div id='calendar' style="background-color: white;margin-top: 20px">
+            </div>
+          </div>
+       
   <div class="col-md-2">
      </div>
 </div>

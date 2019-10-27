@@ -14,9 +14,9 @@
 
     @include('parts.sidebar')
 
-    <div id="content-wrapper">
+    <div id="content-wrapper" style="background-color: #e9ecef">
 
-      <div class="container-fluid">
+      <div class="container-fluid" style="background-color: #e9ecef">
         
 
        @yield('content')

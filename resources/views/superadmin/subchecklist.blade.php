@@ -54,12 +54,12 @@
                   <td>{{$list->name}}</td>
                   @if($list->flag != 'deleted')
                     @if($list->has_sublist == 1)
-                        <td><a href="{{URL::to('/show_sub_checklist/'.$list->id)}}" style="color:white"><button class="btn btn-success" style="margin-right: 20px">View Sub Lists</button></a><button class="btn btn-primary" style="margin-right: 20px" data-toggle="modal" data-target="#updateLists" data-listid="{{$list->id}}" data-listname="{{$list->name}}">Update</button><button class="btn btn-danger" data-toggle="modal" data-target="#deleteLists" data-listid="{{$list->id}}">Delete</button></td>
+                        <td><a href="{{URL::to('/show_sub_checklist/'.$list->id)}}" style="color:white"><button class="btn btn-success" style="margin-right: 20px">View Sub Lists</button></a><button class="btn btn-primary" style="margin-right: 20px" data-toggle="modal" data-target="#updateList" data-listid="{{$list->id}}" data-listname="{{$list->name}}">Update</button><button class="btn btn-danger" data-toggle="modal" data-target="#deleteList" data-listid="{{$list->id}}">Delete</button></td>
                     @else
-                        <td><button class="btn btn-primary" style="margin-right: 20px" data-toggle="modal" data-target="#updateLists" data-listid="{{$list->id}}" data-listname="{{$list->name}}">Update</button><button class="btn btn-danger" data-toggle="modal" data-target="#deleteLists" data-listid="{{$list->id}}">Delete</button></td>
+                        <td><button class="btn btn-primary" style="margin-right: 20px" data-toggle="modal" data-target="#updateList" data-listid="{{$list->id}}" data-listname="{{$list->name}}">Update</button><button class="btn btn-danger" data-toggle="modal" data-target="#deleteList" data-listid="{{$list->id}}">Delete</button></td>
                     @endif
                   @else
-                      <td><button class="btn btn-success" data-toggle="modal" data-target="#activateLists" data-listid="{{$list->id}}">Acivate</button></td>
+                      <td><button class="btn btn-success" data-toggle="modal" data-target="#activateList" data-listid="{{$list->id}}">Acivate</button></td>
                   @endif
                 </tr>
                 @endforeach
@@ -69,7 +69,7 @@
           </div>
         </div>
 
- <div class="modal fade" id="deleteLists" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+ <div class="modal fade" id="deleteList" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
@@ -92,7 +92,7 @@
     </div>
 </div>
 
-<div class="modal fade" id="updateLists" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="updateList" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
@@ -116,7 +116,7 @@
     </div>
 </div>
 
-<div class="modal fade" id="activateLists" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="activateList" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">

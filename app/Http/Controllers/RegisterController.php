@@ -41,22 +41,27 @@ class RegisterController extends Controller
         
         $roles = User_roles::where('name',$request->input('designat'))->get();
 
-        foreach($roles as $rol){
+        foreach($roles as $rol)
+        {
             $designation_id = $rol->id;
         }
     }
+
     else{
+
         $designation_id = NULL;
+
     }
+
 
       $validation = $this->validate($request,[
         'username' =>'required|unique:users',
-        'contact'=>'required|unique:users',
+        'contact'=>'required|unique:users|digits:11',
         'email' => 'required|unique:users'
       ]);
 
       if(!$validation){
-        $errors = new MessageBag(['username' => ['Username should be unique']]);
+        $errors = new MessageBag(['username' => ['Username should be unique'],'contact' => ['Contact number should be unique'],'email' => ['Email should be unique']]);
            return Redirect::back()->withErrors($errors)->withInput(Input::all());
       }
       else{
@@ -206,7 +211,7 @@ class RegisterController extends Controller
       elseif(Auth::user()->user_role()->first()->name == 'Admin'){
         return view('admin.postcreatedep')->with('roles',$roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('graduate',$graduate);
       }
-    }
+    }   
 
     public function newemployee()
     {
@@ -216,7 +221,7 @@ class RegisterController extends Controller
         $users = Users::find(Auth::user()->id);
         $transfer = Transfer_Requests::all();
         $graduate = Graduate_Requests::all();
-        $designation = User_roles::where('parent','!=','0')->get();
+        $designation = User_roles::where('description','Employee')->get();
 
         if(Auth::user()->user_role()->first()->name == 'Superadmin'){
             return view('superadmin.createemployee')->with('roles',$roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('graduate',$graduate)->with('designation',$designation);
@@ -230,27 +235,50 @@ class RegisterController extends Controller
     public function create_employee(Request $request)
     {
 
-        $id = rand();
+
+    if($request->input('designat')){
+        $role = new User_roles([
+            'parent' => 0,
+            'name' =>  $request->input('designat'),
+            'description' => 'Employee',
+        ]);
+
+        $role->save();
+        
+        $roles = User_roles::where('name',$request->input('designat'))->get();
+
+        foreach($roles as $rol)
+        {
+            $designation_id = $rol->id;
+        }
+    }
+
+    else{
+
+        $designation_id = $request->input('designation');
+
+    }
 
         $validation = $this->validate($request,[
-        'contact'=>'required|unique:employees',
+        'contact'=>'required|unique:employees|digits:11',
         'email' => 'required|unique:employees'
         ]);
 
       if(!$validation){
-        $errors = new MessageBag(['contact' => ['Username should be unique']]);
+        $errors = new MessageBag(['contact' => ['Contact number should be unique'],'email' => ['Email should be unique']]);
            return Redirect::back()->withErrors($errors)->withInput(Input::all());
       }
       else{
 
+
+
         $employee = new Employees([
-            'employee_id' => $id,
             'fname' => $request->input('fname'),
             'lname' => $request->input('lname'),
             'mname' => $request->input('mname'),
             'email' => $request->input('email'),
             'contact' => $request->input('contact'),
-            'designation' => $request->input('designation'),
+            'designation' => $designation_id,
             'department' => $request->input('department'),
         ]);
 
@@ -258,7 +286,7 @@ class RegisterController extends Controller
 
         }
 
-        $emplo = Employees::with('emp_department')->with('emp_designation')->where('employee_id', $id)->get();
+        $emplo = Employees::with('emp_department')->with('emp_designation')->where('id', $employee->id)->get();
 
         foreach($emplo as $employ)
         {

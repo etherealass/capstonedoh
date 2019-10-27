@@ -136,9 +136,6 @@
                 @endforeach
               @endif
               </div>
-              <div class="card-footer">
-                <a style="color:white" href="{{URL::to('/markAsRead')}}"><button class="btn btn-gray btn-block" style="height: 50px">Mark all as read</button></a>
-              </div>
             </div>
         </div>
       </li>
@@ -168,7 +165,7 @@
                 <p style="margin-top: 5px;font-size: 16px;margin-left: 50px">A patient has been transfered from {{$user->data['from_department']}} Department to {{$user->data['to_department']}} Department</p>
                 <?php date_default_timezone_set('Asia/Singapore'); ?>
                 <p style="margin-left: 180px;font-size: 12px">{{$user->created_at->diffForHumans()}}</p>
-                <p style="margin-left: 150px"><a href="{{URL::to('/viewpatientz/'.$user->data['patient_id'].'/'.$user->id)}}"><button class="btn btn-primary" style="margin-left: 100px">View</button></a>
+                <p style="margin-left: 150px"><a href="{{URL::to('/viewpatientz/'.$user->data['patient_id'].'/'.$user->id)}}"><button class="btn btn-primary" style="margin-left: 30px">View</button></a>
                 <div style="border:solid 1px rgba(0, 0, 0, 0.125)"></div>
                 </div>
                       @endif

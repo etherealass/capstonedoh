@@ -37,10 +37,12 @@ section .section-title {
 </style>
 @endsection
 
-  <div class="tab-pane fade" id="v-pills-patientnote" role="tabpanel" aria-labelledby="v-pills-patientnote-tab">
+<div class="tab-pane fade" id="v-pills-patientnote" role="tabpanel" aria-labelledby="v-pills-patientnote-tab">
+  <fieldset style="margin-bottom: 30px;margin-left: 0px;border:solid thin gray;border-radius: 10px;width: 1000px">
+    <legend style="color:white;text-indent: 20px;width:900px;margin-bottom: 20px;border-radius: 5px" class="bg bg-dark">Patient Notes</legend>
   
-      <div class="row">
-      <div style="width: 100%">
+    <div class="row">
+      <div style="width: 900px;margin-left: 55px">
         <nav>
           <div class="nav nav-tabs nav-fill" id="nav-tab" role="tablist">
             <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true"><i class="fa fa-user-md" style="font-size:32px;"></i></a>
@@ -55,11 +57,9 @@ section .section-title {
   <!--DOCTOR-->
           <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
              <div class="container">
-
-                <div style="float:right;margin-bottom: 10px;margin-right: 10px;margin-top: 10px"><a data-patientid="{{$pats->id}}" data-doctorid="{{Auth::user()->id}}" data-toggle="modal" data-target="addDoctortNotes"><button id="addDoctortNotes" name="addDoctortNotes" class="btn btn-success"><i class="fas fa-fw fa fa-plus"></i></button></a></div>
-
+              <div style="float:right;margin-bottom: 10px;margin-right: 10px;margin-top: 10px"><a data-patientid="{{$pats->id}}" data-doctorid="{{Auth::user()->id}}" data-toggle="modal" data-target="addDoctortNotes"><button id="addDoctortNotes" name="addDoctortNotes" class="btn btn-success"><i class="fas fa-fw fa fa-plus"></i></button></a></div>
                  <div class="table-responsive scrollAble2">
-                       <table class="table table-bordered"  width="100%" style="font-size: 12px">
+                       <table class="table table-bordered" width="100%" style="font-size: 12px">
                             <thead>
                              <tr>
                                <th width="15%">Date/Time</th>
@@ -69,7 +69,6 @@ section .section-title {
                                <th width="10%">Action</th>
                             </tr>
                             </thead>
-                          <tbody>
                           <tbody id="doctor-list" name="doctor-list">
                            @foreach ($patient_notes as $patient_note)
                              @if($patient_note->role_type == "doctor")
@@ -80,23 +79,20 @@ section .section-title {
                                     <td>{{$patient_note->userx->lname}}, {{$patient_note->userx->fname}}</td>
                                     <td>{{$patient_note->note_by}}</td>
                                 </tr>
-
                              @endif
                           @endforeach
                           </tbody>
                         </table>
-                     </div>
-             </div>          
-          </div>
+                  </div>  
+                </div> 
+              </div>      
 
-  <!--nurse-->
-          <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
-             <div class="container">
-
-                <div style="float:right;margin-bottom: 10px;margin-right: 10px;margin-top: 10px"><a data-patientid="{{$pats->id}}" data-doctorid="{{Auth::user()->id}}" data-toggle="modal" data-target="addNurseNotes"><button id="addNurseNotes" name="addNurseNotes" class="btn btn-success"><i class="fas fa-fw fa fa-plus"></i></button></a></div>
-
-                 <div class="table-responsive scrollAble2">
-                       <table class="table table-bordered" id="nurseTable"  width="100%" style="font-size: 12px">
+  <!--Nurse-->
+        <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
+          <div class="container">  
+            <div style="float:right;margin-bottom: 10px;margin-right: 10px;margin-top: 10px"><a data-patientid="{{$pats->id}}" data-doctorid="{{Auth::user()->id}}" data-toggle="modal" data-target="addNurseNotes"><button id="addNurseNotes" name="addNurseNotes" class="btn btn-success"><i class="fas fa-fw fa fa-plus"></i></button></a></div>
+              <div class="table-responsive scrollAble2">
+                    <table class="table table-bordered" id="nurseTable" width="100%" style="font-size: 12px">
                             <thead>
                               <tr>
                                <th width="15%">Date/Time</th>
@@ -132,9 +128,7 @@ section .section-title {
     <!--Dental-->
           <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">
              <div class="container">
-
                 <div style="float:right;margin-bottom: 10px;margin-right: 10px;margin-top: 10px"><a data-patientid="{{$pats->id}}" data-doctorid="{{Auth::user()->id}}" data-toggle="modal" data-target="addDentalNotes"><button id="addDentalNotes" name="addDentalNotes" class="btn btn-success"><i class="fas fa-fw fa fa-plus"></i></button></a></div>
-
                  <div class="table-responsive scrollAble2">
                        <table class="table table-bordered"  id="dentalTable" width="100%" style="font-size: 12px">
                             <thead>
@@ -241,10 +235,9 @@ section .section-title {
              </div>
           </div>
         </div>
-      
       </div>
     </div>
-
+  </fieldset>
  </div>
 
     <!--<div class="modal fade" id="DoctorNotesModal" aria-hidden="true" >

@@ -20,7 +20,8 @@ class CreatePatientInformationsTable extends Migration
             $table->integer('informant_id')->unsigned();
             $table->foreign('informant_id')->references('id')->on('patient__informants');
             $table->string('referred_by');
-            $table->string('drugs_abused');
+            $table->integer('drugs_abused')->unsigned();
+            $table->foreign('drugs_abused')->references('id')->on('drugs__abuseds');
             $table->string('chief_complaint');
             $table->text('h_present_illness');
             $table->text('h_drug_abuse');

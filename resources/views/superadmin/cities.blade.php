@@ -51,7 +51,7 @@
                 <tr>
                   <td>{{$cities->name}}</td>
                   @if($cities->flag != 'deleted')
-                  <td><button class="btn btn-danger" data-toggle="modal" data-target="#deleteCity" data-cityid="{{$cities->id}}">Delete</button></td>
+                  <td><button class="btn btn-primary" style="margin-right: 20px" data-toggle="modal" data-target="#updateCity" data-cityid="{{$cities->id}}" data-cityname="{{$cities->name}}">Update</button><button class="btn btn-danger" data-toggle="modal" data-target="#deleteCity" data-cityid="{{$cities->id}}">Delete</button></td>
                   @else
                   <td><button class="btn btn-success" data-toggle="modal" data-target="#activateCity" data-cityid="{{$cities->id}}">Activate</button></td>
                   @endif
@@ -62,6 +62,30 @@
             </div>
           </div>
         </div>
+
+  <div class="modal fade" id="updateCity" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Edit City</h5>
+          <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <form action="{{URL::to('/update_city')}}" method="post">
+          {{csrf_field()}} 
+          <div class="modal-body">
+          <input type="hidden" id="cityid" name="cityid" class="form-control" value="">
+          <input type="text" id="cityname" name="cityname" class="form-control" value="">
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-primary" data-dismiss="modal">Cancel</button>
+            <button type="submit" class="btn btn-success">Edit</button>  
+          </div>
+        </form>
+      </div>
+    </div>
+</div>
 
   <div class="modal fade" id="deleteCity" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">

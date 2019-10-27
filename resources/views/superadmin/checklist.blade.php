@@ -72,7 +72,7 @@
             <span aria-hidden="true">×</span>
           </button>
         </div>
-        <form action="{{URL::to('/delete_checklist')}}" method="post">
+        <form action="{{URL::to('/delete_checklist')}}" method="post"> 
           {{csrf_field()}} 
           <div class="modal-body">
           <input type="hidden" id="listid" name="listid" class="form-control" value="">

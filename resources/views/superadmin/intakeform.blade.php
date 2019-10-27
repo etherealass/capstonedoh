@@ -15,7 +15,7 @@
           <li class="breadcrumb-item active">Fill up</li>
         </ol>
 
-    <div style="background-color: white;border-radius: 5px;height: 1300px;padding-top: 10px">
+  <div style="background-color: white;border-radius: 5px;height: 1300px;padding-top: 10px">
     <div class="container" style="margin-top: 30px">
         <p style="font-size:50px">Intake Form</p>
         <form action="{{URL::to('/patientsave_intake')}}" method="post">
@@ -106,12 +106,10 @@
                    <h6>Marital Status*</h6>
                  <select class="form-control" id="civils" placeholder="Civil Status" required="required" name="civils">
                   <label for="civils">Civil Status</label>
-                    <option value="" disabled selected hidden>Marital Status</option>
-                    <option value="Single">Single</option>
-                    <option value="Married">Married</option>
-                    <option value="Separated">Separated</option>
-                    <option value="Divorced">Divorced</option>
-                    <option value="Widowed">Widowed</option>
+                    @foreach($status as $stat)
+                    <option value="" disabled selected hidden>--Choose--</option>
+                    <option value="{{$stat->id}}">{{$stat->name}}</option>
+                    @endforeach
                 </select>
                 </div>
               </div>
@@ -174,10 +172,10 @@
                           <h6>Educational Attainment*</h6>
                           <select class="form-control" id="eduattain" placeholder="Civil Status" required="required" name="eduattain">
                             <label for="eduattain">Educational Attainment</label>
+                            @foreach($eduatain as $edu)
                             <option value="" disabled selected hidden>--Choose--</option>
-                            <option value="Elementary">Elementary Graduate</option>
-                            <option value="Highschool">High-school Graduate</option>
-                            <option value="College">College Graduate</option>
+                            <option value="{{$edu->id}}">{{$edu->name}}</option>
+                            @endforeach
                         </select>
                         </div>
                       </div>
@@ -186,9 +184,10 @@
                           <h6>Employement Status*</h6>
                            <select class="form-control" id="edstat" placeholder="Civil Status" required="required" name="edstat">
                             <label for="edstat">Employement Status</label>
+                            @foreach($estat as $estats)
                             <option value="" disabled selected hidden>--Choose--</option>
-                            <option value="Employed">Employed</option>
-                            <option value="Unemployed">Unemployed</option>
+                            <option value="{{$estats->id}}">{{$estats->name}}</option>
+                            @endforeach
                         </select>
                         </div>
                       </div>

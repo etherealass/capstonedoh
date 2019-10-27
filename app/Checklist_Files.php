@@ -14,4 +14,4 @@ class Checklist_Files extends Model
     {
         return $this->belongsTo('App\Patients','patient_id');
     }
-}
+} 

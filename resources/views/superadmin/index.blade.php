@@ -160,7 +160,7 @@ var myPieChart = new Chart(ctx, {
     labels: dep1,
     datasets: [{
       data: [count1, count2, count3 ],
-      backgroundColor: ['#007bff', 'yellowgreen', '#ffc107'],
+      backgroundColor: ['#007bff', '#28a745', '#ffc107'],
     }],
   },
 });

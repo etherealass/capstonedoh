@@ -15,5 +15,15 @@ class Patient_Intake_Information extends Model
         return $this->belongsTo('App\Emergency_Persons','emergency_id');
     }
 
+    public function eduatain()
+    {
+        return $this->belongsTo('App\Educational_Attainment','educational_attainment');
+    }
+
+     public function estat()
+    {
+        return $this->belongsTo('App\Employment_Status','employment_status');
+    }
+
 
 }

@@ -159,15 +159,29 @@ Route::group(['middleware' =>'auth'], function()
 
 	 Route::post('/activate_city',"OthersController@activatecity");
 
+	 Route::post('/delete_status',"OthersController@deletestatus");
+
+	 Route::post('/delete_gender',"OthersController@deletegender");
+
+	 Route::post('/delete_dabused',"OthersController@deletedabused");
+
+	 Route::post('/activate_status',"OthersController@activatestatus");
+
+	 Route::post('/activate_gender',"OthersController@activategender");
+
+	 Route::post('/activate_dabused',"OthersController@activatedabused");
+
 	 Route::any('/add_a_casetype',"OthersController@add_a_casetype");
 
-	 Route::post('/add_casetype',"OthersController@add_casetype");
+	 Route::post('/update_case',"OthersController@update_case");
+
+	 Route::post('/update_checklist',"OthersController@updatechecklist");
 
 	 Route::post('/delete_case',"OthersController@delete_case");
 
 	 Route::post('/activate_case',"OthersController@activate_case");
 
-	  Route::any('/add_a_checklist',"OthersController@add_a_checklist");
+	 Route::any('/add_a_checklist',"OthersController@add_a_checklist");
 
 	 Route::post('/add_checklist',"OthersController@addchecklist");
 
@@ -184,6 +198,28 @@ Route::group(['middleware' =>'auth'], function()
 	 Route::post('/delete_reason',"OthersController@deletereason");
 
 	 Route::post('/activate_reason',"OthersController@activatereason");
+
+	 Route::post('/update_reason',"OthersController@updatereason");
+
+	 Route::any('/add_a_eduatain',"OthersController@add_a_eduatain");
+
+	 Route::post('/add_eduatain',"OthersController@addeduatain");
+
+	 Route::post('/delete_eduatain',"OthersController@deleteeduatain");
+
+	 Route::post('/activate_eduatain',"OthersController@activateeduatain");
+
+	 Route::post('/update_eduatain',"OthersController@updateeduatain");
+
+	  Route::any('/add_a_estat',"OthersController@add_a_estat");
+
+	 Route::post('/add_estat',"OthersController@addestat");
+
+	 Route::post('/delete_estat',"OthersController@deleteestat");
+
+	 Route::post('/activate_estat',"OthersController@activateestat");
+
+	 Route::post('/update_estat',"OthersController@updateestat");
 
 	 Route::any('/addpatient', "PatientController@addpatient");
 
@@ -221,9 +257,8 @@ Route::group(['middleware' =>'auth'], function()
 
 	 Route::post('/reenrollsave_dde', "PatientController@reenrollsave_dde");
 
-
 	 Route::post('/deletepatient', "PatientController@flagdelete");
-
+ 
 	 Route::post('/patientTransfer', "PatientController@transferPatient");
 
 	 Route::post('/admin_transfer_patient', "PatientController@adminpatientTransfer"); 
@@ -244,27 +279,17 @@ Route::group(['middleware' =>'auth'], function()
 
 	 Route::post('/add_notes',"PatientController@doctor_notes");
 	 
-
-
-
-
 	 Route::post('/refers', "ReferController@createRefer");
 
-	Route::get('/refers/{id}', "ReferController@getRefer");
+	 Route::get('/refers/{id}', "ReferController@getRefer");
 
-	Route::put('/refers/{id?}', "ReferController@putRefer"); 
+	 Route::put('/refers/{id?}', "ReferController@putRefer"); 
 
-	Route::put('/activation/{id?}', "ReferController@putInactiveActive"); 
+	 Route::put('/activation/{id?}', "ReferController@putInactiveActive"); 
 
-
-
-
-	Route::post('/addsocialworkernotes', "ReferController@addsocialworkernotes");
-	Route::post('/addDentalNotes', "ReferController@addDentalNotes");
-
-
-
-
+	 Route::post('/addsocialworkernotes', "ReferController@addsocialworkernotes");
+	 
+	 Route::post('/addDentalNotes', "ReferController@addDentalNotes");
 
 	 Route::post('/register_role', "RegisterController@register_role");
 
@@ -300,13 +325,37 @@ Route::group(['middleware' =>'auth'], function()
 
 	 Route::any('/show_dismiss_reason', "ViewController@show_dismiss_reason");
 
+	 Route::any('/show_civilstat', "ViewController@show_civilstat");
+
+	 Route::any('/show_gender', "ViewController@show_gender");
+
+	 Route::any('/show_dabused', "ViewController@show_dabused");
+
 	 Route::any('/add_a_city',"OthersController@add_a_city");
 
 	 Route::post('/add_city',"OthersController@addcity");
 
-	 Route::any('/chooseuser', "UserController@chooseuser_role");
+	 Route::post('/update_city',"OthersController@updatecity");
 
-	 Route::any('/add_a_city_jail',"OthersController@add_a_city_jail");
+	 Route::any('/add_a_status',"OthersController@add_a_status");
+
+	 Route::post('/add_status',"OthersController@addstatus");
+
+	 Route::post('/update_civil_status',"OthersController@updatestatus");
+
+	 Route::any('/add_a_gender',"OthersController@add_a_gender");
+
+	 Route::post('/add_gender',"OthersController@addgender");
+
+	 Route::post('/update_gender',"OthersController@updategender");
+
+	 Route::any('/add_a_dabused',"OthersController@add_a_dabused");
+
+	 Route::post('/add_dabused',"OthersController@addabused");
+
+	 Route::post('/update_dabused',"OthersController@updatedabused");
+
+	 Route::any('/chooseuser', "UserController@chooseuser_role");
 	 
 	 Route::any('/createuserrole', "UserController@createuserrole");
 
@@ -318,9 +367,11 @@ Route::group(['middleware' =>'auth'], function()
 
 	 Route::any('/add_a_city_jail',"OthersController@add_a_city_jail");
 
-	 Route::post('/add_cityjail',"OthersController@addjail");
+	 Route::post('/update_jail',"OthersController@updatejail");
 
 	 Route::post('/delete_jail',"OthersController@deletejail");
+
+	 Route::post('/add_casetype',"OthersController@add_casetype");
 
 	 Route::any('/add_a_casetype',"OthersController@add_a_casetype");
 
@@ -365,6 +416,10 @@ Route::group(['middleware' =>'auth'], function()
 	 Route::any('/show_jails', "ViewController@show_jails");
 
 	 Route::any('/show_dismiss_reason', "ViewController@show_dismiss_reason");
+
+	 Route::any('/show_eduatain', "ViewController@show_eduatain");
+
+	 Route::any('/show_estat', "ViewController@show_estat");
 
 	 Route::any('/show_checklist', "ViewController@show_checklist");
 

@@ -42,7 +42,7 @@
               <div class="col-md-1">
                 <div class="form-label-group">
                    <h6>Age*</h6>
-                  <input type="number" id="age" class="form-control" placeholder="Age" autofocus="autofocus" name="age" value="{{ old('age') }}">
+                  <input type="number" id="age" class="form-control" placeholder="Age" required="required" autofocus="autofocus" name="age" value="{{ old('age') }}">
                 </div>
               </div>
               <div class="col-md-2">
@@ -86,7 +86,7 @@
               <div class="col-md-3">
                 <div class="form-label-group">
                    <h6>Contact no.*</h6>
-                  <input type="text" id="contact" class="form-control" placeholder="Contact No." required="required" name="contact">
+                  <input type="tel" id="contact" class="form-control" placeholder="Contact No." required="required" name="contact">
                   <input type="hidden" name="_token" value="{{csrf_token()}}">
                   <input type="hidden" name="department" value="{{$id}}">
               </div>
@@ -95,10 +95,10 @@
                 <div class="form-label-group">
                    <h6>Gender*</h6>
                  <select class="form-control" id="gender" placeholder="Gender" required="required" name="gender">
-                    <option value="" disabled selected hidden>Gender</option>
-                    <option value="M">Male</option>
-                    <option value="F">Female</option>
-                    <option value="Others">Others</option>
+                     @foreach($gender as $gend)
+                        <option value="" disabled selected hidden>--Choose--</option>
+                        <option value="{{$gend->id}}">{{$gend->name}}</option>
+                     @endforeach
                 </select>
                 </div>
               </div>
@@ -107,12 +107,10 @@
                    <h6>Civil Status*</h6>
                  <select class="form-control" id="civils" placeholder="Civil Status" required="required" name="civils">
                   <label for="civils">Civil Status</label>
-                    <option value="" disabled selected hidden>Civil Status</option>
-                    <option value="Single">Single</option>
-                    <option value="Married">Married</option>
-                    <option value="Separated">Separated</option>
-                    <option value="Divorced">Divorced</option>
-                    <option value="Widowed">Widowed</option>
+                     @foreach($status as $stat)
+                        <option value="" disabled selected hidden>--Choose--</option>
+                        <option value="{{$stat->id}}">{{$stat->name}}</option>
+                     @endforeach
                 </select>
                 </div>
               </div>
@@ -130,10 +128,10 @@
               </div>
             </div>
           </div>
-        </fieldset>
+        </fieldset> 
         <fieldset>
         <legend style="color:white;text-indent: 20px;width:1100px;margin-bottom: 20px" class="bg bg-dark">General Information</legend>
-           <div class="form-group" style="margin-left: 20px">
+          <div class="form-group" style="margin-left: 20px">
             <div class="form-row">
               <div class="col-md-4 mb-4">
                 <div class="form-label-group">
@@ -147,7 +145,7 @@
                 </div>
               </div>
               <div class="col-md-4 mb-4">
-                <div class="form-label-group" id="textb" style="display: none;">
+                <div class="form-label-group" id="textas" style="display: none;">
                   <h6>City Jail*</h6>
                 <select class="form-control" id="jail" placeholder="Patient Type" required="required" name="jail">
                 @foreach($jails as $jail)
@@ -158,7 +156,7 @@
                 </div>
               </div>
               <div class="col-md-4 mb-4">
-                <div class="form-label-group" id="textas" style="display: none;">
+                <div class="form-label-group" id="textb" style="display: none;">
                   <h6>Case Number*</h6>
                     <input type="text" id="caseno" class="form-control" placeholder="Case Number" required="required" autofocus="autofocus" name="caseno" value="">
                 </div>
@@ -213,7 +211,13 @@
               <div class="col-md-12">
                 <div class="form-label-group">
                    <h6>Drug Abused (Present)*</h6>
-                  <input type="text" id="dabused" class="form-control" placeholder="Drugs Abused (Present)" autofocus="autofocus" name="dabused">
+                   <select class="form-control" id="jail" placeholder="Patient Type" required="required" name="jail">
+                @foreach($dabused as $dab)
+                    <option value="" disabled selected hidden>--Chooose--</option>
+                    <option value="{{$dab->id}}">{{$dab->name}}</option>
+                @endforeach
+                </select>
+                  
                 </div>
               </div>
               </div>

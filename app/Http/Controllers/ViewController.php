@@ -12,12 +12,12 @@ use Illuminate\Notifications\Notifiable;
 use App\Notifications\MyNotifications;
 use App\Exports\PnotesExport;
 use Maatwebsite\Excel\Facades\Excel;
-use PDF;
+use PDF; 
 use Auth;
 use DB;
 use App\Users;
 use App\User_roles;
-use App\Departments;
+use App\Departments; 
 use App\Transfer_Requests;
 use App\Graduate_Requests;
 use App\Employees;
@@ -33,6 +33,11 @@ use App\Patient_Information;
 use App\Patient_History;
 use App\Checklist;
 use App\Checklist_Files;
+use App\Civil_Status;
+use App\Gender;
+use App\Drugs_Abused;
+use App\Educational_Attainment;
+use App\Employment_Status;
 use Hash;
 use Session;
 use NumConvert;
@@ -291,10 +296,10 @@ class ViewController extends Controller
 
       if(Auth::user()->user_role()->first()->name == 'Superadmin'){
             return view('superadmin.reports')->with('roles' , $roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('graduate',$graduate)->with('jails',$jails);
-        }
-        else{
-          return abort(404);
-        }
+      }
+      elseif(Auth::user()->user_role()->first()->name == 'Social Worker'){
+            return view('socialworker.reports')->with('roles' , $roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('graduate',$graduate)->with('jails',$jails);
+      }
    }
 
     public function show_dismiss_reason()
@@ -313,6 +318,114 @@ class ViewController extends Controller
         else{
           return abort(404);
         }
+   }
+
+   public function show_civilstat()
+   {
+
+      $roles = User_roles::all();
+      $deps = Departments::all();
+      $users = Users::find(Auth::user()->id);
+      $transfer = Transfer_Requests::all();
+      $graduate = Graduate_Requests::all();
+      $reasons = Dismissal_Reason::all();
+      $status = Civil_Status::all();
+
+      if(Auth::user()->user_role()->first()->name == 'Superadmin')
+      {
+            return view('superadmin.civilstat')->with('roles' , $roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('reasons',$reasons)->with('graduate',$graduate)->with('status',$status);
+      }
+      else
+      {
+          return abort(404);
+      }
+   }
+
+   public function show_gender()
+   {
+
+      $roles = User_roles::all();
+      $deps = Departments::all();
+      $users = Users::find(Auth::user()->id);
+      $transfer = Transfer_Requests::all();
+      $graduate = Graduate_Requests::all();
+      $reasons = Dismissal_Reason::all();
+      $gender = Gender::all();
+
+      if(Auth::user()->user_role()->first()->name == 'Superadmin')
+      {
+            return view('superadmin.gender')->with('roles' , $roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('reasons',$reasons)->with('graduate',$graduate)->with('gender',$gender);
+      }
+      else
+      {
+          return abort(404);
+      }
+   }
+
+   public function show_dabused()
+   {
+
+      $roles = User_roles::all();
+      $deps = Departments::all();
+      $users = Users::find(Auth::user()->id);
+      $transfer = Transfer_Requests::all();
+      $graduate = Graduate_Requests::all();
+      $reasons = Dismissal_Reason::all();
+      $dabused = Drugs_Abused::all();
+
+      if(Auth::user()->user_role()->first()->name == 'Superadmin')
+      {
+            return view('superadmin.dabused')->with('roles' , $roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('reasons',$reasons)->with('graduate',$graduate)->with('dabused',$dabused);
+      }
+      else
+      {
+          return abort(404);
+      }
+      
+   }
+
+   public function show_eduatain()
+   {
+
+      $roles = User_roles::all();
+      $deps = Departments::all();
+      $users = Users::find(Auth::user()->id);
+      $transfer = Transfer_Requests::all();
+      $graduate = Graduate_Requests::all();
+      $reasons = Dismissal_Reason::all();
+      $eduatain = Educational_Attainment::all();
+
+      if(Auth::user()->user_role()->first()->name == 'Superadmin')
+      {
+            return view('superadmin.eduatain')->with('roles' , $roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('reasons',$reasons)->with('graduate',$graduate)->with('eduatain',$eduatain);
+      }
+      else
+      {
+          return abort(404);
+      }
+      
+   }
+
+   public function show_estat()
+   {
+
+      $roles = User_roles::all();
+      $deps = Departments::all();
+      $users = Users::find(Auth::user()->id);
+      $transfer = Transfer_Requests::all();
+      $graduate = Graduate_Requests::all();
+      $reasons = Dismissal_Reason::all();
+      $estat = Employment_Status::all();
+
+      if(Auth::user()->user_role()->first()->name == 'Superadmin')
+      {
+            return view('superadmin.estat')->with('roles' , $roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('reasons',$reasons)->with('graduate',$graduate)->with('estat',$estat);
+      }
+      else
+      {
+          return abort(404);
+      }
+      
    }
 
     public function show_checklist()
@@ -357,15 +470,20 @@ class ViewController extends Controller
     public function getlist(request $request)
    {
 
+    $pat = Patients::where('id',$request->patientid)->get();
     $listname = Checklist::where('id',$request->id)->get();
-    $checklist = Checklist_Files::where('checklist_id',$request->id)->get();
+    $checklist = Checklist_Files::where('checklist_id',$request->id)->where('patient_id',$request->patientid)->where('department_id',$request->depid)->get();
     foreach($listname as $name)
+    foreach($pat as $paty)
+
+  if($paty->status == 'Enrolled'){
+
     $output = '';
 
     $output .= '<div class="container" style="margin-left: 0px">
                   <div class="row">
                     <div class="col-md-12">
-                    <button style="margin-left:900px" class="btn btn-primary" onclick="myFunction()"><-Back</button>
+                    <button style="margin-left:900px" class="btn btn-primary" onclick="myFunction()">Back</button>
                     <h3 style="margin-left:5px">'.$name->name.'</h3>
                       <div class="table-responsive checklistTable" id="checklistTable">
                         <table class="table table-bordered"  width="100%" cellspacing="0" style="font-size: 12px">
@@ -393,8 +511,45 @@ class ViewController extends Controller
         </div>";
 
     return \Response::json($output);
+    }
+    else{
+
+       $output = '';
+
+    $output .= '<div class="container" style="margin-left: 0px">
+                  <div class="row">
+                    <div class="col-md-12">
+                    <button style="margin-left:900px" class="btn btn-primary" onclick="myFunction()">Back</button>
+                    <h3 style="margin-left:5px">'.$name->name.'</h3>
+                      <div class="table-responsive checklistTable" id="checklistTable">
+                        <table class="table table-bordered"  width="100%" cellspacing="0" style="font-size: 12px">
+                        <thead style="width:200px">
+                        <tr>
+                          <th style="width:200px">Name</th>
+                          <th style="width:200px">Path</th>
+                        </tr>
+                      </thead>
+                      <tbody id="sampleTable" name="sampleTable">';
     
-   }
+                  foreach($checklist as $list)
+                  {
+
+                      $output .= '<tr><td style="width:200px">'.$list->name.'</td><td style="width:200px"><a href="http://localhost/capstone/public/'.$list->location.'">'.$list->location.'</a></td></tr>';
+
+                  }
+
+    $output .= "</tbody>
+                  </table>
+              </div>
+            </div>
+          </div>
+        </div>";
+
+      return \Response::json($output);
+
+    }
+    
+}
 
    public function sampleform($id)
    {

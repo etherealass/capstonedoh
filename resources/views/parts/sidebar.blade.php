@@ -96,7 +96,11 @@
           <a class="dropdown-item" href="{{URL::to('/show_cities')}}">Cities</a>
           <a class="dropdown-item" href="{{URL::to('/show_jails')}}">City Jails</a>
           <a class="dropdown-item" href="{{URL::to('/show_dismiss_reason')}}">Dismissal Reasons</a>
-          <a class="dropdown-item" href="{{URL::to('/show_dismiss_reason')}}">Civil Status</a>
+          <a class="dropdown-item" href="{{URL::to('/show_civilstat')}}">Civil Status</a>
+          <a class="dropdown-item" href="{{URL::to('/show_gender')}}">Gender</a>
+          <a class="dropdown-item" href="{{URL::to('/show_eduatain')}}">Educational Attainment</a>
+          <a class="dropdown-item" href="{{URL::to('/show_estat')}}">Employment Status</a>
+          <a class="dropdown-item" href="{{URL::to('/show_dabused')}}">Drug-Level Abused</a>
           <a class="dropdown-item" href="{{URL::to('/show_checklist')}}">Checklist</a>
         </div>
       </li>
@@ -116,9 +120,9 @@
       </li>
       @if(Auth::user()->user_role()->first()->name == 'Social Worker')
       <li class="nav-item">
-        <a class="nav-link" href="tables.html">
+        <a class="nav-link" href="{{URL::to('/reports')}}">
           <i class="fas fa-fw fa-chart-area"></i>
-          <span>My Reports</span></a>
+          <span>Reports</span></a>
       </li>
       @endif
       @if(Auth::user()->user_role()->first()->name == 'Doctor')

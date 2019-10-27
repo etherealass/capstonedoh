@@ -12,12 +12,15 @@
 @endsection
 @section('content')
         <!-- Breadcrumbs-->
-        <ol class="breadcrumb col-md-12 col-sm-12 md-12" style="height: 80px;font-size:30px;text-align: center">
-          <li class="breadcrumb-item active text-center" style="text-align: center;"><i class="fas fa-fw fa fa-hospital text-center"></i>{{Auth::user()->user_department()->first()->department_name}} Department</li>
-        </ol> 
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item">
+            <a href="#">Dashboard</a>
+          </li>
+          <li class="breadcrumb-item active">Overview</li>
+        </ol>
 
-        <!-- Icon Cards-->
-        <div class="row" style="margin-left: 10px;margin-bottom: 0px">
+        <!-- Icon Cards--> 
+        <div class="row" style="margin-bottom: 0px">
          <div class="col-md-4 col-sm-12 md-10 col-xl-3" style="height: 18rem;">
             <div class="card border-dark md-3 text-black o-hidden h-100">
               <div class="card-body">
@@ -27,10 +30,8 @@
                <a style="color:white" href="{{URL::to('/patient_dep')}}"><button class="btn btn-dark btn-block" style="height: 50px">Create New Patient</button></a>
             </div>
           </div>
-          <div class="col-md-8 col-sm-12 md-10 col-xl-9" style="height: 50rem;margin-top: 0px;margin-right: 0px">
-            <div class="card border-dark md-3 text-black o-hidden h-100">
-              <div class="card-header" style="background-color: #e9ecef"><h6>Calendar</h6> </div>
-            <div id='calendar'></div>
+          <div class="col-md-9" style="border: solid black 2px;border-radius: 5px;padding:10px">
+            <div id="calendar" style="background-color: white;margin-top: 20px"></div>
           </div>
         </div>
       </div>

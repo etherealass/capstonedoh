@@ -18,12 +18,19 @@ use App\Departments;
 use App\Transfer_Requests;
 use App\Employees;
 use App\Cities;
-use App\Case_Type;
+use App\Case_Type; 
 use App\Graduate_Requests;
 use App\Dismissal_Reason;
 use App\Logs;
+use App\Patients;
 use App\City_Jails;
 use App\Checklist;
+use App\Checklist_Status;
+use App\Civil_Status;
+use App\Gender;
+use App\Drugs_Abused;
+use App\Educational_Attainment;
+use App\Employment_Status;
 use Notification;
 use Hash;
 use Session;
@@ -81,20 +88,30 @@ class OthersController extends Controller
         }
 	  }
 	}
-    
-    public function deletecity(Request $request)
-    {
+
+  public function deletecity(Request $request)
+  {
     
     $city = Cities::where('id',$request->input('cityid'))->update(['flag' => 'deleted']);
 
     Session::flash('alert-class', 'danger'); 
-		flash('City Deleted', '')->overlay();
+    flash('City Deleted', '')->overlay();
 
-		return back();
-    }
+    return back();
+  }
 
-    public function activatecity(Request $request)
-    {
+  public function updatecity(Request $request)
+  {
+      $list = Cities::where('id',$request->input('cityid'))->update(['name' => $request->input('cityname')]);
+
+      Session::flash('alert-class', 'success');
+      flash('City Updated', '')->overlay();
+
+      return back();
+  }
+
+  public function activatecity(Request $request)
+  {
     
     $city = Cities::where('id',$request->input('cityid'))->update(['flag' => NULL]);
 
@@ -102,7 +119,428 @@ class OthersController extends Controller
     flash('City Activated', '')->overlay();
 
     return back();
+  }
+
+  public function add_a_status()
+  {
+        $roles = User_roles::all();
+        $deps = Departments::all();
+        $users = Users::find(Auth::user()->id);
+        $transfer = Transfer_Requests::all();
+
+        if(Auth::user()->user_role()->first()->name == 'Superadmin'){
+            return view('superadmin.addstatus')->with('roles',$roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer);
+        }
+        else if(Auth::user()->user_role()->first()->name == 'Admin'){
+            return view('superadmin.addstatus')->with('roles',$roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer);
+        }
+  }
+
+  public function addstatus(Request $request)
+  {
+
+    $validation = $this->validate($request,[
+      'name' => 'required|unique:civil__statuses',
+    ]);
+
+      if(!$validation){
+        $errors = new MessageBag(['name' => ['Civil Status name should be unique']]);
+           return Redirect::back()->withErrors($errors)->withInput(Input::all());
+        }
+        
+        else{
+    $city = new Civil_Status([
+      'name' => $request->input('name'),
+    ]);
+
+    $city->save();
+
+    Session::flash('alert-class', 'success'); 
+    flash('Status Created', '')->overlay();
+
+        $roles = User_roles::all();
+        $deps = Departments::all();
+        $users = Users::find(Auth::user()->id);
+        $transfer = Transfer_Requests::all();
+        $status = Civil_Status::all();
+
+        if(Auth::user()->user_role()->first()->name == 'Superadmin'){
+             return view('superadmin.civilstat')->with('roles' , $roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('status',$status);
+        }
+        else if(Auth::user()->user_role()->first()->name == 'Admin'){
+             return view('admin.civilstat')->with('roles' , $roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('status',$status);
+        }
     }
+  }
+
+  public function deletestatus(Request $request)
+  {
+    
+    $stat = Civil_Status::where('id',$request->input('statid'))->update(['flag' => 'deleted']);
+
+    Session::flash('alert-class', 'danger'); 
+    flash('Status Deleted', '')->overlay();
+
+    return back();
+  }
+
+  public function updatestatus(Request $request)
+  {
+      $list = Civil_Status::where('id',$request->input('statid'))->update(['name' => $request->input('statname')]);
+
+      Session::flash('alert-class', 'success');
+      flash('Status Updated', '')->overlay();
+
+      return back();
+  }
+
+  public function activatestatus(Request $request)
+  {
+    
+    $stat = Civil_Status::where('id',$request->input('statid'))->update(['flag' => NULL]);
+
+    Session::flash('alert-class', 'success'); 
+    flash('Status Activated', '')->overlay();
+
+    return back();
+  }
+
+  public function add_a_gender()
+  {
+        $roles = User_roles::all();
+        $deps = Departments::all();
+        $users = Users::find(Auth::user()->id);
+        $transfer = Transfer_Requests::all();
+
+        if(Auth::user()->user_role()->first()->name == 'Superadmin'){
+            return view('superadmin.addgender')->with('roles',$roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer);
+        }
+        else if(Auth::user()->user_role()->first()->name == 'Admin'){
+            return view('superadmin.addgender')->with('roles',$roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer);
+        }
+  }
+
+  public function addgender(Request $request)
+  {
+
+    $validation = $this->validate($request,[
+      'name' => 'required|unique:genders',
+    ]);
+
+      if(!$validation){
+        $errors = new MessageBag(['name' => ['Gender name should be unique']]);
+           return Redirect::back()->withErrors($errors)->withInput(Input::all());
+        }
+        
+        else{
+    $gender = new Gender([
+      'name' => $request->input('name'),
+    ]);
+
+    $gender->save();
+
+    Session::flash('alert-class', 'success'); 
+    flash('Gender Created', '')->overlay();
+
+        $roles = User_roles::all();
+        $deps = Departments::all();
+        $users = Users::find(Auth::user()->id);
+        $transfer = Transfer_Requests::all();
+        $gender = Gender::all();
+
+        if(Auth::user()->user_role()->first()->name == 'Superadmin'){
+             return view('superadmin.gender')->with('roles' , $roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('gender',$gender);
+        }
+        else if(Auth::user()->user_role()->first()->name == 'Admin'){
+             return view('admin.gender')->with('roles' , $roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('gender',$gender);
+        }
+    }
+  }
+
+  public function deletegender(Request $request)
+  {
+    
+    $stat = Gender::where('id',$request->input('gendid'))->update(['flag' => 'deleted']);
+
+    Session::flash('alert-class', 'danger'); 
+    flash('Gender Deleted', '')->overlay();
+
+    return back();
+  }
+
+  public function updategender(Request $request)
+  {
+      $list = Gender::where('id',$request->input('gendid'))->update(['name' => $request->input('gendname')]);
+
+      Session::flash('alert-class', 'success');
+      flash('Gender Updated', '')->overlay();
+
+      return back();
+  }
+
+  public function activategender(Request $request)
+  {
+    
+    $stat = Gender::where('id',$request->input('gendid'))->update(['flag' => NULL]);
+
+    Session::flash('alert-class', 'success'); 
+    flash('Gender Activated', '')->overlay();
+
+    return back();
+  }
+
+  public function add_a_dabused()
+  {
+        $roles = User_roles::all();
+        $deps = Departments::all();
+        $users = Users::find(Auth::user()->id);
+        $transfer = Transfer_Requests::all();
+
+        if(Auth::user()->user_role()->first()->name == 'Superadmin'){
+            return view('superadmin.addabused')->with('roles',$roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer);
+        }
+        else if(Auth::user()->user_role()->first()->name == 'Admin'){
+            return view('superadmin.addabused')->with('roles',$roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer);
+        } 
+  }
+
+  public function addabused(Request $request)
+  {
+
+    $validation = $this->validate($request,[
+      'name' => 'required|unique:drugs__abuseds',
+    ]);
+
+      if(!$validation){
+        $errors = new MessageBag(['name' => ['Level name should be unique']]);
+           return Redirect::back()->withErrors($errors)->withInput(Input::all());
+        }
+        
+        else{
+    $dab = new Drugs_Abused([
+      'name' => $request->input('name'),
+    ]);
+
+    $dab->save();
+
+    Session::flash('alert-class', 'success'); 
+    flash('Level Created', '')->overlay();
+
+        $roles = User_roles::all();
+        $deps = Departments::all();
+        $users = Users::find(Auth::user()->id);
+        $transfer = Transfer_Requests::all();
+        $dab = Drugs_Abused::all();
+
+        if(Auth::user()->user_role()->first()->name == 'Superadmin'){
+             return view('superadmin.dabused')->with('roles' , $roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('dab',$dab);
+        }
+        else if(Auth::user()->user_role()->first()->name == 'Admin'){
+             return view('admin.dabused')->with('roles' , $roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('dab',$dab);
+        }
+    }
+  }
+
+  public function deletedabused(Request $request)
+  {
+    
+    $stat = Drugs_Abused::where('id',$request->input('dabid'))->update(['flag' => 'deleted']);
+
+    Session::flash('alert-class', 'danger'); 
+    flash('Level Deleted', '')->overlay();
+
+    return back();
+  }
+
+  public function updatedabused(Request $request)
+  {
+      $list = Drugs_Abused::where('id',$request->input('dabid'))->update(['name' => $request->input('dabname')]);
+
+      Session::flash('alert-class', 'success');
+      flash('Level Updated', '')->overlay();
+
+      return back();
+  }
+
+  public function activatedabused(Request $request)
+  {
+    
+    $stat = Drugs_Abused::where('id',$request->input('dabid'))->update(['flag' => NULL]);
+
+    Session::flash('alert-class', 'success'); 
+    flash('Level Activated', '')->overlay();
+
+    return back();
+  }
+
+  public function add_a_eduatain()
+  {
+        $roles = User_roles::all();
+        $deps = Departments::all();
+        $users = Users::find(Auth::user()->id);
+        $transfer = Transfer_Requests::all();
+
+        if(Auth::user()->user_role()->first()->name == 'Superadmin'){
+            return view('superadmin.addeduatain')->with('roles',$roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer);
+        }
+        else if(Auth::user()->user_role()->first()->name == 'Admin'){
+            return view('superadmin.addeduatain')->with('roles',$roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer);
+        } 
+  }
+
+  public function addeduatain(Request $request)
+  {
+
+    $validation = $this->validate($request,[
+      'name' => 'required|unique:educational__attainments',
+    ]);
+
+      if(!$validation){
+        $errors = new MessageBag(['name' => ['Attainment name should be unique']]);
+           return Redirect::back()->withErrors($errors)->withInput(Input::all());
+        }
+        
+        else{
+    $dab = new Educational_Attainment([
+      'name' => $request->input('name'),
+    ]);
+
+    $dab->save();
+
+    Session::flash('alert-class', 'success'); 
+    flash('Attainment Created', '')->overlay();
+
+        $roles = User_roles::all();
+        $deps = Departments::all();
+        $users = Users::find(Auth::user()->id);
+        $transfer = Transfer_Requests::all();
+        $eduatain = Educational_Attainment::all();
+
+        if(Auth::user()->user_role()->first()->name == 'Superadmin'){
+             return view('superadmin.eduatain')->with('roles' , $roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('eduatain',$eduatain);
+        }
+        else if(Auth::user()->user_role()->first()->name == 'Admin'){
+             return view('admin.eduatain')->with('roles' , $roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('eduatain',$eduatain);
+        }
+    }
+  }
+
+  public function deleteeduatain(Request $request)
+  {
+    
+    $stat = Educational_Attainment::where('id',$request->input('eduid'))->update(['flag' => 'deleted']);
+
+    Session::flash('alert-class', 'danger'); 
+    flash('Attainment Deleted', '')->overlay();
+
+    return back();
+  }
+
+  public function updateeduatain(Request $request)
+  {
+      $list = Educational_Attainment::where('id',$request->input('eduid'))->update(['name' => $request->input('eduname')]);
+
+      Session::flash('alert-class', 'success');
+      flash('Attainment Updated', '')->overlay();
+
+      return back();
+  }
+
+  public function activateeduatain(Request $request)
+  {
+    
+    $stat = Educational_Attainment::where('id',$request->input('eduid'))->update(['flag' => NULL]);
+
+    Session::flash('alert-class', 'success'); 
+    flash('Attainment Activated', '')->overlay();
+
+    return back();
+  }
+
+  public function add_a_estat()
+  {
+        $roles = User_roles::all();
+        $deps = Departments::all();
+        $users = Users::find(Auth::user()->id);
+        $transfer = Transfer_Requests::all();
+
+        if(Auth::user()->user_role()->first()->name == 'Superadmin'){
+            return view('superadmin.addestat')->with('roles',$roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer);
+        }
+        else if(Auth::user()->user_role()->first()->name == 'Admin'){
+            return view('admin.addestat')->with('roles',$roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer);
+        } 
+  }
+
+  public function addestat(Request $request)
+  {
+
+    $validation = $this->validate($request,[
+      'name' => 'required|unique:employment__statuses',
+    ]);
+
+      if(!$validation){
+        $errors = new MessageBag(['name' => ['Status name should be unique']]);
+           return Redirect::back()->withErrors($errors)->withInput(Input::all());
+        }
+        
+        else{
+    $dab = new Employment_Status([
+      'name' => $request->input('name'),
+    ]);
+
+    $dab->save();
+
+    Session::flash('alert-class', 'success'); 
+    flash('Status Created', '')->overlay();
+
+        $roles = User_roles::all();
+        $deps = Departments::all();
+        $users = Users::find(Auth::user()->id);
+        $transfer = Transfer_Requests::all();
+        $estat = Employment_Status::all();
+
+        if(Auth::user()->user_role()->first()->name == 'Superadmin'){
+             return view('superadmin.estat')->with('roles' , $roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('estat',$estat);
+        }
+        else if(Auth::user()->user_role()->first()->name == 'Admin'){
+             return view('admin.estat')->with('roles' , $roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('estat',$estat);
+        }
+    }
+  }
+
+  public function deleteestat(Request $request)
+  {
+    
+    $stat = Employment_Status::where('id',$request->input('emstatid'))->update(['flag' => 'deleted']);
+
+    Session::flash('alert-class', 'danger'); 
+    flash('Status Deleted', '')->overlay();
+
+    return back();
+  }
+
+  public function updateestat(Request $request)
+  {
+      $list = Employment_Status::where('id',$request->input('emstatid'))->update(['name' => $request->input('emstatname')]);
+
+      Session::flash('alert-class', 'success');
+      flash('Status Updated', '')->overlay();
+
+      return back();
+  }
+
+  public function activateestat(Request $request)
+  {
+    
+    $stat = Employment_Status::where('id',$request->input('emstatid'))->update(['flag' => NULL]);
+
+    Session::flash('alert-class', 'success'); 
+    flash('Status Activated', '')->overlay();
+
+    return back();
+  }
+    
 
   public function add_a_city_jail()
   {
@@ -169,6 +607,16 @@ class OthersController extends Controller
       return back();
     }
 
+  public function updatejail(Request $request)
+  {
+      $list = City_Jails::where('id',$request->input('jailid'))->update(['name' => $request->input('jailname')]);
+
+      Session::flash('alert-class', 'success');
+      flash('Jail Updated', '')->overlay();
+
+      return back();
+  }
+
     public function activatejail(Request $request)
     {
       $city = City_Jails::where('id',$request->input('jailid'))->update(['flag' => NULL]);
@@ -217,6 +665,20 @@ class OthersController extends Controller
       ]);
 
         $list->save();
+
+        $pats = Patients::all();
+
+        foreach($pats as $pat)
+        {
+          $stat = new Checklist_Status([
+            'checklist_id' => $list->id,
+            'patient_id' => $pat->id,
+            'department_id' => $pat->department_id,
+            'has_files' => 0
+          ]);
+
+          $stat->save();
+        }
 
         Session::flash('alert-class', 'success'); 
         flash('List Added', '')->overlay();
@@ -298,20 +760,19 @@ class OthersController extends Controller
 
 	public function add_casetype(Request $request)
 	{
-		$case_id = rand();
 
 		$validation = $this->validate($request,[
 			'case_name' => 'required|unique:case__types',
 		]);
 
      	if(!$validation){
-        $errors = new MessageBag(['case_name' => ['City name should be unique']]);
+        $errors = new MessageBag(['case_name' => ['Case name should be unique']]);
            return Redirect::back()->withErrors($errors)->withInput(Input::all());
       	}
       	
       	else{
+
 		$case = new Case_Type([
-			'case_id' => $case_id,
 			'case_name' => $request->input('case_name'),
 			'court_order' => $request->input('court'),
 		]);
@@ -321,7 +782,7 @@ class OthersController extends Controller
     $logs = new Logs([
             'performer_id' => Auth::user()->id,
             'type' => 'Case Type Created',
-            'action' => 'Created Case Type no. '.$case_id,
+            'action' => 'Created Case Type '.$case->case_name,
             'date_time' => date('M-j-Y g:i A'),
             'department_id' => Auth::user()->department,
         ]);
@@ -347,7 +808,7 @@ class OthersController extends Controller
 	}
 
 	public function delete_case(Request $request)
-    {
+  {
     	$case = Case_Type::where('id',$request->input('caseid'))->update(['flag' => 'deleted']);
 
 
@@ -355,10 +816,22 @@ class OthersController extends Controller
 		  flash('Case Type Deleted', '')->overlay();
 
 		  return back();
-    }
+  }
 
-    public function activate_case(Request $request)
-    {
+  public function update_case(Request $request)
+  {
+      $list = Case_Type::where('id',$request->input('caseid'))->update(['case_name' => $request->input('casename')]);
+
+      $list = Case_Type::where('id',$request->input('caseid'))->update(['court_order' => $request->input('court')]);
+
+      Session::flash('alert-class', 'success');
+      flash('Case Updated', '')->overlay();
+
+      return back();
+  }
+
+  public function activate_case(Request $request)
+  {
       $case = Case_Type::where('id',$request->input('caseid'))->update(['flag' => NULL]);
 
 
@@ -387,33 +860,30 @@ class OthersController extends Controller
 
    public function add_reason(Request $request)
   {
-    $reason_id = rand();
 
-    //$validation = $this->validate($request,[
-    //'reason' => 'required|unique:dismissal__reasons'
-   // ]);
+    $validation = $this->validate($request,[
+        'reason' => 'required|unique:dismissal__reasons'
+    ]);
 
-     // if(!$validation){
-      //  $errors = new MessageBag(['reason' => ['Reason already exist']]);
-       //    return Redirect::back()->withErrors($errors)->withInput(Input::all());
-      //  }
+      if(!$validation){
+          $errors = new MessageBag(['reason' => ['Reason already exist']]);
+           return Redirect::back()->withErrors($errors)->withInput(Input::all());
+        }
         
-      //  else{
+        else{
           
       $reason = new Dismissal_Reason([
-          'dismissal_id' => $reason_id,
-          'reason' => $request->input('name'),
-          
+          'reason' => $request->input('reason'),
           ]);
 
-        $reason->save();
+      $reason->save();
 
         date_default_timezone_set('Asia/Singapore');
 
         $logs = new Logs([
             'performer_id' => Auth::user()->id,
             'type' => 'Dismissal Reason Created',
-            'action' => 'Created Dismissal Reason no. '.$reason_id,
+            'action' => 'Created Dismissal Reason '.$reason->reason,
             'date_time' => date('M-j-Y g:i A'),
             'department_id' => Auth::user()->department,
         ]);
@@ -437,7 +907,7 @@ class OthersController extends Controller
         else if(Auth::user()->user_role()->first()->name == 'Admin'){
              return view('admin.reasons')->with('roles' , $roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('reasons',$reasons)->with('graduate',$graduate);
         }
-    //}
+    }
   }
 
   public function deletereason(Request $request)
@@ -447,6 +917,16 @@ class OthersController extends Controller
 
       Session::flash('alert-class', 'danger'); 
       flash('Deleted Reason')->overlay();
+
+      return back();
+  }
+
+  public function updatereason(Request $request)
+  {
+      $list = Dismissal_Reason::where('id',$request->input('reasid'))->update(['reason' => $request->input('reasname')]);
+
+      Session::flash('alert-class', 'success');
+      flash('Reason Updated', '')->overlay();
 
       return back();
   }

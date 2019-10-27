@@ -5,6 +5,11 @@ use App\Users;
 use App\Departments;
 use App\User_roles;
 use App\Checklist;
+use App\Gender;
+use App\Drugs_Abused;
+use App\Civil_Status;
+use App\Educational_Attainment;
+use App\Employment_Status;
 
 class DatabaseSeeder extends Seeder
 {
@@ -73,44 +78,37 @@ class DatabaseSeeder extends Seeder
 
 
          DB::table('case__types')->insert([
-                'case_id' => rand(),
                 'case_name' => 'Voluntary Submission',
                 'court_order' => 0
 
          ]);
          DB::table('case__types')->insert([
-                'case_id' => rand(),
                 'case_name' => 'Voluntary with Court Order',
                 'court_order' => 1
                 
          ]);
          DB::table('case__types')->insert([
-                'case_id' => rand(),
                 'case_name' => 'Plea Bargain',
                 'court_order' => 1
                 
          ]);
 
          DB::table('dismissal__reasons')->insert([
-                'dismissal_id' => rand(),
                 'reason' => 'RELEASED AGAINST REHABILITATION ADVICE/ESCAPED',
                 
          ]);
 
          DB::table('dismissal__reasons')->insert([
-                'dismissal_id' => rand(),
                 'reason' => 'OUT ON PASS/TURNOVER TO OTHER AGENCY',
             
          ]);
 
          DB::table('dismissal__reasons')->insert([
-                'dismissal_id' => rand(),
                 'reason' => ' MEDICAL/PSYCHIATRIC/EARLY RELEASE',
                 
          ]);
 
          DB::table('dismissal__reasons')->insert([
-                'dismissal_id' => rand(),
                 'reason' => 'DEATH (ACCIDENT, ILLNESS, SUICIDE, ETC.)',
                 
          ]);
@@ -489,6 +487,83 @@ class DatabaseSeeder extends Seeder
             'has_sublist' => 0
                 
          ]);
+
+        DB::table('civil__statuses')->insert([
+            'name' =>  'Single',
+                
+         ]);
+
+        DB::table('civil__statuses')->insert([
+            'name' =>  'Married',
+                
+         ]);
+
+        DB::table('civil__statuses')->insert([
+            'name' =>  'Widowed',
+                
+         ]);
+
+        DB::table('civil__statuses')->insert([
+            'name' =>  'Separated',
+                
+         ]);
+
+        DB::table('civil__statuses')->insert([
+            'name' =>  'Divorced',
+                
+         ]);
+
+        DB::table('genders')->insert([
+            'name' =>  'Male',
+                
+         ]);
+
+        DB::table('genders')->insert([
+            'name' =>  'Female',
+                
+         ]);
+
+        DB::table('drugs__abuseds')->insert([
+            'name' =>  'Severe Drug Dependence',
+                
+         ]);
+
+        DB::table('drugs__abuseds')->insert([
+            'name' =>  'Moderate Drug Dependence',
+                
+         ]);
+
+        DB::table('drugs__abuseds')->insert([
+            'name' =>  'Not a Drug Dependent',
+                
+         ]);
+
+        DB::table('educational__attainments')->insert([
+            'name' =>  'Grade-school Graduate',
+                
+         ]);
+
+        DB::table('educational__attainments')->insert([
+            'name' =>  'High-school Graduate',
+                
+         ]);
+
+        DB::table('educational__attainments')->insert([
+            'name' =>  'College Graduate',
+                
+         ]);
+
+        DB::table('employment__statuses')->insert([
+            'name' =>  'Employed',
+                
+         ]);
+
+        DB::table('employment__statuses')->insert([
+            'name' =>  'Unemployed',
+                
+         ]);
+
+
         
 
 

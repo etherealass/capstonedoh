@@ -95,7 +95,7 @@
                 </div>
               </div>
               @endif
-              @if($rolex->name != 'Admin' && $rolex->name != 'Social Worker' && $rolex->name != 'Nurse')
+              @if($rolex->name == 'Doctor')
                <div class="col-md-6">
                 <div class="form-label-group">
                  <select class="form-control" id="designation" placeholder="Designation" required="required" name="designation">

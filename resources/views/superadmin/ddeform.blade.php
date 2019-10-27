@@ -12,7 +12,7 @@
           <li class="breadcrumb-item active">Fill up</li>
         </ol>
 
-    <div style="background-color: white;border-radius: 5px;height: 1600px;padding-top: 10px">
+   <div style="background-color: white;border-radius: 5px;height: 1600px;padding-top: 10px">
     <div class="container" style="margin-top: 30px">
         <p style="font-size:50px;margin-bottom: 20px">Drug Dependency Examination Report</p>
         <form action="{{URL::to('/patientsave_dde')}}" method="post">
@@ -95,10 +95,10 @@
                 <div class="form-label-group">
                    <h6>Gender*</h6>
                  <select class="form-control" id="gender" placeholder="Gender" required="required" name="gender">
-                    <option value="" disabled selected hidden>Gender</option>
-                    <option value="M">Male</option>
-                    <option value="F">Female</option>
-                    <option value="Others">Others</option>
+                     @foreach($gender as $gend)
+                        <option value="" disabled selected hidden>--Choose--</option>
+                        <option value="{{$gend->id}}">{{$gend->name}}</option>
+                     @endforeach
                 </select>
                 </div>
               </div>
@@ -107,12 +107,10 @@
                    <h6>Civil Status*</h6>
                  <select class="form-control" id="civils" placeholder="Civil Status" required="required" name="civils">
                   <label for="civils">Civil Status</label>
-                    <option value="" disabled selected hidden>Civil Status</option>
-                    <option value="Single">Single</option>
-                    <option value="Married">Married</option>
-                    <option value="Separated">Separated</option>
-                    <option value="Divorced">Divorced</option>
-                    <option value="Widowed">Widowed</option>
+                     @foreach($status as $stat)
+                        <option value="" disabled selected hidden>--Choose--</option>
+                        <option value="{{$stat->id}}">{{$stat->name}}</option>
+                     @endforeach
                 </select>
                 </div>
               </div>
@@ -213,7 +211,13 @@
               <div class="col-md-12">
                 <div class="form-label-group">
                    <h6>Drug Abused (Present)*</h6>
-                  <input type="text" id="dabused" class="form-control" placeholder="Drugs Abused (Present)" autofocus="autofocus" name="dabused">
+                   <select class="form-control" id="jail" placeholder="Patient Type" required="required" name="jail">
+                @foreach($dabused as $dab)
+                    <option value="" disabled selected hidden>--Chooose--</option>
+                    <option value="{{$dab->id}}">{{$dab->name}}</option>
+                @endforeach
+                </select>
+                  
                 </div>
               </div>
               </div>

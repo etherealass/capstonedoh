@@ -1,6 +1,4 @@
-
-
- <!-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+<!-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
   <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
   <script src="http://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.2/modernizr.js"></script>-->
   <script src="{{asset('vendor/fullcalendar/lib/jquery-ui.min.js')}}"></script>
@@ -100,12 +98,17 @@
               }
           });
 
-           var listid = $(this).attr("id");
+           var listid = $(this).data('checklistid');
+           var patid = $(this).data('patientid'); 
+           var depid = $(this).data('depid'); 
+
            $.ajax({  
                 url: '{{URL::to("/getlist")}}',  
                 type: 'get',  
                 dataType: 'json',
-                data: {'id': listid},  
+                data: {'id': listid,
+                       'patientid': patid,
+                       'depid': depid},  
                 success:function(data){
 
                     $('#table2').show();
@@ -242,6 +245,18 @@
     modal.find('.modal-body #cityid').val(cityid);
   })
 
+  $('#updateCity').on('show.bs.modal', function (event) {
+
+    var button = $(event.relatedTarget)
+
+    var cityid = button.data('cityid')
+    var cityname = button.data('cityname')
+    var modal = $(this)
+
+    modal.find('.modal-body #cityid').val(cityid);
+    modal.find('.modal-body #cityname').val(cityname);
+  })
+
   $('#activateCity').on('show.bs.modal', function (event) {
 
     var button = $(event.relatedTarget)
@@ -252,6 +267,166 @@
     modal.find('.modal-body #cityid').val(cityid);
   })
 
+  $('#deleteStat').on('show.bs.modal', function (event) {
+
+    var button = $(event.relatedTarget)
+
+    var statid = button.data('statid')
+    var modal = $(this)
+
+    modal.find('.modal-body #statid').val(statid);
+  })
+
+  $('#updateStat').on('show.bs.modal', function (event) {
+
+    var button = $(event.relatedTarget)
+
+    var statid = button.data('statid')
+    var statname = button.data('statname')
+    var modal = $(this)
+
+    modal.find('.modal-body #statid').val(statid);
+    modal.find('.modal-body #statname').val(statname);
+  })
+
+  $('#activateStat').on('show.bs.modal', function (event) {
+
+    var button = $(event.relatedTarget)
+
+    var statid = button.data('statid')
+    var modal = $(this)
+
+    modal.find('.modal-body #statid').val(statid);
+  })
+
+  $('#deleteGender').on('show.bs.modal', function (event) {
+
+    var button = $(event.relatedTarget)
+
+    var gendid = button.data('gendid')
+    var modal = $(this)
+
+    modal.find('.modal-body #gendid').val(gendid);
+  })
+
+  $('#updateGender').on('show.bs.modal', function (event) {
+
+    var button = $(event.relatedTarget)
+
+    var gendid = button.data('gendid')
+    var gendname = button.data('gendname')
+    var modal = $(this)
+
+    modal.find('.modal-body #gendid').val(gendid);
+    modal.find('.modal-body #gendname').val(gendname);
+  })
+
+  $('#activateGender').on('show.bs.modal', function (event) {
+
+    var button = $(event.relatedTarget)
+
+    var gendid = button.data('gendid')
+    var modal = $(this)
+
+    modal.find('.modal-body #gendid').val(gendid);
+  })
+
+  $('#deleteDab').on('show.bs.modal', function (event) {
+
+    var button = $(event.relatedTarget)
+
+    var dabid = button.data('dabid')
+    var modal = $(this)
+
+    modal.find('.modal-body #dabid').val(dabid);
+  })
+
+  $('#updateDab').on('show.bs.modal', function (event) {
+
+    var button = $(event.relatedTarget)
+
+    var dabid = button.data('dabid')
+    var dabname = button.data('dabname')
+    var modal = $(this)
+
+    modal.find('.modal-body #dabid').val(dabid);
+    modal.find('.modal-body #dabname').val(dabname);
+  })
+
+  $('#activateDab').on('show.bs.modal', function (event) {
+
+    var button = $(event.relatedTarget)
+
+    var dabid = button.data('dabid')
+    var modal = $(this)
+
+    modal.find('.modal-body #dabid').val(dabid);
+  })
+
+  $('#deleteEdu').on('show.bs.modal', function (event) {
+
+    var button = $(event.relatedTarget)
+
+    var eduid = button.data('eduid')
+    var modal = $(this)
+
+    modal.find('.modal-body #eduid').val(eduid);
+  })
+
+  $('#updateEdu').on('show.bs.modal', function (event) {
+
+    var button = $(event.relatedTarget)
+
+    var eduid = button.data('eduid')
+    var eduname = button.data('eduname')
+    var modal = $(this)
+
+    modal.find('.modal-body #eduid').val(eduid);
+    modal.find('.modal-body #eduname').val(eduname);
+  })
+
+  $('#activateEdu').on('show.bs.modal', function (event) {
+
+    var button = $(event.relatedTarget)
+
+    var eduid = button.data('eduid')
+    var modal = $(this)
+
+    modal.find('.modal-body #eduid').val(eduid);
+  })
+
+  $('#deleteEm').on('show.bs.modal', function (event) {
+
+    var button = $(event.relatedTarget)
+
+    var emstatid = button.data('emstatid')
+    var modal = $(this)
+
+    modal.find('.modal-body #emstatid').val(emstatid);
+  })
+
+  $('#updateEm').on('show.bs.modal', function (event) {
+
+    var button = $(event.relatedTarget)
+
+    var emstatid = button.data('emstatid')
+    var emstatname = button.data('emstatname')
+    var modal = $(this)
+
+    modal.find('.modal-body #emstatid').val(emstatid);
+    modal.find('.modal-body #emstatname').val(emstatname);
+  })
+
+  $('#activateEm').on('show.bs.modal', function (event) {
+
+    var button = $(event.relatedTarget)
+
+    var emstatid = button.data('emstatid')
+    var modal = $(this)
+
+    modal.find('.modal-body #emstatid').val(emstatid);
+  })
+
   $('#deleteJail').on('show.bs.modal', function (event) {
 
     var button = $(event.relatedTarget)
@@ -260,6 +435,18 @@
     var modal = $(this)
 
     modal.find('.modal-body #jailid').val(jailid);
+  })
+
+  $('#updateJail').on('show.bs.modal', function (event) {
+
+    var button = $(event.relatedTarget)
+
+    var jailid = button.data('jailid')
+    var jailname = button.data('jailname')
+    var modal = $(this)
+
+    modal.find('.modal-body #jailid').val(jailid);
+    modal.find('.modal-body #jailname').val(jailname);
   })
 
   $('#activateJail').on('show.bs.modal', function (event) {
@@ -315,6 +502,18 @@
     modal.find('.modal-body #reasonid').val(reasonid);
   })
 
+  $('#updateReason').on('show.bs.modal', function (event) {
+
+    var button = $(event.relatedTarget)
+
+    var reasid = button.data('reasid')
+    var reasname = button.data('reasname')
+    var modal = $(this)
+
+    modal.find('.modal-body #reasid').val(reasid);
+    modal.find('.modal-body #reasname').val(reasname);
+  })
+
   $('#activateReason').on('show.bs.modal', function (event) {
 
     var button = $(event.relatedTarget)
@@ -333,6 +532,26 @@
     var modal = $(this)
 
     modal.find('.modal-body #caseid').val(caseid);
+  })
+
+  $('#updateCase').on('show.bs.modal', function (event) {
+
+    var button = $(event.relatedTarget)
+
+    var caseid = button.data('caseid')
+    var casename = button.data('casename')
+    var textbox = button.data('textbox')
+    var modal = $(this)
+
+    modal.find('.modal-body #caseid').val(caseid);
+    modal.find('.modal-body #casename').val(casename);
+
+      if(textbox == 1){
+        document.getElementById("yescourt").checked = true;
+      }
+      else{
+        document.getElementById("nocourt").checked = true;
+      }
   })
 
   $('#activateCase').on('show.bs.modal', function (event) {

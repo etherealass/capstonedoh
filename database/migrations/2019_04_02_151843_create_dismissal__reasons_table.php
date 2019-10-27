@@ -15,7 +15,6 @@ class CreateDismissalReasonsTable extends Migration
     {
         Schema::create('dismissal__reasons', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('dismissal_id');
             $table->string('reason');
             $table->string('flag')->nullable();
             $table->timestamps();

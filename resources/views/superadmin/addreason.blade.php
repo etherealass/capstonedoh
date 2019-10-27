@@ -29,7 +29,7 @@
             <div class="form-row">
               <div class="col-md-12">
                 <div class="form-label-group">
-                  <input type="text" id="name" class="form-control" placeholder="Reason" required="required" autofocus="autofocus" name="name">
+                  <input type="text" id="reason" class="form-control" placeholder="Reason" required="required" autofocus="autofocus" name="reason">
                   <label for="name">Reason</label>
                 </div>
               </div>

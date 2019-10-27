@@ -8,7 +8,7 @@ class CreatePatientsTable extends Migration
 {
     /**
      * Run the migrations.
-     *
+     * 
      * @return void
      */
     public function up()
@@ -16,6 +16,7 @@ class CreatePatientsTable extends Migration
         Schema::create('patients', function (Blueprint $table) {
             $table->increments('id');
             $table->string('patient_id');
+            $table->string('admission_no');
             $table->string('fname');
             $table->string('lname');
             $table->string('mname')->nullable();
@@ -25,8 +26,10 @@ class CreatePatientsTable extends Migration
             $table->integer('address_id')->unsigned();
             $table->foreign('address_id')->references('id')->on('addresses');
             $table->string('contact')->nullable();
-            $table->string('gender')->nullable();
-            $table->string('civil_status');
+            $table->integer('gender')->nullable()->unsigned();
+            $table->foreign('gender')->references('id')->on('genders');
+            $table->integer('civil_status')->unsigned();
+            $table->foreign('civil_status')->references('id')->on('civil__statuses');
             $table->string('nationality')->nullable();
             $table->string('religion')->nullable();
             $table->integer('patient_type')->unsigned()->nullable();

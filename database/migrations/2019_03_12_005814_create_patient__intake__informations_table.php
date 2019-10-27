@@ -19,8 +19,10 @@ class CreatePatientIntakeInformationsTable extends Migration
             $table->foreign('patient_id')->references('id')->on('patients');
             $table->integer('emergency_id')->unsigned();
             $table->foreign('emergency_id')->references('id')->on('emergency__persons');
-            $table->string('educational_attainment');
-            $table->string('employment_status');
+            $table->integer('educational_attainment')->unsigned();
+            $table->foreign('educational_attainment')->references('id')->on('educational__attainments');
+            $table->integer('employment_status')->unsigned();
+            $table->foreign('employment_status')->references('id')->on('employment__statuses');
             $table->string('spouse');
             $table->string('father');
             $table->string('mother');
