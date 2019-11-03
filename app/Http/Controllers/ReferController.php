@@ -38,6 +38,40 @@ class ReferController extends Controller
 
     }
 
+    public function deletePatient(Request $request)
+    {
+
+        $newStat = $request->inactive;
+        $remarks = $request->remarks;
+        $patient = $request->patient_id;
+
+        if($newStat != 1){
+
+              $stat = 1;
+        }else{
+
+              $stat = 0;
+        }
+
+
+        $id = Patients::find($patient);
+
+
+        $id->update(array('inactive' => $stat, 'remarks' => $remarks));
+
+          if($id->inactive == 1){
+              Session::flash('alert-class', 'danger');
+              flash('Patient Inactive', '')->overlay();
+          }else{
+
+            Session::flash('alert-class', 'success');
+              flash('Patient  Activated', '')->overlay();
+          }
+
+          return Redirect::back();
+
+    }
+
     public function addsocialworkernotes(Request $request)
     {
 
@@ -52,6 +86,31 @@ class ReferController extends Controller
 
         
          return Response::json($progress);
+
+    }
+
+    public function updatesocialworkernotes(Request $request,$id){
+
+          $prognotes = ProgressNotes::find($id);
+
+          $prognotes->update(array('notes' => $request->notes, 'service_id' => $request->service_id));
+
+          $progress = ProgressNotes::where('id', $prognotes->id)->with('userx')->with('servicex')->get();
+
+           return Response::json($progress);
+
+
+    }
+
+    public function findNotes(Request $request, $id)
+    {
+
+
+         $notes = ProgressNotes::where('id', $id)->first();
+
+
+        
+         return Response::json($notes);
 
     }
 
@@ -97,6 +156,14 @@ class ReferController extends Controller
         
          return Response::json($progress);
 
+    }
+
+    public function getRecords(Request $request, $recordType){
+
+
+
+
+      
     }
 
  public function addDentalNotes(Request $request)

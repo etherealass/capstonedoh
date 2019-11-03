@@ -243,6 +243,18 @@ select
                               </div>
                             </div>
                           </div>
+
+                           <div class="form-group">
+                          <div class="form-row">
+                              <div class="col-md-2">
+                                  <h6>Description:</h6>
+                              </div>
+                              <div class="col-md-10">
+                              <textarea class="form-control" id="description" name="description" rows="4" value="">{{$evt->description}}</textarea>
+                              </div>
+                            </div>
+                          </div>
+
                               <div class="form-group">
                               <div class="form-row">
                               <div class="col-md-2">

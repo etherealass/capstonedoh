@@ -238,6 +238,9 @@
   <div class="modal fade" id="inactiveEditorModal" aria-hidden="true" >
           <div class="modal-dialog">
                   <div class="modal-content"  >
+                        <form action="{{URL::to('/deletePatient')}}" method="post" id="inactivemodalFormData" name="inactivemodalFormData" class="form-horizontal" novalidate="">
+                    {{csrf_field()}} 
+                          <input type="hidden" id="inactive" name="inactive" value="{{$pats->inactive}}">
                          @if($pats->inactive != 1)
                               <div class="modal-header">
                                   <h4 class="modal-title" id="inactiveEditorModalLabel">
@@ -245,14 +248,12 @@
                              </h4>
                               </div>
                               <div class="modal-body">
-                                   <form id="inactivemodalFormData" name="inactivemodalFormData" class="form-horizontal" novalidate="">
 
                                           <p>You are about to inactive the patient! Inactivating the patient means the patient will no longer be associated in any types of events in the Rehabilation Center.</p>
 
                                            <h6>Remarks</h6>
                                            <textarea  type="text" id="note" class="form-control" placeholder="Note" name="note"></textarea>
                                     
-                                    </form>
                               </div>
 
                               @else
@@ -260,22 +261,23 @@
                                   <h4 class="modal-title" id="activeEditorModalLabel">Activate</h4>
                               </div>
                               <div class="modal-body">
-                                   <form id="activemodalFormData" name="activemodalFormData" class="form-horizontal" novalidate="">
 
                                           <p>You are about to activate patient {{$pats->lname}}, {{$pats->fname}}! Click active button to proceed.</p>
 
                                            <h6>Remarks</h6>
                                            <textarea  type="text" id="note" class="form-control" placeholder="Note" name="note" ></textarea>
                                     
-                                    </form>
                               </div>
                              @endif
                               <div class="modal-footer">
-                                  <button type="button" class="btn btn-primary" id="btn_activate" name ="btn_activate" value="{{$pats->inactive}}"">Proceed
+                                  <button type="submit" class="btn btn-primary" id="btn_activate" name ="btn_activate" value="{{$pats->inactive}}"">Proceed
                                   </button>
-                                  <input type="hidden" id="patient-id" name="patient-id" value="{{$pats->id}}">
+                                  <input type="hidden" id="patien_id" name="patient_id" value="{{$pats->id}}">
 
                               </div>
+
+                        </form>
+
                   </div>
           </div>
   </div>

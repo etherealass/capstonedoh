@@ -136,8 +136,9 @@ Route::group(['middleware' =>'auth'], function()
 
 	 Route::any('/update/intervention/{id}', "InterventionController@updateintervention");
 
+	 Route::any('deleteIntervention', "InterventionController@inactiveintervention");
 
-	 Route::any('/inactive/intervention/{id}', "InterventionController@inactiveintervention");
+	 //Route::any('/inactive/intervention/{id}', "InterventionController@inactiveintervention");
 
 
 
@@ -262,6 +263,7 @@ Route::group(['middleware' =>'auth'], function()
 	 Route::post('/reenrollsave_dde', "PatientController@reenrollsave_dde");
 
 	 Route::post('/deletepatient', "PatientController@flagdelete");
+	 
  
 	 Route::post('/patientTransfer', "PatientController@transferPatient");
 
@@ -289,10 +291,17 @@ Route::group(['middleware' =>'auth'], function()
 
 	 Route::put('/refers/{id?}', "ReferController@putRefer"); 
 
-	 Route::put('/activation/{id?}', "ReferController@putInactiveActive"); 
+//	 Route::put('/activation/{id?}', "ReferController@putInactiveActive"); 
+	 Route::post('/deletePatient', "ReferController@deletePatient"); 
 
-	 Route::post('/addsocialworkernotes', "ReferController@addsocialworkernotes");
-	Route::post('/addBMIrecords/{id}', "ReferController@addRecords");
+
+	 Route::post('/updatesocialworkernotes/{id}', "ReferController@updatesocialworkernotes");
+
+	 Route::post('/addsocialworkernotes/', "ReferController@addsocialworkernotes");
+
+	 Route::get('/findNotes/{id?}', "ReferController@findNotes");
+
+	 Route::post('/addBMIrecords/{id}', "ReferController@addRecords");
 	 
 	 Route::post('/addDentalNotes', "ReferController@addDentalNotes");
 
@@ -323,6 +332,11 @@ Route::group(['middleware' =>'auth'], function()
 	 Route::get('/view/service', "ServiceController@viewService");
 
 	 Route::post('/add_service', "ServiceController@add_service");
+
+	 Route::post('/deleteServices', "ServiceController@inactiveService");
+
+	 Route::post('/save_services', "ServiceController@save_services");
+
 
 	 Route::any('/show_jails', "ViewController@show_jails");
 

@@ -133,13 +133,29 @@ class LoginController extends Controller
         return view('superadmin.index', compact('chart'))->with('roles',$roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('graduate',$graduate)->with('pat',$pat)->with('patx',$patx)->with('patz',$patz);
       }
       else if(Auth::user()->user_role()->first()->name == 'Social Worker'){
+
          return view('socialworker.index')->with('roles',$roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer);
       }
       else if(Auth::user()->user_role()->first()->name == 'Nurse'){
+
          return view('socialworker.index')->with('roles',$roles)->with('deps',$deps)->with('users',$users);
       }
       else if(Auth::user()->user_role()->first()->name == 'Doctor'){
+
          return view('doctor.index')->with('roles',$roles)->with('deps',$deps)->with('users',$users);
+
+      }else if(Auth::user()->user_role()->first()->name == 'Physciatrist'){
+
+         return view('doctor.index')->with('roles',$roles)->with('deps',$deps)->with('users',$users);
+
+      }else if(Auth::user()->user_role()->first()->name == 'Dentist'){
+
+         return view('doctor.index')->with('roles',$roles)->with('deps',$deps)->with('users',$users);
+
+      }else{
+
+          return view('socialworker.index')->with('roles',$roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer);
+
       }
       
     }

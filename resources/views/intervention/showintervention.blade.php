@@ -66,7 +66,7 @@
                                       <div class="foractive">
                                       <button class="btn btn-info editIntervention" id="editIntervention" name="editIntervention" value="{{$intervention->id}}">Edit</button>
                                      <button class="btn btn-success" id="ViewIntervention" name="ViewIntervention" value="{{$intervention->id}}">View</button>
-                                    <button class="btn btn-danger deleteIntervention" id="deleteIntervention" name="deleteIntervention" value="{{$intervention->id}}">Inactive</button></td>
+                                    <button class="btn btn-danger deleteIntervention" id="deleteIntervention" name="deleteIntervention" value="{{$intervention->id}}">Delete</button></td>
                                   </div>
 
                                     @endif
@@ -79,23 +79,24 @@
             </div>
           </div>
 
-            <div class="modal fade" id="deleteCity" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal fade" id="deleteInterventionModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
               <div class="modal-dialog" role="document">
                 <div class="modal-content">
                   <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Are you sure you want to delete this?</h5>
+                    <h5 class="modal-title" id="deleteInterventionLabel">Are you sure you want to delete this Intervention?</h5>
                     <button class="close" type="button" data-dismiss="modal" aria-label="Close">
                       <span aria-hidden="true">×</span>
                     </button>
                   </div>
-                  <form action="{{URL::to('/delete_city')}}" method="post">
+                  <form action="{{URL::to('/deleteIntervention')}}" name="deleteInterventioneModalData" method="post" class="form-horizontal" novalidate="">
                     {{csrf_field()}} 
                     <div class="modal-body">
-                    <input type="hidden" id="cityid" name="cityid" class="form-control" value="">
+                    <input type="hidden" id="interventionId" name="interventionId" class="form-control" value="">
+                    <input type="hidden" id="intervenstatus" name="intervenstatus" class="form-control" value="">
                     </div>
                     <div class="modal-footer">
                       <button type="button" class="btn btn-primary" data-dismiss="modal">Cancel</button>
-                      <button type="submit" class="btn btn-danger">Delete</button>  
+                      <button type="submit" class="btn btn-danger" id="deleteButton">Delete</button>  
                     </div>
                   </form>
                 </div>
@@ -144,6 +145,34 @@
   $(document).ready(function () {
 
               $('#InterventionTable').DataTable();
+
+          $(".deleteIntervention").click(function (e) {
+
+            //alert("sample");
+
+            var stat = $(this).text();
+             var id = $(this).val();
+
+            $('#intervenstatus').val(stat);
+            $('#interventionId').val(id);
+
+              if(stat != "Delete"){
+              console.log("sample");
+                $("#deleteButton").addClass("btn-success");
+                $("#deleteButton").text("Activate");
+                $("#deleteButton").removeClass("btn-danger");
+            }else{
+                 $("#deleteButton").addClass("btn-danger");
+                $("#deleteButton").text("Delete");
+                $("#deleteButton").removeClass("btn-success");
+
+            }
+
+                  $('#EditInterventioneModalData').trigger("reset");
+                  $('#deleteInterventionModal').modal('show');
+
+
+          });
 
           $(".editIntervention").click(function (e) {
                     
@@ -219,7 +248,7 @@
 
                                    $('#inteven_'+data[0].id).replaceWith(link);
 
-                                   console.log(data[0]);
+                        
 
                                 var depart = '<td id="inteven_depart_'+data[0].id+'">'+data[0].deptxs.department_name+'</td>';
 
@@ -244,83 +273,83 @@
 
 
 
-               $(".deleteIntervention").click(function (e) {
+              //  $(".deletebtn").click(function (e) {
                     
-                var stat = $(this).text();
+              //   var stat = $(this).text();
 
-                    var result = confirm('Your are about to '+stat+' this Intervention. Would you like to continue?');
+              //       var result = confirm('Your are about to '+stat+' this Intervention. Would you like to continue?');
     
-                          if(result == true){
+              //             if(result == true){
 
-                               var id = $(this).val();
-
-
-                               var set;
+              //                  var id = $(this).val();
 
 
-                               if(stat == "Inactive"){
+              //                  var set;
 
-                                  set = 1;
-                               }else{
 
-                                  set =0;
-                               }
+              //                  if(stat == "Inactive"){
+
+              //                     set = 1;
+              //                  }else{
+
+              //                     set =0;
+              //                  }
                                
 
-                            $.ajaxSetup({
-                              headers: {
-                                  'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                              }
+              //               $.ajaxSetup({
+              //                 headers: {
+              //                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+              //                 }
 
-                             });
+              //                });
 
-                            var ajaxurl = '{{URL::to("/inactive/intervention")}}'+ '/' + id;
+              //               var ajaxurl = '{{URL::to("/inactive/intervention")}}'+ '/' + id;
 
-                         $.ajax({
-                            //contentType: "application/json; charset=utf-8",
-                            type: "POST",
-                            url: ajaxurl,
-                            data: {status: set},
+              //            $.ajax({
+              //               //contentType: "application/json; charset=utf-8",
+              //               type: "POST",
+              //               url: ajaxurl,
+              //               data: {status: set},
 
-                              success: function (data) {
+              //                 success: function (data) {
 
-                                var link ='<td id="button_'+data.id+'">';
-
-
-                                if(data.inactive == 1){
-
-                                   /* link += '<button class="btn btn-success deleteIntervention" id="deleteIntervention" name="deleteIntervention" value="'+data.id+'">Active</button></td>';*/
+              //                   // var link ='<td id="button_'+data.id+'">';
 
 
+              //                   // if(data.inactive == 1){
+
+              //                   //    /* link += '<button class="btn btn-success deleteIntervention" id="deleteIntervention" name="deleteIntervention" value="'+data.id+'">Active</button></td>';*/
 
 
 
-                                }else{
-
-                                   link += '<button class="btn btn-info editIntervention" id="editIntervention" name="editIntervention" value="'+data.id+'">Edit</button>';
-                                     link += '<button class="btn btn-success" id="ViewIntervention" name="ViewIntervention" value="'+data.id+'">View</button>';
-                                    link += '<button class="btn btn-danger deleteIntervention" id="deleteIntervention" name="deleteIntervention" value="'+data.id+'">Inactive</button></td>';
-
-                                }
-
-                                      $('#button_'+data.id).replaceWith(link);
 
 
+              //                   // }else{
 
-                               },
-                              error: function (data) {
-                                console.log('Error:', data);
+              //                   //    link += '<button class="btn btn-info editIntervention" id="editIntervention" name="editIntervention" value="'+data.id+'">Edit</button>';
+              //                   //      link += '<button class="btn btn-success" id="ViewIntervention" name="ViewIntervention" value="'+data.id+'">View</button>';
+              //                   //     link += '<button class="btn btn-danger deleteIntervention" id="deleteIntervention" name="deleteIntervention" value="'+data.id+'">Inactive</button></td>';
 
-                            }
+              //                   // }
 
-              });
+              //                   //       $('#button_'+data.id).replaceWith(link);
+
+
+
+              //                  },
+              //                 error: function (data) {
+              //                   console.log('Error:', data);
+
+              //               }
+
+              // });
 
 
 
                     
-                }
+              //   }
 
-              });
+              // });
 
               
 

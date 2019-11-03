@@ -12,8 +12,10 @@ use App\Services;
 use App\Display;
 use App\Notify;
 use App\Transfer_Requests;
+use App\Graduate_Requests;
 use Response;
 use Session;
+use Redirect;
 
 class ServiceController extends Controller
 {
@@ -24,17 +26,24 @@ class ServiceController extends Controller
 		$deps = Departments::all();
 		$users = Users::find(Auth::user()->id);
         $transfer = Transfer_Requests::all();
+        $graduate = Graduate_Requests::all();
+
 		
 		if(Auth::user()->user_role()->first()->name == 'Superadmin'){
-			return view('superadmin.createservice')->with(['roles' => $roles, 'rolex' => $rolex, 'deps' => $deps, 'users' => $users])->with('transfer',$transfer);
+			return view('superadmin.createservice')->with(['roles' => $roles, 'rolex' => $rolex, 'deps' => $deps, 'users' => $users])->with('transfer',$transfer)->with('graduate',$graduate);
 		}
 		elseif(Auth::user()->user_role()->first()->name == 'Admin'){
-			return view('superadmin.createservice')->with(['roles' => $roles, 'rolex' => $rolex, 'deps' => $deps, 'users' => $users])->with('transfer',$transfer);
+			return view('superadmin.createservice')->with(['roles' => $roles, 'rolex' => $rolex, 'deps' => $deps, 'users' => $users])->with('transfer',$transfer)->with('graduate',$graduate);
 		}
 		else{
 			return abort(404);
 		}
 	}
+
+    public function save_services(Request $request){
+
+            return redirect()->back();
+    }
 
 	public function show_services()
     {
@@ -43,11 +52,11 @@ class ServiceController extends Controller
         $deps = Departments::all();
         $transfer = Transfer_Requests::all();
         $service = Services::all();
-
+        $graduate = Graduate_Requests::all();
 
 
         if(Auth::user()->user_role()->first()->name == 'Superadmin'){
-            return view('superadmin.showservices')->with(['roles' => $roles, 'users' => $users, 'deps' => $deps])->with('transfer',$transfer)->with('services',$service);
+            return view('superadmin.showservices')->with(['roles' => $roles, 'users' => $users, 'deps' => $deps])->with('transfer',$transfer)->with('services',$service)->with('graduate',$graduate);
         }else if(Auth::user()->user_role()->first()->name == 'Admin'){
             return view('admin.showservices')->with('roles' , $roles)->with('transfer',$transfer)->with('services',$service);
         }else if(Auth::user()->user_role()->first()->name == 'Social Worker'){
@@ -57,6 +66,8 @@ class ServiceController extends Controller
 
     public function add_service(Request $request)
     {	
+                        $graduate = Graduate_Requests::all();
+
         
     	$service = Services::create($request->except('_token'));
     	if ($service->save()) {
@@ -110,5 +121,36 @@ class ServiceController extends Controller
 
 
     }
+
+      public function inactiveService(Request $request){
+
+            $set = $request->servicestatus;
+            $id = $request->servicesId;
+
+            $inactive = 0;
+
+            if($set == "Delete"){
+
+                  $inactive = 1;
+              }else{
+
+                    $inactive =0;
+                }
+
+        $services = Services::find($id);
+
+        $services->update(array('inactive' => $inactive));
+
+          if($inactive == 1){
+              Session::flash('alert-class', 'danger');
+              flash('Service Deleted', '')->overlay();
+          }else{
+
+            Session::flash('alert-class', 'success');
+              flash('Service  Activated', '')->overlay();
+          }
+
+            return redirect('/show_services');
+     }
 
 }

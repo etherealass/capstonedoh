@@ -126,6 +126,7 @@ $today = $year . '-' . $month . '-' . $day;
             </ul>
             </div>
           </div>
+
             <div class="col-md-9" style="margin-top: 10px" style="background-color: #e9ecef;">
               <div class="tab-content" id="v-pills-tabContent" style="background-color: #e9ecef;">
                 <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">
@@ -290,15 +291,16 @@ $today = $year . '-' . $month . '-' . $day;
 
 
               <div class="tab-pane fade" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">
-              
+                @if(Auth::user()->user_role->name == 'Social Worker' || Auth::user()->user_role->name == 'Superadmin')              
                       <button id="add-patient-refer" name="add-patient-refer" class="btn btn-dark btn-block" style="height: 50px; width:200px;float: right;margin-top: 0px;margin-left: 120px">Refer Patient</button>
+                @endif
                         <br>
                         <br>
                       
 
                         <div class="card-body" style="margin-left: 10px">
-                          <div class="table-responsive">
-                              <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                          <div class="table-responsive scrollAble2">
+                              <table class="table table-bordered referTable" id="referTable" width="100%" cellspacing="0">
                                 <thead>
                                   <tr>
                                     <th>Date</th>
@@ -339,21 +341,16 @@ $today = $year . '-' . $month . '-' . $day;
                           </div>
                  </div>
 
-              <div class="tab-pane fade" id="v-pills-contact" role="tabpanel" aria-labelledby="v-pills-profile-tab">
-                 <!-- <fieldset style="margin-bottom: 30px;margin-left: 0px;">-->
-              
-              
-
-                 <!--<button id="btn-visit" name="btn-visit" class="btn btn-dark btn-block" style="height: 50px; width:200px;float: right;margin-top: 0px;margin-left: 120px">Patient Visit</button>
-                    <button id="btn-inactive" name="btn-inactive" class="btn btn-info btn-block" style="height: 50px; width:200px;float: right;margin-top: 0px;margin-left: 40px">Inactive</button>-->
-
+                                   <div class="tab-pane fade" id="v-pills-contact" role="tabpanel" aria-labelledby="v-pills-profile-tab">
+               
+                @if(Auth::user()->user_role->name == 'Social Worker' || Auth::user()->user_role->name == 'Superadmin' || Auth::user()->user_role->name == 'Admin' )              
                     <div class="dropdown">
                           <button class="btn btn-dark dropdown-toggle"  style="height: 50px; width:200px;float: right;margin-top: 0px;margin-left: 120px" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             Action
                           </button>
                           <div class="dropdown-menu menu_btn" aria-labelledby="dropdownMenuButton">
                           @if($pats->inactive != 1)
-                            <a class="dropdown-item visit_btn" id="a-visit" name="a-visit" href="#"><button id="btn-visit" name="btn-visit" class="btn">Patient Visit</button></a>
+                            <a class="dropdown-item btn-visit" id="a-visit" name="a-visit" href="#"><button id="btn-visit" name="btn-visit" class="btn">Patient Visit</button></a>
                           @endif
                             <a class="dropdown-item inactive_btn"  id="a-inactive" name="a-inactive" href="#"><button id="btn-inactive" name="btn-inactive" class="btn" value="{{$pats->inactive}}">
                              @if($pats->inactive != 1)
@@ -362,33 +359,60 @@ $today = $year . '-' . $month . '-' . $day;
                              Active
                              @endif
                             </button></a>
+
+                      @endif
                           </div>
                       </div>
                         <br>
 
-                        <div class="row" style="margin-left: 10px;margin-bottom: 50px; margin-top: 70px">
-                        
-                        @foreach ($visits as $pat_visit)
+                        <div class="card-body" style="margin-left: 10px;margin-top: 20px">
+                         <div class="table-responsive">
+                              <table class="table table-bordered" id="patientTable" width="100%" cellspacing="0">
+                                <thead>
+                                  <tr>
+                                    <th>Date</th>
+                                    <th>Event Name</th>
+                                    <th>Status</th>
+                                    <th>Action</th>
+                                  </tr>
+                                </thead>
+                               <tbody id="visit-list" name="visit-list">
+                                    @foreach ($visits as $pat_visit)
+                                  <tr id="visit{{$pat_visit->id}}">
+                                    <td>{{$pat_visit->date}}</td>
+                                    <td>@if($pat_visit->events)
+                                      {{$pat_visit->events->title}}
+                                        @else
+                                        Patient Visit
+                                      @endif</td>
+                                    <td>@if($pat_visit->status == 1)
+                                    Attended
+                                    @else
+                                    Not Attended
+                                    @endif</td>
+                                    <td><input type="hidden" class="visit_event_date_{{$pat_visit->id}}" id="visit_event_date" name="visit_event_date" value="{{$pat_visit->date}}">
+                                      @if($pat_visit->status == 1 && $pat_visit->date == $today)
+                                        <button class="btn btn-success btn-visit" value="edit" id="attend_btn"  name="attend_btn"><i class="far fa-calendar-check" aria-hidden="true"></i></button>
+                                        @else
+                                         <button class="btn btn-info btn-visit-view" value="edit" id="btn-visit-view"  name="btn-visit-view"><i class="far fa-calendar-check" aria-hidden="true"></i></button>
+                                      @endif
+                                    </td>
                          
-                        <div class="col-xl-2 col-sm-3 mb-5" style="height: 5rem;margin-top: 2px">
-                        <div class="card border-dark mb-3 text-black o-hidden h-100">
-                          <div class="card-body open_modal">
-                           <a href="#"><p style="font-size: 12px;margin-top: 2px">{{$pat_visit->date}}<br> {{$pat_visit->events->title}}</p></a>
-                          <div class="mr-5"></div>
-                          </div>
-                        </div>
-                      </div>
-                      @endforeach
-                      </div>          
+                                  </tr>
+                                    @endforeach
+                                </tbody>
+                              </table>
+                            </div>
+                         </div>     
+                    </div>
 
-     </div>
 
 
        <div class="tab-pane fade" id="v-pills-intake" role="tabpanel" aria-labelledby="v-pills-intake-tab">
           <fieldset style="margin-bottom: 10px;margin-left: 0px;border:solid thin gray;border-radius: 10px">
             <legend style="color:white;text-indent: 20px;width:900px;margin-bottom: 10px;border-radius: 5px" class="bg bg-dark">Intake Form </legend>
             <div style="float:right;margin-bottom: 10px;margin-right: 10px;margin-top: 10px"><a href="{{URL::to('sampleform/'.$pats->id)}}" target="_blank"><button class="btn btn-danger"><i class="fas fa-fw fa fa-file-pdf"></i>Print</button></a></div>
-            @if(Auth::user()->user_role->name == 'Superadmin' || Auth::user()->user_role->name == 'Admin')
+            @if(Auth::user()->user_role->name == 'Superadmin' || Auth::user()->user_role->name == 'Admin' || Auth::user()->user_role->name == 'Social Worker' || Auth::user()->user_role->name == 'Nurse')
             <div style="float:right;margin-bottom: 10px;margin-right: 10px;margin-top: 10px"><button class="btn btn-success" data-toggle="modal" data-target="#intakeFormEdit"><i class="fas fa-fw fa fa-pen"></i>Edit</button></div>
             @endif
           <div class="container" style="margin-top: 60px;margin-bottom: 30px">
@@ -417,7 +441,8 @@ $today = $year . '-' . $month . '-' . $day;
                 <div class="col-md-10" style="margin-left: 60px;font-size: 12px;text-align: center"><p style="border-bottom: solid black 1px">{{$pats->address->street}} {{$pats->address->barangay}} {{$pats->address->city}}</p></div>
               </div>
               <div class="row" style="margin-left: 60px;font-size: 12px">
-                @foreach($patos as $patss)
+            @if($patos != '[]')
+              @foreach($patos as $patss)
                 <label><h6>Educational Attainment:</h6></label>
                 <div class="col-md-3"><p style="border-bottom: solid black 1px;text-align: center">{{$patss->eduatain->name}}</p></div>
                 <label><h6>Employment Status:</h6></label>
@@ -470,6 +495,59 @@ $today = $year . '-' . $month . '-' . $day;
                 <div class="col-md-4"><p style="border-bottom: solid black 1px;text-align: center">wasd</p></div>
               </div>
                 @endforeach
+              @elseif($patos == '[]')
+                 <label><h6>Educational Attainment:</h6></label>
+                <div class="col-md-3"><p style="border-bottom: solid black 1px;text-align: center"></p></div>
+                <label><h6>Employment Status:</h6></label>
+                <div class="col-md-3"><p style="border-bottom: solid black 1px;text-align: center"></p></div>
+              </div>
+              <div class="row" style="margin-left: 60px;font-size: 12px">
+                <label><h6>Name of Spouse:</h6></label>
+                <div class="col-md-5"><p style="border-bottom: solid black 1px;text-align: center"></p></div>
+              </div>
+              <div class="row">
+                <label style="margin-left: 75px;"><h6>Parents:</h6></label>
+              </div>
+              <div class="row" style="margin-left: 125px;font-size: 12px">
+                <label><h6>Father's Name:</h6></label>
+                <div class="col-md-5"><p style="border-bottom: solid black 1px;text-align: center"></p></div>
+              </div>
+              <div class="row" style="margin-left: 125px;font-size: 12px">
+               <label><h6>Mother's Name:</h6></label>
+                <div class="col-md-5"><p style="border-bottom: solid black 1px;text-align: center"></p></div>
+              </div>
+              <div class="row">
+                 <label style="margin-left: 75px;"><h6>Whom to notify in case of emergency:</h6></label>
+              </div>
+              <div class="row" style="margin-left: 60px;font-size: 12px">
+                <label><h6>Name:</h6></label>
+                <div class="col-md-4"><p style="border-bottom: solid black 1px;text-align: center"></p></div>
+                <label><h6>Relationship:</h6></label>
+                <div class="col-md-4"><p style="border-bottom: solid black 1px;text-align: center"></p></div>
+              </div>
+              <div class="row" style="margin-left: 60px;font-size: 12px">
+                <label><h6>Phone No.(Home):</h6></label>
+                <div class="col-md-2"><p style="border-bottom: solid black 1px;text-align: center"></p></div>
+                <label><h6>Cellphone No.:</h6></label>
+                <div class="col-md-2"><p style="border-bottom: solid black 1px;text-align: center"></p></div>
+                <label><h6>Email add:</h6></label>
+                <div class="col-md-1"><p><u style="text-align: center;font-size: 10px"></u></p></div>
+              </div>
+               <div class="row">
+                <label style="margin-left: 75px;"><h6>Presenting Problems:</h6></label>
+                <div class="col-md-10" style="margin-left: 60px;font-size: 12px"><p style="border-bottom: solid black 1px"></p></div>
+              </div>
+              <div class="row">
+                <label style="margin-left: 75px;"><h6>Impression:</h6></label>
+                <div class="col-md-10" style="margin-left: 60px;font-size: 12px"><p style="border-bottom: solid black 1px"></p></div>
+              </div>
+              <div class="row" style="margin-left: 60px;font-size: 12px;margin-top: 40px;margin-bottom: 50px">
+                <label><h6>Intake Officer Signature:</h6></label>
+                <div class="col-md-4"><p style="border-bottom: solid black 1px;text-align: center">wasd</p></div>
+                <label><h6>Date:</h6></label>
+                <div class="col-md-4"><p style="border-bottom: solid black 1px;text-align: center">wasd</p></div>
+              </div>
+              @endif
             </div>
           </fieldset>
       </div>
@@ -477,7 +555,7 @@ $today = $year . '-' . $month . '-' . $day;
             <fieldset style="margin-bottom: 30px;margin-left: 0px;border:solid thin gray;border-radius: 10px">
               <legend style="color:white;text-indent: 20px;width:900px;margin-bottom: 20px;border-radius: 5px" class="bg bg-dark">Drug Dependency Examination Report</legend>
                 <div style="float:right;margin-bottom: 10px;margin-right: 10px;margin-top: 10px"><a href="{{URL::to('sampleform/'.$pats->id)}}" target="_blank"><button class="btn btn-danger"><i class="fas fa-fw fa fa-file-pdf"></i>Print</button></a></div>
-                @if(Auth::user()->user_role->name == 'Superadmin' || Auth::user()->user_role->name == 'Admin')
+                @if(Auth::user()->user_role->name == 'Superadmin' || Auth::user()->user_role->name == 'Admin' || Auth::user()->user_role->name == 'Doctor')
                 <div style="float:right;margin-bottom: 10px;margin-right: 10px;margin-top: 10px"><button class="btn btn-success" data-toggle="modal" data-target="#ddeFormEdit"><i class="fas fa-fw fa fa-pen"></i>Edit</button></div>
                 @endif
                     <div class="container" style="margin-top: 60px;margin-bottom: 30px">
@@ -1164,8 +1242,8 @@ $today = $year . '-' . $month . '-' . $day;
                       
 
                         <div class="card-body" style="margin-left: 10px">
-                          <div class="table-responsive">
-                              <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                          <div class="table-responsive scrollAble2">
+                              <table class="table table-bordered referTable" id="referTable" width="100%" cellspacing="0">
                                 <thead>
                                   <tr>
                                     <th>Date</th>
@@ -1206,13 +1284,14 @@ $today = $year . '-' . $month . '-' . $day;
                           </div>
                  </div>
 
-              <div class="tab-pane fade" id="v-pills-contact" role="tabpanel" aria-labelledby="v-pills-profile-tab">
+                  <div class="tab-pane fade" id="v-pills-contact" role="tabpanel" aria-labelledby="v-pills-profile-tab">
                  <!-- <fieldset style="margin-bottom: 30px;margin-left: 0px;">-->
               
               
 
                  <!--<button id="btn-visit" name="btn-visit" class="btn btn-dark btn-block" style="height: 50px; width:200px;float: right;margin-top: 0px;margin-left: 120px">Patient Visit</button>
                     <button id="btn-inactive" name="btn-inactive" class="btn btn-info btn-block" style="height: 50px; width:200px;float: right;margin-top: 0px;margin-left: 40px">Inactive</button>-->
+                @if(Auth::user()->user_role->name == 'Social Worker' || Auth::user()->user_role->name == 'Superadmin')              
 
                     <div class="dropdown">
                           <button class="btn btn-dark dropdown-toggle"  style="height: 50px; width:200px;float: right;margin-top: 0px;margin-left: 120px" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -1220,7 +1299,7 @@ $today = $year . '-' . $month . '-' . $day;
                           </button>
                           <div class="dropdown-menu menu_btn" aria-labelledby="dropdownMenuButton">
                           @if($pats->inactive != 1)
-                            <a class="dropdown-item visit_btn" id="a-visit" name="a-visit" href="#"><button id="btn-visit" name="btn-visit" class="btn">Patient Visit</button></a>
+                            <a class="dropdown-item btn-visit" id="a-visit" name="a-visit" href="#"><button id="btn-visit" name="btn-visit" class="btn">Patient Visit</button></a>
                           @endif
                             <a class="dropdown-item inactive_btn"  id="a-inactive" name="a-inactive" href="#"><button id="btn-inactive" name="btn-inactive" class="btn" value="{{$pats->inactive}}">
                              @if($pats->inactive != 1)
@@ -1231,31 +1310,57 @@ $today = $year . '-' . $month . '-' . $day;
                             </button></a>
                           </div>
                       </div>
+                    @endif
                         <br>
 
-                        <div class="row" style="margin-left: 10px;margin-bottom: 50px; margin-top: 70px">
-                        
-                        @foreach ($visits as $pat_visit)
+                        <div class="card-body" style="margin-left: 10px;margin-top: 20px">
+                         <div class="table-responsive">
+                              <table class="table table-bordered" id="patientTable" width="100%" cellspacing="0">
+                                <thead>
+                                  <tr>
+                                    <th>Date</th>
+                                    <th>Event Name</th>
+                                    <th>Status</th>
+                                    <th>Action</th>
+                                  </tr>
+                                </thead>
+                               <tbody id="visit-list" name="visit-list">
+                                    @foreach ($visits as $pat_visit)
+                                  <tr id="visit{{$pat_visit->id}}">
+                                    <td>{{$pat_visit->date}}</td>
+                                    <td>@if($pat_visit->events)
+                                      {{$pat_visit->events->title}}
+                                        @else
+                                        Patient Visit
+                                      @endif</td>
+                                    <td>@if($pat_visit->status == 1)
+                                    Attended
+                                    @else
+                                    Not Attended
+                                    @endif</td>
+                                    <td><input type="hidden" class="visit_event_date_{{$pat_visit->id}}" id="visit_event_date" name="visit_event_date" value="{{$pat_visit->date}}">
+                                      @if($pat_visit->status == 1 && $pat_visit->date == $today)
+                                        <button class="btn btn-success btn-visit" value="edit" id="attend_btn"  name="attend_btn"><i class="far fa-calendar-check" aria-hidden="true"></i></button>
+                                        @else
+                                         <button class="btn btn-info btn-visit-view" value="edit" id="btn-visit-view"  name="btn-visit-view"><i class="far fa-calendar-check" aria-hidden="true"></i></button>
+                                      @endif
+                                    </td>
                          
-                        <div class="col-xl-2 col-sm-3 mb-5" style="height: 5rem;margin-top: 2px">
-                        <div class="card border-dark mb-3 text-black o-hidden h-100">
-                          <div class="card-body open_modal">
-                           <a href="#"><p style="font-size: 12px;margin-top: 2px">{{$pat_visit->date}}<br> {{$pat_visit->events->title}}</p></a>
-                          <div class="mr-5"></div>
-                          </div>
-                        </div>
-                      </div>
-                      @endforeach
-                      </div>          
+                                  </tr>
+                                    @endforeach
+                                </tbody>
+                              </table>
+                            </div>
+                         </div>     
+                    </div>
 
-     </div>
 
 
        <div class="tab-pane fade" id="v-pills-intake" role="tabpanel" aria-labelledby="v-pills-intake-tab">
           <fieldset style="margin-bottom: 10px;margin-left: 0px;border:solid thin gray;border-radius: 10px">
             <legend style="color:white;text-indent: 20px;width:900px;margin-bottom: 10px;border-radius: 5px" class="bg bg-dark">Intake Form </legend>
             <div style="float:right;margin-bottom: 10px;margin-right: 10px;margin-top: 10px"><a href="{{URL::to('sampleform/'.$pats->id)}}" target="_blank"><button class="btn btn-danger"><i class="fas fa-fw fa fa-file-pdf"></i>Print</button></a></div>
-            @if(Auth::user()->user_role->name == 'Superadmin' || Auth::user()->user_role->name == 'Admin')
+              @if(Auth::user()->user_role->name == 'Superadmin' || Auth::user()->user_role->name == 'Admin' || Auth::user()->user_role->name == 'Social Worker' || Auth::user()->user_role->name == 'Nurse')
             <div style="float:right;margin-bottom: 10px;margin-right: 10px;margin-top: 10px"><button class="btn btn-success" data-toggle="modal" data-target="#intakeFormEdit"><i class="fas fa-fw fa fa-pen"></i>Edit</button></div>
             @endif
           <div class="container" style="margin-top: 60px;margin-bottom: 30px">
@@ -1284,7 +1389,8 @@ $today = $year . '-' . $month . '-' . $day;
                 <div class="col-md-10" style="margin-left: 60px;font-size: 12px;text-align: center"><p style="border-bottom: solid black 1px">{{$pats->address->street}} {{$pats->address->barangay}} {{$pats->address->city}}</p></div>
               </div>
               <div class="row" style="margin-left: 60px;font-size: 12px">
-                @foreach($patos as $patss)
+               @if($patos != '[]')
+              @foreach($patos as $patss)
                 <label><h6>Educational Attainment:</h6></label>
                 <div class="col-md-3"><p style="border-bottom: solid black 1px;text-align: center">{{$patss->eduatain->name}}</p></div>
                 <label><h6>Employment Status:</h6></label>
@@ -1337,6 +1443,59 @@ $today = $year . '-' . $month . '-' . $day;
                 <div class="col-md-4"><p style="border-bottom: solid black 1px;text-align: center">wasd</p></div>
               </div>
                 @endforeach
+              @elseif($patos == '[]')
+                 <label><h6>Educational Attainment:</h6></label>
+                <div class="col-md-3"><p style="border-bottom: solid black 1px;text-align: center"></p></div>
+                <label><h6>Employment Status:</h6></label>
+                <div class="col-md-3"><p style="border-bottom: solid black 1px;text-align: center"></p></div>
+              </div>
+              <div class="row" style="margin-left: 60px;font-size: 12px">
+                <label><h6>Name of Spouse:</h6></label>
+                <div class="col-md-5"><p style="border-bottom: solid black 1px;text-align: center"></p></div>
+              </div>
+              <div class="row">
+                <label style="margin-left: 75px;"><h6>Parents:</h6></label>
+              </div>
+              <div class="row" style="margin-left: 125px;font-size: 12px">
+                <label><h6>Father's Name:</h6></label>
+                <div class="col-md-5"><p style="border-bottom: solid black 1px;text-align: center"></p></div>
+              </div>
+              <div class="row" style="margin-left: 125px;font-size: 12px">
+               <label><h6>Mother's Name:</h6></label>
+                <div class="col-md-5"><p style="border-bottom: solid black 1px;text-align: center"></p></div>
+              </div>
+              <div class="row">
+                 <label style="margin-left: 75px;"><h6>Whom to notify in case of emergency:</h6></label>
+              </div>
+              <div class="row" style="margin-left: 60px;font-size: 12px">
+                <label><h6>Name:</h6></label>
+                <div class="col-md-4"><p style="border-bottom: solid black 1px;text-align: center"></p></div>
+                <label><h6>Relationship:</h6></label>
+                <div class="col-md-4"><p style="border-bottom: solid black 1px;text-align: center"></p></div>
+              </div>
+              <div class="row" style="margin-left: 60px;font-size: 12px">
+                <label><h6>Phone No.(Home):</h6></label>
+                <div class="col-md-2"><p style="border-bottom: solid black 1px;text-align: center"></p></div>
+                <label><h6>Cellphone No.:</h6></label>
+                <div class="col-md-2"><p style="border-bottom: solid black 1px;text-align: center"></p></div>
+                <label><h6>Email add:</h6></label>
+                <div class="col-md-1"><p><u style="text-align: center;font-size: 10px"></u></p></div>
+              </div>
+               <div class="row">
+                <label style="margin-left: 75px;"><h6>Presenting Problems:</h6></label>
+                <div class="col-md-10" style="margin-left: 60px;font-size: 12px"><p style="border-bottom: solid black 1px"></p></div>
+              </div>
+              <div class="row">
+                <label style="margin-left: 75px;"><h6>Impression:</h6></label>
+                <div class="col-md-10" style="margin-left: 60px;font-size: 12px"><p style="border-bottom: solid black 1px"></p></div>
+              </div>
+              <div class="row" style="margin-left: 60px;font-size: 12px;margin-top: 40px;margin-bottom: 50px">
+                <label><h6>Intake Officer Signature:</h6></label>
+                <div class="col-md-4"><p style="border-bottom: solid black 1px;text-align: center">wasd</p></div>
+                <label><h6>Date:</h6></label>
+                <div class="col-md-4"><p style="border-bottom: solid black 1px;text-align: center">wasd</p></div>
+              </div>
+              @endif
             </div>
           </fieldset>
       </div>
@@ -1344,7 +1503,7 @@ $today = $year . '-' . $month . '-' . $day;
             <fieldset style="margin-bottom: 30px;margin-left: 0px;border:solid thin gray;border-radius: 10px">
               <legend style="color:white;text-indent: 20px;width:900px;margin-bottom: 20px;border-radius: 5px" class="bg bg-dark">Drug Dependency Examination Report</legend>
                 <div style="float:right;margin-bottom: 10px;margin-right: 10px;margin-top: 10px"><a href="{{URL::to('sampleform/'.$pats->id)}}" target="_blank"><button class="btn btn-danger"><i class="fas fa-fw fa fa-file-pdf"></i>Print</button></a></div>
-                @if(Auth::user()->user_role->name == 'Superadmin' || Auth::user()->user_role->name == 'Admin')
+                @if(Auth::user()->user_role->name == 'Superadmin' || Auth::user()->user_role->name == 'Admin' || Auth::user()->user_role->name == 'Doctor')
                 <div style="float:right;margin-bottom: 10px;margin-right: 10px;margin-top: 10px"><button class="btn btn-success" data-toggle="modal" data-target="#ddeFormEdit"><i class="fas fa-fw fa fa-pen"></i>Edit</button></div>
                 @endif
                     <div class="container" style="margin-top: 60px;margin-bottom: 30px">
@@ -1782,9 +1941,17 @@ $today = $year . '-' . $month . '-' . $day;
           </div>
           <div class="col-md-3">
           </div>
+          @if(Auth::user()->user_role->name == 'Superadmin' || Auth::user()->user_role->name == 'Admin')
           <div class="col-md-4" style="margin-top: 10px">
                 <button class="btn btn-success" data-patientid="{{$pats->id}}" data-patientdep="{{$pats->department_id}}" data-toggle="modal" data-target="#patientadminGraduate" style="margin-left:10px;height: 60px;width: 90px;margin-top: 10px">Graduate</button><button class="btn btn-warning" style="margin-left: 10px;height: 60px;width: 90px;margin-top: 10px" data-toggle="modal" data-target="#admintransferPatient" data-patientid="{{$pats->id}}" data-patientdep="{{$pats->department_id}}">Transfer</button><button class="btn btn-danger" data-toggle="modal" data-patientdep="{{$pats->department_id}}" data-patientid="{{$pats->id}}" data-target="#patientDismiss" style="margin-left: 10px;height: 60px;width: 90px;margin-top: 10px">Dismiss</button>
           </div>
+          @elseif(Auth::user()->user_role->name == 'Nurse' || Auth::user()->user_role->name == 'Social Worker' || Auth::user()->user_role->name == 'Doctor')
+           <div class="col-md-4" style="margin-top: 10px">
+    
+                <button class="btn btn-success" data-patientid="{{$pats->id}}" data-patientdep="{{$pats->department_id}}" data-toggle="modal" data-target="#patientGraduate" style="margin-left:10px;height: 60px;width: 90px;margin-top: 10px">Graduate</button><button class="btn btn-warning" style="margin-left: 10px;height: 60px;width: 90px;margin-top: 10px" data-toggle="modal" data-target="#transferPatient" data-patientid="{{$pats->id}}" data-patientdep="{{$pats->department_id}}">Transfer</button><button class="btn btn-danger" data-toggle="modal" data-patientdep="{{$pats->department_id}}" data-patientid="{{$pats->id}}" data-target="#patientDismiss" style="margin-left: 10px;height: 60px;width: 90px;margin-top: 10px">Dismiss</button>
+    
+          </div>
+          @endif
          </div>
             @elseif($pats->status == 'For Graduate')
         <div class="row">
@@ -2037,12 +2204,14 @@ $today = $year . '-' . $month . '-' . $day;
 
 
               <div class="tab-pane fade" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">
+                @if(Auth::user()->user_role->name == 'Social Worker' || Auth::user()->user_role->name == 'Superadmin' )
                       <button id="add-patient-refer" name="add-patient-refer" class="btn btn-dark btn-block" style="height: 50px; width:200px;float: right;margin-top: 0px;margin-left: 120px">Refer Patient</button>
+                  @endif
                         <br>
                         <br>
                         <div class="card-body" style="margin-left: 10px">
                           <div class="table-responsive">
-                              <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                              <table class="table table-bordered referTable" id="referTable" width="100%" cellspacing="0">
                                 <thead>
                                   <tr>
                                     <th>Date</th>
@@ -2084,12 +2253,8 @@ $today = $year . '-' . $month . '-' . $day;
                         </div>
 
               <div class="tab-pane fade" id="v-pills-contact" role="tabpanel" aria-labelledby="v-pills-profile-tab">
-                 <!-- <fieldset style="margin-bottom: 30px;margin-left: 0px;">-->
-              
-              
 
-                 <!--<button id="btn-visit" name="btn-visit" class="btn btn-dark btn-block" style="height: 50px; width:200px;float: right;margin-top: 0px;margin-left: 120px">Patient Visit</button>
-                    <button id="btn-inactive" name="btn-inactive" class="btn btn-info btn-block" style="height: 50px; width:200px;float: right;margin-top: 0px;margin-left: 40px">Inactive</button>-->
+                @if(Auth::user()->user_role->name == 'Social Worker' || Auth::user()->user_role->name == 'Superadmin')              
 
                     <div class="dropdown">
                           <button class="btn btn-dark dropdown-toggle"  style="height: 50px; width:200px;float: right;margin-top: 0px;margin-left: 120px" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -2108,6 +2273,7 @@ $today = $year . '-' . $month . '-' . $day;
                             </button></a>
                           </div>
                       </div>
+                  @endif
                         <br>
 
                         <div class="card-body" style="margin-left: 10px;margin-top: 20px">
@@ -2156,7 +2322,7 @@ $today = $year . '-' . $month . '-' . $day;
           <fieldset style="margin-bottom: 10px;margin-left: 0px;border:solid thin gray;border-radius: 10px">
             <legend style="color:white;text-indent: 20px;width:900px;margin-bottom: 10px;border-radius: 5px" class="bg bg-dark">Intake Form </legend>
             <div style="float:right;margin-bottom: 10px;margin-right: 10px;margin-top: 10px"><a href="{{URL::to('pdfintake/'.$pats->id)}}" target="_blank"><button class="btn btn-danger"><i class="fas fa-fw fa fa-file-pdf"></i>Print</button></a></div>
-            @if(Auth::user()->user_role->name == 'Superadmin' || Auth::user()->user_role->name == 'Admin')
+            @if(Auth::user()->user_role->name == 'Superadmin' || Auth::user()->user_role->name == 'Admin' || Auth::user()->user_role->name == 'Social Worker' || Auth::user()->user_role->name == 'Nurse')
             <div style="float:right;margin-bottom: 10px;margin-right: 10px;margin-top: 10px"><button class="btn btn-success" data-toggle="modal" data-target="#intakeFormEdit"><i class="fas fa-fw fa fa-pen"></i>Edit</button></div>
             @endif
           <div class="container" style="margin-top: 60px;margin-bottom: 30px">
@@ -2186,7 +2352,8 @@ $today = $year . '-' . $month . '-' . $day;
                 <div class="col-md-10" style="margin-left: 60px;font-size: 12px;text-align: center"><p style="border-bottom: solid black 1px">{{$pats->address->street}} {{$pats->address->barangay}} {{$pats->address->city}}</p></div>
               </div>
               <div class="row" style="margin-left: 60px;font-size: 12px">
-                @foreach($patos as $patss)
+               @if($patos != '[]')
+              @foreach($patos as $patss)
                 <label><h6>Educational Attainment:</h6></label>
                 <div class="col-md-3"><p style="border-bottom: solid black 1px;text-align: center">{{$patss->eduatain->name}}</p></div>
                 <label><h6>Employment Status:</h6></label>
@@ -2239,6 +2406,59 @@ $today = $year . '-' . $month . '-' . $day;
                 <div class="col-md-4"><p style="border-bottom: solid black 1px;text-align: center">wasd</p></div>
               </div>
                 @endforeach
+              @elseif($patos == '[]')
+                 <label><h6>Educational Attainment:</h6></label>
+                <div class="col-md-3"><p style="border-bottom: solid black 1px;text-align: center"></p></div>
+                <label><h6>Employment Status:</h6></label>
+                <div class="col-md-3"><p style="border-bottom: solid black 1px;text-align: center"></p></div>
+              </div>
+              <div class="row" style="margin-left: 60px;font-size: 12px">
+                <label><h6>Name of Spouse:</h6></label>
+                <div class="col-md-5"><p style="border-bottom: solid black 1px;text-align: center"></p></div>
+              </div>
+              <div class="row">
+                <label style="margin-left: 75px;"><h6>Parents:</h6></label>
+              </div>
+              <div class="row" style="margin-left: 125px;font-size: 12px">
+                <label><h6>Father's Name:</h6></label>
+                <div class="col-md-5"><p style="border-bottom: solid black 1px;text-align: center"></p></div>
+              </div>
+              <div class="row" style="margin-left: 125px;font-size: 12px">
+               <label><h6>Mother's Name:</h6></label>
+                <div class="col-md-5"><p style="border-bottom: solid black 1px;text-align: center"></p></div>
+              </div>
+              <div class="row">
+                 <label style="margin-left: 75px;"><h6>Whom to notify in case of emergency:</h6></label>
+              </div>
+              <div class="row" style="margin-left: 60px;font-size: 12px">
+                <label><h6>Name:</h6></label>
+                <div class="col-md-4"><p style="border-bottom: solid black 1px;text-align: center"></p></div>
+                <label><h6>Relationship:</h6></label>
+                <div class="col-md-4"><p style="border-bottom: solid black 1px;text-align: center"></p></div>
+              </div>
+              <div class="row" style="margin-left: 60px;font-size: 12px">
+                <label><h6>Phone No.(Home):</h6></label>
+                <div class="col-md-2"><p style="border-bottom: solid black 1px;text-align: center"></p></div>
+                <label><h6>Cellphone No.:</h6></label>
+                <div class="col-md-2"><p style="border-bottom: solid black 1px;text-align: center"></p></div>
+                <label><h6>Email add:</h6></label>
+                <div class="col-md-1"><p><u style="text-align: center;font-size: 10px"></u></p></div>
+              </div>
+               <div class="row">
+                <label style="margin-left: 75px;"><h6>Presenting Problems:</h6></label>
+                <div class="col-md-10" style="margin-left: 60px;font-size: 12px"><p style="border-bottom: solid black 1px"></p></div>
+              </div>
+              <div class="row">
+                <label style="margin-left: 75px;"><h6>Impression:</h6></label>
+                <div class="col-md-10" style="margin-left: 60px;font-size: 12px"><p style="border-bottom: solid black 1px"></p></div>
+              </div>
+              <div class="row" style="margin-left: 60px;font-size: 12px;margin-top: 40px;margin-bottom: 50px">
+                <label><h6>Intake Officer Signature:</h6></label>
+                <div class="col-md-4"><p style="border-bottom: solid black 1px;text-align: center">wasd</p></div>
+                <label><h6>Date:</h6></label>
+                <div class="col-md-4"><p style="border-bottom: solid black 1px;text-align: center">wasd</p></div>
+              </div>
+              @endif
             </div>
             </div>
           </fieldset>
@@ -2247,7 +2467,7 @@ $today = $year . '-' . $month . '-' . $day;
             <fieldset style="margin-bottom: 30px;margin-left: 0px;border:solid thin gray;border-radius: 10px">
               <legend style="color:white;text-indent: 20px;width:900px;margin-bottom: 20px;border-radius: 5px" class="bg bg-dark">Drug Dependency Examination Report</legend>
                 <div style="float:right;margin-bottom: 10px;margin-right: 10px;margin-top: 10px"><a href="{{URL::to('pdfdde/'.$pats->id)}}" target="_blank"><button class="btn btn-danger"><i class="fas fa-fw fa fa-file-pdf"></i>Print</button></a></div>
-                @if(Auth::user()->user_role->name == 'Superadmin' || Auth::user()->user_role->name == 'Admin')
+                @if(Auth::user()->user_role->name == 'Superadmin' || Auth::user()->user_role->name == 'Admin' || Auth::user()->user_role->name == "Doctor" )
                 <div style="float:right;margin-bottom: 10px;margin-right: 10px;margin-top: 10px"><button class="btn btn-success" data-toggle="modal" data-target="#ddeFormEdit"><i class="fas fa-fw fa fa-pen"></i>Edit</button></div>
                 @endif
                       <div class="container" style="margin-top: 60px;margin-bottom: 30px">
@@ -2923,7 +3143,7 @@ $today = $year . '-' . $month . '-' . $day;
                   <input type="hidden" name="patdepartment" value="{{$pats->department_id}}">
                   <input type="hidden" name="patient_id" value="{{$pats->id}}">
                   <input type="hidden" name="patientadd" value="{{$pats->address_id}}">
-                  @if($patos != NULL)
+                  @if($patos != '[]')
                     @foreach($patos as $patss)
                   <input type="hidden" name="emergency_id" value="{{$patss->eperson->id}}">
                     @endforeach
@@ -3157,11 +3377,7 @@ $today = $year . '-' . $month . '-' . $day;
                           <h6>Educational Attainment*</h6>
                           <select class="form-control" id="eduattain" placeholder="Civil Status" name="eduattain">
                             @foreach($eduatain as $edu)
-                              @if($edu->name == $patss->eduatain->name)
-                              <option value="{{$edu->id}}" selected>{{$edu->name}}</option>
-                              @else
                               <option value="{{$edu->id}}">{{$edu->name}}</option>
-                              @endif
                             @endforeach
                         </select>
                         </div>
@@ -3170,12 +3386,8 @@ $today = $year . '-' . $month . '-' . $day;
                         <div class="form-label-group">
                           <h6>Employement Status*</h6>
                            <select class="form-control" id="edstat" placeholder="Civil Status" name="edstat">
-                            @foreach($estatus as $estat)
-                              @if($estat->name == $patss->estat->name)
-                              <option value="{{$estat->id}}" selected>{{$estat->name}}</option>
-                              @else
+                            @foreach($estatus as $estat)    
                               <option value="{{$estat->id}}">{{$estat->name}}</option>
-                              @endif
                             @endforeach
                         </select>
                         </div>
@@ -3340,7 +3552,7 @@ $today = $year . '-' . $month . '-' . $day;
                   <input type="hidden" name="patientadd" value="{{$pats->address_id}}">
                   <input type="hidden" name="edvalue" value="1">
                   <input type="hidden" name="fvalue" value="Intake Form">
-                  @if($patos != NULL)
+                  @if($patos != '[]')
                     @foreach($patos as $patss)
                   <input type="hidden" name="emergency_id" value="{{$patss->eperson->id}}">
                     @endforeach
@@ -4520,6 +4732,7 @@ $today = $year . '-' . $month . '-' . $day;
   $(document).ready(function () {
     ////----- Open the modal to CREATE a link -----////
 
+            $('#referTable').DataTable();
 
             $('#nurseTable').DataTable();
 
@@ -4543,15 +4756,8 @@ $today = $year . '-' . $month . '-' . $day;
                "order": [[0, "desc"]]
             });
 
-              $('#addNurseNotes').click(function () {
 
-        $('#NurseNotesFormData').trigger("reset");
-        $('#NurseNotesModal').modal('show');
-    
-
-    });
-
-              $('#tableType').change(function() {
+  $('#tableType').change(function() {
    var id = $(this).val();
 
       if(id == 'BS'){
@@ -4586,7 +4792,7 @@ $today = $year . '-' . $month . '-' . $day;
 
       }else{
 
-                      $('#nurseTablediv').removeAttr('hidden');
+              $('#nurseTablediv').removeAttr('hidden');
               $('#nurseTablediv').show();
 
             
@@ -4596,37 +4802,217 @@ $today = $year . '-' . $month . '-' . $day;
       }
 });
 
+    $('.addNurseNotes').click(function () {
 
-    $('#add_service').click(function () {
+            $('#NurseNotesFormData').trigger("reset");
+        $('#NurseNotesModal').modal('show');
 
-        $('#AddServiceFormData').trigger("reset");
-        $('#AddServiceNotesModal').modal('show');
-    
+
+       if($(this).val() != 'add'){
+
+              var type = $('#tableType').val();
+              console.log(type);
+
+                if(type == "M"){
+
+                  $('.medicalRecords').removeAttr('hidden');
+                  $('.medicalRecords').show();
+
+
+                    $('#BloodSugarTablediv').hide();
+                    $('#BMIMonitoringdiv').hide();
+                    $('#nurseTablediv').hide();
+
+
+                    $('#nurseList').val("M");
+                      $(".nurseList option[value=M]").removeAttr('hidden', true);
+                      $(".nurseList option[value='M']").prop("selected", true);
+
+                var type = "GET";
+                var id = $(this).val();
+                var ajaxurl = '{{URL::to("/getRecords")}}/mediRecords' ;
+
+
+                     $.ajax({
+                            type: type,
+                            url: ajaxurl,
+                            dataType: 'json',
+                            success: function (data) {
+
+
+                        }
+                      });
+
+
+                }else{
+                var type = "GET";
+                var id = $(this).val();
+                var ajaxurl = '{{URL::to("/findNotes")}}/' + id;
+
+
+                     $.ajax({
+                            type: type,
+                            url: ajaxurl,
+                            dataType: 'json',
+                            success: function (data) {
+
+                                $('#nursenote').val(data.notes);
+
+                                var service_id = data.service_id;
+                                if(service_id == " "|| service_id == null){
+
+                                    service_id = 0;
+                                }
+                                $('#nurseList').val(service_id);
+
+                                $("#nurseList option[value=M]").prop('hidden', true);
+                                $("#nurseList option[value=F]").prop('hidden', true);
+                                $("#nurseList option[value=BS]").prop('hidden', true);
+
+                        }
+                      });
+                }
+
+     }else{
+
+                        $("#nurseList option[value=M]").removeAttr('hidden', true);
+                        $("#nurseList option[value=F]").removeAttr('hidden', true);
+                        $("#nurseList option[value=BS]").removeAttr('hidden', true);
+
+     }
+
+     
+
     });
 
-    $('#addDoctortNotes').click(function () {
+
+
+ 
+
+
+    $('.addDoctortNotes').click(function () {
+
+
+        if($(this).val() != 'add'){
+
+        var type = "GET";
+        var id = $(this).val();
+        var ajaxurl = '{{URL::to("/findNotes")}}/' + id;
+
+
+             $.ajax({
+                    type: type,
+                    url: ajaxurl,
+                    dataType: 'json',
+                    success: function (data) {
+
+                        $('#notes').val(data.notes);
+                        $('#doctorList').val(data.service_id);
+                        $('#noteId').val(data.id);
+
+                }
+              })
+    }else{
+           $('#noteId').val("add");
+    }
 
         $('#AddDoctorFormData').trigger("reset");
         $('#AddDoctorNotesModal').modal('show');
     
     });
 
- $('#addDentalNotes').click(function () {
+       $('.psychiatristNotes').click(function () {
+
+          if($(this).val() != 'add'){
+
+
+        var type = "GET";
+        var id = $(this).val();
+        var ajaxurl = '{{URL::to("/findNotes")}}/' + id;
+
+
+             $.ajax({
+                    type: type,
+                    url: ajaxurl,
+                    dataType: 'json',
+                    success: function (data) {
+
+                        $('#notes2').val(data.notes);
+
+                                    console.log(data.notes);
+
+
+                        var service_id = data.service_id;
+                        if(service_id == " "|| service_id == null){
+
+                            service_id = 0;
+                        }
+                        $('#noteId').val(data.id);
+                        $('#psychiatristList').val(service_id);
+
+                }
+              })
+     }else{
+                                    $('#noteId').val("add");
+
+
+     }
+
+          $('#AddPsychiatristFormData').trigger("reset");
+          $('#AddPsychiatristNotesModal').modal('show');
+
+       });
+    
+
+ $('.addDentalNotes').click(function () {
 
         $('#AddDentalFormData').trigger("reset");
         $('#AddDentalNotesModal').modal('show');
     
   });
 
-  $('#addPyschiatristNotes').click(function () {
-
-        $('#AddPsychiatristFormData').trigger("reset");
-        $('#AddPsychiatristNotesModal').modal('show');
-    
-  });
 
 
-$('#addSocialWorkerNotes').click(function () {
+$('.addSocialWorkerNotes').click(function () {
+
+
+      
+          if($(this).val() != 'add'){
+
+
+        var type = "GET";
+        var id = $(this).val();
+        var ajaxurl = '{{URL::to("/findNotes")}}/' + id;
+
+
+             $.ajax({
+                    type: type,
+                    url: ajaxurl,
+                    dataType: 'json',
+                    success: function (data) {
+
+                        $('#socialworkerNote').val(data.notes);
+
+                                    console.log(data.notes);
+
+
+                        var service_id = data.service_id;
+                        if(service_id == " "|| service_id == null){
+
+                            service_id = 0;
+                        }
+                        $('#noteId').val(data.id);
+                        $('#noteId').val(data.id);
+                        $('#socialList').val(service_id);
+
+                }
+              })
+     }else{
+
+                $('#noteId').val("add");
+
+     }
+
 
         $('#AddSocialWorkerFormData').trigger("reset");
         $('#AddSocialWorkerNotesModal').modal('show');
@@ -4719,12 +5105,6 @@ $('#addSocialWorkerNotes').click(function () {
             $('.note_modal').hide();
             $('.BMIRecords').hide();
             $('.medicalRecords').hide();
-
-             // $('.reading_bbreakfast').addClass('has-error'); 
-
-             //  $('.weight_kg').removeClass('has-error');  
-             //  $('.bmi_record').removeClass('has-error');    
-             //  $('.medication_record').removeClass('has-error'); 
 
 
           }else if(selected == 'F'){
@@ -4961,7 +5341,9 @@ $('#addSocialWorkerNotes').click(function () {
 
 
     $('#btn-inactive').click(function () {
-        var activate = $(this).val();
+        var activate = $(this).text();
+
+            console.log(activate);
 
             $('#inactivemodalFormData').trigger("reset");
             $('#inactiveEditorModal').modal('show');
@@ -4973,143 +5355,81 @@ $('#addSocialWorkerNotes').click(function () {
 
   
 
-$("#btn-save").click(function (e) {
-
-  
-        $.ajaxSetup({
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            }
-            
-        });
-        e.preventDefault();
-         var formData = {
-            patient_id: $('#patient_id').val(),
-            ref_date:  $('#refDate').val(),
-            ref_at: $('#refAt').val(),
-            ref_reason:  $('#reason').val(),
-            ref_by:  $('#refby').val(),
-            recommen:  $('#ref_recom').val(),
-            contact_person:  $('#contactPer').val(),
-            ref_back_date:  $('#refDateback').val(),
-            ref_back_by:  $('#refbyback').val(),
-            ref_slip_return:  $('#returnDate').val(),
-
-        };
-
-        console.log(formData);
-       var state = $('#btn-save').val();
-
-       var type = "POST";
-        var id = $('#id').val();
-        var ajaxurl = '{{URL::to("/refers")}}';
-        if (state == "update") {
-            type = "PUT";
-            ajaxurl = '{{URL::to("/refers")}}'+ '/' + id;
-            console.log(ajaxurl);
-        }
-        $.ajax({
-            type: type,
-            url: ajaxurl,
-            data: formData,
-            dataType: 'json',
-            success: function (data) {
-
-              $(".odd").remove();
-
-                var link = '<tr id="refer' + data.id + '"><td>' + data.ref_date + '</td><td>' + data.ref_at + '</td><td>' + data.ref_reason + '</td><td>' + data.ref_by + '</td>';
-                link += '<td><button class="btn btn-info edit-refer-modal" value="' + data.id + '">Edit</button>';
-                link += '<button class="btn btn-secondary accept_patient_referal" id="btn-accept" name ="btn-accept" value="' + data.id + '">Accept</button>';
-                 link += '<button class="btn btn-light print-link" id="btn-ptint" name ="btn-print" value="' + data.id + '">Print</button>';
-                
-                if (state == "add") {
-                    $('#links-list').append(link);
-                } else {
-                    $("#refer" + id).replaceWith(link);
-                }
-    
-                $('#modalFormData').trigger("reset");
-                $('#linkEditorModal').modal('hide');
-        },
-           error: function (data) {
-                console.log('Error:', data);
-            }
-
-        });
-      });
-
-$("#btn_activate").click(function (e) {
-
-          var curStat = $(this).val();
-
-          var patient_id = $("#patient-id").val();
-
-          console.log(curStat);
-
-          var newStat;
-
-          if(curStat == 1){
-
-              newStat = 0;
-          }else{
-
-              newStat = 1;
-          }
-
-          alert(patient_id);
 
 
-        $.ajaxSetup({
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            }
-            });
-               e.preventDefault();
-              var formData = {
 
-                    remarks:  $("#note").val(),
-                    inactive: newStat,
+// $("#btn_activate").click(function (e) {
 
-              };
+//           var curStat = $(this).val();
+
+//           var patient_id = $("#patient-id").val();
+
+//           console.log(curStat);
+
+//           var newStat;
+
+//           if(curStat == 1){
+
+//               newStat = 0;
+//           }else{
+
+//               newStat = 1;
+//           }
+
+//           alert(patient_id);
 
 
-            $.ajax({
-            type: "PUT",
-            url: '{{URL::to("/activation")}}'+ '/' + patient_id,
-            data: formData,
-            dataType: 'json',
-            success: function (data) {
+//         $.ajaxSetup({
+//             headers: {
+//                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+//             }
+//             });
+//                e.preventDefault();
+//               var formData = {
 
-                      $('#inactivemodalFormData').trigger("reset");
-                      $('#inactiveEditorModal').modal('hide');
+//                     remarks:  $("#note").val(),
+//                     inactive: newStat,
 
-                          var link = '<div class="dropdown-menu menu_btn2" aria-labelledby="dropdownMenuButton">';
+//               };
+
+
+//             $.ajax({
+//             type: "PUT",
+//             url: '{{URL::to("/activation")}}'+ '/' + patient_id,
+//             data: formData,
+//             dataType: 'json',
+//             success: function (data) {
+
+//                       $('#inactivemodalFormData').trigger("reset");
+//                       $('#inactiveEditorModal').modal('hide');
+
+//                           var link = '<div class="dropdown-menu menu_btn2" aria-labelledby="dropdownMenuButton">';
                        
 
-                       if(curStat == 1){
-                           link += ' <a class="dropdown-item visit_btn" id="a-visit" name="a-visit" href="#"><button id="btn-visit" name="btn-visit" class="btn">Patient Visit</button></a>';
-                            link += '<a class="dropdown-item inactive_btn"  id="a-inactive" name="a-inactive" href="#"><button id="btn-inactive" name="btn-inactive" class="btn" value="{{$pats->inactive}}">Inactive</button></a>';
+//                        if(curStat == 1){
+//                            link += ' <a class="dropdown-item visit_btn" id="a-visit" name="a-visit" href="#"><button id="btn-visit" name="btn-visit" class="btn">Patient Visit</button></a>';
+//                             link += '<a class="dropdown-item inactive_btn"  id="a-inactive" name="a-inactive" href="#"><button id="btn-inactive" name="btn-inactive" class="btn" value="{{$pats->inactive}}">Inactive</button></a>';
 
 
                         
-                        }else{
-                             link += '<a class="dropdown-item inactive_btn"  id="a-inactive" name="a-inactive" href="#"><button id="btn-inactive" name="btn-inactive" class="btn" value="{{$pats->inactive}}">Active</button></a>';
+//                         }else{
+//                              link += '<a class="dropdown-item inactive_btn"  id="a-inactive" name="a-inactive" href="#"><button id="btn-inactive" name="btn-inactive" class="btn" value="{{$pats->inactive}}">Active</button></a>';
 
-                        }
+//                         }
 
-                       $('.menu_btn').replaceWith(link);
+//                        $('.menu_btn').replaceWith(link);
 
 
                  
-            },
-           error: function (data) {
-                console.log('Error:', data);
-            }
-          });
+//             },
+//            error: function (data) {
+//                 console.log('Error:', data);
+//             }
+//           });
 
 
 
-});
+// });
 
 $("#btn-save-socialworker").click(function (e) {
    
@@ -5126,21 +5446,48 @@ $("#btn-save-socialworker").click(function (e) {
     var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
     var dateTime = date+' '+time;
 
+      var service_id = $('#socialList').val();
+
+
+     if(service_id == 0){
+
+          service_id = " ";
+      }
+
+
       e.preventDefault();
          var formData = {
             progress_id: "sample",
             patient_id: $('#patient_id').val(),
             date_time: dateTime,
-            service_id: $('#socialList').val(),
+            service_id: service_id,
             note_by: $('#note_by').val(),
             notes: $('#socialworkerNote').val(),
             role_type: "socialworker"
         };
 
 
+
         var type = "POST";
         var id = $('#id').val();
-        var ajaxurl = '{{URL::to("/addsocialworkernotes")}}';
+       var noteid = $('#noteId').val();
+
+               var ajaxurl ="";
+
+
+        if(noteid == "add" ){
+
+              console.log("here");
+
+                ajaxurl = '{{URL::to("/addsocialworkernotes")}}';
+
+          }else{
+
+            console.log("not here");
+
+             ajaxurl = '{{URL::to("/updatesocialworkernotes")}}/'+noteid;
+
+          }
 
 
      $.ajax({
@@ -5150,16 +5497,38 @@ $("#btn-save-socialworker").click(function (e) {
             dataType: 'json',
             success: function (data) {
 
-                  console.log(data);
+                var service = " ";
 
+                  console.log(data[0].service_id);
 
-                    var link = '<tr id="socialworker_' + data[0].id + '"><td>' + data[0].date_time + '</td><td>' + data[0]['servicex'].name + '</td><td>' + data[0].notes + '</td><td>' + data[0]['userx'].lname +', '+ data[0]['userx'].fname + '</td>';
+                  if(data[0].service_id){
+                     service = data[0]['servicex'].name;
+
+                  }
+
+                if(noteid == "add" ){
+
+                    var link = '<tr id="socialworker_' + data[0].id + '"><td>' + data[0].date_time + '</td><td>' + service + '</td><td>' + data[0].notes + '</td><td>' + data[0]['userx'].lname +', '+ data[0]['userx'].fname + '</td>';
                 link += '<td></td>';
                 
 
                     $('#socialworker-list').append(link);
 
-               
+               }else{
+
+                            var link = '<td id="socialworkerService_'+data[0].id+'">'+service+'</td>';
+
+                                   $('#socialworkerService_'+data[0].id).replaceWith(link);
+
+                        
+
+                                var depart = '<td id="socialworkerNote_'+data[0].id+'">'+data[0].notes+'</td>';
+
+                                  $('#socialworkerNote_'+data[0].id).replaceWith(depart);
+
+
+
+               }
 
                 $('#AddSocialWorkerFormData').trigger("reset");
                 $('#AddSocialWorkerNotesModal').modal('hide');
@@ -5246,7 +5615,7 @@ $("#btn-save-nursenotes").click(function (e) {
 
    }else if(selectVal == 'BS'){
 
-     if( reading_bbreakfast == null  || reading_bbreakfast == "" || nursenote == null  || nursenote == ""){
+     if( reading_bbreakfast == null  || reading_bbreakfast == " " || nursenote == null  || nursenote == " "){
               console.log("sulod");
       }else{
 
@@ -5294,7 +5663,7 @@ $("#btn-save-nursenotes").click(function (e) {
 
    }else if(selectVal == 'M'){
 
-        if( medication_record == null  || medication_record == "" || nursenote == null  || nursenote == ""){
+        if( medication_record == null  || medication_record == " " || nursenote == null  || nursenote == " "){
               console.log("sulod");
       }else{
 
@@ -5315,7 +5684,7 @@ $("#btn-save-nursenotes").click(function (e) {
 
 
      $.ajax({
-                type: type,
+            type: type,
             url: ajaxurl,
             data: formData,
             dataType: 'json',
@@ -5346,21 +5715,26 @@ $("#btn-save-nursenotes").click(function (e) {
    }else{
 
 
-    if($('.nursenote').val() == null || $('.nursenote').val() == ""){
+    if($('.nursenote').val() == null || $('.nursenote').val() == " "){
 
           console.log("sulod");
 
     }else{
 
+        var service_id = $('#nurseList').val();
 
-    console.log("nursenote", $('.nursenote').val());
+      if(service_id == 0){
+
+          service_id = " ";
+      }
+
 
       e.preventDefault();
          var formData = {
             progress_id: "sample",
             patient_id: $('#patient_id').val(),
             date_time: dateTime,
-            service_id: $('#nurseList').val(),
+            service_id: service_id,
             note_by: $('#note_by').val(),
             notes: $('#nursenote').val(),
             role_type: "nurse"
@@ -5441,8 +5815,23 @@ $("#btn-save-psychiatristnotes").click(function (e) {
 
         var type = "POST";
         var id = $('#id').val();
-        var ajaxurl = '{{URL::to("/addsocialworkernotes")}}';
+        var noteid = $("#noteId").val();
 
+       var ajaxurl ="";
+
+        if(noteid == "add" ){
+
+              console.log("here");
+
+                ajaxurl = '{{URL::to("/addsocialworkernotes")}}';
+
+          }else{
+
+            console.log("not here");
+
+             ajaxurl = '{{URL::to("/updatesocialworkernotes")}}/'+noteid;
+
+          }
 
      $.ajax({
             type: type,
@@ -5451,6 +5840,7 @@ $("#btn-save-psychiatristnotes").click(function (e) {
             dataType: 'json',
             success: function (data) {
 
+              if(noteid == "add" ){
 
 
                    var link = '<tr id="psychiatrist_' + data[0].id + '"><td>' + data[0].date_time + '</td><td>' + data[0]['servicex'].name + '</td><td>' + data[0].notes + '</td><td>' + data[0]['userx'].lname +', '+ data[0]['userx'].fname + '</td>';
@@ -5458,6 +5848,21 @@ $("#btn-save-psychiatristnotes").click(function (e) {
                 
 
                     $('#psychiatrist-list').append(link);
+
+               }else{
+
+                          var link = '<td id="psychiatristService_'+data[0].id+'">'+data[0]['servicex'].name+'</td>';
+
+                                   $('#psychiatristService_'+data[0].id).replaceWith(link);
+
+                        
+
+                                var depart = '<td id="psychiatristNote_'+data[0].id+'">'+data[0].notes+'</td>';
+
+                                  $('#psychiatristNote_'+data[0].id).replaceWith(depart);
+
+
+                }
               
 
                 $('#AddPsychiatristFormData').trigger("reset");
@@ -5549,6 +5954,7 @@ $("#btn-save-doctornotes").click(function (e) {
             
         });
 
+
      var today = new Date();
     var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
     var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
@@ -5567,8 +5973,24 @@ $("#btn-save-doctornotes").click(function (e) {
 
 
         var type = "POST";
-        var id = $('#id').val();
-        var ajaxurl = '{{URL::to("/addsocialworkernotes")}}';
+
+        var noteid = $("#noteId").val();
+
+       var ajaxurl ="";
+
+        if(noteid == "add" ){
+
+              console.log("here");
+
+                ajaxurl = '{{URL::to("/addsocialworkernotes")}}';
+
+          }else{
+
+            console.log("not here");
+
+             ajaxurl = '{{URL::to("/updatesocialworkernotes")}}/'+noteid;
+
+          }
 
 
      $.ajax({
@@ -5578,14 +6000,29 @@ $("#btn-save-doctornotes").click(function (e) {
             dataType: 'json',
             success: function (data) {
 
+                  if(noteid == "add" ){
 
 
                    var link = '<tr id="doctor_' + data[0].id + '"><td>' + data[0].date_time + '</td><td>' + data[0]['servicex'].name + '</td><td>' + data[0].notes + '</td><td>' + data[0]['userx'].lname +', '+ data[0]['userx'].fname + '</td>';
-                link += '<td></td>';
+                link += '<td><button class="btn btn-info addDoctortNotes"  id="addDoctortNote" name="addDoctortNote" style="font-size: 8px;" value="'+data[0].id+'"><i class="fas fa-edit"></i></button></td>';
+
                 
 
                     $('#doctor-list').append(link);
-        
+              }else{
+
+                   var link = '<td id="doctorService_'+data[0].id+'">'+data[0]['servicex'].name+'</td>';
+
+                                   $('#doctorService_'+data[0].id).replaceWith(link);
+
+                        
+
+                                var depart = '<td id="doctorNote_'+data[0].id+'">'+data[0].notes+'</td>';
+
+                                  $('#doctorNote_'+data[0].id).replaceWith(depart);
+
+
+            }
                
                 $('#AddDoctorFormData').trigger("reset");
                 $('#AddDoctorNotesModal').modal('hide');
@@ -5595,8 +6032,76 @@ $("#btn-save-doctornotes").click(function (e) {
             }
 
         });
+ // }
 
 });
+
+$("#btn-save").click(function (e) {
+
+  
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+            
+        });
+        e.preventDefault();
+         var formData = {
+            patient_id: $('#patient_id').val(),
+            ref_date:  $('#refDate').val(),
+            ref_at: $('#refAt').val(),
+            ref_reason:  $('#reason').val(),
+            ref_by:  $('#refby').val(),
+            recommen:  $('#ref_recom').val(),
+            contact_person:  $('#contactPer').val(),
+            ref_back_date:  $('#refDateback').val(),
+            ref_back_by:  $('#refbyback').val(),
+            ref_slip_return:  $('#returnDate').val(),
+
+        };
+
+        console.log(formData);
+       var state = $('#btn-save').val();
+
+       var type = "POST";
+        var id = $('#id').val();
+        var ajaxurl = '{{URL::to("/refers")}}';
+        if (state == "update") {
+            type = "PUT";
+            ajaxurl = '{{URL::to("/refers")}}'+ '/' + id;
+            console.log(ajaxurl);
+        }
+        $.ajax({
+            type: type,
+            url: ajaxurl,
+            data: formData,
+            dataType: 'json',
+            success: function (data) {
+
+              $(".odd").remove();
+
+                var link = '<tr id="refer' + data.id + '"><td>' + data.ref_date + '</td><td>' + data.ref_at + '</td><td>' + data.ref_reason + '</td><td>' + data.ref_by + '</td>';
+                link += '<td><button class="btn btn-info edit-refer-modal" value="' + data.id + '">Edit</button>';
+                link += '<button class="btn btn-secondary accept_patient_referal" id="btn-accept" name ="btn-accept" value="' + data.id + '">Accept</button>';
+                 link += '<button class="btn btn-light print-link" id="btn-ptint" name ="btn-print" value="' + data.id + '">Print</button>';
+                
+                if (state == "add") {
+                    $('#links-list').append(link);
+                } else {
+                    $("#refer" + id).replaceWith(link);
+                }
+    
+                $('#modalFormData').trigger("reset");
+                $('#linkEditorModal').modal('hide');
+        },
+           error: function (data) {
+                console.log('Error:', data);
+            }
+
+        });
+      });
+
+
 //Accept Referral REFERAL 
 $('.accept_patient_referal').click(function (e) {
 
@@ -5640,7 +6145,7 @@ $('.accept_patient_referal').click(function (e) {
             success: function (data) {
                   var link = '<tr id="refer' + data.id + '"><td>' + data.ref_date + '</td><td>' + data.ref_at + '</td><td>' + data.ref_reason + '</td><td>' + data.ref_by + '</td>';
                 link += '<td><button class="btn btn-info view-link" value="' + data.id + '">View</button>';
-                link += '<button class="btn btn-light print-link" id="btn-print" name ="btn-print" value="' + data.id + '">Print</button></td>';
+                link += '<button class="btn btn-light print-link" id="btn-print" name ="btn-print" value="' + data.id +'">Print</button></td>';
                
                     $("#refer" + refer_id).replaceWith(link);
             },
@@ -5705,8 +6210,8 @@ $('body').on('click', '.edit-refer-modal', function () {
 
 
 
-  })
+   })
 
 
-  </script>
-@endsection
+   </script>
+ @endsection

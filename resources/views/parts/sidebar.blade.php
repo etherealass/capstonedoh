@@ -118,20 +118,28 @@
           <a class="dropdown-item" href="{{URL::to('/showpatients/'.$dis)}}">Dismissed</a>
         </div>
       </li>
-      @if(Auth::user()->user_role()->first()->name == 'Social Worker')
+      
+     @if(Auth::user()->user_role()->first()->name == 'Social Worker' || Auth::user()->user_role()->first()->name == 'Nurse')
+        <li class="nav-item">
+        <a class="nav-link" href="{{URL::to('/showCalendar')}}">
+          <i class="fas fa-fw fa-calendar"></i>
+          <span>Calendar</span></a>
+      </li>
+
       <li class="nav-item">
         <a class="nav-link" href="{{URL::to('/reports')}}">
           <i class="fas fa-fw fa-chart-area"></i>
           <span>Reports</span></a>
       </li>
+
       @endif
-      @if(Auth::user()->user_role()->first()->name == 'Doctor')
+<!--       @if(Auth::user()->user_role()->first()->name == 'Doctor')
       <li class="nav-item">
          <a class="nav-link" href="tables.html">
           <i class="fas fa-fw fa-briefcase-medical"></i>
           <span>My Appointments</span></a>
       </li>
-      @endif
+      @endif -->
       <!--<li class="nav-item">
         <a class="nav-link" href="tables.html">
           <i class="fas fa-fw fa-list"></i>

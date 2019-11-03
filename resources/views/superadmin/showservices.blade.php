@@ -52,9 +52,17 @@
                             <tr>
                                 <td>{{$service->name}}</td>
                                 <td>
+                                  @if($service->inactive == 1)
+                                      <div class="forinactive">
+                                        <button class="btn btn-success deleteServices" id="deleteServices" name="deleteServices" value="{{$service->id}}">Active</button></td>
+
+                                    </div>
+                                    @else
                                     <button class="btn btn-info editServices " id="editServices" name="editServices" value="{{$service->id}}">Edit</button>
-                                    <button class="btn btn-danger deleteServices" id="deleteServices" name="deleteServices" value="{{$service->id}}">Inactive</button>
-                                      <input type="hidden" id="service_id" name="service_id" value="{{$service->id}}"></td>
+                                    <button class="btn btn-danger deleteServices" id="deleteServices" name="deleteServices" value="{{$service->id}}">Delete</button>
+                                      <input type="hidden" id="service_id" name="service_id" value="{{$service->id}}">
+                                      @endif
+                                    </td>
                             </tr>
                          @endforeach
                       </tbody>
@@ -68,9 +76,11 @@
                         <div class="modal-header">
                             <h4 class="modal-title" id="EditServiceModalLabel">Edit Service</h4>
                         </div>
-                        <div class="modal-body">
-                            <form id="EditServiceModalData" name="EditServiceModalData" class="form-horizontal" novalidate="">
+                        <form action="{{URL::to('/save_services')}}" method="post" id="EditServiceModalData" name="EditServiceModalData">
+                              {{ csrf_field() }}
+                          <div class="modal-body">
                                 <div class="form-group">
+                                      <input type="hidden" name="_token" value="{{ csrf_token() }}">
                                     <label for="servicename">Service Name</label>
                                      <input type="text" id="servicename" class="form-control" required="required" autofocus="autofocus" name="name">
                                     <label for="servicedesc">Description</label>
@@ -97,18 +107,43 @@
                                 
                                     </select>
                                 </div>
-                          </form>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-primary"  id="btn-attended" name ="btn-attended" value="add">Save changes
+                          <input type="hidden" id="serviceId" class="form-control" required="required" autofocus="autofocus" name="serviceId">
+                            <button type="submit" class="btn btn-primary"  id="btn-save" name ="btn-save" value="add">Save changes
                             </button>
-                            
-
-
                         </div>
+                      </form>
+
                     </div>
                 </div>
             </div>
+
+            <div class="modal fade" id="deleteServicesModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+              <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="deleteServicesLabel">Are you sure you want to delete this ?</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">×</span>
+                    </button>
+                  </div>
+                  <form action="{{URL::to('/deleteServices')}}" name="deleteServicesModalData" method="post" class="form-horizontal" novalidate="">
+                    {{ csrf_field() }} 
+                    <div class="modal-body">
+                    <input type="hidden" id="servicesId" name="servicesId" class="form-control" value="">
+                    <input type="hidden" id="servicestatus" name="servicestatus" class="form-control" value="">
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-primary" data-dismiss="modal">Cancel</button>
+
+                      <button type="submit" class="btn btn-danger" id="deleteButton">Delete</button>  
+                    </div>
+                  </form>
+                </div>
+              </div>
+          </div>
+
 
         
 
@@ -125,11 +160,82 @@
 
               $(".notify").selectpicker();
 
+      $(".deleteServices").click(function (e) {
+
+            //alert("sample");
+
+            var stat = $(this).text();
+             var id = $(this).val();
+
+            $('#servicesId').val(id);
+            $('#servicestatus').val(stat);
+
+
+            if(stat != "Delete"){
+              console.log("sample");
+                $("#deleteButton").addClass("btn-success");
+                $("#deleteButton").text("Activate");
+                $("#deleteButton").removeClass("btn-danger");
+            }else{
+                 $("#deleteButton").addClass("btn-danger");
+                $("#deleteButton").text("Delete");
+                $("#deleteButton").removeClass("btn-success");
+
+            }
+
+                  $('#deleteServicesModalData').trigger("reset");
+                  $('#deleteServicesModal').modal('show');
+
+
+          });
+
+
+      $("#btn-save").click(function (e){
+
+        //    $.ajaxSetup({
+        //     headers: {
+        //         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        //     }
+            
+        // });
+
+        //           $('#EditServiceModalData').trigger("reset");
+        //           $('#EditServiceModal').modal('hide');
+
+
+        //           var id = $('#serviceId').val();
+
+        //           var display = $('.display').val();
+
+        //           console.log(display); 
+
+        //           var ajaxurl = '{{URL::to("/saveservices")}}/'+id;
+
+
+        //            $.ajax({
+        //              type: "POST",
+        //              url: ajaxurl,
+
+        //              success: function (data) {
+
+
+        //                },
+        //              error: function (data) {
+        //                   console.log('Error:', data);
+        //               }
+
+        //        });
+
+            
+             
+
+
+
+      });
 
 
    $('#EditServiceModal').on('hidden.bs.modal', function () {
         //$(this).removeData('bs.modal');
-        console.log('hide');
         $(this).find('form').trigger("reset");
         $(this).find('select').removeAttr('selected');
           $('#EditServiceModalData .display option').removeAttr('selected','selected');
@@ -162,6 +268,8 @@
                success: function (data) {
                 
               $('#EditServiceModalData li, #EditServiceModalData li a').removeClass('selected');
+
+              $('#serviceId').val(data['service']['id']);
         
                   $serivcename = data['service']['name'];
 
@@ -187,6 +295,8 @@
                       }
                       $('select[name="notify[]"]').next('.btn').attr('title', notifytitles);
                       $('select[name="notify[]"]').next('.btn').find('div.filter-option-inner-inner').text(notifytitles);
+
+                      //$('select[name="display[]"]').next().next('div.dropdown-menu').find("li.selected a");
 
                   }
 
@@ -218,11 +328,6 @@
                   }
 
                
-
-
-
-
-
                   console.log($serivcename);
                  
                     $('#servicename').val($serivcename);
@@ -240,15 +345,6 @@
               });
 
 
-               $('.deleteServices').click(function () {
-                    
-                  
-
-                });
-
-              
-
-  
 
   })
 

@@ -210,15 +210,37 @@ class InterventionController extends Controller
 
      }
 
-     public function inactiveintervention(Request $request, $id){
+     public function inactiveintervention(Request $request){
 
-            $inactive = $request->status;
+            $set = $request->intervenstatus;
+            $id = $request->interventionId;
+            $inactive = 0;
 
-            $interven = Interventions::find($id);
+            if($set == "Delete"){
+
+                  $inactive = 1;
+              }else{
+
+                    $inactive =0;
+                }
+        $interven = Interventions::find($id);
 
          $interven->update(array('inactive' => $inactive));
 
-                  return Response::json($interven);
+         $intervenNAme = $interven->interven_name;
+
+          if($inactive == 1){
+              Session::flash('alert-class', 'danger');
+              flash('Intervention Deleted', '')->overlay();
+          }else{
+
+            Session::flash('alert-class', 'success');
+              flash('Intervetion  Activated', '')->overlay();
+          }
+
+
+                      return redirect('/showIntervention');
+         //          return Response::json($interven);
 
 
      }

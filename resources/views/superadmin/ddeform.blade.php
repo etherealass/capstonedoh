@@ -147,9 +147,9 @@
               <div class="col-md-4 mb-4">
                 <div class="form-label-group" id="textas" style="display: none;">
                   <h6>City Jail*</h6>
-                <select class="form-control" id="jail" placeholder="Patient Type" required="required" name="jail">
+                <select class="form-control" id="jail" placeholder="Patient Type" name="jail">
+                  <option value=" " disabled selected hidden>City Jail</option>
                 @foreach($jails as $jail)
-                    <option value="" disabled selected hidden>City Jail</option>
                     <option value="{{$jail->id}}">{{$jail->name}}</option>
                 @endforeach
                 </select>
@@ -158,7 +158,7 @@
               <div class="col-md-4 mb-4">
                 <div class="form-label-group" id="textb" style="display: none;">
                   <h6>Case Number*</h6>
-                    <input type="text" id="caseno" class="form-control" placeholder="Case Number" required="required" autofocus="autofocus" name="caseno" value="">
+                    <input type="text" id="caseno" class="form-control" placeholder="Case Number" autofocus="autofocus" name="caseno" value="">
                 </div>
               </div>
             </div>
@@ -211,9 +211,9 @@
               <div class="col-md-12">
                 <div class="form-label-group">
                    <h6>Drug Abused (Present)*</h6>
-                   <select class="form-control" id="jail" placeholder="Patient Type" required="required" name="jail">
+                   <select class="form-control" id="dabused" placeholder="Patient Type" required="required" name="dabused">
+                    <option value=" " disabled selected hidden>--Chooose--</option>
                 @foreach($dabused as $dab)
-                    <option value="" disabled selected hidden>--Chooose--</option>
                     <option value="{{$dab->id}}">{{$dab->name}}</option>
                 @endforeach
                 </select>
