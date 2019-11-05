@@ -88,6 +88,32 @@ class ReferController extends Controller
          return Response::json($progress);
 
     }
+    public function updateRecords(Request $request, $recordType, $id){
+
+        if($recordType == "BMIRecords"){
+
+            $notes = Bmi_records::find($id);
+
+          $notes->update(array('bmi' => $request->bmi, 'weight' => $request->weight, 'remarks' => $request->remarks));
+
+        }else if($recordType == "BloodSugar"){
+
+                      $notes = Blood_sugar_records::find($id);
+
+                $notes->update(array('reading' => $request->reading, 'notes' => $request->notes));
+
+
+        }else if($recordType == "medicalRecords"){
+
+                        $notes = Medical_records::find($id);
+                        $notes->update(array('medication' => $request->medication, 'notes' => $request->notes));
+
+
+        }
+
+          return Response::json($notes);
+
+    }
 
     public function updatesocialworkernotes(Request $request,$id){
 
@@ -160,8 +186,29 @@ class ReferController extends Controller
 
     public function getRecords(Request $request, $recordType){
 
+      $id = $request->noteId;
 
 
+      if($recordType == "mediRecords"){
+
+           $progress = Medical_records::where('id', $id)->with('patientx')->with('userxe')->get();
+
+      }else if($recordType == "bloodSugar"){
+
+
+          $progress = Blood_sugar_records::where('id', $id)->with('patientx')->with('userxe')->get();
+
+
+
+      }else if($recordType == "BMIRecords"){
+
+
+          $progress = Bmi_records::where('id', $id)->with('patientx')->with('userxe')->get();
+
+        }
+
+
+         return Response::json($progress);
 
       
     }

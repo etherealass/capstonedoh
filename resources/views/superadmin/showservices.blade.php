@@ -44,13 +44,23 @@
                       <thead>
                           <tr>
                             <th>Service</th>
+                            <th>Parent</th>
                             <th>Action</th>
                           </tr>
                       </thead>
                       <tbody>
                        @foreach($services as $service)
                             <tr>
-                                <td>{{$service->name}}</td>
+                                <td id=servicename_{{$service->id}}>{{$service->name}}</td>
+                                @if($service->parent != 0)
+                                @foreach($services as $serviced)
+                                    @if($service->parent == $serviced->id)
+                                <td id=serviceparent_{{$service->id}}>{{$serviced->name}}</td>
+                                  @endif
+                                  @endforeach
+                                @else
+                                <td id=serviceparent_{{$service->id}}></td>
+                                @endif
                                 <td>
                                   @if($service->inactive == 1)
                                       <div class="forinactive">
@@ -80,6 +90,13 @@
                               {{ csrf_field() }}
                           <div class="modal-body">
                                 <div class="form-group">
+                                  <label for="parent">Parent</label>
+                                   <select id="parent" class="form-control parent" name="parent">
+                                        <option value="0">--NONE--</option>
+                                      @foreach($parent as $parents)
+                                            <option value="{{$parents->id}}">{{$parents->name}}</option>
+                                        @endforeach
+                                      </select>
                                       <input type="hidden" name="_token" value="{{ csrf_token() }}">
                                     <label for="servicename">Service Name</label>
                                      <input type="text" id="servicename" class="form-control" required="required" autofocus="autofocus" name="name">
@@ -90,7 +107,8 @@
 
                                         <label>Display</label>
                                       <div class="id_100">
-                                        <select id="display[]" class="selectpicker form-control display" style="font-size: 18px; width: 500px;height: 100px" name="display[]" multiple="multiple">
+                                       
+                                        <select id="display" class="selectpicker form-control display" style="font-size: 18px; width: 500px;height: 100px" name="display[]" multiple="multiple">
                                         @foreach($roles as $role)
                                             <option value="{{ $role->id}}">{{ $role['name'] }}</option>
                                         @endforeach
@@ -100,7 +118,7 @@
 
                                 <div class="form-group">
                                       <label>Notify</label>
-                                      <select id="notify[]" class="notify form-control notify " style="font-size: 18px; width: 500px;height: 100px" name="notify[]" multiple="multiple">
+                                      <select id="notify" class="notify form-control notify " style="font-size: 18px; width: 500px;height: 100px" name="notify[]" multiple="multiple">
                                       @foreach($roles as $role)
                                        <option value="{{ $role->id}}">{{ $role['name'] }}</option>
                                       @endforeach
@@ -110,7 +128,7 @@
                         </div>
                         <div class="modal-footer">
                           <input type="hidden" id="serviceId" class="form-control" required="required" autofocus="autofocus" name="serviceId">
-                            <button type="submit" class="btn btn-primary"  id="btn-save" name ="btn-save" value="add">Save changes
+                            <button type="buttin" class="btn btn-primary"  id="btn-save" name ="btn-save" value="add">Save changes
                             </button>
                         </div>
                       </form>
@@ -192,39 +210,55 @@
 
       $("#btn-save").click(function (e){
 
-        //    $.ajaxSetup({
-        //     headers: {
-        //         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-        //     }
+           $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
             
-        // });
+        });
 
-        //           $('#EditServiceModalData').trigger("reset");
-        //           $('#EditServiceModal').modal('hide');
+                 
 
+                  var id = $('#serviceId').val();
 
-        //           var id = $('#serviceId').val();
+                  var display = $("#display").val();
 
-        //           var display = $('.display').val();
+                  var notify = $("#notify").val();
 
-        //           console.log(display); 
-
-        //           var ajaxurl = '{{URL::to("/saveservices")}}/'+id;
+                  console.log(display);
 
 
-        //            $.ajax({
-        //              type: "POST",
-        //              url: ajaxurl,
-
-        //              success: function (data) {
+                   var ajaxurl = '{{URL::to("/saveservices")}}/'+id;
 
 
-        //                },
-        //              error: function (data) {
-        //                   console.log('Error:', data);
-        //               }
+                   $.ajax({
+                     type: "POST",
+                     url: ajaxurl,
+                     data: {'parent':$('#parent').val(),'servicename': $("#servicename").val(), 'servicedesc': $("#servicedesc").val(), 'display': display, 'notify': notify},
+                     success: function (data) {
 
-        //        });
+                              $("#servicename_"+data.id).val(data.servicename);
+                              $("#serviceparent_"+data.id).val(data.parent);
+
+                               var link = '<td id="servicename_'+data.id+'">'+data.servicename+'</td>';
+
+                                   $('#servicename_'+data.id).replaceWith(link);
+
+                        
+
+                                var depart = '<td id="serviceparent_'+data.id+'">'+data.parent+'</td>';
+
+                                  $('#serviceparent_'+data.id).replaceWith(depart);
+
+                       },
+                     error: function (data) {
+                          console.log('Error:', data);
+                      }
+
+               });
+
+                $('#EditServiceModalData').trigger("reset");
+                  $('#EditServiceModal').modal('hide');
 
             
              
@@ -264,7 +298,6 @@
                 type: "GET",
                 url: ajaxurl,
                 data: {'id': $(this).val()},
-
                success: function (data) {
                 
               $('#EditServiceModalData li, #EditServiceModalData li a').removeClass('selected');
@@ -296,7 +329,6 @@
                       $('select[name="notify[]"]').next('.btn').attr('title', notifytitles);
                       $('select[name="notify[]"]').next('.btn').find('div.filter-option-inner-inner').text(notifytitles);
 
-                      //$('select[name="display[]"]').next().next('div.dropdown-menu').find("li.selected a");
 
                   }
 
@@ -330,6 +362,7 @@
                
                   console.log($serivcename);
                  
+                    $('#parent').val(data['service']['parent']);
                     $('#servicename').val($serivcename);
                     $('#servicedesc').val($description);
                 },

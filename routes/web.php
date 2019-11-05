@@ -303,6 +303,10 @@ Route::group(['middleware' =>'auth'], function()
 
 	 Route::post('/addBMIrecords/{id}', "ReferController@addRecords");
 	 
+	Route::get('/getRecords/{id}', "ReferController@getRecords");
+
+ 	Route::post('/updateRecords/{recordType}/{id}', "ReferController@updateRecords");
+
 	 Route::post('/addDentalNotes', "ReferController@addDentalNotes");
 
 	 Route::post('/register_role', "RegisterController@register_role");
@@ -335,8 +339,7 @@ Route::group(['middleware' =>'auth'], function()
 
 	 Route::post('/deleteServices', "ServiceController@inactiveService");
 
-	 Route::post('/save_services', "ServiceController@save_services");
-
+	 Route::post('/saveservices/{id}', "ServiceController@save_services");
 
 	 Route::any('/show_jails', "ViewController@show_jails");
 

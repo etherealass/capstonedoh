@@ -4802,13 +4802,21 @@ $today = $year . '-' . $month . '-' . $day;
       }
 });
 
-    $('.addNurseNotes').click(function () {
+   // $('.addNurseNotes').click(function () {
+
+          $('body').on('click', '.addNurseNotes', function () {
+
 
             $('#NurseNotesFormData').trigger("reset");
-        $('#NurseNotesModal').modal('show');
+            $('#NurseNotesModal').modal('show');
 
+            $('#noteId').val($(this).val());
+
+            console.log($(this).val());
 
        if($(this).val() != 'add'){
+
+
 
               var type = $('#tableType').val();
               console.log(type);
@@ -4819,12 +4827,9 @@ $today = $year . '-' . $month . '-' . $day;
                   $('.medicalRecords').show();
 
 
-                    $('#BloodSugarTablediv').hide();
-                    $('#BMIMonitoringdiv').hide();
-                    $('#nurseTablediv').hide();
 
 
-                    $('#nurseList').val("M");
+                     $('#nurseList').val("M");
                       $(".nurseList option[value=M]").removeAttr('hidden', true);
                       $(".nurseList option[value='M']").prop("selected", true);
 
@@ -4832,24 +4837,102 @@ $today = $year . '-' . $month . '-' . $day;
                 var id = $(this).val();
                 var ajaxurl = '{{URL::to("/getRecords")}}/mediRecords' ;
 
+                console.log(id);
+
 
                      $.ajax({
                             type: type,
                             url: ajaxurl,
                             dataType: 'json',
+                            data: {'noteId': id},
                             success: function (data) {
 
+                                //$(".nurseList")prop()
+                                $(".nurseList").attr("disabled", 'disabled');
+                                $("#medication_record").val(data[0].medication);
+                                $("#nursenote").val(data[0].notes);
 
                         }
                       });
 
 
+                }else if(type == "BS"){
+
+
+                  $('.BloodSugarRecords').removeAttr('hidden');
+                  $('.BloodSugarRecords').show();
+
+
+                
+
+                     $('#nurseList').val("M");
+                      $(".nurseList option[value=BS]").removeAttr('hidden', true);
+                      $(".nurseList option[value='BS']").prop("selected", true);
+
+                        var type = "GET";
+                        var id = $(this).val();
+                        var ajaxurl = '{{URL::to("/getRecords")}}/bloodSugar' ;
+
+                console.log(id);
+
+
+                     $.ajax({
+                            type: type,
+                            url: ajaxurl,
+                            dataType: 'json',
+                            data: {'noteId': id},
+                            success: function (data) {
+
+                                $(".nurseList").attr("disabled", 'disabled');
+                              //  $("#medication_record").val(data[0].medication);
+
+                              $("#reading_bbreakfast").val(data[0].reading);
+                                $("#nursenote").val(data[0].notes);
+
+                        }
+                      });
+
+
+
+                }else if(type == "F"){
+
+
+                      $('.BMIRecords').removeAttr('hidden');
+                      $('.BMIRecords').show();
+
+                       $(".nurseList option[value=F]").removeAttr('hidden', true);
+                      $(".nurseList option[value='F']").prop("selected", true);
+
+                        var type = "GET";
+                        var id = $(this).val();
+                        var ajaxurl = '{{URL::to("/getRecords")}}/BMIRecords' ;
+
+
+                     $.ajax({
+                            type: type,
+                            url: ajaxurl,
+                            dataType: 'json',
+                            data: {'noteId': id},
+                            success: function (data) {
+
+                                $(".nurseList").attr("disabled", 'disabled');
+                              //$("#reading_bbreakfast").val(data[0].reading);
+                                $("#weight_kg").val(data[0].weight);
+                                $("#bmi_record").val(data[0].bmi);
+                                $("#nursenote").val(data[0].remarks);
+
+                        }
+                      });
+
+
+
                 }else{
+
                 var type = "GET";
                 var id = $(this).val();
                 var ajaxurl = '{{URL::to("/findNotes")}}/' + id;
 
-
+                       $(".nurseList").removeAttr("disabled", 'disabled');
                      $.ajax({
                             type: type,
                             url: ajaxurl,
@@ -4870,6 +4953,8 @@ $today = $year . '-' . $month . '-' . $day;
                                 $("#nurseList option[value=BS]").prop('hidden', true);
 
                         }
+
+                        
                       });
                 }
 
@@ -4878,6 +4963,8 @@ $today = $year . '-' . $month . '-' . $day;
                         $("#nurseList option[value=M]").removeAttr('hidden', true);
                         $("#nurseList option[value=F]").removeAttr('hidden', true);
                         $("#nurseList option[value=BS]").removeAttr('hidden', true);
+                        $(".nurseList").removeAttr("disabled", 'disabled');
+
 
      }
 
@@ -5551,9 +5638,11 @@ $("#btn-save-nursenotes").click(function (e) {
             
         });
 
+        var noteId = $("#noteId").val();
 
+        console.log("noteId",noteId);
 
-     var today = new Date();
+    var today = new Date();
     var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
     var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
     var dateTime = date+' '+time;
@@ -5583,10 +5672,32 @@ $("#btn-save-nursenotes").click(function (e) {
         };
 
 
+
         var type = "POST";
         var id = $('#id').val();
-        var ajaxurl = '{{URL::to("/addBMIrecords")}}/BMIRecords';
+        var ajaxurl ="";
 
+        if(noteId == "add"){
+
+        ajaxurl = '{{URL::to("/addBMIrecords")}}/BMIRecords';
+        
+        }else{
+
+                  ajaxurl = '{{URL::to("/updateRecords")}}/BMIRecords/'+noteId;
+
+        }
+
+                      $('#tableType').val("F");
+                      $(".tableType option[value=F]").removeAttr('hidden', true);
+                      $(".tableType option[value='F']").prop("selected", true);
+
+              $('#BMIMonitoringdiv').removeAttr('hidden');
+              $('#BMIMonitoringdiv').show();
+
+
+             $('#BloodSugarTablediv').hide();
+             $('#MedicationRecordsdiv').hide();
+              $('#nurseTablediv').hide();
 
      $.ajax({
                 type: type,
@@ -5595,7 +5706,33 @@ $("#btn-save-nursenotes").click(function (e) {
             dataType: 'json',
             success: function (data) {
 
-             
+                  if(noteId == "add"){
+
+                                var link = '<tr id="bmiMonitor_' + data[0].id + '"><td>' + data[0].date + '</td><td id = "bmiWeight_'+data[0].id+'">' + data[0].weight + '</td><td id="bmi_'+data[0].id+'">' + data[0].bmi + '</td><td id="bmiRemarks_'+data[0].id+'">' + data[0].remarks + '</td><td>' + data[0]['userxe'].lname +', '+ data[0]['userxe'].fname + '</td>';
+                                  link += '<td><button id="addNurseNotes" name="addNurseNotes" style="font-size: 8px;" class="btn btn-info addNurseNotes" value="'+data[0].id+'"><i class="fas fa-edit"></i></button></td>';
+                
+
+                              $('#bmiMonitoring-list').append(link);
+                     
+                  }else{
+
+                             var bmiWeight = '<td id="bmiWeight_'+data.id+'">'+data.weight+'</td>';
+
+                                   $('#bmiWeight_'+data.id).replaceWith(bmiWeight);
+
+                        
+
+                                var bmi = '<td id="bmi_'+data.id+'">'+data.bmi+'</td>';
+
+                                  $('#bmi_'+data.id).replaceWith(bmi);
+
+                                var bmiRemarks = '<td id="bmiRemarks_'+data.id+'">'+data.remarks+'</td>';
+
+                                  $('#bmiRemarks'+data.id).replaceWith(bmiRemarks);
+
+
+
+                  }
                
 
                 $('#NurseNotesFormData').trigger("reset");
@@ -5615,100 +5752,184 @@ $("#btn-save-nursenotes").click(function (e) {
 
    }else if(selectVal == 'BS'){
 
-     if( reading_bbreakfast == null  || reading_bbreakfast == " " || nursenote == null  || nursenote == " "){
+       if( reading_bbreakfast == null  || reading_bbreakfast == " " || nursenote == null  || nursenote == " "){
               console.log("sulod");
-      }else{
+        }else{
 
-        e.preventDefault();
-         var formData = {
-            dateTime: dateTime,
-            patient_id: $('#patient_id').val(),
-            reading: $('#reading_bbreakfast').val(),
-            created_by: $('#note_by').val(),
-            notes: $('#nursenote').val()
-        };
+                        e.preventDefault();
+                         var formData = {
+                            dateTime: dateTime,
+                            patient_id: $('#patient_id').val(),
+                            reading: $('#reading_bbreakfast').val(),
+                            created_by: $('#note_by').val(),
+                            notes: $('#nursenote').val()
+                        };
+
+                    var noteId = $("#noteId").val();
+                     var ajaxurl ="";
+
+                    var type = "POST";
+                    var id = $('#id').val();
+
+                    if(noteId == "add"){
+
+                     ajaxurl = '{{URL::to("/addBMIrecords")}}/BloodSugar';
+
+                    }else{
+
+                      ajaxurl = '{{URL::to("/updateRecords")}}/BloodSugar/'+noteId;
+                    }
+
+                       $('#tableType').val("BS");
+                      $(".tableType option[value=BS]").removeAttr('hidden', true);
+                      $(".tableType option[value='BS']").prop("selected", true);
+
+                      $('#BloodSugarTablediv').removeAttr('hidden');
+                      $('#BloodSugarTablediv').show();
+                      $('#BMIMonitoringdiv').hide();
+                     $('#MedicationRecordsdiv').hide();
+                      $('#nurseTablediv').hide();
+
+                    $.ajax({
+                            type: type,
+                        url: ajaxurl,
+                        data: formData,
+                        dataType: 'json',
+                        success: function (data) {
 
 
-        var type = "POST";
-        var id = $('#id').val();
-        var ajaxurl = '{{URL::to("/addBMIrecords")}}/BloodSugar';
+                            if(noteId == "add"){
+
+                                var link = '<tr id="bloodSugar_' + data[0].id + '"><td>' + data[0].dateTime + '</td><td id = "bloodSugarReading_'+data[0].id+'">' + data[0].reading + '</td><td id="bloodSugarNotes_'+data[0].id+'">' + data[0].notes + '</td><td>' + data[0]['userxe'].lname +', '+ data[0]['userxe'].fname + '</td>';
+                                  link += '<td><button id="addNurseNotes" name="addNurseNotes" style="font-size: 8px;" class="btn btn-info addNurseNotes" value="'+data[0].id+'"><i class="fas fa-edit"></i></button></td>';
+                
+
+                              $('#bloodSugar-list').append(link);
+                     
+                            }else{
+
+                                      var reading = '<td id="bloodSugarReading_'+data.id+'">'+data.reading+'</td>';
+
+                                   $('#bloodSugarReading_'+data.id).replaceWith(reading);
+
+                        
+
+                                var bloodSugarNotes = '<td id="bloodSugarNotes_'+data.id+'">'+data.notes+'</td>';
+
+                                  $('#bloodSugarNotes_'+data.id).replaceWith(bloodSugarNotes);
 
 
-     $.ajax({
-                type: type,
-            url: ajaxurl,
-            data: formData,
-            dataType: 'json',
-            success: function (data) {
+                            }
+                         
+                           
 
-             
-               
+                            $('#NurseNotesFormData').trigger("reset");
+                            $('#NurseNotesModal').modal('hide');
+                    },
+                       error: function (data) {
+                            console.log('Error:', data);
+                        }
 
-                $('#NurseNotesFormData').trigger("reset");
-                $('#NurseNotesModal').modal('hide');
-        },
-           error: function (data) {
-                console.log('Error:', data);
-            }
+                      
 
-          
-
-        });
+                    });
 
 
-
-        
-      }
+        }
 
 
    }else if(selectVal == 'M'){
 
-        if( medication_record == null  || medication_record == " " || nursenote == null  || nursenote == " "){
-              console.log("sulod");
-      }else{
+                if( medication_record == null  || medication_record == " " || nursenote == null  || nursenote == " "){
+                      console.log("sulod");
+              }else{
 
-             e.preventDefault();
-         var formData = {
-            intake_date: date,
-            intake_time: time,
-            patient_id: $('#patient_id').val(),
-            medication: $('#medication_record').val(),
-            created_by: $('#note_by').val(),
-            notes: $('#nursenote').val()
-        };
-
-
-        var type = "POST";
-        var id = $('#id').val();
-        var ajaxurl = '{{URL::to("/addBMIrecords")}}/medicalRecords';
+                     e.preventDefault();
+                 var formData = {
+                    intake_date: date,
+                    intake_time: time,
+                    patient_id: $('#patient_id').val(),
+                    medication: $('#medication_record').val(),
+                    created_by: $('#note_by').val(),
+                    notes: $('#nursenote').val()
+                };
 
 
-     $.ajax({
-            type: type,
-            url: ajaxurl,
-            data: formData,
-            dataType: 'json',
-            success: function (data) {
+                var type = "POST";
+                var id = $('#id').val();
+                var ajaxur ="";
 
-             
-               
+                var noteId = $("#noteId").val();
+                if(noteId == "add"){
 
-                $('#NurseNotesFormData').trigger("reset");
-                $('#NurseNotesModal').modal('hide');
-        },
-           error: function (data) {
-                console.log('Error:', data);
-            }
+                ajaxurl = '{{URL::to("/addBMIrecords")}}/medicalRecords';
+              
+                
+                }else{
 
-          
+                      ajaxurl = '{{URL::to("/updateRecords")}}/medicalRecords/'+noteId;
+              }
 
-        });
+                 $('#tableType').val("M");
+                      $(".tableType option[value=M]").removeAttr('hidden', true);
+                      $(".tableType option[value='M']").prop("selected", true);
+
+                      $('#BloodSugarTablediv').hide();
+                      $('#BMIMonitoringdiv').hide();
+                     $('#MedicationRecordsdiv').removeAttr('hidden');
+                      $('#MedicationRecordsdiv').show();
+                      $('#nurseTablediv').hide();
+
+             $.ajax({
+                    type: type,
+                    url: ajaxurl,
+                    data: formData,
+                    dataType: 'json',
+                    success: function (data) {
+
+
+                            if(noteId == "add"){
+
+                                var link = '<tr id="medication_' + data[0].id + '"><td>' + data[0].intake_date + '</td><td>' + data[0].intake_time + '</td><td id = "medicine_'+data[0].id+'">' + data[0].medication + '</td><td id="medicineNotes_'+data[0].id+'">' + data[0].notes + '</td><td>' + data[0]['userxe'].lname +', '+ data[0]['userxe'].fname + '</td>';
+                                  link += '<td><button id="addNurseNotes" name="addNurseNotes" style="font-size: 8px;" class="btn btn-info addNurseNotes" value="'+data[0].id+'"><i class="fas fa-edit"></i></button></td>';
+                
+
+                              $('#medication-list').append(link);
+                     
+                            }else{
+
+                                      var medicine = '<td id="medicine_'+data.id+'">'+data.medication+'</td>';
+
+                                   $('#medicine_'+data.id).replaceWith(medicine);
+
+                        
+
+                                var medicineNotes = '<td id="medicineNotes_'+data.id+'">'+data.notes+'</td>';
+
+                                  $('#medicineNotes_'+data.id).replaceWith(medicineNotes);
+
+
+                            }
+
+
+                       
+
+                        $('#NurseNotesFormData').trigger("reset");
+                        $('#NurseNotesModal').modal('hide');
+                },
+                   error: function (data) {
+                        console.log('Error:', data);
+                    }
+
+                  
+
+                });
 
 
 
 
-        
-      }
+                
+              }
 
 
        
@@ -5743,8 +5964,17 @@ $("#btn-save-nursenotes").click(function (e) {
 
         var type = "POST";
         var id = $('#id').val();
-        var ajaxurl = '{{URL::to("/addsocialworkernotes")}}';
 
+        var noteId = $("#noteId").val();
+        if(noteId == "add"){
+
+        var ajaxurl = '{{URL::to("/addsocialworkernotes")}}';
+        
+        }else{
+
+          ajaxurl = '{{URL::to("/updatesocialworkernotes")}}/'+noteId;
+
+        }
 
      $.ajax({
             type: type,
@@ -5761,14 +5991,29 @@ $("#btn-save-nursenotes").click(function (e) {
 
                   }
 
-                  console.log(service);
-                    var link = '<tr id="nurse_' + data[0].id + '"><td>' + data[0].date_time + '</td><td>' + service + '</td><td>' + data[0].notes + '</td><td>' + data[0]['userx'].lname +', '+ data[0]['userx'].fname + '</td>';
+                   if(noteId == "add"){
+
+                    var link = '<tr id="nurse_' + data[0].id + '"><td>' + data[0].date_time + '</td><td id="nurseService_' + data[0].id + '">' + service + '</td><td id="nurseNote_' + data[0].id + '">' + data[0].notes + '</td><td>' + data[0]['userx'].lname +', '+ data[0]['userx'].fname + '</td>';
                 link += '<td></td>';
                 
 
                     $('#nurse-list').append(link);
 
-               
+               }else{
+
+                    var medicine = '<td id="nurseService_'+data[0].id+'">'+service+'</td>';
+
+                                   $('#nurseService_'+data[0].id).replaceWith(medicine);
+
+                        
+
+                                var medicineNotes = '<td id="nurseNote_'+data[0].id+'">'+data[0].notes+'</td>';
+
+                                  $('#nurseNote_'+data[0].id).replaceWith(medicineNotes);
+
+
+
+               }
 
                 $('#NurseNotesFormData').trigger("reset");
                 $('#NurseNotesModal').modal('hide');
@@ -5844,7 +6089,7 @@ $("#btn-save-psychiatristnotes").click(function (e) {
 
 
                    var link = '<tr id="psychiatrist_' + data[0].id + '"><td>' + data[0].date_time + '</td><td>' + data[0]['servicex'].name + '</td><td>' + data[0].notes + '</td><td>' + data[0]['userx'].lname +', '+ data[0]['userx'].fname + '</td>';
-                link += '<td></td>';
+                link += '<td><button id="addNurseNotes" name="addNurseNotes" style="font-size: 8px;" class="btn btn-info addNurseNotes" value="'+data[0].id+'"><i class="fas fa-edit"></i></button></td>';
                 
 
                     $('#psychiatrist-list').append(link);
@@ -6102,7 +6347,6 @@ $("#btn-save").click(function (e) {
       });
 
 
-//Accept Referral REFERAL 
 $('.accept_patient_referal').click(function (e) {
 
            var result = confirm('Your are about to accept this referal. Would you like to continue?');

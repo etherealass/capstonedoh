@@ -27,22 +27,95 @@ class ServiceController extends Controller
 		$users = Users::find(Auth::user()->id);
         $transfer = Transfer_Requests::all();
         $graduate = Graduate_Requests::all();
+                $parent = Services::where('parent', 0)->get();
+
 
 		
 		if(Auth::user()->user_role()->first()->name == 'Superadmin'){
-			return view('superadmin.createservice')->with(['roles' => $roles, 'rolex' => $rolex, 'deps' => $deps, 'users' => $users])->with('transfer',$transfer)->with('graduate',$graduate);
+			return view('superadmin.createservice')->with(['roles' => $roles, 'rolex' => $rolex, 'deps' => $deps, 'users' => $users])->with('transfer',$transfer)->with('graduate',$graduate)->with('parent', $parent);
 		}
 		elseif(Auth::user()->user_role()->first()->name == 'Admin'){
-			return view('superadmin.createservice')->with(['roles' => $roles, 'rolex' => $rolex, 'deps' => $deps, 'users' => $users])->with('transfer',$transfer)->with('graduate',$graduate);
+			return view('superadmin.createservice')->with(['roles' => $roles, 'rolex' => $rolex, 'deps' => $deps, 'users' => $users])->with('transfer',$transfer)->with('graduate',$graduate)->with('parent', $parent);
 		}
 		else{
 			return abort(404);
 		}
 	}
 
-    public function save_services(Request $request){
+    public function save_services(Request $request, $id){
 
-            return redirect()->back();
+           $display = $request->display;
+
+            $services = Services::find($id);
+
+            $services->update(array('parent' => $request->parent, 'name' => $request->servicename, 'description'=> $request->servicedesc));
+
+            $parent = Services::where('id', $services->parent)->get();
+
+            $parentName = $parent[0]->name;
+
+            $role = Display::where('service_id', $id)->pluck('role')->toArray();
+
+            $display = Display::where('service_id', $id)->get();
+
+            $notify_role = Notify::where('service_id', $id)->pluck('role')->toArray();
+
+            $notify = Notify::where('service_id', $id)->get();
+
+            if (isset($request->display)) {
+                foreach($request->display as $val) {
+                    if(!in_array($val, $role)){
+
+                            $d = new Display;
+                            $d->role = $val;
+                            $d->service_id = $id;
+
+                            $d->save();
+
+                    }
+                }
+
+                foreach ($display as $display_value) {
+
+                    if(!in_array($display_value->role, $request->display)){
+                        
+                        Display::where('id', $display_value->id)->delete();
+                    }
+                }
+            } else {
+                Display::where('service_id', $id)->delete();
+            }
+
+            if (isset($request->notify)) {
+                foreach($request->notify as $notif_val) {
+                    if(!in_array($notif_val, $notify_role)){
+
+                            $d = new Notify;
+                            $d->role = $notif_val;
+                            $d->service_id = $id;
+
+                            $d->save();
+
+                    }
+                }
+
+                foreach ($notify as $notif_value) {
+
+                    if(!in_array($notif_value->role, $request->notify)){
+                        
+                        Notify::where('id', $notif_value->id)->delete();
+                    }
+                }
+            } else {
+                Notify::where('service_id', $id)->delete();
+            }
+                
+
+             $array = ['servicename'=> $services->name, 'id'=> $services->id, 'parent'=>  $parentName];
+
+            return response::json($array);
+
+
     }
 
 	public function show_services()
@@ -52,25 +125,29 @@ class ServiceController extends Controller
         $deps = Departments::all();
         $transfer = Transfer_Requests::all();
         $service = Services::all();
+        $parent = Services::where('parent', 0)->get();
         $graduate = Graduate_Requests::all();
 
 
         if(Auth::user()->user_role()->first()->name == 'Superadmin'){
-            return view('superadmin.showservices')->with(['roles' => $roles, 'users' => $users, 'deps' => $deps])->with('transfer',$transfer)->with('services',$service)->with('graduate',$graduate);
+            return view('superadmin.showservices')->with(['roles' => $roles, 'users' => $users, 'deps' => $deps])->with('transfer',$transfer)->with('services',$service)->with('graduate',$graduate)->with('parent', $parent);
         }else if(Auth::user()->user_role()->first()->name == 'Admin'){
-            return view('admin.showservices')->with('roles' , $roles)->with('transfer',$transfer)->with('services',$service);
+            return view('admin.showservices')->with('roles' , $roles)->with('transfer',$transfer)->with('services',$service)->with('parent', $parent);
         }else if(Auth::user()->user_role()->first()->name == 'Social Worker'){
-            return view('socialworker.showservices')->with('roles' , $roles)->with('transfer',$transfer)->with('services',$service);
+            return view('socialworker.showservices')->with('roles' , $roles)->with('transfer',$transfer)->with('services',$service)->with('parent', $parent);
         }
     }
 
     public function add_service(Request $request)
     {	
-                        $graduate = Graduate_Requests::all();
-
         
+        $graduate = Graduate_Requests::all();
     	$service = Services::create($request->except('_token'));
+
     	if ($service->save()) {
+
+             if($request->display){
+
     		$display = [];
         		foreach($request->display as $val) {
         			$d = new Display;
@@ -78,7 +155,11 @@ class ServiceController extends Controller
         			$display[] = $d;
         		}
 
+                $display = $service->display()->saveMany($display);
+            
+            }
     		$notify = [];
+
 
             if($request->notify){
             		foreach($request->notify as $val) {
@@ -92,7 +173,6 @@ class ServiceController extends Controller
 
             }
 
-            $display = $service->display()->saveMany($display);
 
     	
 
