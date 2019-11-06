@@ -44,8 +44,10 @@ select
 @section('content')
 
         <!-- Breadcrumbs-->
-        
         <ol class="breadcrumb" style="height: 100px;font-size:50px;text-align: center">
+                              
+
+        
           <li class="breadcrumb-item active" style=""><i class="fas fa-fw fa fa-calendar"></i>
           @if($evt->status == 2)
           {{$evt->title}} (Cancelled)
@@ -55,8 +57,9 @@ select
 
           </li>
         @if($isEventCancelled)
-         <button class="btn btn-success edit-event" style="margin-left: 10px;margin-left:250px;height: 60px;width: 90px;margin-top: 10px">Edit</button><button class="btn btn-danger cancel-event" style="margin-left: 10px;height: 60px;width: 90px;margin-top: 10px" name="cancel-event" id="cancel-event">Cancel</button>
+         <button class="btn btn-success edit-event" style="float:right;margin-right: 10px;height: 60px;width: 90px;margin-top: 10px">Edit</button><button class="btn btn-danger cancel-event" style="float:right; margin-right: 10px;height: 60px;width: 90px;margin-top: 10px" name="cancel-event" id="cancel-event">Cancel</button>
             @endif
+        
         </ol> 
         
       <div class="container">
@@ -71,9 +74,9 @@ select
                 <p style="font-size: 15px"><h5>Start Date:</h5> {{$evt->start_date}}</p>
                 <input style="margin-left:0px" type="text" class="form-control" placeholder="Remarks" name="start-date" id="start-date" value="{{$evt->start_date}}" hidden="hidden">
               </div>
-              <div class="col-md-3">
+<!--               <div class="col-md-3">
                 <p style="font-size: 15px"><h5>End Date:</h5> {{$evt->end_date}}</p>
-              </div>
+              </div> -->
                <div class="col-md-2">
                 <p style="font-size: 15px"><h5>Start Time:</h5> {{$evt->start_time}}</p>
 
@@ -161,7 +164,7 @@ select
             @endif
             <div class="modal fade" id="linkEditor" aria-hidden="true" >
                 <div class="modal-dialog">
-                    <div class="modal-content"  style="width:980px;">
+                    <div class="modal-content" >
                         <div class="modal-header">
                             <h4 class="modal-title" id="linkEditorModalLabel">Add Intervention the Patient Attended</h4>
                         </div>
@@ -258,38 +261,64 @@ select
                               <div class="form-group">
                               <div class="form-row">
                               <div class="col-md-2">
-                                  <h6>Start Date:</h6>
+                                  <h6>Date:</h6>
                               </div>
                               <div class="col-md-4">
                                   <input type="date" id="start" class="form-control" placeholder="start" required="required" name="start" value="{{$evt->start_date}}">
                               </div>
-                             
+                            </div>
+                          </div>
+                             <div class="form-group">
+                              <div class="form-row">
                               <div class="col-md-2">
                                   <h6>Start Time:</h6>
                               </div>
                               <div class="col-md-4">
                                   <input type="time" id="start_time" class="form-control" placeholder="Start Time" required="required" name="time" value="{{$evt->start_time}}">
                               </div>
-                              </div>
-                            </div>
-                             <div class="form-group">
-                              <div class="form-row">
-                              <div class="col-md-2">
+                           
+                             
+                            <!--   <div class="col-md-2">
                                   <h6>End Date:</h6>
                               </div>
                               <div class="col-md-4">
                                   <input type="date" id="end" class="form-control" placeholder="start" required="required" name="end" value="{{$evt->end_date}}">
-                              </div>
+                              </div> -->
                             
                               <div class="col-md-2">
                                   <h6>End Time:</h6>
                               </div>
                               <div class="col-md-4">
-                                  <input type="time" id="end_time" class="form-control" placeholder="End Time" required="required" name="end_time" value="{{$evt->start_time}}">
+                                  <input type="time" id="end_time" class="form-control" placeholder="End Time" required="required" name="end_time" value="{{$evt->end_time}}">
                               </div>
                               </div>
                             </div>
                         </div>
+
+                         <div class="form-group row">
+                        <label for="inputPassword" class="col-md-2 col-form-label" style="text-align: right;">Assignee:</label>
+                        <div class="col-md-9">
+                             <select id="nameid[]" class="selectpicker show-menu-arrow form-control" style="font-size: 18px;overflow: hidden;" name="nameid[]" multiple="multiple">
+                                        @foreach($assignee->groupby('role') as $assign => $user)
+                                        @foreach($roles as $role)
+                                        @if($assign == $role->id)
+                                            <optgroup label="{{$role->name}}">
+                                          @foreach($user as $assgnee)
+                                            @foreach($users_assignee as $event_Assign)
+                                            @if($assgnee['id'] == $event_Assign['assignee_id'])
+                                            <option  value="{{$assgnee['id']}}" selected>{{$assgnee['fname']}} {{$assgnee['lname']}}</option>
+                                            @else
+                                             <option value="{{$assgnee['id']}}">{{$assgnee['fname']}} {{$assgnee['lname']}}</option>
+                                          @endif
+                                          @endforeach
+                                          @endforeach
+                                        </optgroup>
+                                        @endif
+                                        @endforeach
+                                        @endforeach
+                                    </select>
+                        </div>
+                     </div>
                         
                         <div class="modal-footer">
                             <button type="submit" class="btn btn-primary">Save changes</button>

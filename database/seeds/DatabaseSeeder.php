@@ -29,6 +29,7 @@ class DatabaseSeeder extends Seeder
             'description' => 'Superadmin',
         ]);
          DB::table('user_roles')->insert([
+
             'parent' => '0',
             'name' =>'Admin',
             'description' => 'Admin',
@@ -48,13 +49,20 @@ class DatabaseSeeder extends Seeder
             'name' =>'Social Worker',
             'description' => 'Social Worker',
         ]);
+
+
+        $doctor = User_roles::where('name','Doctor')->first();
+        $id_doctor = $doctor->id;
+
          DB::table('user_roles')->insert([
-            'parent' => '0',
+            'parent' => $id_doctor,
             'name' =>'Physciatrist',
             'description' => 'Physciatrist',
         ]);
+
+
          DB::table('user_roles')->insert([
-            'parent' => '0',
+            'parent' => $id_doctor,
             'name' =>'Dentist',
             'description' => 'Dentist',
         ]);
@@ -789,7 +797,7 @@ class DatabaseSeeder extends Seeder
 
         ]);
 
-          DB::table('display')->insert([
+        DB::table('display')->insert([
             'service_id' => $inside,
             'role' => $doc
 

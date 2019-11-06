@@ -5053,6 +5053,30 @@ $today = $year . '-' . $month . '-' . $day;
 
  $('.addDentalNotes').click(function () {
 
+      if($(this).val != "add"){
+
+
+               var type = "GET";
+        var id = $(this).val();
+        var ajaxurl = '{{URL::to("/findNotes")}}/' + id;
+
+
+             $.ajax({
+                    type: type,
+                    url: ajaxurl,
+                    dataType: 'json',
+                    success: function (data) {
+
+                        $('#noteId').val(data.id);
+                        $("#tooth_no").val(data.tooth_no);
+                        $("#diagnosis").val(data.diagnose);
+                        $("#service_rendered").val(data.service_rendered);
+                        $("#remarks").val(data.notes);
+
+                }
+              })
+      }
+
         $('#AddDentalFormData').trigger("reset");
         $('#AddDentalNotesModal').modal('show');
     
@@ -6137,24 +6161,43 @@ $("#btn-save-dentalServices").click(function (e) {
     var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
     var dateTime = date+' '+time;
 
-   
+
  var formData = {
-  
+   
             patient_id: $('#patient_id').val(),
+            progress_id: "sample",
             date_time: dateTime,
             note_by: $('#note_by').val(),
             tooth_no: $('#tooth_no').val(),
             diagnose: $('#diagnosis').val(),
             service_rendered: $('#service_rendered').val(),
-            remarks: $('#remarks').val()
+            notes: $('#remarks').val(),
+            role_type: 'Dentist',
+            service_id: 3
 
         };
 
 
         var type = "POST";
         var id = $('#id').val();
-        var ajaxurl = '{{URL::to("/addDentalNotes")}}';
 
+        var ajaxurl = "";
+                var noteid = $("#noteId").val();
+
+
+        
+        if(noteid == "add" ){
+
+              console.log("here");
+
+                ajaxurl = '{{URL::to("/addsocialworkernotes")}}';
+
+          }else{
+
+
+               ajaxurl = '{{URL::to("/updateDentalNotes")}}/'+noteid;
+
+          }
 
 
      $.ajax({
@@ -6167,20 +6210,43 @@ $("#btn-save-dentalServices").click(function (e) {
 
                   console.log(data);
 
-                   var link = '<tr id="dental_' + data[0].id + '"><td>' + data[0].date_time + '</td><td>' + data[0].diagnose + '</td><td>' + data[0].tooth_no + '</td><td>' + data[0].service_rendered +'</td><td>'+ data[0]['userxk'].lname +', '+data[0]['userxk'].fname+'</td><td>'+data[0].remarks+'</td>';
+                  if(noteid == "add"){
+                   var link = '<tr id="dental_' + data[0].id + '"><td>' + data[0].date_time + '</td><td>' + data[0].diagnose + '</td><td>' + data[0].tooth_no + '</td><td>' + data[0].service_rendered +'</td><td>'+ data[0]['userx'].lname +', '+data[0]['userx'].fname+'</td><td>'+data[0].notes+'</td>';
+                  
                 link += '<td></td>';
                 
 
                     $('#dental-list').append(link);
+                }else{
 
-                $('#AddDentalFormData').trigger("reset");
-                $('#AddDentalNotesModal').modal('hide');
+                            var link = '<td id="dentalDiagnose_'+data.id+'">'+data.diagnose+'</td>';
+
+                                   $('#dentalDiagnose_'+data.id).replaceWith(link);
+
+                      
+                                var dentalTooth = '<td id="dentalTooth_'+data.id+'">'+data.tooth_no+'</td>';
+
+                                  $('#dentalTooth_'+data.id).replaceWith(dentalTooth);
+
+                                  var dentalServiceRendered_ = '<td id="dentalServiceRendered_'+data.id+'">'+data.service_rendered+'</td>';
+
+                                  $('#dentalServiceRendered_'+data.id).replaceWith(dentalServiceRendered_);
+
+                                  var dentalRemarks_ = '<td id="dentalRemarks_'+data.id+'">'+data.notes+'</td>';
+
+                                  $('#dentalRemarks_'+data.id).replaceWith(dentalRemarks_);
+                }
+
         },
            error: function (data) {
                 console.log('Error:', data);
             }
 
         });
+
+
+              $('#AddDentalFormData').trigger("reset");
+              $('#AddDentalNotesModal').modal('hide');
 
 });
 

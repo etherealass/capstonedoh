@@ -140,6 +140,19 @@ class ReferController extends Controller
 
     }
 
+    public function updateDentalNotes(Request $request, $id){
+
+
+      $notes = ProgressNotes::where('id', $id)->first();
+
+      $notes->update(array('notes' => $request->notes, 'diagnose' => $request->diagnose, 'tooth_no' => $request->tooth_no, 'service_rendered' => $request->service_rendered));
+
+
+       return Response::json($notes);
+ 
+
+    }
+
      public function addRecords(Request $request, $recordType)
     {
 

@@ -29,6 +29,7 @@ use App\Doctors_Progress_Notes;
 use App\City_Jails;
 use App\Patients;
 use App\Patient_Intake_Information;
+use App\ProgressNotes;
 use App\Patient_Information;
 use App\Patient_History;
 use App\Checklist;
@@ -43,6 +44,7 @@ use Session;
 use NumConvert;
 use PHPExcel_Style_Border;
 use PHPExcel_Style_Alignment;
+
 use Carbon\Carbon;
 
 
@@ -58,12 +60,13 @@ class ViewController extends Controller
     $users = Users::find(Auth::user()->id);
     $transfer = Transfer_Requests::all();
     $graduate = Graduate_Requests::all();
+          $designation = User_roles::where('parent', 3)->get();
 
       if(Auth::user()->user_role()->first()->name == 'Superadmin'){
-   	  return view('superadmin.showusers')->with('rolex',$rolex)->with('deps',$deps)->with('roles',$roles)->with('urole' ,$urole)->with('users',$users)->with('transfer',$transfer)->with('graduate',$graduate);
+   	  return view('superadmin.showusers')->with('rolex',$rolex)->with('deps',$deps)->with('roles',$roles)->with('urole' ,$urole)->with('users',$users)->with('transfer',$transfer)->with('graduate',$graduate)->with('designation', $designation);
       }
       elseif(Auth::user()->user_role()->firat()->name == 'Admin'){
-         return view('admin.showusers')->with('rolex',$rolex)->with('deps',$deps)->with('roles',$roles)->with('urole' ,$urole)->with('users',$users)->with('transfer',$transfer)->with('graduate',$graduate);
+         return view('admin.showusers')->with('rolex',$rolex)->with('deps',$deps)->with('roles',$roles)->with('urole' ,$urole)->with('users',$users)->with('transfer',$transfer)->with('graduate',$graduate)->with('designation', $designation);
       }
    }
 
@@ -559,6 +562,7 @@ class ViewController extends Controller
       $pdf = PDF::loadView('pdf.hello',compact('notes'));
       return $pdf->stream();
    }
+   
  public function pdfdde($id)
    {
       $pat = Patients::where('id',$id)->get();
@@ -578,6 +582,30 @@ class ViewController extends Controller
 
       $pdf = \App::make('dompdf.wrapper');
       $pdf = PDF::loadView('pdf.pdfintake',compact(['patos','pat']));
+      return $pdf->stream();
+   }
+
+   public function doctorsNotes($recordType,$id)
+   {
+      
+      $pat = Patients::where('id',$id)->first();
+      $notes = ProgressNotes::where(['patient_id'=>$id, 'role_type'=>$recordType])->with('userx')->get();
+
+
+      $pdf = \App::make('dompdf.wrapper');
+      $pdf = PDF::loadView('pdf.doctors',compact(['notes', 'pat']));
+      return $pdf->stream();
+   }
+
+    public function dentalNotes($id)
+   {
+      
+      $pat = Patients::where('id',$id)->first();
+      $notes = ProgressNotes::where(['patient_id'=>$id, 'role_type'=>"Dentist"])->with('userx')->get();
+
+
+      $pdf = \App::make('dompdf.wrapper');
+      $pdf = PDF::loadView('pdf.dental',compact(['notes', 'pat']));
       return $pdf->stream();
    }
 

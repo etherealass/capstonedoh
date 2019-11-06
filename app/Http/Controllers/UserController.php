@@ -153,6 +153,7 @@ class UserController extends Controller
 
 		$users = Users::findorfail($request->userid);
 
+		
 		$users->update($request->all());
 
 		foreach($user as $us)

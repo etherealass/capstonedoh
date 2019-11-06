@@ -24,9 +24,9 @@
        <div class="form-row">
              <div class="col-md-3">
 
-                  <button type="button" class="btn btn-outline-secondary" style="margin-top: 100px">Secondary</button>
+        <!--          <button type="button" class="btn btn-outline-secondary" style="margin-top: 100px">Secondary</button>-->
 
-                    <div class="card border-dark mb-3" style="max-width: 18rem; margin-top: 50px;">
+                    <div class="card border-dark mb-3" style="max-width: 14rem; margin-top: 50px;">
                       <div class="card-header" style="background-color: #343a40;color: white">Calendar</div>
                       <div class="card-body text-dark">
 
@@ -40,13 +40,13 @@
                         </div>
                     </div>
               </div>
-          <div class="col-md-9" style="border: solid black 2px;border-radius: 5px;padding:10px">
+          <div class="col-md-8" style="border: solid black 2px;border-radius: 5px;padding:10px">
             <div id='calendar' style="background-color: white;margin-top: 20px">
             </div>
           </div>
        
   <div class="col-md-2">
-     </div>
+  </div>
 </div>
 </div>
   
@@ -92,14 +92,14 @@
       maxTime: "20:00:00",
       events: evt,
 
-
-
+  
 
       dayClick: function(date, end, jsEvent, view, resourceObj) {
 
-               var current_date = moment().format('MM-DD-YYYY')
+               var current_date = moment().format('MM-DD-YYYY');
+               var date_set = moment(date).format('MM-DD-YYYY');
 
-              if(current_date <= date.format()) {
+              if(current_date <= date_set) {
                var r = confirm('Do you want to plot on this date ' + date.format());
 
                 if(r== true){
@@ -112,6 +112,13 @@
             
             }
         },
+
+      select: function(start, end) {
+          if(start.isBefore(moment())) {
+              $('#calendar').fullCalendar('unselect');
+              return false;
+          }
+      },
 
        dayRender: function(date, cell){
 

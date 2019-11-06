@@ -301,6 +301,8 @@ Route::group(['middleware' =>'auth'], function()
 
 	 Route::get('/findNotes/{id?}', "ReferController@findNotes");
 
+	 Route::any('/updateDentalNotes/{id?}', "ReferController@updateDentalNotes");
+
 	 Route::post('/addBMIrecords/{id}', "ReferController@addRecords");
 	 
 	Route::get('/getRecords/{id}', "ReferController@getRecords");
@@ -452,6 +454,10 @@ Route::group(['middleware' =>'auth'], function()
 	 Route::any('/pdfintake/{id}',"ViewController@pdfintake");
 
 	 Route::any('/pdfdde/{id}',"ViewController@pdfdde");
+
+	 Route::any('/doctorsNotes/{recordType}/{id}',"ViewController@doctorsNotes");
+
+	 Route::any('/dentalNotes/{id}',"ViewController@dentalNotes");
 
 	 Route::post('/reenroll_patient',"PatientController@reenroll_patient");
 

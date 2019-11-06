@@ -9,7 +9,7 @@ use App\Visit_interven;
 class Events extends Model
 {
  
-  protected $fillable = ['evt_id','title','status','venue','start','end', 'start_date', 'end_date', 'start_time', 'end_time','color','department_id'];
+  protected $fillable = ['evt_id','title','status','venue','start','end', 'description','start_date', 'end_date', 'start_time', 'end_time','color','department_id'];
 
 
   public function Departments()

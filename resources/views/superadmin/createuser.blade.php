@@ -83,17 +83,15 @@
                 </div>
               </div>
               @else
-              <div class="col-md-6">
-                <div class="form-label-group">
-                 <select class="form-control" id="department" placeholder="Department" required="required" name="department">
+ 
+                 <select class="form-control" id="department" placeholder="Department" required="required" name="department" hidden="hidden">
                   <label for="department">Department</label>
                   @foreach($deps as $dep)
                     <option value="{{$dep->id}}">{{$dep->department_name}} Department</option>
                   @endforeach
                     <option value="0">None</option>
                 </select>
-                </div>
-              </div>
+
               <div class="col-md-6">
                 <div class="form-label-group">
                  <select class="form-control selectpicker" id="depart[]" placeholder="Department" required="required" name="depart[]" multiple="multiple">

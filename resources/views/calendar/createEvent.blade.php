@@ -63,24 +63,25 @@
                         </div>
                      </div>
                      <div class="form-group row">
-                        <label for="inputPassword" class="col-sm-2 col-form-label" style="text-align: right;">Start Date:</label>
-                        <div class="col-sm-3">
+                        <label for="inputPassword" class="col-sm-2 col-form-label input-daterange" style="text-align: right;">Date:</label>
+                        <div class="col-sm-4">
                               <input type="date" id="start_date" class="form-control"  placeholder="Start Date" name="start_date" value='{{$date}}'>
 
                         </div>
-                        <label for="inputPassword" class="col-sm-2 col-form-label" style="text-align: right;">Time:</label>
+                      </div>
+                      <div class="form-group row">
+                        <label for="inputPassword" class="col-sm-2 col-form-label" style="text-align: right;">Start Time:</label>
                         <div class="col-sm-3">
                                     <input type="time" id="start_time" class="form-control" placeholder="start Time" name="start_time" value="12:00">
 
                         </div>
-                     </div>
-                    <div class="form-group row">
+                    <!---<div class="form-group row">
                         <label for="inputPassword" class="col-sm-2 col-form-label" style="text-align: right;">End Date:</label>
                         <div class="col-sm-3">
                               <input type="date" id="end_date" class="form-control"  placeholder="End Date" name="end_date" value='{{$date}}'>
 
-                        </div>
-                        <label for="inputPassword" class="col-sm-2 col-form-label" style="text-align: right;">Time:</label>
+                        </div>-->
+                        <label for="inputPassword" class="col-sm-2 col-form-label" style="text-align: right;">End Time:</label>
                         <div class="col-sm-3">
                                     <input type="time" id="end_time" class="form-control" placeholder="End Time" name="end_time" value="12:00">
 
@@ -162,6 +163,7 @@
 
        $(document).ready(function () {
 
+       
 
         $("#end_date").change(function(){
 
