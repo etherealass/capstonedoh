@@ -305,10 +305,15 @@ Route::group(['middleware' =>'auth'], function()
 
 	 Route::any('/updateDentalNotes/{id?}', "ReferController@updateDentalNotes");
 
+<<<<<<< HEAD
+	 Route::post('/addsocialworkernotes', "ReferController@addsocialworkernotes");
 
 	 Route::get('/findNotes/{id?}', "ReferController@findNotes");
 
+	 Route::post('/addBMIrecords/{id}', "ReferController@addRecords"); 
+=======
 	 Route::post('/addBMIrecords/{id}', "ReferController@addRecords");
+>>>>>>> ddce1bd21f21f4f7e0da0759944ec206a0fc018a
 	 
 	Route::get('/getRecords/{id}', "ReferController@getRecords");
 
@@ -346,7 +351,10 @@ Route::group(['middleware' =>'auth'], function()
 
 	 Route::post('/deleteServices', "ServiceController@inactiveService");
 
+<<<<<<< HEAD
+=======
 	 Route::post('/saveservices/{id}', "ServiceController@save_services");
+>>>>>>> ddce1bd21f21f4f7e0da0759944ec206a0fc018a
 
 	 Route::any('/show_jails', "ViewController@show_jails");
 
@@ -460,10 +468,13 @@ Route::group(['middleware' =>'auth'], function()
 
 	 Route::any('/pdfdde/{id}',"ViewController@pdfdde");
 
-	 Route::any('/doctorsNotes/{recordType}/{id}',"ViewController@doctorsNotes");
+<<<<<<< HEAD
 	 Route::any('/pdfreferral/{id}/{rid}',"ViewController@pdfreferral");
+=======
+	 Route::any('/doctorsNotes/{recordType}/{id}',"ViewController@doctorsNotes");
 
 	 Route::any('/dentalNotes/{id}',"ViewController@dentalNotes");
+>>>>>>> ddce1bd21f21f4f7e0da0759944ec206a0fc018a
 
 	 Route::post('/reenroll_patient',"PatientController@reenroll_patient");
 

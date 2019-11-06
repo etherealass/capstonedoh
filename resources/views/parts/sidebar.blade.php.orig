@@ -123,7 +123,11 @@
         <li class="nav-item">
         <a class="nav-link" href="{{URL::to('/showCalendar')}}">
           <i class="fas fa-fw fa-calendar"></i>
+<<<<<<< HEAD
+          <span><b>Calendar</b></span></a>
+=======
           <span>Calendar</span></a>
+>>>>>>> ddce1bd21f21f4f7e0da0759944ec206a0fc018a
       </li>
 
       <li class="nav-item">

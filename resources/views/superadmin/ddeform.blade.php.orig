@@ -141,8 +141,13 @@
               <div class="col-md-4 mb-4">
                 <div class="form-label-group" id="textas" style="display: none;">
                   <h6>City Jail*</h6>
-                <select class="form-control" id="jail" placeholder="Patient Type" name="jail">
+<<<<<<< HEAD
+                <select class="form-control" id="jail" placeholder="Patient Type" required="required" name="jail">
                   <option value="" disabled selected hidden>City Jail</option>
+=======
+                <select class="form-control" id="jail" placeholder="Patient Type" name="jail">
+                  <option value=" " disabled selected hidden>City Jail</option>
+>>>>>>> ddce1bd21f21f4f7e0da0759944ec206a0fc018a
                 @foreach($jails as $jail)
                     <option value="{{$jail->id}}">{{$jail->name}}</option>
                 @endforeach
@@ -206,7 +211,11 @@
                 <div class="form-label-group">
                    <h6>Drug Abused (Present)*</h6>
                    <select class="form-control" id="dabused" placeholder="Patient Type" required="required" name="dabused">
+<<<<<<< HEAD
+                    <option value="" disabled selected hidden>--Chooose--</option>
+=======
                     <option value=" " disabled selected hidden>--Chooose--</option>
+>>>>>>> ddce1bd21f21f4f7e0da0759944ec206a0fc018a
                 @foreach($dabused as $dab)
                     <option value="{{$dab->id}}">{{$dab->name}}</option>
                 @endforeach

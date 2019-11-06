@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class ProgressNotes extends Model
 {
     protected $fillable = [
-        'progress_id','date_time', 'service_id', 'note_by', 'patient_id','notes', 'role_type', 'remark_date', 'remarks_by', 'remarks'
+        'progress_id','date_time', 'service_id', 'note_by', 'patient_id','notes', 'role_type', 'tooth_no', 'service_rendered', 'diagnose'
     ];
 
     public function patientx()

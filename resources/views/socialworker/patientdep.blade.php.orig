@@ -4,6 +4,15 @@
         <!-- Breadcrumbs-->
         <ol class="breadcrumb">
           <li class="breadcrumb-item">
+<<<<<<< HEAD
+            <a href="{{URL::to('/profile')}}"><b>Dashboard</b></a>
+          </li>
+          <li class="breadcrumb-item active"><b>Choose Department</b></li>
+        </ol>
+
+        <!-- Icon Cards-->
+        <div class="row" style=";margin-bottom: 50px; margin-top: 0px">
+=======
             <a href="{{URL::to('/profile')}}">Dashboard</a>
           </li>
           <li class="breadcrumb-item active">Choose Department</li>
@@ -11,6 +20,7 @@
 
         <!-- Icon Cards-->
         <div class="row" style="margin-left: 10px;margin-bottom: 50px; margin-top: 0px">
+>>>>>>> ddce1bd21f21f4f7e0da0759944ec206a0fc018a
            @foreach($deps as $dep)
            
           <div class="col-xl-4 col-sm-9 mb-10" style="height: 14rem;margin-top: 30px">

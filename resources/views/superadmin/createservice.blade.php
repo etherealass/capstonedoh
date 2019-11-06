@@ -17,6 +17,7 @@
       <div class="card card-register mx-auto mt-4">
         <div class="card-header"><b>Create Service</b></div>
         <div class="card-body">
+
         @if ($errors->any())
           @foreach ($errors->all() as $error)
            <div class="alert alert-danger">{{$error}}</div>
@@ -27,18 +28,25 @@
             <div class="form-group">
               <div class="form-row">
                 <div class="col-md-12">
-                  <div class="form-label-group">
-                    <input type="text" id="servicename" class="form-control" placeholder="Service Name" required="required" autofocus="autofocus" name="name">
-                    <label for="servicename">Service Name</label>
+                    <label for="servicename">Parent</label>
+
+                  <select id="parent" class="form-control parent" name="parent">
+                                        <option value="0">--NONE--</option>
+                                      @foreach($parent as $parents)
+                                            <option value="{{$parents->id}}">{{$parents->name}}</option>
+                                        @endforeach
+                    </select>
                   </div>
                 </div>
+                     <div class="form-group">
+              <div class="form-row">
+                    <label for="servicename">Service Name</label>
+                    <input type="text" id="servicename" class="form-control" placeholder="Service Name" required="required" autofocus="autofocus" name="name">
               </div>
             </div>
             <div class="form-group">
-              <div class="form-label-group">
-                <input style="height:100px;" type="textbox" id="servicedesc" class="form-control" placeholder="Service Description" required="required" name="description">
                 <label for="servicedesc">Description</label>
-              </div>
+                <input style="height:100px;" type="textbox" id="servicedesc" class="form-control" placeholder="Service Description" required="required" name="description">
             </div>
             <div class="form-group">
 

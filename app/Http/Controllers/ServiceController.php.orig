@@ -132,7 +132,13 @@ class ServiceController extends Controller
         if(Auth::user()->user_role()->first()->name == 'Superadmin'){
             return view('superadmin.showservices')->with(['roles' => $roles, 'users' => $users, 'deps' => $deps])->with('transfer',$transfer)->with('services',$service)->with('graduate',$graduate)->with('parent', $parent);
         }else if(Auth::user()->user_role()->first()->name == 'Admin'){
+<<<<<<< HEAD
            return view('superadmin.showservices')->with(['roles' => $roles, 'users' => $users, 'deps' => $deps])->with('transfer',$transfer)->with('services',$service);
+=======
+            return view('admin.showservices')->with('roles' , $roles)->with('transfer',$transfer)->with('services',$service)->with('parent', $parent);
+        }else if(Auth::user()->user_role()->first()->name == 'Social Worker'){
+            return view('socialworker.showservices')->with('roles' , $roles)->with('transfer',$transfer)->with('services',$service)->with('parent', $parent);
+>>>>>>> ddce1bd21f21f4f7e0da0759944ec206a0fc018a
         }
     }
 
@@ -221,6 +227,17 @@ class ServiceController extends Controller
 
           if($inactive == 1){
               Session::flash('alert-class', 'danger');
+<<<<<<< HEAD
+              flash('Intervention Deleted', '')->overlay();
+          }else{
+
+            Session::flash('alert-class', 'success');
+              flash('Intervetion  Activated', '')->overlay();
+          }
+
+
+             //Redirect::route('show_services');    
+=======
               flash('Service Deleted', '')->overlay();
           }else{
 
@@ -228,8 +245,7 @@ class ServiceController extends Controller
               flash('Service  Activated', '')->overlay();
           }
 
-
-             //Redirect::route('show_services');    
+>>>>>>> ddce1bd21f21f4f7e0da0759944ec206a0fc018a
             return redirect('/show_services');
      }
 

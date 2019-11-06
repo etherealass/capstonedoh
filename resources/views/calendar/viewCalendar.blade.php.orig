@@ -17,6 +17,21 @@
 
 
 @section('content')
+<<<<<<< HEAD
+=======
+<center>
+  
+
+      <div class="form-group">
+       <div class="form-row">
+             <div class="col-md-3">
+
+        <!--          <button type="button" class="btn btn-outline-secondary" style="margin-top: 100px">Secondary</button>-->
+
+                    <div class="card border-dark mb-3" style="max-width: 14rem; margin-top: 50px;">
+                      <div class="card-header" style="background-color: #343a40;color: white">Calendar</div>
+                      <div class="card-body text-dark">
+>>>>>>> ddce1bd21f21f4f7e0da0759944ec206a0fc018a
 
         <ol class="breadcrumb">
           <li class="breadcrumb-item"> 
@@ -32,6 +47,7 @@
               <div class="card-body">
                   <p style="font-size: 40px"><b>Calendar of Events</b></p> 
               </div>
+<<<<<<< HEAD
                 @include('flash::message')
             </div>
         </div>
@@ -45,9 +61,20 @@
           </div>
       </div>
 <center>
+=======
+          <div class="col-md-8" style="border: solid black 2px;border-radius: 5px;padding:10px">
+            <div id='calendar' style="background-color: white;margin-top: 20px">
+            </div>
+          </div>
+       
+  <div class="col-md-2">
+  </div>
+</div>
+</div>
+>>>>>>> ddce1bd21f21f4f7e0da0759944ec206a0fc018a
   
 
-                    <div class="card border-dark mb-3" style="max-width: 14rem; margin-top: 50px;">
+       <div class="row">
         <div class="col-md-3">
             <div class="card border-dark mb-3" style="max-width: 28rem;margin-left: 20px">
                 <div class="card-header" style="background-color: #343a40;color: white">Legend</div>
@@ -57,9 +84,8 @@
                     <p style="text-align: left;  margin-left: 20px"><span class="dot"  style="background-color: #5bc0de;" ></span>&nbsp;&nbsp;&nbsp;Aftacare Events</p>
                     <p style="text-align: left;  margin-left: 20px"><span class="dot"  style="background-color: #d9534f;" ></span>&nbsp;&nbsp;&nbsp;Cancelled Events</p>
                     <p style="text-align: left;  margin-left: 20px"><span class="dot"  style="background-color: #f0ad4e;" ></span>&nbsp;&nbsp;&nbsp;Other Events</p>
-          <div class="col-md-8" style="border: solid black 2px;border-radius: 5px;padding:10px">
                   </div>
-  </div>
+              </div>
           </div>
         </div>
 

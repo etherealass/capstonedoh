@@ -49,8 +49,12 @@ use Session;
 use NumConvert;
 use PHPExcel_Style_Border;
 use PHPExcel_Style_Alignment;
+<<<<<<< HEAD
 use PHPExcel_Style_Fill;
 use PHPExcel_Style_NumberFormat;
+=======
+
+>>>>>>> ddce1bd21f21f4f7e0da0759944ec206a0fc018a
 use Carbon\Carbon;
 
 
@@ -71,8 +75,13 @@ class ViewController extends Controller
       if(Auth::user()->user_role()->first()->name == 'Superadmin'){
    	  return view('superadmin.showusers')->with('rolex',$rolex)->with('deps',$deps)->with('roles',$roles)->with('urole' ,$urole)->with('users',$users)->with('transfer',$transfer)->with('graduate',$graduate)->with('designation', $designation);
       }
+<<<<<<< HEAD
       elseif(Auth::user()->user_role()->first()->name == 'Admin'){
+         return view('admin.showusers')->with('rolex',$rolex)->with('deps',$deps)->with('roles',$roles)->with('urole' ,$urole)->with('users',$users)->with('transfer',$transfer)->with('graduate',$graduate);
+=======
+      elseif(Auth::user()->user_role()->firat()->name == 'Admin'){
          return view('admin.showusers')->with('rolex',$rolex)->with('deps',$deps)->with('roles',$roles)->with('urole' ,$urole)->with('users',$users)->with('transfer',$transfer)->with('graduate',$graduate)->with('designation', $designation);
+>>>>>>> ddce1bd21f21f4f7e0da0759944ec206a0fc018a
       }
    }
 
@@ -606,10 +615,17 @@ public function sampleform($id)
       $pdf = \App::make('dompdf.wrapper');
       $pdf = PDF::loadView('pdf.pdfdoctornotes',compact('notes'));
       return $pdf->stream();
+<<<<<<< HEAD
 }
 
 public function pdfdde($id)
 {
+=======
+   }
+   
+ public function pdfdde($id)
+   {
+>>>>>>> ddce1bd21f21f4f7e0da0759944ec206a0fc018a
       $pat = Patients::where('id',$id)->get();
       $patis = Patient_Information::with('informants')->where('patient_id',$id)->get();
       $history = Patient_History::where('patient_id',$id)->get();
@@ -628,8 +644,29 @@ public function pdfintake($id)
       $pdf = \App::make('dompdf.wrapper');
       $pdf = PDF::loadView('pdf.pdfintake',compact(['patos','pat']));
       return $pdf->stream();
-   }
+}
 
+<<<<<<< HEAD
+public function pdfreferral($id,$rid)
+{
+      $refers = Refers::where('id',$rid)->where('patient_id',$id)->get();
+      $pat = Patients::where('id',$id)->get();
+      $history = Patient_History::where('patient_id',$id)->get();
+
+      $customPaper = array(0,0,900,600);
+      $pdf = \App::make('dompdf.wrapper');
+      $pdf = PDF::loadView('pdf.pdfreferral',compact(['refers','history','pat']))->setPaper($customPaper);
+      return $pdf->stream('Patient Referral.pdf');
+}
+
+public function samplecsv(request $request)
+{
+
+
+    if($request->input('report') == 'Accomplishment Report'){
+
+      $pats = Patients::where('status','Enrolled')->whereMonth('date_admitted',$request->input('month'))->whereYear('date_admitted',$request->input('year'))->get();
+=======
    public function doctorsNotes($recordType,$id)
    {
       
@@ -652,27 +689,11 @@ public function pdfintake($id)
       $pdf = \App::make('dompdf.wrapper');
       $pdf = PDF::loadView('pdf.dental',compact(['notes', 'pat']));
       return $pdf->stream();
-}
+   }
 
-public function pdfreferral($id,$rid)
-{
-      $refers = Refers::where('id',$rid)->where('patient_id',$id)->get();
-      $pat = Patients::where('id',$id)->get();
-      $history = Patient_History::where('patient_id',$id)->get();
-
-      $customPaper = array(0,0,900,600);
-      $pdf = \App::make('dompdf.wrapper');
-      $pdf = PDF::loadView('pdf.pdfreferral',compact(['refers','history','pat']))->setPaper($customPaper);
-      return $pdf->stream('Patient Referral.pdf');
-}
-
-public function samplecsv(request $request)
-{
-
-
-    if($request->input('report') == 'Accomplishment Report'){
-
-      $pats = Patients::where('status','Enrolled')->whereMonth('date_admitted',$request->input('month'))->whereYear('date_admitted',$request->input('year'))->get();
+   public function samplecsv(request $request)
+   {
+>>>>>>> ddce1bd21f21f4f7e0da0759944ec206a0fc018a
 
       $cout = count($pats);
 

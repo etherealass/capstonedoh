@@ -381,9 +381,9 @@
       <div class="tab-pane fade" id="v-pills-contact" role="tabpanel" aria-labelledby="v-pills-profile-tab">
         <fieldset style="margin-bottom: 10px;margin-left: 0px;border:solid thin gray;border-radius: 10px;">
             <legend style="color:white;text-indent: 20px;width:900px;margin-bottom: 10px;border-radius: 5px" class="bg bg-dark">Sessions</legend>
-                @if(Auth::user()->user_role->name == 'Social Worker' || Auth::user()->user_role->name == 'Superadmin')              
-                   <div class="dropdown">
-                          <button class="btn btn-dark dropdown-toggle"  style="height: 50px; width:200px;margin-top: 0px;margin-left: 750px" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                 @if(Auth::user()->user_role->name == 'Social Worker' || Auth::user()->user_role->name == 'Superadmin' || Auth::user()->user_role->name == 'Admin' )              
+                    <div class="dropdown">
+                          <button class="btn btn-dark dropdown-toggle"  style="height: 50px; width:200px;float: right;margin-top: 0px;margin-left: 120px" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             Action
                           </button>
                           <div class="dropdown-menu menu_btn" aria-labelledby="dropdownMenuButton">
@@ -397,9 +397,10 @@
                              Active
                              @endif
                             </button></a>
+
+                      @endif
                           </div>
                       </div>
-                  @endif
                         <br>
 
                         <div class="card-body" style="margin-left: 10px;margin-top: 20px">

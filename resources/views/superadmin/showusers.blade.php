@@ -80,8 +80,8 @@
         </div>
   <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#changepass" data-dismiss="modal">Change Password</button>
   <div class="container">
-    <div class="card card-register mx-auto mt-4">
-      <div class="card-body">
+  <!-- <div class="card card-register mx-auto mt-4">
+      <div class="card-body">-->
         <form action="{{URL::to('/updatenow')}}" method="post">
           {{csrf_field()}}
           <div class="modal-body">
@@ -118,8 +118,6 @@
             </div>
           </div>
           <div class="form-group">
-            <div class="form-row">
-              <div class="col-md-6">
                 <div class="form-label-group">
                   <input type="text" id="contact" class="form-control" placeholder="Contact No." required="required" name="contact" value="">
                   <label for="contact">Contact no.</label>
@@ -130,18 +128,47 @@
               @if($rolex->id == 2)
               <input type="hidden" name="deparment" id="department" value="">
               @else
-              <div class="col-md-6">
+               <label for="department">Department</label>
+              <div class="form-group">
                 <div class="form-label-group">
-                 <select class="form-control" id="department" placeholder="Department" required="required" name="department" value="">
-                  <label for="department">Department</label>
+                 <select class="form-control selectpicker" id="depart[]" placeholder="Department" required="required" name="depart[]" multiple="multiple">
                   @foreach($deps as $dep)
                     <option value="{{$dep->id}}">{{$dep->department_name}} Department</option>
                   @endforeach
-                    <option value="0">None</option>
                 </select>
                 </div>
               </div>
               @endif
+              @if($rolex->name == 'Doctor')
+              <div class="form-group">
+            <div class="form-row">
+               <div class="col-md-6">
+                <label for="department">Designation</label>
+                <div class="form-label-group">
+                 <select class="form-control" id="designation" placeholder="Designation" required="required" name="designation">
+                  <label for="designation">Designation/Position</label>
+                   <option disabled selected hidden>Designation/Position</option>
+                   <option value="">--NONE--</option>
+                  @foreach($designation as $des)
+                    @if($des->parent == $rolex->id)
+                    <option value="{{$des->id}}">{{$des->name}}</option>
+                    @endif
+                  @endforeach
+
+                    <option value="Others">Others</option>
+                </select>
+                </div>
+              </div>
+
+              <div class="col-md-6">
+                <div class="form-label-group" id="design" style="display:none">
+                  <input type="text" id="designat" class="form-control" placeholder="Designation" name="designat">
+                  <label for="designat">Please specify designation</label>
+                </div>
+              </div>
+            </div>
+          </div>
+              @ENDIF
             </div>
             </div>
             <div class="modal-footer">
@@ -149,12 +176,19 @@
             <button type="submit" class="btn btn-success">Save Changes</button>  
           </div>
         </form>
+     <!-- </div>
+     </div>-->
       </div>
-      </div>
-    </div> 
   </div>
   </div>
   </div>
 
 
+@endsection
+
+@section('script')
+<script>
+      
+
+</script>
 @endsection

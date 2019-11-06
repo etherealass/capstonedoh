@@ -9,7 +9,11 @@ use App\Notify;
 class Services extends Model
 {
 	protected $fillable = [
+<<<<<<< HEAD
+    	'description','name','inactive'
+=======
     	'parent','description','name','inactive'
+>>>>>>> ddce1bd21f21f4f7e0da0759944ec206a0fc018a
     ];
 
     public function display()
