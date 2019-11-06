@@ -4,20 +4,20 @@
         <!-- Breadcrumbs-->
         <ol class="breadcrumb">
           <li class="breadcrumb-item">
-            <a href="{{URL::to('/profile')}}">Dashboard</a>
+            <a href="{{URL::to('/profile')}}"><b>Dashboard</b></a>
           </li>
           <li class="breadcrumb-item">
-            <a href="{{URL::to('/patient_dep')}}">Choose Department</a>
+            <a href="{{URL::to('/patient_dep')}}"><b>Choose Department</b></a>
           </li>
           <li class="breadcrumb-item">
-            <a href="{{URL::to('/choosef/'.$id)}}">Choose what to fill up</a>
+            <a href="{{URL::to('/choosef/'.$id)}}"><b>Choose what to fill up</b></a>
           </li>
-          <li class="breadcrumb-item active">Fill up</li>
+          <li class="breadcrumb-item active"><b>Fill up</b></li>
         </ol>
 
   <div style="background-color: white;border-radius: 5px;height: 1300px;padding-top: 10px">
     <div class="container" style="margin-top: 30px">
-        <p style="font-size:50px">Intake Form</p>
+        <p style="font-size:50px"><b>Intake Form</b></p>
         <form action="{{URL::to('/patientsave_intake')}}" method="post">
           {{csrf_field()}}
           <fieldset style="margin-bottom: 30px">
@@ -26,8 +26,8 @@
                 <div class="form-label-group" style="margin-top: 20px">
                   <h6>Patient Type*</h6>
                 <select class="form-control" id="patype" placeholder="Patient Type" required="required" name="ptype" style="margin-left: 20px">
-                  @foreach($case as $cases)
                     <option value="" disabled selected hidden>Patient Type</option>
+                  @foreach($case as $cases)
                     <option id="{{$cases->court_order}}" value="{{$cases->id}}">{{$cases->case_name}}</option>
                   @endforeach
                 </select>
@@ -37,8 +37,8 @@
                 <div class="form-label-group" id="textes" style="display: none;margin-top: 20px">
                   <h6>City Jail*</h6>
                 <select class="form-control" id="jail" placeholder="Patient Type" required="required" name="jail" style="margin-left: 20px">
-                @foreach($jails as $jail)
                     <option value="" disabled selected hidden>City Jail</option>
+                @foreach($jails as $jail)
                     <option value="{{$jail->id}}">{{$jail->name}}</option>
                 @endforeach
                 </select>
@@ -68,7 +68,7 @@
               <div class="col-md-3">
                 <div class="form-label-group">
                    <h6>Middle Name*</h6>
-                  <input type="text" id="mname" class="form-control" placeholder="Middle Name" required="required" autofocus="autofocus" name="mname" value="{{ old('mname') }}">
+                  <input type="text" id="mname" class="form-control" placeholder="Middle Name" autofocus="autofocus" name="mname" value="{{ old('mname') }}">
                 </div>
               </div>
               <div class="col-md-2">
@@ -104,10 +104,10 @@
             <div class="col-md-2">
                 <div class="form-label-group">
                    <h6>Marital Status*</h6>
-                 <select class="form-control" id="civils" placeholder="Civil Status" required="required" name="civils">
+                 <select class="form-control" id="civils" placeholder="Civil Status" name="civils" required="required">
                   <label for="civils">Civil Status</label>
-                    @foreach($status as $stat)
                     <option value="" disabled selected hidden>--Choose--</option>
+                    @foreach($status as $stat)
                     <option value="{{$stat->id}}">{{$stat->name}}</option>
                     @endforeach
                 </select>
@@ -128,13 +128,13 @@
                         <div class="col-md-6">
                          <div class="form-label-group">
                           <h6>Name*</h6>
-                           <input type="text" id="emername" class="form-control" placeholder="Last name"  name="emername">
+                           <input type="text" id="emername" class="form-control" placeholder="Last name" required="required" name="emername">
                          </div>
                         </div>
                          <div class="col-md-6">
                            <div class="form-label-group">
                              <h6>Relationship*</h6>
-                              <input type="text" id="emerelation" class="form-control" placeholder="Last name"  name="emerelation">
+                              <input type="text" id="emerelation" class="form-control" placeholder="Last name" required="required" name="emerelation">
                            </div>
                          </div>
                        </div>
@@ -144,13 +144,13 @@
                      <div class="col-md-6">
                      <div class="form-label-group">
                       <h6>Phone No.(Home)*</h6>
-                       <input type="text" id="emerphone" class="form-control" placeholder="Last name"  name="emerphone">
+                       <input type="text" id="emerphone" class="form-control" placeholder="Last name" required="required" name="emerphone">
                      </div>
                    </div>
                    <div class="col-md-6">
                      <div class="form-label-group">
                       <h6>Cellphone No.*</h6>
-                       <input type="text" id="emercell" class="form-control" placeholder="Last name"  name="emercell">
+                       <input type="text" id="emercell" class="form-control" placeholder="Last name" required="required" name="emercell">
                      </div>
                    </div>
                     </div>
@@ -158,7 +158,7 @@
                    <div class="form-group">
                       <div class="form-label-group">
                       <h6>Email add*</h6>
-                       <input type="text" id="emeremail" class="form-control" placeholder="Last name"  name="emeremail">
+                       <input type="text" id="emeremail" class="form-control" placeholder="Last name" required="required" name="emeremail">
                     </div>
                   </div>
                   </div>
@@ -230,13 +230,13 @@
           <div class="form-group" style="margin-left:20px">
             <div class="form-label-group">
               <h6>Presenting Problems*</h6>
-              <textarea type="text" id="preprob" class="form-control" placeholder="Please Specify" name="preprob"></textarea>
+              <textarea type="text" id="preprob" class="form-control" placeholder="Please Specify" name="preprob" required="required"></textarea>
             </div>
           </div>
           <div class="form-group" style="margin-left:20px">
                 <div class="form-label-group">
                   <h6>Impression*</h6>
-                  <textarea style="height: 120px" type="text" id="impre" class="form-control" placeholder="Please Specify" name="impre"></textarea>
+                  <textarea style="height: 120px" type="text" id="impre" class="form-control" placeholder="Please Specify" name="impre" required="required"></textarea>
               </div>
           </div>
         </fieldset>

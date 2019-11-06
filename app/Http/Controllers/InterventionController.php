@@ -29,7 +29,7 @@ class InterventionController extends Controller
      {
 
         
-        $roles = User_roles::all();
+        $roles = User_roles::where('description','!=','Employee')->get();
         $deps = Departments::all();
         $inter = Interventions::with('deptxs')->get();
         $users = Users::find(Auth::user()->id);
@@ -39,6 +39,9 @@ class InterventionController extends Controller
 
 
         if(Auth::user()->user_role()->first()->name == 'Superadmin'){
+            return view('intervention.showintervention')->with('roles',$roles)->with('deps',$deps)->with('inter', $inter)->with('users',$users)->with('transfer',$transfer)->with('child', $child)->with('graduate',$graduate);
+        }
+        else if(Auth::user()->user_role()->first()->name == 'Admin'){
             return view('intervention.showintervention')->with('roles',$roles)->with('deps',$deps)->with('inter', $inter)->with('users',$users)->with('transfer',$transfer)->with('child', $child)->with('graduate',$graduate);
         }
         else{
@@ -51,7 +54,7 @@ class InterventionController extends Controller
      {
 
     
-        $roles = User_roles::all();
+        $roles = User_roles::where('description','!=','Employee')->get();
         $deps = Departments::all();
         $users = Users::find(Auth::user()->id);
         $transfer = Transfer_Requests::all();
@@ -63,6 +66,9 @@ class InterventionController extends Controller
         if(Auth::user()->user_role()->first()->name == 'Superadmin'){
             return view('intervention.addIntervention')->with('roles',$roles)->with('deps',$deps)->with('inter', $inter)->with('users',$users)->with('transfer',$transfer);
         }
+        else if(Auth::user()->user_role()->first()->name == 'Admin'){
+            return view('intervention.addIntervention')->with('roles',$roles)->with('deps',$deps)->with('inter', $inter)->with('users',$users)->with('transfer',$transfer);
+        }
         else{
             return abort(404);
         }
@@ -72,7 +78,7 @@ class InterventionController extends Controller
       public function create_intervention(Request $request)
      { 
 
-        $roles = User_roles::all();
+        $roles = User_roles::where('description','!=','Employee')->get();
         $deps = Departments::all();
         $inter = Interventions::all();
         $users = Users::find(Auth::user()->id);
@@ -99,13 +105,16 @@ class InterventionController extends Controller
       Session::flash('alert-class', 'success'); 
       flash('Intervention Created', '')->overlay();
 
-        $roles = User_roles::all();
+        $roles = User_roles::where('description','!=','Employee')->get();
         $deps = Departments::all();
 
-          if(Auth::user()->user_role()->first()->name == 'Superadmin'){
+        if(Auth::user()->user_role()->first()->name == 'Superadmin'){
            return view('intervention.addIntervention')->with('roles',$roles)->with('deps',$deps)->with('inter', $inter)->with('users',$users)->with('transfer',$transfer);
         }
-        }else{
+        else if(Auth::user()->user_role()->first()->name == 'Admin'){
+           return view('intervention.addIntervention')->with('roles',$roles)->with('deps',$deps)->with('inter', $inter)->with('users',$users)->with('transfer',$transfer);
+        }
+        else{
 
                   $depts = $request->input('depart');
 
@@ -134,22 +143,26 @@ class InterventionController extends Controller
       Session::flash('alert-class', 'success'); 
       flash('Intervention Created', '')->overlay();
 
-        $roles = User_roles::all();
+        $roles = User_roles::where('description','!=','Employee')->get();
         $deps = Departments::all();
 
           if(Auth::user()->user_role()->first()->name == 'Superadmin'){
+           return view('intervention.addIntervention')->with('roles',$roles)->with('deps',$deps)->with('inter', $inter)->with('users',$users)->with('transfer',$transfer);
+        }
+        else if(Auth::user()->user_role()->first()->name == 'Admin'){
            return view('intervention.addIntervention')->with('roles',$roles)->with('deps',$deps)->with('inter', $inter)->with('users',$users)->with('transfer',$transfer);
         }
       }
          
          
      }
+   }
 
       public function viewIntervention($id)
      { 
 
 
-        $roles = User_roles::all();
+        $roles = User_roles::where('description','!=','Employee')->get();
         $deps = Departments::all();
         $intersx = Interventions::find($id);
 
@@ -159,6 +172,9 @@ class InterventionController extends Controller
         $transfer = Transfer_Requests::all();
 
           if(Auth::user()->user_role()->first()->name == 'Superadmin'){
+           return view('intervention.viewIntervention')->with('interven', $intersx)->with('roles',$roles)->with('deps',$deps)->with('inter', $inter)->with('users',$users)->with('transfer',$transfer);
+        }
+        else if(Auth::user()->user_role()->first()->name == 'Admin'){
            return view('intervention.viewIntervention')->with('interven', $intersx)->with('roles',$roles)->with('deps',$deps)->with('inter', $inter)->with('users',$users)->with('transfer',$transfer);
         }
          
@@ -210,15 +226,37 @@ class InterventionController extends Controller
 
      }
 
-     public function inactiveintervention(Request $request, $id){
+     public function inactiveintervention(Request $request){
 
-            $inactive = $request->status;
+            $set = $request->intervenstatus;
+            $id = $request->interventionId;
+            $inactive = 0;
 
-            $interven = Interventions::find($id);
+            if($set == "Delete"){
+
+                  $inactive = 1;
+              }else{
+
+                    $inactive =0;
+                }
+        $interven = Interventions::find($id);
 
          $interven->update(array('inactive' => $inactive));
 
-                  return Response::json($interven);
+         $intervenNAme = $interven->interven_name;
+
+          if($inactive == 1){
+              Session::flash('alert-class', 'danger');
+              flash('Intervention Deleted', '')->overlay();
+          }else{
+
+            Session::flash('alert-class', 'success');
+              flash('Intervetion  Activated', '')->overlay();
+          }
+
+
+                      return redirect('/showIntervention');
+         //          return Response::json($interven);
 
 
      }

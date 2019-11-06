@@ -4,10 +4,10 @@
         <!-- Breadcrumbs-->
         <ol class="breadcrumb">
           <li class="breadcrumb-item">
-            <a href="{{URL::to('/profile')}}">Dashboard</a>
+            <a href="{{URL::to('/profile')}}"><b>Dashboard</b></a>
           </li>
           <li class="breadcrumb-item">
-            <a href="{{URL::to('/chooseuser')}}">User Roles</a>
+            <a href="{{URL::to('/chooseuser')}}"><b>User Roles</b></a>
           </li>
           <li class="breadcrumb-item active">{{$rolex->name}} Creation</li>
         </ol>
@@ -15,7 +15,7 @@
         <!-- Icon Cards-->
     <div class="container">
     <div class="card card-register mx-auto mt-4">
-      <div class="card-header">Create New {{$rolex->name}}</div>
+      <div class="card-header"><b>Create New {{$rolex->name}}</b></div> 
       <div class="card-body">
       @if ($errors->any())
         @foreach ($errors->all() as $error)
@@ -79,7 +79,7 @@
               @if($rolex->name == 'Admin')
               <div class="col-md-6">
                 <div class="form-label-group">
-                 <input type="hidden" name="deparment" value="0">
+                 <input type="hidden" name="deparment" value="">
                 </div>
               </div>
               @else

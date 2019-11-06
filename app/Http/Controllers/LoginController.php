@@ -31,7 +31,7 @@ class LoginController extends Controller
     public function home(request $request) 
     {
 
-      $roles = User_roles::all();
+      $roles = User_roles::where('description','!=','Employee')->get();
       $deps = Departments::all();
   
 
@@ -50,11 +50,11 @@ class LoginController extends Controller
         'password'=>'required'
       ]);
 
-       $roles = User_roles::all();
+       $roles = User_roles::where('description','!=','Employee')->get();
        $deps = Departments::all(); 
       
 
-      if(Auth::attempt(['username'=>$request->input('username'), 'password'=>$request->input('password')]))
+      if(Auth::attempt(['username'=>$request->input('username'), 'password'=>$request->input('password'),'flag'=>NULL]))
         {
           return redirect()->route('user.dashboard')->with('roles',$roles)->with('deps',$deps);
         }
@@ -67,7 +67,7 @@ class LoginController extends Controller
     public function login()
     {
 
-      $roles = User_roles::all();
+      $roles = User_roles::where('description','!=','Employee')->get();
       $deps = Departments::all();
       $users = Users::find(Auth::user()->id);
 
@@ -83,14 +83,14 @@ class LoginController extends Controller
     public function logout()
     {
 
-      $roles = User_roles::all();
+      $roles = User_roles::where('description','!=','Employee')->get();
       Auth::logout(); 
       return redirect()->route('login')->with('roles',$roles);
     }
 
     public function getProfile()
     {
-      $roles = User_roles::all();
+      $roles = User_roles::where('description','!=','Employee')->get();
       $deps = Departments::all();
       $users = Users::find(Auth::user()->id);
       $transfer = Transfer_Requests::all();
@@ -133,13 +133,27 @@ class LoginController extends Controller
         return view('superadmin.index', compact('chart'))->with('roles',$roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('graduate',$graduate)->with('pat',$pat)->with('patx',$patx)->with('patz',$patz);
       }
       else if(Auth::user()->user_role()->first()->name == 'Social Worker'){
-         return view('socialworker.index')->with('roles',$roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer);
+         return view('socialworker.index', compact('chart'))->with('roles',$roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('graduate',$graduate)->with('pat',$pat)->with('patx',$patx)->with('patz',$patz);
       }
       else if(Auth::user()->user_role()->first()->name == 'Nurse'){
-         return view('socialworker.index')->with('roles',$roles)->with('deps',$deps)->with('users',$users);
+         return view('socialworker.index', compact('chart'))->with('roles',$roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('graduate',$graduate)->with('pat',$pat)->with('patx',$patx)->with('patz',$patz);
       }
       else if(Auth::user()->user_role()->first()->name == 'Doctor'){
+
          return view('doctor.index')->with('roles',$roles)->with('deps',$deps)->with('users',$users);
+
+      }else if(Auth::user()->user_role()->first()->name == 'Physciatrist'){
+
+         return view('doctor.index')->with('roles',$roles)->with('deps',$deps)->with('users',$users);
+
+      }else if(Auth::user()->user_role()->first()->name == 'Dentist'){
+
+         return view('doctor.index')->with('roles',$roles)->with('deps',$deps)->with('users',$users);
+
+      }else{
+
+          return view('socialworker.index')->with('roles',$roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer);
+
       }
       
     }

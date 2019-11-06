@@ -35,7 +35,7 @@ class CalendarController extends Controller
    {
 
 
-       $roles = User_roles::all();
+       $roles = User_roles::where('description','!=','Employee')->get();
        $deps = Departments::all();
        $graduate = Graduate_Requests::all();
 
@@ -66,7 +66,7 @@ class CalendarController extends Controller
     
    public function create_event($date){
 
-       $roles = User_roles::all();
+       $roles = User_roles::where('description','!=','Employee')->get();
        $deps = Departments::all();
        $transfer = Transfer_Requests::all();
        $interven = Interventions::all();
@@ -194,7 +194,7 @@ class CalendarController extends Controller
       Session::flash('alert-class', 'success'); 
       flash('Schedule Created', '')->overlay();
 
-        $roles = User_roles::all();
+        $roles = User_roles::where('description','!=','Employee')->get();
         $deps = Departments::all();
         $transfer = Transfer_Requests::all();
  
@@ -215,7 +215,7 @@ class CalendarController extends Controller
 
         $graduate = Graduate_Requests::all();
 
-        $roles = User_roles::all();
+        $roles = User_roles::where('description','!=','Employee')->get();
         $deps = Departments::all();
         $interven = Interventions::where('department_id', $evt->department_id)->where(function ($query) {
         $query->where('inactive', '!=', 1)
@@ -303,7 +303,7 @@ class CalendarController extends Controller
         $evt->status = 2;
         $evt->save();
 
-        $roles = User_roles::all();
+        $roles = User_roles::where('description','!=','Employee')->get();
         $deps = Departments::all();
         $interven = Interventions::all();
         $evts = Events::where('id', $id)->with('Departments')->get();
@@ -390,7 +390,7 @@ class CalendarController extends Controller
   public function chart()
     {
 
-      $roles = User_roles::all();
+      $roles = User_roles::where('description','!=','Employee')->get();
       $deps = Departments::all();
       $users = Users::find(Auth::user()->id);
       $transfer = Transfer_Requests::all();

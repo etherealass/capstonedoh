@@ -4,9 +4,9 @@
         <!-- Breadcrumbs-->
         <ol class="breadcrumb">
           <li class="breadcrumb-item">
-            <a href="{{URL::to('/profile')}}">Dashboard</a>
+            <a href="{{URL::to('/profile')}}"><b>Dashboard</b></a>
           </li>
-          <li class="breadcrumb-item active">Departments</li>
+          <li class="breadcrumb-item active"><b>Departments</b></li>
         </ol>
         <a style="color:white" href="{{URL::to('/create_depnow')}}"><button class="btn btn-dark btn-block" style="height: 50px; width:200px;float: right;margin-top: 0px;margin-left: 120px">New Department</button></a>
         <!-- Icon Cards-->

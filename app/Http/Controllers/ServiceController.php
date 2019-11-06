@@ -14,12 +14,13 @@ use App\Notify;
 use App\Transfer_Requests;
 use Response;
 use Session;
+use Redirect;
 
 class ServiceController extends Controller
 {
     public function create_service()
 	{
-		$roles = User_roles::all();
+		$roles = User_roles::where('description','!=','Employee')->get();
 		$rolex = User_roles::find(Auth::user()->id);
 		$deps = Departments::all();
 		$users = Users::find(Auth::user()->id);
@@ -38,7 +39,7 @@ class ServiceController extends Controller
 
 	public function show_services()
     {
-        $roles = User_roles::all();
+        $roles = User_roles::where('description','!=','Employee')->get();
         $users = Users::find(Auth::user()->id);
         $deps = Departments::all();
         $transfer = Transfer_Requests::all();
@@ -49,9 +50,7 @@ class ServiceController extends Controller
         if(Auth::user()->user_role()->first()->name == 'Superadmin'){
             return view('superadmin.showservices')->with(['roles' => $roles, 'users' => $users, 'deps' => $deps])->with('transfer',$transfer)->with('services',$service);
         }else if(Auth::user()->user_role()->first()->name == 'Admin'){
-            return view('admin.showservices')->with('roles' , $roles)->with('transfer',$transfer)->with('services',$service);
-        }else if(Auth::user()->user_role()->first()->name == 'Social Worker'){
-            return view('socialworker.showservices')->with('roles' , $roles)->with('transfer',$transfer)->with('services',$service);
+           return view('superadmin.showservices')->with(['roles' => $roles, 'users' => $users, 'deps' => $deps])->with('transfer',$transfer)->with('services',$service);
         }
     }
 
@@ -110,5 +109,38 @@ class ServiceController extends Controller
 
 
     }
+
+      public function inactiveService(Request $request){
+
+            $set = $request->servicestatus;
+            $id = $request->servicesId;
+
+            $inactive = 0;
+
+            if($set == "Delete"){
+
+                  $inactive = 1;
+              }else{
+
+                    $inactive =0;
+                }
+
+        $services = Services::find($id);
+
+        $services->update(array('inactive' => $inactive));
+
+          if($inactive == 1){
+              Session::flash('alert-class', 'danger');
+              flash('Intervention Deleted', '')->overlay();
+          }else{
+
+            Session::flash('alert-class', 'success');
+              flash('Intervetion  Activated', '')->overlay();
+          }
+
+
+             //Redirect::route('show_services');    
+            return redirect('/show_services');
+     }
 
 }

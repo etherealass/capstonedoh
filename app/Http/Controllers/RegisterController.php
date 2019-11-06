@@ -28,9 +28,19 @@ class RegisterController extends Controller
 {
     public function registernow(request $request)
     {
+    $validation = $this->validate($request,[
+        'username' =>'required|unique:users',
+        'contact'=>'required|unique:users|digits:11',
+        'email' => 'required|unique:users'
+      ]);
+
+      if(!$validation){
+        $errors = new MessageBag(['username' => ['Username should be unique'],'contact' => ['Contact number should be unique'],'email' => ['Email should be unique']]);
+           return Redirect::back()->withErrors($errors)->withInput(Input::all());
+      }
+      else{
 
     $id = rand();
-
     $depts = $request->input('depart');
 
 
@@ -57,19 +67,6 @@ class RegisterController extends Controller
 
     }
 
-
-      $validation = $this->validate($request,[
-        'username' =>'required|unique:users',
-        'contact'=>'required|unique:users|digits:11',
-        'email' => 'required|unique:users'
-      ]);
-
-      if(!$validation){
-        $errors = new MessageBag(['username' => ['Username should be unique'],'contact' => ['Contact number should be unique'],'email' => ['Email should be unique']]);
-           return Redirect::back()->withErrors($errors)->withInput(Input::all());
-      }
-      else{
-
     	$user = new Users([
             'user_id' => $id,
     		'fname' => $request->input('fname'),
@@ -84,23 +81,23 @@ class RegisterController extends Controller
     	]);
 
 
-         $user->save();
+        $user->save();
 
+     $users = Users::where('user_id',$id)->with('user_departments')->with('user_roles')->get();
 
-        }
+    if($request->input('department') != NULL){
 
-        $users = Users::where('user_id',$id)->with('user_departments')->with('user_roles')->get();
-
-         foreach($depts as $dept){
-
-
-                $user_department = new User_departments([
+         foreach($depts as $dept)
+         {
+            
+            $user_department = new User_departments([
                     'user_id' => $user->id,
                     'department_id' => $dept
                 ]);
 
                 $user_department->save();
          }
+    }
 
 
         foreach($users as $usz)
@@ -113,10 +110,6 @@ class RegisterController extends Controller
             else{
                 $department = $usz->user_departments->department_name;
             } 
-
-           
-
-
         }
 
 
@@ -139,7 +132,7 @@ class RegisterController extends Controller
     	Session::flash('alert-class', 'success'); 
 		flash('User Created', '')->overlay();
 
-        $roles = User_roles::all();
+        $roles = User_roles::where('description','!=','Employee')->get();
         $deps = Departments::all();
         $rolex = User_roles::find($request->input('roleid'));
         $urole = Users::where('role',$request->input('roleid'))->with('user_departments')->with('user_roles')->get();
@@ -154,19 +147,32 @@ class RegisterController extends Controller
             return view('admin.showusers')->with('roles',$roles)->with('deps',$deps)->with('rolex',$rolex)->with('urole' ,$urole)->with('users',$users)->with('transfer',$transfer)->with('graduate',$graduate);
         }
 
-
     }
+
+}
 
     public function register_role(request $request)
     {
         
 
-        $role = new User_roles([
-            'name' => $request->input('rname'),
-            'description' => $request->input('rdesc')
+        $validation = $this->validate($request,[
+            'name' => 'required|unique:user_roles',
         ]);
 
-        $role->save();
+        if(!$validation){
+            $errors = new MessageBag(['name' => ['Role name should be unique']]);
+           return Redirect::back()->withErrors($errors)->withInput(Input::all());
+        }     
+        else{
+        
+            $role = new User_roles([
+                'name' => $request->input('name'),
+                'description' => $request->input('rdesc')
+            ]);
+ 
+            $role->save();
+
+        }
 
         date_default_timezone_set('Asia/Singapore');
 
@@ -182,7 +188,7 @@ class RegisterController extends Controller
         Session::flash('alert-class', 'success'); 
 		flash('Role Created', '')->overlay();
 
-		$roles = User_roles::all();
+		$roles = User_roles::where('description','!=','Employee')->get();
         $deps = Departments::all();
         $users = Users::find(Auth::user()->id);
         $transfer = Transfer_Requests::all();
@@ -221,7 +227,7 @@ class RegisterController extends Controller
         Session::flash('alert-class', 'success'); 
 		flash('Department Created', '')->overlay();
 
-		$roles = User_roles::all();
+		$roles = User_roles::where('description','!=','Employee')->get();
         $deps = Departments::all();
         $users = Users::find(Auth::user()->id);
         $transfer = Transfer_Requests::all();
@@ -238,7 +244,7 @@ class RegisterController extends Controller
     public function newemployee()
     {
 
-        $roles = User_roles::all();
+        $roles = User_roles::where('description','!=','Employee')->get();
         $deps = Departments::all();
         $users = Users::find(Auth::user()->id);
         $transfer = Transfer_Requests::all();
@@ -253,7 +259,7 @@ class RegisterController extends Controller
         }
 
     }
-
+ 
     public function create_employee(Request $request)
     {
 
@@ -334,7 +340,7 @@ class RegisterController extends Controller
         flash('Employee Created', '')->overlay();
 
 
-        $roles = User_roles::all();
+        $roles = User_roles::where('description','!=','Employee')->get();
         $deps = Departments::all();
         $users = Users::find(Auth::user()->id);
         $transfer = Transfer_Requests::all();

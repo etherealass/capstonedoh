@@ -4,12 +4,12 @@
         <!-- Breadcrumbs-->
         <ol class="breadcrumb">
           <li class="breadcrumb-item">
-            <a href="{{URL::to('/profile')}}">Dashboard</a>
+            <a href="{{URL::to('/profile')}}"><b>Dashboard</b></a>
           </li>
           <li class="breadcrumb-item">
-            <a href="{{URL::to('/show_dismiss_reason')}}">Dismissal Reasons</a>
+            <a href="{{URL::to('/show_dismiss_reason')}}"><b>Dismissal Reasons</b></a>
           </li>
-          <li class="breadcrumb-item active">Dismissal Reason Creation</li>
+          <li class="breadcrumb-item active"><b>Dismissal Reason Creation</b></li>
         </ol>
 
           @include('flash::message')

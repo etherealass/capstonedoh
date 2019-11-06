@@ -5,14 +5,19 @@
 
   @include('parts.loader')
 
-<body id="page-top">
+<body id="page-top" style="background-color: #e9ecef">
 
+@if(Auth::user()->user_role()->first()->name == 'Superadmin' || Auth::user()->user_role()->first()->name == 'Admin')
     @include('parts.nav')
-
+@else
+    @include('parts.nav2')  
+@endif
 
   <div id="wrapper">
 
+ @if(Auth::user()->user_role()->first()->name == 'Superadmin' || Auth::user()->user_role()->first()->name == 'Admin')
     @include('parts.sidebar')
+ @endif
 
     <div id="content-wrapper" style="background-color: #e9ecef">
 
@@ -24,7 +29,11 @@
       </div>
 
       <!-- Sticky Footer -->
+    @if(Auth::user()->user_role()->first()->name == 'Superadmin' || Auth::user()->user_role()->first()->name == 'Admin')
       @include('parts.footer')
+    @else
+      @include('parts.footer2')
+    @endif
 
     </div>
     <!-- /.content-wrapper -->

@@ -4,9 +4,9 @@
         <!-- Breadcrumbs-->
         <ol class="breadcrumb">
           <li class="breadcrumb-item">
-            <a href="{{URL::to('/profile')}}">Dashboard</a>
+            <a href="{{URL::to('/profile')}}"><b>Dashboard</b></a>
           </li>
-          <li class="breadcrumb-item active">Choose Department</li>
+          <li class="breadcrumb-item active"><b>Choose Department</b></li>
         </ol>
 
         <!-- Icon Cards-->

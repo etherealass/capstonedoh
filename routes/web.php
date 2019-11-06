@@ -136,8 +136,9 @@ Route::group(['middleware' =>'auth'], function()
 
 	 Route::any('/update/intervention/{id}', "InterventionController@updateintervention");
 
+	 Route::any('deleteIntervention', "InterventionController@inactiveintervention");
 
-	 Route::any('/inactive/intervention/{id}', "InterventionController@inactiveintervention");
+	 //Route::any('/inactive/intervention/{id}', "InterventionController@inactiveintervention");
 
 
 
@@ -269,6 +270,8 @@ Route::group(['middleware' =>'auth'], function()
 
 	 Route::get('/transfer_patient_now/{id}/{did}/{tid}/{pid}',"PatientController@patientTransfer");
 
+	 Route::get('/transfer_decline_now/{id}/{did}/{tid}/{pid}',"PatientController@patientdeclineTransfer");
+
 	 Route::post('/patientDismiss',"PatientController@dismiss_patient");
 
 	 Route::post('/graduate_patient',"PatientController@graduate_patient");
@@ -292,7 +295,10 @@ Route::group(['middleware' =>'auth'], function()
 	 Route::put('/activation/{id?}', "ReferController@putInactiveActive"); 
 
 	 Route::post('/addsocialworkernotes', "ReferController@addsocialworkernotes");
-	Route::post('/addBMIrecords/{id}', "ReferController@addRecords");
+
+	 Route::get('/findNotes/{id?}', "ReferController@findNotes");
+
+	 Route::post('/addBMIrecords/{id}', "ReferController@addRecords"); 
 	 
 	 Route::post('/addDentalNotes', "ReferController@addDentalNotes");
 
@@ -323,6 +329,9 @@ Route::group(['middleware' =>'auth'], function()
 	 Route::get('/view/service', "ServiceController@viewService");
 
 	 Route::post('/add_service', "ServiceController@add_service");
+
+	 Route::post('/deleteServices', "ServiceController@inactiveService");
+
 
 	 Route::any('/show_jails', "ViewController@show_jails");
 
@@ -435,6 +444,8 @@ Route::group(['middleware' =>'auth'], function()
 	 Route::any('/pdfintake/{id}',"ViewController@pdfintake");
 
 	 Route::any('/pdfdde/{id}',"ViewController@pdfdde");
+
+	 Route::any('/pdfreferral/{id}/{rid}',"ViewController@pdfreferral");
 
 	 Route::post('/reenroll_patient',"PatientController@reenroll_patient");
 

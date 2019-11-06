@@ -12,9 +12,9 @@
         <!-- Breadcrumbs-->
         <ol class="breadcrumb">
           <li class="breadcrumb-item">
-            <a href="{{URL::to('/profile')}}">Dashboard</a>
+            <a href="{{URL::to('/profile')}}"><b>Dashboard</b></a>
           </li>
-          <li class="breadcrumb-item active">Educational Attainment</li>
+          <li class="breadcrumb-item active"><b>Educational Attainment</b></li>
         </ol> 
 
       <div style="background-color: white;border-radius: 5px">
@@ -22,7 +22,7 @@
           <div class="col-xl-8 col-sm-9 mb-10" style="height: 6rem;">
             <div class="mb-3 text-black o-hidden h-100">
               <div class="card-body">
-                  <p style="font-size: 50px;margin-top: 0px">Educational Attainment</p> 
+                  <p style="font-size: 50px;margin-top: 0px"><b>Educational Attainment</b></p> 
               </div>
 
                 @include('flash::message')

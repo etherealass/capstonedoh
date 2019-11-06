@@ -327,7 +327,7 @@ $today = $year . '-' . $month . '-' . $day;
                           </div>
                  </div>
 
-              <div class="tab-pane fade" id="v-pills-contact" role="tabpanel" aria-labelledby="v-pills-profile-tab">
+                               <div class="tab-pane fade" id="v-pills-contact" role="tabpanel" aria-labelledby="v-pills-profile-tab">
                  <!-- <fieldset style="margin-bottom: 30px;margin-left: 0px;">-->
               
               
@@ -341,7 +341,7 @@ $today = $year . '-' . $month . '-' . $day;
                           </button>
                           <div class="dropdown-menu menu_btn" aria-labelledby="dropdownMenuButton">
                           @if($pats->inactive != 1)
-                            <a class="dropdown-item visit_btn" id="a-visit" name="a-visit" href="#"><button id="btn-visit" name="btn-visit" class="btn">Patient Visit</button></a>
+                            <a class="dropdown-item btn-visit" id="a-visit" name="a-visit" href="#"><button id="btn-visit" name="btn-visit" class="btn">Patient Visit</button></a>
                           @endif
                             <a class="dropdown-item inactive_btn"  id="a-inactive" name="a-inactive" href="#"><button id="btn-inactive" name="btn-inactive" class="btn" value="{{$pats->inactive}}">
                              @if($pats->inactive != 1)
@@ -354,22 +354,47 @@ $today = $year . '-' . $month . '-' . $day;
                       </div>
                         <br>
 
-                        <div class="row" style="margin-left: 10px;margin-bottom: 50px; margin-top: 70px">
-                        
-                        @foreach ($visits as $pat_visit)
+                        <div class="card-body" style="margin-left: 10px;margin-top: 20px">
+                         <div class="table-responsive">
+                              <table class="table table-bordered" id="patientTable" width="100%" cellspacing="0">
+                                <thead>
+                                  <tr>
+                                    <th>Date</th>
+                                    <th>Event Name</th>
+                                    <th>Status</th>
+                                    <th>Action</th>
+                                  </tr>
+                                </thead>
+                               <tbody id="visit-list" name="visit-list">
+                                    @foreach ($visits as $pat_visit)
+                                  <tr id="visit{{$pat_visit->id}}">
+                                    <td>{{$pat_visit->date}}</td>
+                                    <td>@if($pat_visit->events)
+                                      {{$pat_visit->events->title}}
+                                        @else
+                                        Patient Visit
+                                      @endif</td>
+                                    <td>@if($pat_visit->status == 1)
+                                    Attended
+                                    @else
+                                    Not Attended
+                                    @endif</td>
+                                    <td><input type="hidden" class="visit_event_date_{{$pat_visit->id}}" id="visit_event_date" name="visit_event_date" value="{{$pat_visit->date}}">
+                                      @if($pat_visit->status == 1 && $pat_visit->date == $today)
+                                        <button class="btn btn-success btn-visit" value="edit" id="attend_btn"  name="attend_btn"><i class="far fa-calendar-check" aria-hidden="true"></i></button>
+                                        @else
+                                         <button class="btn btn-info btn-visit-view" value="edit" id="btn-visit-view"  name="btn-visit-view"><i class="far fa-calendar-check" aria-hidden="true"></i></button>
+                                      @endif
+                                    </td>
                          
-                        <div class="col-xl-2 col-sm-3 mb-5" style="height: 5rem;margin-top: 2px">
-                        <div class="card border-dark mb-3 text-black o-hidden h-100">
-                          <div class="card-body open_modal">
-                           <a href="#"><p style="font-size: 12px;margin-top: 2px">{{$pat_visit->date}}<br> {{$pat_visit->events->title}}</p></a>
-                          <div class="mr-5"></div>
-                          </div>
-                        </div>
-                      </div>
-                      @endforeach
-                      </div>          
+                                  </tr>
+                                    @endforeach
+                                </tbody>
+                              </table>
+                            </div>
+                         </div>     
+                    </div>
 
-     </div>
 
 
        <div class="tab-pane fade" id="v-pills-intake" role="tabpanel" aria-labelledby="v-pills-intake-tab">
@@ -1247,13 +1272,8 @@ $today = $year . '-' . $month . '-' . $day;
           </fieldset>
         </div>
       <!--Sessions-->
-      <div class="tab-pane fade" id="v-pills-contact" role="tabpanel" aria-labelledby="v-pills-profile-tab">
-                 <!-- <fieldset style="margin-bottom: 30px;margin-left: 0px;">-->
-              
-              
+                       <div class="tab-pane fade" id="v-pills-contact" role="tabpanel" aria-labelledby="v-pills-profile-tab">
 
-                 <!--<button id="btn-visit" name="btn-visit" class="btn btn-dark btn-block" style="height: 50px; width:200px;float: right;margin-top: 0px;margin-left: 120px">Patient Visit</button>
-                    <button id="btn-inactive" name="btn-inactive" class="btn btn-info btn-block" style="height: 50px; width:200px;float: right;margin-top: 0px;margin-left: 40px">Inactive</button>-->
 
                     <div class="dropdown">
                           <button class="btn btn-dark dropdown-toggle"  style="height: 50px; width:200px;float: right;margin-top: 0px;margin-left: 120px" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -1261,7 +1281,7 @@ $today = $year . '-' . $month . '-' . $day;
                           </button>
                           <div class="dropdown-menu menu_btn" aria-labelledby="dropdownMenuButton">
                           @if($pats->inactive != 1)
-                            <a class="dropdown-item visit_btn" id="a-visit" name="a-visit" href="#"><button id="btn-visit" name="btn-visit" class="btn">Patient Visit</button></a>
+                            <a class="dropdown-item btn-visit" id="a-visit" name="a-visit" href="#"><button id="btn-visit" name="btn-visit" class="btn">Patient Visit</button></a>
                           @endif
                             <a class="dropdown-item inactive_btn"  id="a-inactive" name="a-inactive" href="#"><button id="btn-inactive" name="btn-inactive" class="btn" value="{{$pats->inactive}}">
                              @if($pats->inactive != 1)
@@ -1274,21 +1294,47 @@ $today = $year . '-' . $month . '-' . $day;
                       </div>
                         <br>
 
-                        <div class="row" style="margin-left: 10px;margin-bottom: 50px; margin-top: 70px">
-                        
-                        @foreach ($visits as $pat_visit)
+                        <div class="card-body" style="margin-left: 10px;margin-top: 20px">
+                         <div class="table-responsive">
+                              <table class="table table-bordered" id="patientTable" width="100%" cellspacing="0">
+                                <thead>
+                                  <tr>
+                                    <th>Date</th>
+                                    <th>Event Name</th>
+                                    <th>Status</th>
+                                    <th>Action</th>
+                                  </tr>
+                                </thead>
+                               <tbody id="visit-list" name="visit-list">
+                                    @foreach ($visits as $pat_visit)
+                                  <tr id="visit{{$pat_visit->id}}">
+                                    <td>{{$pat_visit->date}}</td>
+                                    <td>@if($pat_visit->events)
+                                      {{$pat_visit->events->title}}
+                                        @else
+                                        Patient Visit
+                                      @endif</td>
+                                    <td>@if($pat_visit->status == 1)
+                                    Attended
+                                    @else
+                                    Not Attended
+                                    @endif</td>
+                                    <td><input type="hidden" class="visit_event_date_{{$pat_visit->id}}" id="visit_event_date" name="visit_event_date" value="{{$pat_visit->date}}">
+                                      @if($pat_visit->status == 1 && $pat_visit->date == $today)
+                                        <button class="btn btn-success btn-visit" value="edit" id="attend_btn"  name="attend_btn"><i class="far fa-calendar-check" aria-hidden="true"></i></button>
+                                        @else
+                                         <button class="btn btn-info btn-visit-view" value="edit" id="btn-visit-view"  name="btn-visit-view"><i class="far fa-calendar-check" aria-hidden="true"></i></button>
+                                      @endif
+                                    </td>
                          
-                        <div class="col-xl-2 col-sm-3 mb-5" style="height: 5rem;margin-top: 2px">
-                        <div class="card border-dark mb-3 text-black o-hidden h-100">
-                          <div class="card-body open_modal">
-                           <a href="#"><p style="font-size: 12px;margin-top: 2px">{{$pat_visit->date}}<br> {{$pat_visit->events->title}}</p></a>
-                          <div class="mr-5"></div>
-                          </div>
-                        </div>
-                      </div>
-                      @endforeach
-                      </div>          
-                   </div>
+                                  </tr>
+                                    @endforeach
+                                </tbody>
+                              </table>
+                            </div>
+                         </div>     
+                    </div>
+
       <!--Refer-->
              <div class="tab-pane fade" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">
                       <button id="add-patient-refer" name="add-patient-refer" class="btn btn-dark btn-block" style="height: 50px; width:200px;float: right;margin-top: 0px;margin-left: 120px">Refer Patient</button>
@@ -2624,4 +2670,1327 @@ $today = $year . '-' . $month . '-' . $day;
   </div>
 </div>
 
+@endsection
+
+@section('script')
+<script>
+      
+  $(document).ready(function () {
+    ////----- Open the modal to CREATE a link -----////
+
+            $('#referTable').DataTable();
+
+            $('#nurseTable').DataTable();
+
+            $('#dentalTable').DataTable();
+
+            $('#psychiatristTable').DataTable();
+
+            $('#socialworkerTable').DataTable();
+
+            $('#BMIMonitoring').DataTable();
+
+            $('#doctorsTable').DataTable();
+
+
+            $('#MedicationRecords').DataTable();
+
+            
+            $('#BloodSugarTable').DataTable();
+
+            $('#patientTable').DataTable({
+               "order": [[0, "desc"]]
+            });
+
+    $('.addNurseNotes').click(function () {
+
+      console.log($(this).val());
+
+       if($(this).val() != 'add'){
+
+        var type = "GET";
+        var id = $(this).val();
+        var ajaxurl = '{{URL::to("/findNotes")}}/' + id;
+
+
+             $.ajax({
+                    type: type,
+                    url: ajaxurl,
+                    dataType: 'json',
+                    success: function (data) {
+
+                        $('#nursenote').val(data.notes);
+
+                        var service_id = data.service_id;
+                        if(service_id == " "|| service_id == null){
+
+                            service_id = 0;
+                        }
+                        $('#nurseList').val(service_id);
+
+                        $("#nurseList option[value=M]").addAttr('disabled');
+                        $("#nurseList option[value=B]").addAttr('disabled');
+                        $("#nurseList option[value=BS]").addAttr('disabled');
+
+                }
+              })
+     }
+
+
+        $('#NurseNotesFormData').trigger("reset");
+        $('#NurseNotesModal').modal('show');
+     
+
+    });
+
+
+
+  $('#tableType').change(function() {
+   var id = $(this).val();
+
+      if(id == 'BS'){
+
+            $('#BloodSugarTablediv').removeAttr('hidden');
+            $('#BloodSugarTablediv').show();
+
+            $('#BMIMonitoringdiv').hide();
+            $('#MedicationRecordsdiv').hide();
+            $('#nurseTablediv').hide();
+
+
+      }else if(id == 'F'){
+
+              $('#BMIMonitoringdiv').removeAttr('hidden');
+              $('#BMIMonitoringdiv').show();
+
+
+             $('#BloodSugarTablediv').hide();
+             $('#MedicationRecordsdiv').hide();
+              $('#nurseTablediv').hide();
+
+      }else if(id == 'M'){
+
+              $('#MedicationRecordsdiv').removeAttr('hidden');
+              $('#MedicationRecordsdiv').show();
+
+
+             $('#BloodSugarTablediv').hide();
+             $('#BMIMonitoringdiv').hide();
+              $('#nurseTablediv').hide();
+
+      }else{
+
+              $('#nurseTablediv').removeAttr('hidden');
+              $('#nurseTablediv').show();
+
+            
+             $('#BloodSugarTablediv').hide();
+              $('#MedicationRecordsdiv').hide();
+             $('#BMIMonitoringdiv').hide();
+      }
+});
+
+
+    $('.addDoctortNotes').click(function () {
+
+       // console.log($(this).val());
+
+        if($(this).val() != 'add'){
+
+        var type = "GET";
+        var id = $(this).val();
+        var ajaxurl = '{{URL::to("/findNotes")}}/' + id;
+
+
+             $.ajax({
+                    type: type,
+                    url: ajaxurl,
+                    dataType: 'json',
+                    success: function (data) {
+
+                        $('#notes').val(data.notes);
+                        $('#doctorList').val(data.service_id);
+
+                }
+              })
+    }
+
+        $('#AddDoctorFormData').trigger("reset");
+        $('#AddDoctorNotesModal').modal('show');
+    
+    });
+
+       $('.psychiatristNotes').click(function () {
+
+          if($(this).val() != 'add'){
+
+
+        var type = "GET";
+        var id = $(this).val();
+        var ajaxurl = '{{URL::to("/findNotes")}}/' + id;
+
+
+             $.ajax({
+                    type: type,
+                    url: ajaxurl,
+                    dataType: 'json',
+                    success: function (data) {
+
+                        $('#notes2').val(data.notes);
+
+                                    console.log(data.notes);
+
+
+                        var service_id = data.service_id;
+                        if(service_id == " "|| service_id == null){
+
+                            service_id = 0;
+                        }
+                        $('#psychiatristList').val(service_id);
+
+                }
+              })
+     }
+
+          $('#AddPsychiatristFormData').trigger("reset");
+          $('#AddPsychiatristNotesModal').modal('show');
+
+       });
+    
+
+ $('.addDentalNotes').click(function () {
+
+        $('#AddDentalFormData').trigger("reset");
+        $('#AddDentalNotesModal').modal('show');
+    
+  });
+
+
+
+$('.addSocialWorkerNotes').click(function () {
+
+
+      
+          if($(this).val() != 'add'){
+
+
+        var type = "GET";
+        var id = $(this).val();
+        var ajaxurl = '{{URL::to("/findNotes")}}/' + id;
+
+
+             $.ajax({
+                    type: type,
+                    url: ajaxurl,
+                    dataType: 'json',
+                    success: function (data) {
+
+                        $('#socialworkerNote').val(data.notes);
+
+                                    console.log(data.notes);
+
+
+                        var service_id = data.service_id;
+                        if(service_id == " "|| service_id == null){
+
+                            service_id = 0;
+                        }
+                        $('#socialList').val(service_id);
+
+                }
+              })
+     }
+
+
+        $('#AddSocialWorkerFormData').trigger("reset");
+        $('#AddSocialWorkerNotesModal').modal('show');
+    
+  });
+
+
+
+    $('body').on('click', '.open_modal', function () {
+             
+              $('#modalFormData').trigger("reset");
+              $('#linkEditor').modal('show');
+
+               var evt_id = $('#event_id').val();
+              $('#evts_id').val(evt_id);
+              $('#patient_interven_id').val($(this).val());
+              $('#btn-save').val("add");
+
+
+          var type = "GET";
+          var ajaxurl = '{{URL::to("/view/vieweventattended")}}';
+          var data = [{'event_id': evt_id, 'patient_id': $(this).val()}]
+              $.ajax({
+                contentType: "application/json; charset=utf-8",
+                type: type,
+                url: ajaxurl,
+                data: {'event_id': evt_id, 'patient_id': $(this).val()},
+               // dataType: 'json',
+                success: function (data) {
+                 
+                  if (data.length > 0){ console.log(data);
+                    for(var a=0; a<data.length; a++) {
+                      var interven_id = data[a]['interven_id'];
+                      var remarks = data[a]['remarks'];
+                      var id = data[a]['id'];
+
+                      //console.log(interven_id);
+                      $("input[value=" + interven_id + "]").click();
+                      $("input[name=remarks_" + interven_id + "]").val(remarks);
+                      $("input[name=rec_id_" + interven_id + "]").val(id);
+                    }
+
+                      //
+                  } else{
+                    $('#modalFormData').trigger("reset");
+                    $('#linkEditor').modal('show');
+                  }
+                   
+                },
+               error: function (data) {
+                    console.log('Error:', data);
+                }
+
+            });
+    
+    });
+
+
+    $(".nurseList").change(function (e){
+
+         var selected = $(this).val();
+
+                       $('.medication_record').addClass('has-error');   
+
+
+
+          if(selected == 'M'){
+
+
+
+            $('.medicalRecords').removeAttr('hidden');
+            $('.medicalRecords').show();
+
+            $('.note_modal').hide();
+            $('.BMIRecords').hide();
+            $('.BloodSugarRecords').hide();
+
+              $('.medication_record').addClass('has-error');   
+
+              $('.weight_kg').removeClass('has-error'); 
+              $('.bmi_record').removeClass('has-error');    
+              $('.reading_bbreakfast').removeClass('has-error');    
+
+
+          }else if(selected == 'BS'){
+
+            $('.BloodSugarRecords').removeAttr('hidden');
+            $('.BloodSugarRecords').show();
+
+            $('.note_modal').hide();
+            $('.BMIRecords').hide();
+            $('.medicalRecords').hide();
+
+             // $('.reading_bbreakfast').addClass('has-error'); 
+
+             //  $('.weight_kg').removeClass('has-error');  
+             //  $('.bmi_record').removeClass('has-error');    
+             //  $('.medication_record').removeClass('has-error'); 
+
+
+          }else if(selected == 'F'){
+
+            $('.BMIRecords').removeAttr('hidden');
+            $('.BMIRecords').show();
+
+            $('.note_modal').hide();
+            $('.BloodSugarRecords').hide();
+            $('.medicalRecords').hide();
+
+             $('.bmi_record').addClass('has-error');  
+             $('.weight_kg').addClass('has-error');    
+
+              $('.reading_bbreakfast').removeClass('has-error');   
+              $('.medication_record').removeClass('has-error');  
+
+
+          }else{
+
+            $('.note_modal').removeAttr('hidden');
+            $('.note_modal').show();
+
+            $('.medicalRecords').hide();
+            $('.BMIRecords').hide();
+            $('.BloodSugarRecords').hide();
+
+
+
+          }
+
+    });
+
+      $("input[type='checkbox']").click(function (e) {
+            var id = $(this).val();
+            if ($(this).is(':checked')) {
+              $("#textboxes_" + id).show();
+              $("#select_" + id).show();
+
+            } else {
+              $("#textboxes_" + id).hide();
+               $("#select_" + id).hide();
+            }
+        
+           })
+
+   $('#linkEditor').on('hidden.bs.modal', function () {
+        //$(this).removeData('bs.modal');
+        console.log('hide');
+        $(this).find('form').trigger("reset");
+    });
+
+ $('#NurseNotesModal').on('hidden.bs.modal', function () {
+
+  console.log("hide");
+
+        $(this).find('form').trigger("reset");
+
+            $('.medicalRecords').hide();
+            $('.BMIRecords').hide();
+            $('.BloodSugarRecords').hide();
+
+
+  });
+
+
+   $(".btn-visit-view").click(function(e){
+
+   });
+
+     $('.btn-visit').click(function(e){
+     
+        var date = $('.visit_event_date').val();
+
+
+        var patient_id = $('#patient_id').val();
+        var ajaxurl = '{{ URL::to("/getCurrentEvent") }}/' + patient_id;
+              $.ajax({
+                contentType: "application/json; charset=utf-8",
+                type: 'GET',
+                url: ajaxurl,
+                data: {'date': date},
+                success: function (data) {
+
+                 
+                  if(data.hasEvent && data.visitIntervens != null) {
+                    var visitIntervens = data.visitIntervens;
+
+                    
+
+                    $('#linkEditor input:text[name="patientEventId"]').val(data.patientEventId);
+                    $('#linkEditor input:text[name="eventId"]').val(data.eventId);
+
+                    var i;
+                    for (i = 0; i < visitIntervens.length; ++i) {
+
+                      var interven_id = visitIntervens[i].interven_id;
+
+                        $('#linkEditor input:checkbox[value='+ visitIntervens[i].interven_id +']').click();
+
+
+                        //.prop('checked', true);
+
+                        var remarks = visitIntervens[i].remarks;
+                        var id = visitIntervens[i].id;
+
+                      $("input[name=remarks_" + interven_id + "]").val(remarks);
+                      $("input[name=rec_id_" + interven_id + "]").val(id);
+
+                            $('#modalFormData').trigger("reset");
+                            $('#linkEditor').modal('show');
+                    }
+
+                  } else {
+                      $('#linkEditor input:text[name="patientEventId"]').val();
+
+                            $('#modalFormData').trigger("reset");
+                            $('#linkEditor').modal('show');
+
+                  }
+                },
+               error: function (data) {
+                    console.log('Error:', data);
+                }
+
+            });
+
+              
+
+    });
+
+ 
+      
+
+
+     $('#btn-attended').click(function (e){
+
+    $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+            
+        });
+
+          var eventArr = [];
+
+      var checked = $("input[type=checkbox]:checked").length;
+
+          var event_patient = $('#linkEditor input:text[name="patientEventId"]').val();
+           var patient_id = $('#patient_id').val();
+
+
+        var length = $("input:checkbox[name='checkitem[]']").each(function(){
+              var isChecked = $(this).is(':checked');
+              var event = {};
+              var value = $(this).val();
+              event['isChecked'] = isChecked;
+              event['patient_event_id'] = $('#linkEditor input:text[name="patientEventId"]').val();
+              event['rec_id'] = $('#rec_id_'+value).val();
+              event['child_interven_id'] =  $('#childInterven_'+value).val();
+              event['patient_id'] = $('#patient_id').val();
+              event['event_id'] = $('#linkEditor input:text[name="eventId"]').val();;
+              event['interven_id'] = value;
+              event['remarks'] = $('#remarks_'+value).val();
+
+              eventArr.push(event);
+        });
+
+               var ajaxurl;  
+
+        if(event_patient){
+
+            ajaxurl = '{{URL::to("/patient/attendIntervention")}}/'+event_patient;
+
+         }else{
+
+            ajaxurl  = '{{URL::to("/patient/visitNoEvent")}}/'+patient_id;
+
+       }
+
+
+       var type = "POST";
+      //  var ajaxurl = '{{URL::to("/patient/attendIntervention")}}/'+event_patient;
+         $.ajax({
+            contentType: "application/json; charset=utf-8",
+            type: type,
+            url: ajaxurl,
+            data: JSON.stringify(eventArr),
+            success: function (data) {
+
+                 for(var a = 0; data.length > a; a++){
+
+
+                    $("#rec_id_"+data[a].interven_id).val("");
+                }
+
+
+                if(checked > 0){
+
+                      $("#attend_btn").addClass("btn-success").removeClass("btn-info");
+
+                
+                }else{
+
+                      $("#attend_btn").addClass("btn-info").removeClass("btn-success");
+
+                }
+
+
+                $('#modalFormData').trigger("reset");
+                $('#linkEditor').modal('hide');
+               
+            },
+           error: function (data) {
+                console.log('Error:', data);
+            }
+
+        });
+
+       $('#modalFormData').trigger("reset");
+       $('#linkEditor').modal('hide');
+
+
+});
+
+
+   
+
+    $('#add-patient-refer').click(function () {
+        $('#btn-save').val("add");
+        $('#modalFormData').trigger("reset");
+        $('#linkEditorModal').modal('show');
+    });
+
+
+    $('#btn-inactive').click(function () {
+        var activate = $(this).val();
+
+            $('#inactivemodalFormData').trigger("reset");
+            $('#inactiveEditorModal').modal('show');
+        
+
+
+     
+    });
+
+  
+
+$("#btn-save").click(function (e) {
+
+  
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+            
+        });
+        e.preventDefault();
+         var formData = {
+            patient_id: $('#patient_id').val(),
+            ref_date:  $('#refDate').val(),
+            ref_at: $('#refAt').val(),
+            ref_reason:  $('#reason').val(),
+            ref_by:  $('#refby').val(),
+            recommen:  $('#ref_recom').val(),
+            contact_person:  $('#contactPer').val(),
+            ref_back_date:  $('#refDateback').val(),
+            ref_back_by:  $('#refbyback').val(),
+            ref_slip_return:  $('#returnDate').val(),
+
+        };
+
+        console.log(formData);
+       var state = $('#btn-save').val();
+
+       var type = "POST";
+        var id = $('#id').val();
+        var ajaxurl = '{{URL::to("/refers")}}';
+        if (state == "update") {
+            type = "PUT";
+            ajaxurl = '{{URL::to("/refers")}}'+ '/' + id;
+            console.log(ajaxurl);
+        }
+        $.ajax({
+            type: type,
+            url: ajaxurl,
+            data: formData,
+            dataType: 'json',
+            success: function (data) {
+
+              $(".odd").remove();
+
+                var link = '<tr id="refer' + data.id + '"><td>' + data.ref_date + '</td><td>' + data.ref_at + '</td><td>' + data.ref_reason + '</td><td>' + data.ref_by + '</td>';
+                link += '<td><button class="btn btn-info edit-refer-modal" value="' + data.id + '">Edit</button>';
+                link += '<button class="btn btn-secondary accept_patient_referal" id="btn-accept" name ="btn-accept" value="' + data.id + '">Accept</button>';
+                 link += '<button class="btn btn-light print-link" id="btn-ptint" name ="btn-print" value="' + data.id + '">Print</button>';
+                
+                if (state == "add") {
+                    $('#links-list').append(link);
+                } else {
+                    $("#refer" + id).replaceWith(link);
+                }
+    
+                $('#modalFormData').trigger("reset");
+                $('#linkEditorModal').modal('hide');
+        },
+           error: function (data) {
+                console.log('Error:', data);
+            }
+
+        });
+      });
+
+$("#btn_activate").click(function (e) {
+
+          var curStat = $(this).val();
+
+          var patient_id = $("#patient-id").val();
+
+          console.log(curStat);
+
+          var newStat;
+
+          if(curStat == 1){
+
+              newStat = 0;
+          }else{
+
+              newStat = 1;
+          }
+
+          alert(patient_id);
+
+
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+            });
+               e.preventDefault();
+              var formData = {
+
+                    remarks:  $("#note").val(),
+                    inactive: newStat,
+
+              };
+
+
+            $.ajax({
+            type: "PUT",
+            url: '{{URL::to("/activation")}}'+ '/' + patient_id,
+            data: formData,
+            dataType: 'json',
+            success: function (data) {
+
+                      $('#inactivemodalFormData').trigger("reset");
+                      $('#inactiveEditorModal').modal('hide');
+
+                          var link = '<div class="dropdown-menu menu_btn2" aria-labelledby="dropdownMenuButton">';
+                       
+
+                       if(curStat == 1){
+                           link += ' <a class="dropdown-item visit_btn" id="a-visit" name="a-visit" href="#"><button id="btn-visit" name="btn-visit" class="btn">Patient Visit</button></a>';
+                            link += '<a class="dropdown-item inactive_btn"  id="a-inactive" name="a-inactive" href="#"><button id="btn-inactive" name="btn-inactive" class="btn" value="{{$pats->inactive}}">Inactive</button></a>';
+
+
+                        
+                        }else{
+                             link += '<a class="dropdown-item inactive_btn"  id="a-inactive" name="a-inactive" href="#"><button id="btn-inactive" name="btn-inactive" class="btn" value="{{$pats->inactive}}">Active</button></a>';
+
+                        }
+
+                       $('.menu_btn').replaceWith(link);
+
+
+                 
+            },
+           error: function (data) {
+                console.log('Error:', data);
+            }
+          });
+
+
+
+});
+
+$("#btn-save-socialworker").click(function (e) {
+   
+
+ $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+            
+        });
+
+     var today = new Date();
+    var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+    var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+    var dateTime = date+' '+time;
+
+      e.preventDefault();
+         var formData = {
+            progress_id: "sample",
+            patient_id: $('#patient_id').val(),
+            date_time: dateTime,
+            service_id: $('#socialList').val(),
+            note_by: $('#note_by').val(),
+            notes: $('#socialworkerNote').val(),
+            role_type: "socialworker"
+        };
+
+
+        var type = "POST";
+        var id = $('#id').val();
+        var ajaxurl = '{{URL::to("/addsocialworkernotes")}}';
+
+
+     $.ajax({
+            type: type,
+            url: ajaxurl,
+            data: formData,
+            dataType: 'json',
+            success: function (data) {
+
+                var service = " ";
+
+                  console.log(data[0].service_id);
+                  if(data[0].service_id){
+                     service = data[0]['servicex'].name;
+
+                  }
+
+                    var link = '<tr id="socialworker_' + data[0].id + '"><td>' + data[0].date_time + '</td><td>' + service + '</td><td>' + data[0].notes + '</td><td>' + data[0]['userx'].lname +', '+ data[0]['userx'].fname + '</td>';
+                link += '<td></td>';
+                
+
+                    $('#socialworker-list').append(link);
+
+               
+
+                $('#AddSocialWorkerFormData').trigger("reset");
+                $('#AddSocialWorkerNotesModal').modal('hide');
+        },
+           error: function (data) {
+                console.log('Error:', data);
+            }
+
+        });
+
+});
+
+$("#btn-save-nursenotes").click(function (e) {
+   
+
+ $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+            
+        });
+
+
+
+     var today = new Date();
+    var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+    var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+    var dateTime = date+' '+time;
+
+   var selectVal = $('#nurseList').val();
+
+   var weight_kg = $('.weight_kg').val();
+   var bmi_record = $('#bmi_record').val();
+   var reading_bbreakfast = $('#reading_bbreakfast').val();
+   var medication_record = $('#medication_record').val();
+   var nursenote =$('#nursenote').val();
+
+   if(selectVal == 'F'){
+
+      if(weight_kg == null  || weight_kg == "" || bmi_record == null  || bmi_record == "" || nursenote == null  || nursenote == ""){
+              console.log("sulod");
+      }else{
+
+        e.preventDefault();
+         var formData = {
+            date: date,
+            patient_id: $('#patient_id').val(),
+            weight: $('#weight_kg').val(),
+            bmi: $('#bmi_record').val(),
+            created_by: $('#note_by').val(),
+            remarks: $('#nursenote').val()
+        };
+
+
+        var type = "POST";
+        var id = $('#id').val();
+        var ajaxurl = '{{URL::to("/addBMIrecords")}}/BMIRecords';
+
+
+     $.ajax({
+                type: type,
+            url: ajaxurl,
+            data: formData,
+            dataType: 'json',
+            success: function (data) {
+
+             
+               
+
+                $('#NurseNotesFormData').trigger("reset");
+                $('#NurseNotesModal').modal('hide');
+        },
+           error: function (data) {
+                console.log('Error:', data);
+            }
+
+          
+
+        });
+
+
+        
+      }
+
+   }else if(selectVal == 'BS'){
+
+     if( reading_bbreakfast == null  || reading_bbreakfast == "" || nursenote == null  || nursenote == ""){
+              console.log("sulod");
+      }else{
+
+        e.preventDefault();
+         var formData = {
+            dateTime: dateTime,
+            patient_id: $('#patient_id').val(),
+            reading: $('#reading_bbreakfast').val(),
+            created_by: $('#note_by').val(),
+            notes: $('#nursenote').val()
+        };
+
+
+        var type = "POST";
+        var id = $('#id').val();
+        var ajaxurl = '{{URL::to("/addBMIrecords")}}/BloodSugar';
+
+
+     $.ajax({
+                type: type,
+            url: ajaxurl,
+            data: formData,
+            dataType: 'json',
+            success: function (data) {
+
+             
+               
+
+                $('#NurseNotesFormData').trigger("reset");
+                $('#NurseNotesModal').modal('hide');
+        },
+           error: function (data) {
+                console.log('Error:', data);
+            }
+
+          
+
+        });
+
+
+
+        
+      }
+
+
+   }else if(selectVal == 'M'){
+
+        if( medication_record == null  || medication_record == "" || nursenote == null  || nursenote == ""){
+              console.log("sulod");
+      }else{
+
+             e.preventDefault();
+         var formData = {
+            intake_date: date,
+            intake_time: time,
+            patient_id: $('#patient_id').val(),
+            medication: $('#medication_record').val(),
+            created_by: $('#note_by').val(),
+            notes: $('#nursenote').val()
+        };
+
+
+        var type = "POST";
+        var id = $('#id').val();
+        var ajaxurl = '{{URL::to("/addBMIrecords")}}/medicalRecords';
+
+
+     $.ajax({
+                type: type,
+            url: ajaxurl,
+            data: formData,
+            dataType: 'json',
+            success: function (data) {
+
+             
+               
+
+                $('#NurseNotesFormData').trigger("reset");
+                $('#NurseNotesModal').modal('hide');
+        },
+           error: function (data) {
+                console.log('Error:', data);
+            }
+
+          
+
+        });
+
+
+
+
+        
+      }
+
+
+       
+   }else{
+
+
+    if($('.nursenote').val() == null || $('.nursenote').val() == ""){
+
+          console.log("sulod");
+
+    }else{
+
+        var service_id = $('#nurseList').val();
+
+      if(service_id == 0){
+
+          service_id = " ";
+      }
+
+
+      e.preventDefault();
+         var formData = {
+            progress_id: "sample",
+            patient_id: $('#patient_id').val(),
+            date_time: dateTime,
+            service_id: service_id,
+            note_by: $('#note_by').val(),
+            notes: $('#nursenote').val(),
+            role_type: "nurse"
+        };
+
+
+        var type = "POST";
+        var id = $('#id').val();
+        var ajaxurl = '{{URL::to("/addsocialworkernotes")}}';
+
+
+     $.ajax({
+            type: type,
+            url: ajaxurl,
+            data: formData,
+            dataType: 'json',
+            success: function (data) {
+
+                var service = " ";
+
+                  console.log(data[0].service_id);
+                  if(data[0].service_id){
+                     service = data[0]['servicex'].name;
+
+                  }
+
+                  console.log(service);
+                    var link = '<tr id="nurse_' + data[0].id + '"><td>' + data[0].date_time + '</td><td>' + service + '</td><td>' + data[0].notes + '</td><td>' + data[0]['userx'].lname +', '+ data[0]['userx'].fname + '</td>';
+                link += '<td></td>';
+                
+
+                    $('#nurse-list').append(link);
+
+               
+
+                $('#NurseNotesFormData').trigger("reset");
+                $('#NurseNotesModal').modal('hide');
+        },
+           error: function (data) {
+                console.log('Error:', data);
+            }
+
+        });
+
+    }
+  }
+
+});
+
+
+
+$("#btn-save-psychiatristnotes").click(function (e) {
+   
+
+ $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+            
+        });
+
+     var today = new Date();
+    var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+    var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+    var dateTime = date+' '+time;
+
+      e.preventDefault();
+         var formData = {
+            progress_id: "sample",
+            patient_id: $('#patient_id').val(),
+            date_time: dateTime,
+            service_id: $('#psychiatristList').val(),
+            note_by: $('#note_by').val(),
+            notes: $('#notes2').val(),
+            role_type: "psychiatrist"
+        };
+
+
+        var type = "POST";
+        var id = $('#id').val();
+        var ajaxurl = '{{URL::to("/addsocialworkernotes")}}';
+
+
+     $.ajax({
+            type: type,
+            url: ajaxurl,
+            data: formData,
+            dataType: 'json',
+            success: function (data) {
+
+
+
+                   var link = '<tr id="psychiatrist_' + data[0].id + '"><td>' + data[0].date_time + '</td><td>' + data[0]['servicex'].name + '</td><td>' + data[0].notes + '</td><td>' + data[0]['userx'].lname +', '+ data[0]['userx'].fname + '</td>';
+                link += '<td></td>';
+                
+
+                    $('#psychiatrist-list').append(link);
+              
+
+                $('#AddPsychiatristFormData').trigger("reset");
+                $('#AddPsychiatristNotesModal').modal('hide')
+        },
+           error: function (data) {
+                console.log('Error:', data);
+            }
+
+        });
+
+});
+
+
+$("#btn-save-dentalServices").click(function (e) {
+   
+
+ $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+            
+        });
+
+     var today = new Date();
+    var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+    var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+    var dateTime = date+' '+time;
+
+   
+ var formData = {
+  
+            patient_id: $('#patient_id').val(),
+            date_time: dateTime,
+            note_by: $('#note_by').val(),
+            tooth_no: $('#tooth_no').val(),
+            diagnose: $('#diagnosis').val(),
+            service_rendered: $('#service_rendered').val(),
+            remarks: $('#remarks').val()
+
+        };
+
+
+        var type = "POST";
+        var id = $('#id').val();
+        var ajaxurl = '{{URL::to("/addDentalNotes")}}';
+
+
+
+     $.ajax({
+            type: type,
+            url: ajaxurl,
+            data: formData,
+            dataType: 'json',
+            success: function (data) {
+
+
+                  console.log(data);
+
+                   var link = '<tr id="dental_' + data[0].id + '"><td>' + data[0].date_time + '</td><td>' + data[0].diagnose + '</td><td>' + data[0].tooth_no + '</td><td>' + data[0].service_rendered +'</td><td>'+ data[0]['userxk'].lname +', '+data[0]['userxk'].fname+'</td><td>'+data[0].remarks+'</td>';
+                link += '<td></td>';
+                
+
+                    $('#dental-list').append(link);
+
+                $('#AddDentalFormData').trigger("reset");
+                $('#AddDentalNotesModal').modal('hide');
+        },
+           error: function (data) {
+                console.log('Error:', data);
+            }
+
+        });
+
+});
+
+
+
+
+
+
+$("#btn-save-doctornotes").click(function (e) {
+   
+
+ $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+            
+        });
+
+     var today = new Date();
+    var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+    var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+    var dateTime = date+' '+time;
+
+      e.preventDefault();
+         var formData = {
+            progress_id: "sample",
+            patient_id: $('#patient_id').val(),
+            date_time: dateTime,
+            service_id: $('#doctorList').val(),
+            note_by: $('#note_by').val(),
+            notes: $('#notes').val(),
+            role_type: "doctor"
+        };
+
+
+        var type = "POST";
+        var id = $('#id').val();
+        var ajaxurl = '{{URL::to("/addsocialworkernotes")}}';
+
+
+     $.ajax({
+            type: type,
+            url: ajaxurl,
+            data: formData,
+            dataType: 'json',
+            success: function (data) {
+
+
+
+                   var link = '<tr id="doctor_' + data[0].id + '"><td>' + data[0].date_time + '</td><td>' + data[0]['servicex'].name + '</td><td>' + data[0].notes + '</td><td>' + data[0]['userx'].lname +', '+ data[0]['userx'].fname + '</td>';
+                link += '<td></td>';
+                
+
+                    $('#doctor-list').append(link);
+        
+               
+                $('#AddDoctorFormData').trigger("reset");
+                $('#AddDoctorNotesModal').modal('hide');
+        },
+           error: function (data) {
+                console.log('Error:', data);
+            }
+
+        });
+
+});
+//Accept Referral REFERAL 
+$('.accept_patient_referal').click(function (e) {
+
+           var result = confirm('Your are about to accept this referal. Would you like to continue?');
+    
+            if(result = true){
+
+              var d = new Date();
+
+              var month = d.getMonth()+1;
+              var day = d.getDate();
+
+              var output = (month<10 ? '0' : '') + month + '/' +
+                            (day<10 ? '0' : '') + day + '/' +
+                             d.getFullYear();
+
+                var refer_id = $(this).val();
+
+
+              $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+            });
+               e.preventDefault();
+              var formData = {
+
+                    ref_slip_return:  output,
+                    accepted_by: $('#user_accepted').val(),
+
+              };
+
+
+            }
+
+            $.ajax({
+            type: "PUT",
+            url: '{{URL::to("/refers")}}'+ '/' + refer_id,
+            data: formData,
+            dataType: 'json',
+            success: function (data) {
+                  var link = '<tr id="refer' + data.id + '"><td>' + data.ref_date + '</td><td>' + data.ref_at + '</td><td>' + data.ref_reason + '</td><td>' + data.ref_by + '</td>';
+                link += '<td><button class="btn btn-info view-link" value="' + data.id + '">View</button>';
+                link += '<button class="btn btn-light print-link" id="btn-print" name ="btn-print" value="' + data.id + '">Print</button></td>';
+               
+                    $("#refer" + refer_id).replaceWith(link);
+            },
+           error: function (data) {
+                console.log('Error:', data);
+            }
+          });
+        
+});
+
+$('body').on('click', '.view-refer-patient-modal', function () {
+
+          var view_id = $(this).val();
+
+           $.get('{{URL::to("/refers")}}' + '/' + view_id, function (data) {
+
+            console.log(data);
+
+            $('#id').val(data[0].id);
+            $('#refDate').val(data[0].ref_date);
+            $('#reason2').val(data[0].ref_reason);
+            $('#refAt2').val(data[0].ref_at);
+            $('#refby22').val(data[0].users.fname+' '+data[0].users.lname);
+            $('#refby2').val(data[0].ref_by);
+            $('#contact2').val(data[0].contact_person);
+            $('#ref_recom2').val(data[0].recommen);
+            $('#refDateback2').val(data[0].ref_back_date);
+            $('#refbyback2').val(data[0].ref_back_by);
+            $('#returnDate').val(data[0].ref_slip_return);
+            $('#accepted_by2').val(data[0].accepted_by.fname+' '+data[0].accepted_by.lname);
+
+            $('#viewModal').modal('show');
+            
+        })
+
+
+});
+
+$('body').on('click', '.edit-refer-modal', function () {
+        var refer_id = $(this).val();
+
+        $.get('{{URL::to("/refers")}}' + '/' + refer_id, function (data) {
+
+            $('#id').val(data[0].id);
+            $('#refDate').val(data[0].ref_date);
+            $('#reason').val(data[0].ref_reason);
+            $('#refAt').val(data[0].ref_at);
+            $('#refby2').val(data[0].users.fname+' '+data[0].users.lname);
+            $('#refby').val(data[0].ref_by);
+            $('#contactPer').val(data[0].contact_person);
+            $('#ref_recom').val(data[0].recommen);
+            $('#refDateback').val(data[0].ref_back_date);
+            $('#refbyback').val(data[0].ref_back_by);
+            $('#returnDate').val(data[0].ref_slip_return);
+            $('#btn-save').val("update");
+            $('#linkEditorModal').modal('show');
+            
+        })
+});
+
+
+
+
+
+  })
+
+
+  </script>
 @endsection

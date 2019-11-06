@@ -1,32 +1,42 @@
 @extends('main')
 @section('content')
- 
-        <!-- Breadcrumbs-->
-    @if(Auth::user()->role == 2)
+ <style>
 
+      th {
+      text-align: inherit;
+      background-color: #343a40;
+      color:white; 
+      }
+
+</style>
+        <!-- Breadcrumbs-->
         <ol class="breadcrumb">
           <li class="breadcrumb-item">
-            <a href="{{URL::to('/profile')}}">Dashboard</a>
+            <a href="{{URL::to('/profile')}}"><b>Dashboard</b></a>
           </li>
-          <li class="breadcrumb-item active">{{$rolex->name}}s</li>
+          <li class="breadcrumb-item active"><b>{{$rolex->name}}s</b></li>
         </ol> 
 
-        <!-- Icon Cards-->
+        <div style="background-color: white;border-radius: 5px">
         <div class="row" style="margin-left: 5px;margin-bottom: 0px">
-          <div class="col-xl-12 col-sm-9 mb-10" style="height: 6rem;">
+          <div class="col-xl-8 col-sm-9 mb-10" style="height: 6rem;">
             <div class="mb-3 text-black o-hidden h-100">
               <div class="card-body">
-                  <p style="font-size: 50px;margin-top: 0px">{{$rolex->name}}s</p>
-                
+                  <p style="font-size: 50px;margin-top: 0px"><b>{{$rolex->name}}s</b></p> 
               </div>
-              
+
+                @include('flash::message')
+                
             </div>
           </div>
+           <div class="col-xl-4 col-sm-9 mb-10">
+            <div class="mb-3 text-black o-hidden h-100">
+              <div class="card-body">
+                  <a style="color:white" href="{{URL::to('/create_user/'.$rolex->id)}}"><button class="btn btn-dark btn-block" style="height: 50px; width:200px;float: right;margin-top: 0px;margin-left: 0px">New {{$rolex->name}}</button></a>
+              </div>
+          </div>
         </div>
-
-          @include('flash::message')
-
-
+        </div>
          <div class="card-body" style="margin-left: 10px">
             <div class="table-responsive">
               <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
@@ -35,26 +45,31 @@
                     <th>Name</th>
                     <th>Contact</th>
                     <th>Email</th>
+                    <th>Department</th>
                     <th>Action</th>
                   </tr>
                 </thead>
                 <tbody>
                 @foreach($urole as $uroles)
-                  @if($uroles->role > 2)
                   <tr>
                     <td>{{$uroles->fname}} {{$uroles->lname}}</td>
                     <td>{{$uroles->contact}}</td>
                     <td>{{$uroles->email}}</td>
-                    <td style="text-align: center"><button class="btn btn-success" style="margin-right: 10px">View</button><button class="btn btn-primary" style="margin-right: 10px" data-toggle="modal" data-target="#editModal" data-userid="{{$uroles->id}}" data-fname="{{$uroles->fname}}" data-lname="{{$uroles->lname}}" data-uname="{{$uroles->username}}" data-email="{{$uroles->email}}" data-contact="{{$uroles->contact}}" data-department="{{$uroles->department}}" data-userid="{{$uroles->id}}">Edit</button><button class="btn btn-danger" data-toggle="modal" data-target="#deleteModal" data-userid="{{$uroles->id}}">Delete</button></td>
+                    @if($uroles->department == '')
+                    <td>--{{$uroles->user_roles->name}}--</td>
+                    @else
+                    <td>{{$uroles->user_departments->department_name}} Department</td>
+                    @endif
+                    <td style="text-align: center"><a class="btn btn-success" style="margin-right: 10px" href="{{URL::to('/viewuser/'.$uroles->id)}}">View</a><button class="btn btn-primary" style="margin-right: 10px" data-toggle="modal" data-target="#editModal" data-userid="{{$uroles->id}}" data-fname="{{$uroles->fname}}" data-lname="{{$uroles->lname}}" data-uname="{{$uroles->username}}" data-email="{{$uroles->email}}" data-contact="{{$uroles->contact}}" data-department="{{$uroles->department}}" data-userid="{{$uroles->id}}" data-password="{{$uroles->password}}">Edit</button><button class="btn btn-danger" data-toggle="modal" data-target="#deleteModal" data-userid="{{$uroles->id}}">Delete</button></td>
                   </tr>
-                  @endif
                 @endforeach
-                </tbody>,
+                </tbody>
               </table>
             </div>
           </div>
+        </div>
 
-  <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
@@ -62,8 +77,8 @@
           <button class="close" type="button" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">×</span>
           </button>
-      </div>
-
+        </div>
+  <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#changepass" data-dismiss="modal">Change Password</button>
   <div class="container">
     <div class="card card-register mx-auto mt-4">
       <div class="card-body">
@@ -141,29 +156,5 @@
   </div>
   </div>
 
-  <div class="modal fade" id="sampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">hi</h5>
-          <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">×</span>
-          </button>
-        </div>
-        <form action="{{URL::to('/deletenow')}}" method="post">
-          {{csrf_field()}}
-          <div class="modal-body">
-          <input type="hidden" id="user_id" name="user_id" class="form-control" value="">
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-primary" datdata-dismiss="modal">Cancel</button>
-            <button type="submit" class="btn btn-danger" data-toggle="modal" data-target="#logoutModal" data-dismiss="modal">Delete</button>  
-          </div>
-        </form>
-      </div>
-    </div>
-</div>
 
-
-@endif
 @endsection

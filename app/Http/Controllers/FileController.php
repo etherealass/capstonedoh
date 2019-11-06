@@ -41,7 +41,7 @@ class FileController extends Controller
 
     {
 
-   	  $roles = User_roles::all();
+   	  $roles = User_roles::where('description','!=','Employee')->get();
       $deps = Departments::all();
       $users = Users::find(Auth::user()->id);
       $transfer = Transfer_Requests::all();

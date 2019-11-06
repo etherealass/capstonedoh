@@ -39,7 +39,7 @@ class OthersController extends Controller
 {
 	public function add_a_city()
 	{
-		$roles = User_roles::all();
+		    $roles = User_roles::where('description','!=','Employee')->get();
         $deps = Departments::all();
         $users = Users::find(Auth::user()->id);
         $transfer = Transfer_Requests::all();
@@ -74,7 +74,7 @@ class OthersController extends Controller
 		Session::flash('alert-class', 'success'); 
 		flash('City Created', '')->overlay();
 
-		$roles = User_roles::all();
+		$roles = User_roles::where('description','!=','Employee')->get();
       	$deps = Departments::all();
       	$users = Users::find(Auth::user()->id);
       	$transfer = Transfer_Requests::all();
@@ -84,7 +84,7 @@ class OthersController extends Controller
              return view('superadmin.cities')->with('roles' , $roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('city',$city);
         }
         else if(Auth::user()->user_role()->first()->name == 'Admin'){
-             return view('admin.cities')->with('roles' , $roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('city',$city);
+             return view('superadmin.cities')->with('roles' , $roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('city',$city);
         }
 	  }
 	}
@@ -123,7 +123,7 @@ class OthersController extends Controller
 
   public function add_a_status()
   {
-        $roles = User_roles::all();
+        $roles = User_roles::where('description','!=','Employee')->get();
         $deps = Departments::all();
         $users = Users::find(Auth::user()->id);
         $transfer = Transfer_Requests::all();
@@ -158,7 +158,7 @@ class OthersController extends Controller
     Session::flash('alert-class', 'success'); 
     flash('Status Created', '')->overlay();
 
-        $roles = User_roles::all();
+        $roles = User_roles::where('description','!=','Employee')->get();
         $deps = Departments::all();
         $users = Users::find(Auth::user()->id);
         $transfer = Transfer_Requests::all();
@@ -168,7 +168,7 @@ class OthersController extends Controller
              return view('superadmin.civilstat')->with('roles' , $roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('status',$status);
         }
         else if(Auth::user()->user_role()->first()->name == 'Admin'){
-             return view('admin.civilstat')->with('roles' , $roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('status',$status);
+             return view('superadmin.civilstat')->with('roles' , $roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('status',$status);
         }
     }
   }
@@ -207,7 +207,7 @@ class OthersController extends Controller
 
   public function add_a_gender()
   {
-        $roles = User_roles::all();
+        $roles = User_roles::where('description','!=','Employee')->get();
         $deps = Departments::all();
         $users = Users::find(Auth::user()->id);
         $transfer = Transfer_Requests::all();
@@ -242,7 +242,7 @@ class OthersController extends Controller
     Session::flash('alert-class', 'success'); 
     flash('Gender Created', '')->overlay();
 
-        $roles = User_roles::all();
+        $roles = User_roles::where('description','!=','Employee')->get();
         $deps = Departments::all();
         $users = Users::find(Auth::user()->id);
         $transfer = Transfer_Requests::all();
@@ -252,7 +252,7 @@ class OthersController extends Controller
              return view('superadmin.gender')->with('roles' , $roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('gender',$gender);
         }
         else if(Auth::user()->user_role()->first()->name == 'Admin'){
-             return view('admin.gender')->with('roles' , $roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('gender',$gender);
+             return view('superadmin.gender')->with('roles' , $roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('gender',$gender);
         }
     }
   }
@@ -291,7 +291,7 @@ class OthersController extends Controller
 
   public function add_a_dabused()
   {
-        $roles = User_roles::all();
+        $roles = User_roles::where('description','!=','Employee')->get();
         $deps = Departments::all();
         $users = Users::find(Auth::user()->id);
         $transfer = Transfer_Requests::all();
@@ -326,7 +326,7 @@ class OthersController extends Controller
     Session::flash('alert-class', 'success'); 
     flash('Level Created', '')->overlay();
 
-        $roles = User_roles::all();
+        $roles = User_roles::where('description','!=','Employee')->get();
         $deps = Departments::all();
         $users = Users::find(Auth::user()->id);
         $transfer = Transfer_Requests::all();
@@ -336,7 +336,7 @@ class OthersController extends Controller
              return view('superadmin.dabused')->with('roles' , $roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('dab',$dab);
         }
         else if(Auth::user()->user_role()->first()->name == 'Admin'){
-             return view('admin.dabused')->with('roles' , $roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('dab',$dab);
+             return view('superadmin.dabused')->with('roles' , $roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('dab',$dab);
         }
     }
   }
@@ -375,7 +375,7 @@ class OthersController extends Controller
 
   public function add_a_eduatain()
   {
-        $roles = User_roles::all();
+        $roles = User_roles::where('description','!=','Employee')->get();
         $deps = Departments::all();
         $users = Users::find(Auth::user()->id);
         $transfer = Transfer_Requests::all();
@@ -410,7 +410,7 @@ class OthersController extends Controller
     Session::flash('alert-class', 'success'); 
     flash('Attainment Created', '')->overlay();
 
-        $roles = User_roles::all();
+        $roles = User_roles::where('description','!=','Employee')->get();
         $deps = Departments::all();
         $users = Users::find(Auth::user()->id);
         $transfer = Transfer_Requests::all();
@@ -420,7 +420,7 @@ class OthersController extends Controller
              return view('superadmin.eduatain')->with('roles' , $roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('eduatain',$eduatain);
         }
         else if(Auth::user()->user_role()->first()->name == 'Admin'){
-             return view('admin.eduatain')->with('roles' , $roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('eduatain',$eduatain);
+             return view('superadmin.eduatain')->with('roles' , $roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('eduatain',$eduatain);
         }
     }
   }
@@ -459,7 +459,7 @@ class OthersController extends Controller
 
   public function add_a_estat()
   {
-        $roles = User_roles::all();
+        $roles = User_roles::where('description','!=','Employee')->get();
         $deps = Departments::all();
         $users = Users::find(Auth::user()->id);
         $transfer = Transfer_Requests::all();
@@ -468,7 +468,7 @@ class OthersController extends Controller
             return view('superadmin.addestat')->with('roles',$roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer);
         }
         else if(Auth::user()->user_role()->first()->name == 'Admin'){
-            return view('admin.addestat')->with('roles',$roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer);
+            return view('superadmin.addestat')->with('roles',$roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer);
         } 
   }
 
@@ -494,7 +494,7 @@ class OthersController extends Controller
     Session::flash('alert-class', 'success'); 
     flash('Status Created', '')->overlay();
 
-        $roles = User_roles::all();
+        $roles = User_roles::where('description','!=','Employee')->get();
         $deps = Departments::all();
         $users = Users::find(Auth::user()->id);
         $transfer = Transfer_Requests::all();
@@ -504,7 +504,7 @@ class OthersController extends Controller
              return view('superadmin.estat')->with('roles' , $roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('estat',$estat);
         }
         else if(Auth::user()->user_role()->first()->name == 'Admin'){
-             return view('admin.estat')->with('roles' , $roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('estat',$estat);
+             return view('superadmin.estat')->with('roles' , $roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('estat',$estat);
         }
     }
   }
@@ -544,7 +544,7 @@ class OthersController extends Controller
 
   public function add_a_city_jail()
   {
-    $roles = User_roles::all();
+    $roles = User_roles::where('description','!=','Employee')->get();
     $deps = Departments::all();
     $users = Users::find(Auth::user()->id);
     $transfer = Transfer_Requests::all();
@@ -582,7 +582,7 @@ class OthersController extends Controller
     Session::flash('alert-class', 'success'); 
     flash('Jail Created', '')->overlay();
 
-        $roles = User_roles::all();
+        $roles = User_roles::where('description','!=','Employee')->get();
         $deps = Departments::all();
         $users = Users::find(Auth::user()->id);
         $transfer = Transfer_Requests::all();
@@ -592,7 +592,7 @@ class OthersController extends Controller
              return view('superadmin.jails')->with('roles' , $roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('jails',$jails);
         }
         else if(Auth::user()->user_role()->first()->name == 'Admin'){
-             return view('admin.jails')->with('roles' , $roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('jails',$jails);
+             return view('superadmin.jails')->with('roles' , $roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('jails',$jails);
         }
     }
   }
@@ -629,7 +629,7 @@ class OthersController extends Controller
 
     public function add_a_checklist()
   {
-    $roles = User_roles::all();
+    $roles = User_roles::where('description','!=','Employee')->get();
     $deps = Departments::all();
     $users = Users::find(Auth::user()->id);
     $transfer = Transfer_Requests::all();
@@ -683,7 +683,7 @@ class OthersController extends Controller
         Session::flash('alert-class', 'success'); 
         flash('List Added', '')->overlay();
 
-        $roles = User_roles::all();
+        $roles = User_roles::where('description','!=','Employee')->get();
         $deps = Departments::all();
         $users = Users::find(Auth::user()->id);
         $transfer = Transfer_Requests::all();
@@ -743,7 +743,7 @@ class OthersController extends Controller
 
   public function add_a_casetype()
 	 {
-		    $roles = User_roles::all();
+		    $roles = User_roles::where('description','!=','Employee')->get();
         $deps = Departments::all();
         $users = Users::find(Auth::user()->id);
         $transfer = Transfer_Requests::all();
@@ -792,7 +792,7 @@ class OthersController extends Controller
 		Session::flash('alert-class', 'success'); 
 		flash('Case Type Created', '')->overlay();
 
-		$roles = User_roles::all();
+		$roles = User_roles::where('description','!=','Employee')->get();
       	$deps = Departments::all();
       	$users = Users::find(Auth::user()->id);
       	$transfer = Transfer_Requests::all();
@@ -802,7 +802,7 @@ class OthersController extends Controller
              return view('superadmin.casetypes')->with('roles' , $roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('case',$case);
         }
         else if(Auth::user()->user_role()->first()->name == 'Admin'){
-             return view('admin.casetypes')->with('roles' , $roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('case',$case);
+             return view('superadmin.casetypes')->with('roles' , $roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('case',$case);
         }
 	  }
 	}
@@ -843,7 +843,7 @@ class OthersController extends Controller
 
     public function add_a_reason()
    {
-        $roles = User_roles::all();
+        $roles = User_roles::where('description','!=','Employee')->get();
         $deps = Departments::all();
         $users = Users::find(Auth::user()->id);
         $transfer = Transfer_Requests::all();
@@ -894,7 +894,7 @@ class OthersController extends Controller
     Session::flash('alert-class', 'success'); 
     flash('Created', '')->overlay();
 
-        $roles = User_roles::all();
+        $roles = User_roles::where('description','!=','Employee')->get();
         $deps = Departments::all();
         $users = Users::find(Auth::user()->id);
         $transfer = Transfer_Requests::all();
@@ -905,7 +905,7 @@ class OthersController extends Controller
              return view('superadmin.reasons')->with('roles' , $roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('reasons',$reasons)->with('gradute',$graduate);
         }
         else if(Auth::user()->user_role()->first()->name == 'Admin'){
-             return view('admin.reasons')->with('roles' , $roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('reasons',$reasons)->with('graduate',$graduate);
+             return view('superadmin.reasons')->with('roles' , $roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('reasons',$reasons)->with('graduate',$graduate);
         }
     }
   }

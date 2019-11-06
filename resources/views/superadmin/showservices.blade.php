@@ -13,17 +13,17 @@
  
         <ol class="breadcrumb">
           <li class="breadcrumb-item">
-            <a href="{{URL::to('/profile')}}">Dashboard</a>
+            <a href="{{URL::to('/profile')}}"><b>Dashboard</b></a>
           </li>
-          <li class="breadcrumb-item active">Services</li>
+          <li class="breadcrumb-item active"><b>Services</b></li>
         </ol> 
 
-        <!-- Icon Cards-->
+      <div style="background-color: white;border-radius: 5px">
         <div class="row" style="margin-left: 5px;margin-bottom: 0px">
           <div class="col-xl-8 col-sm-9 mb-10" style="height: 6rem;">
             <div class="mb-3 text-black o-hidden h-100">
               <div class="card-body">
-                  <p style="font-size: 50px;margin-top: 0px">Services</p>
+                  <p style="font-size: 50px;margin-top: 0px"><b>Services</b></p>
               </div>
 
                 @include('flash::message')
@@ -52,15 +52,24 @@
                             <tr>
                                 <td>{{$service->name}}</td>
                                 <td>
+                                  @if($service->inactive == 1)
+                                      <div class="forinactive">
+                                        <button class="btn btn-success deleteServices" id="deleteServices" name="deleteServices" value="{{$service->id}}">Active</button></td>
+
+                                    </div>
+                                    @else
                                     <button class="btn btn-info editServices " id="editServices" name="editServices" value="{{$service->id}}">Edit</button>
-                                    <button class="btn btn-danger deleteServices" id="deleteServices" name="deleteServices" value="{{$service->id}}">Inactive</button>
-                                      <input type="hidden" id="service_id" name="service_id" value="{{$service->id}}"></td>
+                                    <button class="btn btn-danger deleteServices" id="deleteServices" name="deleteServices" value="{{$service->id}}">Delete</button>
+                                      <input type="hidden" id="service_id" name="service_id" value="{{$service->id}}">
+                                      @endif
+                                    </td>
                             </tr>
                          @endforeach
                       </tbody>
               </table>
             </div>
           </div>
+        </div>
 
           <div class="modal fade" id="EditServiceModal" aria-hidden="true" >
                 <div class="modal-dialog">
@@ -110,6 +119,32 @@
                 </div>
             </div>
 
+            <div class="modal fade" id="deleteServicesModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+              <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="deleteServicesLabel">Are you sure you want to delete this ?</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">×</span>
+                    </button>
+                  </div>
+                  <form action="{{URL::to('/deleteServices')}}" name="deleteServicesModalData" method="post" class="form-horizontal" novalidate="">
+                    {{csrf_field()}} 
+                    <div class="modal-body">
+                    <input type="hidden" id="servicesId" name="servicesId" class="form-control" value="">
+                    <input type="hidden" id="servicestatus" name="servicestatus" class="form-control" value="">
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-primary" data-dismiss="modal">Cancel</button>
+
+                      <button type="submit" class="btn btn-danger" id="deleteButton">Delete</button>  
+                    </div>
+                  </form>
+                </div>
+              </div>
+          </div>
+
+
         
 
 @endsection
@@ -124,6 +159,35 @@
               $(".selectpicker").selectpicker();
 
               $(".notify").selectpicker();
+
+      $(".deleteServices").click(function (e) {
+
+            //alert("sample");
+
+            var stat = $(this).text();
+             var id = $(this).val();
+
+            $('#servicesId').val(id);
+            $('#servicestatus').val(stat);
+
+
+            if(stat != "Delete"){
+              console.log("sample");
+                $("#deleteButton").addClass("btn-success");
+                $("#deleteButton").text("Activate");
+                $("#deleteButton").removeClass("btn-danger");
+            }else{
+                 $("#deleteButton").addClass("btn-danger");
+                $("#deleteButton").text("Delete");
+                $("#deleteButton").removeClass("btn-success");
+
+            }
+
+                  $('#deleteServicesModalData').trigger("reset");
+                  $('#deleteServicesModal').modal('show');
+
+
+          });
 
 
 
@@ -218,11 +282,6 @@
                   }
 
                
-
-
-
-
-
                   console.log($serivcename);
                  
                     $('#servicename').val($serivcename);
@@ -240,15 +299,6 @@
               });
 
 
-               $('.deleteServices').click(function () {
-                    
-                  
-
-                });
-
-              
-
-  
 
   })
 

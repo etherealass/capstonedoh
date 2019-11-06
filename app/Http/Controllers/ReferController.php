@@ -55,6 +55,16 @@ class ReferController extends Controller
 
     }
 
+    public function findNotes(Request $request, $id)
+    {
+
+
+         $notes = ProgressNotes::where('id', $id)->first();
+        
+         return Response::json($notes);
+
+    }
+
      public function addRecords(Request $request, $recordType)
     {
 

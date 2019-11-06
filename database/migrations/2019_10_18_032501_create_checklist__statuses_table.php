@@ -36,6 +36,3 @@ class CreateChecklistStatusesTable extends Migration
         Schema::dropIfExists('checklist__statuses');
     }
 }
-
-    }
-}

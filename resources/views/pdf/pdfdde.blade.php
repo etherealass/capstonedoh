@@ -1,233 +1,181 @@
- <!DOCTYPE html>
- <html>
- <body>
- <div class="container" style="margin-top: 60px;margin-bottom: 30px">
-                      <div class="container">
-                        <div style="margin-top:30px">
-                          <img src="http://localhost/capstone/public/images/logo3.png" height="100px" width="100px" style="float:left;">
-                          <p style="text-align:center;position:relative;"><b style="font-size: 25px">TREATMENT & REHABILITATION CENTER - CEBU</b><br><span style="font-size:20px">Drug Dependency Examination Report</span></p>
-                        </div>
-    @foreach($pat as $pats)
-            <div class="row" style="margin-top: 50px;padding:20px">
-              <div class="col-md-6" style="border: solid gray 1px;padding:20px;font-size: 12px;border-right: none">
-                <div class="form-label-group">
-                  <div class="custom-control custom-checkbox custom-control-inline">
-                  <?php $count = 0 ?>
-                  @foreach($history as $hist)
-                    @if($hist->type == 'Enrolled')
-                      @if($hist->deps->department_name == $pats->departments->department_name)
-                      <?php $count++; ?>
-                      @endif
-                    @endif
-                  @endforeach
-                    <input type="checkbox" class="custom-control-input" id="new case" name="casetype" value="New Case" {{ ($count != 1)? "checked" : "" }} disabled="true">
-                    <label class="custom-control-label" for="new case"><b>Old Case</b></label>
-                  </div>
-                </div>
-                <div class="form-label-group">
-                  <div class="custom-control custom-checkbox custom-control-inline">
-                    <input type="checkbox" class="custom-control-input" id="old case" name="casetype" value="Old Case" {{ ($count == 1)? "checked" : "" }} disabled="true">
-                    <label class="custom-control-label" for="old case"><b>New Case</b></label>
-                  </div>
-                </div>
-                <div class="form-label-group">
-                  <div class="custom-control custom-checkbox custom-control-inline">
-                    <input type="checkbox" class="custom-control-input" id="case" name="casetype" value="With Court Case" {{ ($pats->caseno != NULL)? "checked" : "" }} disabled="true">
-                    <label class="custom-control-label" for="case"><b>With Court Case:</b>
-                  @if($pats->caseno != NULL)
-                    <b><u> {{$pats->caseno}}</u></b>
-                  @else
-                    ________________________________________
-                  @endif
-                    </label>
-                   </div>  
-                  </div>
-                </div>
-                <div class="col-md-6" style="border: solid gray 1px;padding:20px;font-size: 12px">
-                <div class="form-label-group">
-                  <div class="custom-control custom-checkbox custom-control-inline" style="font-size: 50px">
-                    <input type="checkbox" class="custom-control-input" id="Voluntary Submission" name="type" value="Voluntary Submission" {{ ($pats->type->case_name == 'Voluntary' || $pats->type->case_name == 'Voluntary with Court Order')? "checked" : "" }} disabled="true">
-                    <label class="custom-control-label" for="Voluntary Submission"><b>Voluntary Submission</b></label>
-                  </div>
-                </div>
-                  <div class="form-label-group">
-                  <div class="custom-control custom-checkbox custom-control-inline">
-                    <input type="checkbox" class="custom-control-input" id="Compulsory Submission" name="type" value="Compulsory Submission" {{ ($pats->type->case_name == 'Plea Bargain')? "checked" : "" }} disabled="true">
-                    <label class="custom-control-label" for="Compulsory Submission"><b>Compulsory Submission</b></label>
-                  </div>
-                  </div>
-                  <div class="form-label-group">
-                  <div class="custom-control custom-checkbox custom-control-inline">
-                    <input type="checkbox" class="custom-control-input" id="others" name="type" value="Others" {{ (old('type') == 'Others') ? 'checked' : '' }} disabled="true">
-                    <label class="custom-control-label" for="others"><b>Others: ___________________________________</b></label>
-                   </div>  
-                  </div>
-                </div>
-                <div class="col-md-12" style="border: solid gray 1px;font-size: 12px;border-top:none;border-right:none">
-                <div class="row">
-                  <div class="col-md-3" style="border-right: solid gray 1px;border-bottom: solid gray 1px">
-                    <b><p>Last name:</p></b>
-                  </div>
-                  <div class="col-md-3" style="border-bottom: solid gray 1px;border-right: solid gray 1px">
-                    <p>{{$pats->lname}}</p>
-                  </div>
-                  <div class="col-md-6" style="border-right: solid gray 1px;">
-                    <b><p>Address:</p></b>
-                  </div>
-                 </div>
-                 <div class="row">
-                  <div class="col-md-3" style="border-right: solid gray 1px;border-bottom: solid gray 1px">
-                    <p><b>First name:</b></p>
-                  </div>
-                  <div class="col-md-3" style="border-bottom: solid gray 1px;border-right: solid gray 1px">
-                    <p>{{$pats->fname}}</p>
-                  </div>
-                  <div class="col-md-6" style="border-right: solid gray 1px;border-bottom: solid gray 1px;">
-                    <p>{{$pats->address->street}} {{$pats->address->barangay}} {{$pats->address->city}}</p>
-                  </div>
-                 </div>
-                  <div class="row">
-                  <div class="col-md-3" style="border-right: solid gray 1px;border-bottom: solid gray 1px">
-                    <p><b>Middle name:</b></p>
-                  </div>
-                  <div class="col-md-3" style="border-bottom: solid gray 1px;border-right: solid gray 1px">
-                    <p>{{$pats->mname}}</p>
-                  </div>
-                  <div class="col-md-3" style="border-right: solid gray 1px;border-bottom: solid gray 1px">
-                    <p><b>Contact Number:</b></p>
-                  </div>
-                  <div class="col-md-3" style="border-bottom: solid gray 1px;border-right: solid gray 1px">
-                    <p>{{$pats->contact}}</p>
-                  </div>
-                 </div>
-                 <div class="row">
-                  <div class="col-md-3" style="border-right: solid gray 1px;border-bottom: solid gray 1px">
-                    <p><b>Age:</b></p>
-                  </div>
-                  <div class="col-md-3" style="border-bottom: solid gray 1px;border-right: solid gray 1px">
-                    <p>{{\Carbon\Carbon::parse($pats->birthdate)->age}}</p>
-                  </div>
-                   <div class="col-md-3" style="border-right: solid gray 1px;border-bottom: solid gray 1px">
-                    <p><b>Gender:</b></p>
-                  </div>
-                  <div class="col-md-3" style="border-bottom: solid gray 1px;border-right: solid gray 1px">
-                    <p></p>
-                  </div>
-                 </div>
-                 <div class="row">
-                  <div class="col-md-3" style="border-right: solid gray 1px;border-bottom: solid gray 1px">
-                    <p><b>Birthdate:</b></p>
-                  </div>
-                  <div class="col-md-3" style="border-bottom: solid gray 1px;border-right: solid gray 1px">
-                    <p>{{$pats->birthdate}}</p>
-                  </div>
-                   <div class="col-md-3" style="border-right: solid gray 1px;border-bottom: solid gray 1px">
-                    <p><b>Civil Status:</b></p>
-                  </div>
-                  <div class="col-md-3" style="border-bottom: solid gray 1px;border-right: solid gray 1px">
-                    <p></p>
-                  </div>
-                 </div>
-                 <div class="row">
-                  <div class="col-md-3" style="border-right: solid gray 1px;border-bottom: solid gray 1px">
-                    <p><b>Birth Order:</b></p>
-                  </div>
-                  <div class="col-md-3" style="border-bottom: solid gray 1px;border-right: solid gray 1px">
-                    <p>{{$pats->birthorder}}</p>
-                  </div>
-                  <div class="col-md-3" style="border-right: solid gray 1px;border-bottom: solid gray 1px">
-                    <p><b>Nationality:</b></p>
-                  </div>
-                  <div class="col-md-3" style="border-right: solid gray 1px;border-bottom: solid gray 1px">
-                    <p></p>
-                  </div>
-                 </div>
-                 <div class="row">
-                  <div class="col-md-3" style="border-right: solid gray 1px">
-                    <p></p>
-                  </div>
-                  <div class="col-md-3" style="border-right: solid gray 1px">
-                    <p></p>
-                  </div>
-                  <div class="col-md-3" style="border-right: solid gray 1px;">
-                    <p><b>Religion:</b></p>
-                  </div>
-                  <div class="col-md-3" style="border-right: solid gray 1px">
-                    <p></p>
-                  </div>
-                 </div>
-                </div> 
-              </div>
-              @endforeach
-              <div class="row" style="padding:20px">
-                <div class="col-md-12" style="border: solid gray 1px;font-size: 12px">
-                <div class="row">
-                  <div class="col-md-3" style="border-right: solid gray 1px;">
-                    <p><b>Referred by:</b></p>
-                  </div>
-                  <div class="col-md-9" style="border-right: none">
-                    <p></p>
-                  </div>
-                </div>
-              @if($patis != '[]')
-                @foreach($patis as $patin)
-                <div class="row">
-                  <div class="col-md-3" style="border-right: solid gray 1px;border-top: solid gray 1px;padding:10px">
-                    <p><b>Accompanied By/<br>Informant</b></p>
-                  </div>
-                  <div class="col-md-9" style="border-top: solid gray 1px;padding-top: 10px">
-                    <div class="row">
-                      <div class="col-md-6"><b>Name:</b> {{$patin->informants->name}}</div>
-                    </div>
-                    <div class="row">
-                      <div class="col-md-6"><b>Address:</b> {{$patin->informants->address}}</div>
-                    </div>
-                    <div class="row">
-                      <div class="col-md-5"><b>Signature:</b> _____________________________</div>
-                      <div class="col-md-5"><b>Contact no:</b> {{$patin->informants->contact}}</div>
-                    </div>
-                  </div>
-                   <div class="col-md-3" style="border-right: solid gray 1px;border-top: solid gray 1px;padding:10px">
-                    <p><b>DRUGS ABUSED<br>(Present)</b></p>
-                  </div>
-                  <div class="col-md-9" style="border-top: solid gray 1px;padding-top: 10px">
-                    <div class="row">
-                     <div class="col-md-9">{{$patin->drugs_abused}}</div>
-                   </div>
-                  </div>
-                   <div class="col-md-3" style="border-right: solid gray 1px;border-top: solid gray 1px;padding:10px">
-                    <p><b>Chief Complaint</b></p>
-                  </div>
-                  <div class="col-md-9" style="border-top: solid gray 1px;padding-top: 10px">
-                    <div class="row">
-                     <div class="col-md-9">{{$patin->chief_complaint}}</div>
-                   </div>
-                  </div>
-                  <div class="col-md-3" style="border-right: solid gray 1px;border-top: solid gray 1px;padding:10px">
-                    <p><b>History of Present<br>Illness</b></p>
-                  </div>
-                   <div class="col-md-9" style="border-top: solid gray 1px;padding-top: 10px">
-                    <div class="row">
-                     <div class="col-md-9">{{$patin->h_present_illness}}</div>
-                   </div>
-                  </div>
-                   <div class="col-md-3" style="border-right: solid gray 1px;border-top: solid gray 1px;padding:10px;height: 100px">
-                    <p><b>History of Drug<br>Use</b></p>
-                  </div>
-                  <div class="col-md-9" style="border-top: solid gray 1px;padding-top: 10px">
-                    <div class="row">
-                     <div class="col-md-9">{{$patin->h_drug_abuse}}</div>
-                   </div>
-                  </div>
-                  <div class="col-md-3" style="border-right: solid gray 1px;border-top: solid gray 1px;padding:10px;height: 100px">
-                    <p><b>Family/Personal<br>History</b></p>
-                  </div>
-                  <div class="col-md-9" style="border-top: solid gray 1px;padding-top: 10px">
-                    <div class="row">
-                     <div class="col-md-9">{{$patin->famper_history}}</div>
-                   </div>
-                  </div>
-                </div>
-                 @endforeach  
-                 @endif
+<!DOCTYPE html>
+<html>
+   <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+        <title>Drug Dependency Examination Form</title>
+  </head>
+<style>
+table {
+  border-collapse: collapse;
+   padding: 10px;
+}
 
+table, th, td {
+  border: 1px solid black;
+  padding: 8px;
+  vertical-align: top;
+  text-align: left;
+}
+</style>
+<body>
+<div class="container">
+  <div style="margin-top:30px;">
+    <img src="http://localhost/capstone/public/images/logo3.png" height="100px" width="100px" style="float:left;">
+                          <p style="text-align:center;position:relative;"><b style="font-size: 20px">TREATMENT & REHABILITATION CENTER - CEBU</b><br><span style="font-size:20px">Drug Dependency Examination Report</span></p>
+                        </div><br><br>
+@foreach($pat as $pats) 
+  <?php $count = 0 ?>
+  @foreach($history as $hist)
+     @if($hist->type == 'Enrolled')
+       @if($hist->deps->department_name == $pats->departments->department_name)
+         <?php $count++; ?>
+       @endif 
+    @endif
+  @endforeach
+<table style="width:100%" cellspacing="10">
+  <tr>
+    <th width="50%" colspan="2"><br>
+    <input style="margin-top: 6.5px; margin-left: 10px" type="checkbox" class="custom-control-input" id="new case" name="casetype" value="New Case" {{ ($count != 1)? "checked" : "" }} disabled="true">
+    <label class="custom-control-label" for="new case"><b>Old Case</b></label><br>
+    <input style="margin-top: 6.5px; margin-left: 10px" type="checkbox" class="custom-control-input" id="old case" name="casetype" value="Old Case" {{ ($count == 1)? "checked" : "" }} disabled="true"> 
+    <label class="custom-control-label" for="old case"><b>New Case</b></label><br>
+    <input style="margin-top: 6.5px; margin-left: 10px" type="checkbox" class="custom-control-input" id="case" name="casetype" value="With Court Case" {{ ($pats->caseno != NULL)? "checked" : "" }} disabled="true">
+    <label class="custom-control-label" for="case"><b>With Court Case:</b><br>
+    <span style="margin-left: 30px;">  @if($pats->caseno != NULL)
+                    <b><u>{{$pats->caseno}}</u></b>
+                  @elseif($pats->caseno == NULL)
+                  _______________________________
+                  @endif</span>
+    </label>
+    </th>
+    <th style="margin-top: 100px" colspan="2">
+      <input style="margin-top: 6.5px; margin-left: 10px" type="checkbox" class="custom-control-input" id="Voluntary Submission" name="type" value="Voluntary Submission" {{ ($pats->type->case_name == 'Voluntary Submission' || $pats->type->case_name == 'Voluntary with Court Order')? "checked" : "" }}  disabled="true">
+      <label class="custom-control-label" for="Voluntary Submission"><b>Voluntary Submission</b></label><br>
+      <input style="margin-top: 6.5px; margin-left: 10px" type="checkbox" class="custom-control-input" id="Compulsory Submission" name="type" value="Compulsory Submission" {{ ($pats->type->case_name == 'Plea Bargain' || $pats->type->case_name == 'Plea Bargain with Court Order')? "checked" : "" }} disabled="true">
+      <label class="custom-control-label" for="Compulsory Submission"><b>Compulsory Submission</b></label><br>
+      <input style="margin-top: 6.5px; margin-left: 10px" type="checkbox" class="custom-control-input" id="others" name="type" value="Others" {{ (old('type') == 'Others') ? 'checked' : '' }} disabled="true">
+      <label class="custom-control-label" for="others"><b>Others: _________________</b></label>
+    </th> 
+  </tr>
+  <tr>
+    <td>Last Name:</td>
+    <td>{{$pats->lname}}</td>
+    <td rowspan="2" colspan="2">Address:<br>{{$pats->address->street}} {{$pats->address->barangay}} {{$pats->address->city}}</td>
+  </tr>
+    <tr>
+    <td>First Name:</td>
+    <td>{{$pats->fname}}</td>
+  </tr>
+  <tr>
+    <td>Middle Name:</td>
+    <td>{{$pats->mname}}</td>
+    <td>Contanct Number:</td>
+    <td>{{$pats->contact}}</td>
+  </tr>
+    <tr>
+    <td>Age:</td>
+    <td>{{\Carbon\Carbon::parse($pats->birthdate)->age}}</td>
+    <td>Gender:</td>
+    @if($pats->gender != NULL) 
+    <td>{{$pats->genders->name}}</td>
+    @else
+  <td></td>
+  @endif
+  </tr>
+    <tr>
+    <td>Birthdate:</td>
+    <td>{{$pats->birthdate}}</td>
+    <td>Civil Status:</td>
+    <td>{{$pats->status}}</td>
+  </tr>
+    <tr>
+    <td>Birth Order:</td>
+    <td>{{NumConvert::numberOrdinal($pats->birthorder)}}</td>
+    <td>Nationality:</td>
+    <td>{{$pats->nationality}}</td>
+  </tr>
+    <tr>
+    <td></td>
+    <td></td>
+    <td>Religion:</td>
+    <td>{{$pats->religion}}</td>
+  </tr>
+</table>
+     @endforeach
+<br>
+@if($patis != '[]')
+@foreach($patis as $patin)
+<table width="100%">
+  <tr>
+    <td width="30%">Referred by:</td>
+    <td></td>
+  </tr>
+  <tr>
+    <td width="30%">Accompanied by/Informant:</td>
+    <td>Name: {{$patin->informants->name}}<br>
+      Address: {{$patin->informants->address}}<br>
+      Signature:______________________<br>
+      Contanct Number: {{$patin->informants->contact}}
+    </td>
+  </tr>
+  <tr>
+    <td width="30%" height="3%">Drug Abused(Present):</td>
+    <td>{{$patin->dabused->name}}</td>
+  </tr>
+  <tr>
+    <td width="30%" height="3%">Cheif Complaint:</td>
+    <td>{{$patin->chief_complaint}}</td>
+  </tr>
+  <tr>
+    <td width="30%" height="3.5%">History of Present Illness:</td>
+    <td>{{$patin->h_present_illness}}</td>
+  </tr>
+  <tr>
+    <td width="30%" height="4.5%">History of Drug Use:</td>
+    <td>{{$patin->h_drug_abuse}}</td>
+  </tr>
+  <tr>
+    <td width="30%" height="4.5%">Family/Personal History:</td>
+    <td>{{$patin->famper_history}}</td>
+  </tr>
+</table>
+ @endforeach
+ @elseif($patis == '[]')
+ <table width="100%">
+  <tr>
+    <td width="30%">Referred by:</td>
+    <td></td>
+  </tr>
+  <tr>
+    <td width="30%">Accompanied by/Informant:</td>
+    <td>Name: <br>
+      Address: <br>
+      Signature:______________________<br>
+      Contanct Number: 
+    </td>
+  </tr>
+  <tr>
+    <td width="30%" height="3%">Drug Abused(Present):</td>
+    <td></td>
+  </tr>
+  <tr>
+    <td width="30%" height="3%">Cheif Complaint:</td>
+    <td></td>
+  </tr>
+  <tr>
+    <td width="30%" height="3.5%">History of Present Illness:</td>
+    <td></td>
+  </tr>
+  <tr>
+    <td width="30%" height="4.5%">History of Drug Use:</td>
+    <td></td>
+  </tr>
+  <tr>
+    <td width="30%" height="4.5%">Family/Personal History:</td>
+    <td></td>
+  </tr>
+</table>  
+@endif
+</div>
+</body>
+</html>

@@ -2,10 +2,8 @@
 @section('content')
         <!-- Breadcrumbs-->
         <ol class="breadcrumb">
-          <li class="breadcrumb-item">
-            <a href="#">Dashboard</a>
-          </li>
-          <li class="breadcrumb-item active">Overview</li>
+          <li class="breadcrumb-item"><b>Dashboard</b></li>
+          <li class="breadcrumb-item active"><b>Overview</b></li>
         </ol>
       <div class="row" style="">
         <div class="col-md-8 col-sm-6 mb-3">

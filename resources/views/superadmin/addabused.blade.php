@@ -4,19 +4,19 @@
         <!-- Breadcrumbs-->
         <ol class="breadcrumb">
           <li class="breadcrumb-item">
-            <a href="{{URL::to('/profile')}}">Dashboard</a>
+            <a href="{{URL::to('/profile')}}"><b>Dashboard</b></a>
           </li>
           <li class="breadcrumb-item">
-            <a href="{{URL::to('/show_dabused')}}">Drug-Level Abused</a>
+            <a href="{{URL::to('/show_dabused')}}"><b>Drug-Level Abused</b></a>
           </li>
-          <li class="breadcrumb-item active">Level Creation</li>
+          <li class="breadcrumb-item active"><b>Level Creation</b></li>
         </ol>
 
           @include('flash::message')
         <!-- Icon Cards-->
     <div class="container">
     <div class="card card-register mx-auto mt-4">
-      <div class="card-header">Create Level</div>
+      <div class="card-header"><b>Create Level</b></div>
       <div class="card-body">
       @if ($errors->any())
         @foreach ($errors->all() as $error)

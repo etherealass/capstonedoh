@@ -2,15 +2,15 @@
       <li class="nav-item" style="margin-top: 10px">
         <a class="nav-link" href="{{URL::to('/profile')}}">
           <i class="fas fa-fw fa-tachometer-alt"></i>
-          <span>Dashboard</span>
+          <span><b>Dashboard</b></span>
         </a>
       </li>
       @if(Auth::user()->user_role()->first()->name == 'Superadmin' || Auth::user()->user_role()->first()->name == 'Admin')
       <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" href="#" id="pagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           <i class="fas fa-fw fa-users"></i>
-          <span>Users</span>
-        </a>
+          <span><b>Users</b></span>
+        </a> 
         @if(Auth::user()->user_role()->first()->name == 'Superadmin')
         <div class="dropdown-menu" aria-labelledby="pagesDropdown">
           @foreach($roles as $role)
@@ -33,7 +33,7 @@
       <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" href="#" id="pagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           <i class="fas fa-fw fa-building"></i>
-          <span>Departments</span>
+          <span><b>Departments</b></span>
         </a>
         <div class="dropdown-menu" aria-labelledby="pagesDropdown">
          @foreach($deps as $dep)
@@ -44,18 +44,18 @@
          @endif
         </div>
       </li>
-      @if(Auth::user()->user_role()->first()->name == 'Superadmin')
+      @if(Auth::user()->user_role()->first()->name == 'Superadmin' || Auth::user()->user_role()->first()->name == 'Admin')
        <li class="nav-item">
         <a class="nav-link" href="{{URL::to('/showemployees')}}">
           <i class="fas fa-fw fa-users"></i>
-          <span>Employees</span></a>
+          <span><b>Employees</b></span></a>
       </li>
       @endif
        <li class="nav-item dropdown">
         <?php $enrolled = 'Enrolled'; $for = 'For Graduate'; $grad = 'Graduated'; $dis = 'Dismissed'; ?>
         <a class="nav-link dropdown-toggle" href="#" id="pagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           <i class="fas fa-fw fa-user"></i>
-          <span>Patients</span>
+          <span><b>Patients</b></span>
         </a>
         <div class="dropdown-menu" aria-labelledby="pagesDropdown">
           <a class="dropdown-item" href="{{URL::to('/showpatients/'.$enrolled)}}">Enrolled</a>
@@ -67,12 +67,12 @@
       <li class="nav-item">
         <a class="nav-link" href="{{URL::to('/showCalendar')}}">
           <i class="fas fa-fw fa-calendar"></i>
-          <span>Calendar</span></a>
+          <span><b>Calendar</b></span></a>
       </li>
       <li class="nav-item" style="">
         <a class="nav-link" href="{{URL::to('/reports')}}">
           <i class="fas fa-fw fa-chart-area"></i>
-          <span>Reports</span></a>
+          <span><b>Reports</b></span></a>
       </li>
       <!--<li class="nav-item">
         <a class="nav-link" href="tables.html">
@@ -82,12 +82,12 @@
       <li class="nav-item">
         <a class="nav-link" href="{{URL::to('/logs')}}">
           <i class="fas fa-fw fa-book"></i>
-          <span>System Logs</span></a>
+          <span><b>System Logs</b></span></a>
       </li>
       <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" href="#" id="pagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           <i class="fas fa-fw fa-box"></i>
-          <span>Other categories</span>
+          <span><b>Other categories</b></span>
         </a>
         <div class="dropdown-menu" aria-labelledby="pagesDropdown">
           <a class="dropdown-item" href="{{URL::to('/showIntervention')}}">Intervention</a>
@@ -109,7 +109,7 @@
         <?php $enrolled = 'Enrolled'; $for = 'For Graduate'; $grad = 'Graduated'; $dis = 'Dismissed'; ?>
         <a class="nav-link dropdown-toggle" href="#" id="pagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           <i class="fas fa-fw fa-user"></i>
-          <span>Patients</span>
+          <span><b>Patients</b></span>
         </a>
         <div class="dropdown-menu" aria-labelledby="pagesDropdown">
           <a class="dropdown-item" href="{{URL::to('/showpatients/'.$enrolled)}}">Enrolled</a>
@@ -118,20 +118,28 @@
           <a class="dropdown-item" href="{{URL::to('/showpatients/'.$dis)}}">Dismissed</a>
         </div>
       </li>
-      @if(Auth::user()->user_role()->first()->name == 'Social Worker')
+      
+     @if(Auth::user()->user_role()->first()->name == 'Social Worker' || Auth::user()->user_role()->first()->name == 'Nurse')
+        <li class="nav-item">
+        <a class="nav-link" href="{{URL::to('/showCalendar')}}">
+          <i class="fas fa-fw fa-calendar"></i>
+          <span><b>Calendar</b></span></a>
+      </li>
+
       <li class="nav-item">
         <a class="nav-link" href="{{URL::to('/reports')}}">
           <i class="fas fa-fw fa-chart-area"></i>
-          <span>Reports</span></a>
+          <span><b>Reports</b></span></a>
       </li>
+
       @endif
-      @if(Auth::user()->user_role()->first()->name == 'Doctor')
+<!--       @if(Auth::user()->user_role()->first()->name == 'Doctor')
       <li class="nav-item">
          <a class="nav-link" href="tables.html">
           <i class="fas fa-fw fa-briefcase-medical"></i>
           <span>My Appointments</span></a>
       </li>
-      @endif
+      @endif -->
       <!--<li class="nav-item">
         <a class="nav-link" href="tables.html">
           <i class="fas fa-fw fa-list"></i>

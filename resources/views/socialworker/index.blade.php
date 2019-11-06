@@ -11,16 +11,55 @@
 
 @endsection
 @section('content')
-        <!-- Breadcrumbs-->
+
+     <!-- Breadcrumbs-->
         <ol class="breadcrumb">
-          <li class="breadcrumb-item">
-            <a href="#">Dashboard</a>
-          </li>
-          <li class="breadcrumb-item active">Overview</li>
+          <li class="breadcrumb-item"><b>Dashboard</b></li>
+          <li class="breadcrumb-item active"><b>Overview</b></li>
         </ol>
 
-        <!-- Icon Cards--> 
-        <div class="row" style="margin-bottom: 0px">
+    <div class="row" style="margin-bottom: 10px">
+      <div class="col-md-12">
+        <div class="card md-3 text-black o-hidden h-100">
+          <div class="card-body">
+            <div class="row">
+              <div class="col-md-12" style="margin-bottom: 40px">
+                <h1 style="font-size: 50px;float: right;"><b>Dashboard</b></h1>
+              </div>
+              <div class="col-md-4">
+                <div class="card-body bg-light">
+                   <h1><i class="fa fa-fw fa-user" style=""></i><b>Patients</b></h1>
+                   <h6 style="text-indent: 55px">Add patients within this department</h6>
+                   <div class="card-footer" style="height: 50px">
+                     <h6 style="text-indent: 55px;float: right"><a href="{{URL::to('/patient_dep')}}" style="color: black">Add patient</a></h6>
+                   </div>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="card-body bg-light">
+                  <h1><i class="fas fa-fw fa-chart-area"></i><b>Reports</b></h1>
+                  <h6 style="text-indent: 55px">Generate reports you want</h6>
+                  <div class="card-footer" style="height: 50px">
+                     <h6 style="text-indent: 55px;float: right"><a href="{{URL::to('/reports')}}" style="color: black">Generate report</a></h6>
+                   </div>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="card-body bg-light">
+                  <h1><i class="fas fa-fw fa-calendar"></i><b>Calendar</b></h1>
+                  <h6 style="text-indent: 55px">Create and view events</h6>
+                  <div class="card-footer" style="height: 50px">
+                     <h6 style="text-indent: 55px;float: right"><a href="{{URL::to('/showCalendar')}}" style="color: black">Create event</a></h6>
+                   </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+      <!--<div class="row" style="margin-bottom: 0px">
          <div class="col-md-4 col-sm-12 md-10 col-xl-3" style="height: 18rem;">
             <div class="card border-dark md-3 text-black o-hidden h-100">
               <div class="card-body">
@@ -33,8 +72,7 @@
           <div class="col-md-9" style="border: solid black 2px;border-radius: 5px;padding:10px">
             <div id="calendar" style="background-color: white;margin-top: 20px"></div>
           </div>
-        </div>
-      </div>
+      </div>-->
 
 @endsection
 

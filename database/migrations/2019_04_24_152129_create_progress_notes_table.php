@@ -23,12 +23,15 @@ class CreateProgressNotesTable extends Migration
             $table->foreign('note_by')->references('id')->on('users');
             $table->integer('patient_id')->unsigned();
             $table->foreign('patient_id')->references('id')->on('patients');
+            $table->integer('tooth_no')->nullable();
+            $table->text('diagnose')->nullable();
+            $table->text('service_rendered')->nullable();
             $table->text('notes');
             $table->string('role_type');
-            $table->datetime('remark_date')->nullable();
-            $table->integer('remarks_by')->unsigned()->nullable();
-            $table->foreign('remarks_by')->references('id')->on('users');
-            $table->text('remarks')->nullable();
+            // $table->datetime('remark_date')->nullable();
+            // $table->integer('remarks_by')->unsigned()->nullable();
+            // $table->foreign('remarks_by')->references('id')->on('users');
+            // $table->text('remarks')->nullable();
             $table->timestamps();
         });
     }

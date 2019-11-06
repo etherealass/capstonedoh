@@ -78,6 +78,9 @@
             $('#departments').val(data.dep);
             $('#datefroms').val(data.datefrom);
             $('#datetos').val(data.dateto);
+            $('#months').val(data.month);
+            $('#years').val(data.year);
+            console.log(data.cout);
           }
         }
     });
@@ -692,6 +695,22 @@
     modal.find('.modal-body #patientdep').val(patientdep);
   })
 
+  $('#deptransferReferral').on('show.bs.modal', function (event) {
+
+    var button = $(event.relatedTarget);
+    var button1 = $("#transferPatient #patientid").val().trim();
+  
+    var depid = button.data('depid');
+    var patientid = button.data('patientid');
+    var patientdep = button.data('patientdep');
+
+    var modal = $(this);
+
+    modal.find('.modal-body #depid').val(depid);
+    modal.find('.modal-body #patientid').val(patientid);
+    modal.find('.modal-body #patientdep').val(patientdep);
+  })
+
    $('#admintransferReferral').on('show.bs.modal', function (event) {
 
     var button = $(event.relatedTarget);
@@ -952,5 +971,96 @@ $(function() {
 
     });
   });
+
+$(function() {
+  $('select[id="report"]').on('click', function(){
+
+  if ($(this).children(":selected").attr("value") == 'Status Report') {
+      var len = document.getElementById("department").getElementsByTagName("option");
+      for (var i = 0; i < len.length; i++) {
+        if (len[i].value != 3) {
+          len[i].disabled = true;
+        }
+        else{
+          document.getElementById("department").selectedIndex = 3;
+        }
+      }
+    }
+    else{
+      var len = document.getElementById("department").getElementsByTagName("option");
+      for (var i = 0; i < len.length; i++) {
+          len[i].disabled = false;
+      }
+    }
+  });
+});
+
+$(function() {
+  $('select[id="report"]').on('click', function(){
+
+  if ($(this).children(":selected").attr("value") == 'Accomplishment Report') {
+      $('#depsa').hide();
+      document.getElementById("datefrom").disabled = true;
+      document.getElementById("dateto").disabled = true;
+      document.getElementById("department").disabled = true;
+      document.getElementById("month").disabled = false;
+      document.getElementById("year").disabled = false;
+      document.getElementById("mon").hidden = false;
+      document.getElementById("yea").hidden = false;
+      $('#datef').hide();
+      $('#datet').hide();
+      $('#depsa').hide();
+
+  }
+  else{
+      document.getElementById("datefrom").disabled = false;
+      document.getElementById("dateto").disabled = false;
+      document.getElementById("department").disabled = false;
+      document.getElementById("month").disabled = true;
+      document.getElementById("year").disabled = true;
+      document.getElementById("mon").hidden = true;
+      document.getElementById("yea").hidden = true;
+      $('#datef').show();
+      $('#datet').show();
+      $('#depsa').show();
+  }
+ 
+  });
+});
+
+
+$(function() {
+  $('select[id="report"]').on('click', function(){
+
+  if ($(this).children(":selected").attr("value") == 'Plea Bargain') {
+      $('#depsa').hide();
+      document.getElementById("datefrom").disabled = true;
+      document.getElementById("dateto").disabled = true;
+      document.getElementById("department").disabled = true;
+      document.getElementById("month").disabled = false;
+      document.getElementById("year").disabled = false;
+      document.getElementById("mon").hidden = false;
+      document.getElementById("yea").hidden = false;
+      $('#datef').hide();
+      $('#datet').hide();
+      $('#depsa').hide();
+
+  }
+  else{
+      document.getElementById("datefrom").disabled = false;
+      document.getElementById("dateto").disabled = false;
+      document.getElementById("department").disabled = false;
+      document.getElementById("month").disabled = true;
+      document.getElementById("year").disabled = true;
+      document.getElementById("mon").hidden = true;
+      document.getElementById("yea").hidden = true;
+      $('#datef').show();
+      $('#datet').show();
+      $('#depsa').show();
+  }
+ 
+  });
+});
+
   
 </script>

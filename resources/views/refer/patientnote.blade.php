@@ -37,12 +37,10 @@ section .section-title {
 </style>
 @endsection
 
-<div class="tab-pane fade" id="v-pills-patientnote" role="tabpanel" aria-labelledby="v-pills-patientnote-tab">
-  <fieldset style="margin-bottom: 30px;margin-left: 0px;border:solid thin gray;border-radius: 10px;width: 1000px">
-    <legend style="color:white;text-indent: 20px;width:900px;margin-bottom: 20px;border-radius: 5px" class="bg bg-dark">Patient Notes</legend>
+  <div class="tab-pane fade" id="v-pills-patientnote" role="tabpanel" aria-labelledby="v-pills-patientnote-tab">
   
-    <div class="row">
-      <div style="width: 900px;margin-left: 55px">
+      <div class="row">
+      <div style="width: 100%">
         <nav>
           <div class="nav nav-tabs nav-fill" id="nav-tab" role="tablist">
             <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true"><i class="fa fa-user-md" style="font-size:32px;"></i></a>
@@ -57,14 +55,19 @@ section .section-title {
   <!--DOCTOR-->
           <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
              <div class="container">
-              <div style="float:right;margin-bottom: 10px;margin-right: 10px;margin-top: 10px"><a data-patientid="{{$pats->id}}" data-doctorid="{{Auth::user()->id}}" data-toggle="modal" data-target="addDoctortNotes"><button id="addDoctortNotes" name="addDoctortNotes" class="btn btn-success"><i class="fas fa-fw fa fa-plus"></i></button></a></div>
+
+                @if(Auth::user()->user_role->name == 'Doctor' || Auth::user()->user_role->name == 'Superadmin')
+
+                <div style="float:right;margin-bottom: 10px;margin-right: 10px;margin-top: 10px"><a data-patientid="{{$pats->id}}" data-doctorid="{{Auth::user()->id}}" data-toggle="modal" data-target="addDoctortNotes"><button id="addDoctortNotes" name="addDoctortNotes" class="btn btn-success addDoctortNotes" value="add"><i class="fas fa-fw fa fa-plus"></i></button></a></div>
+
+                @endif
                  <div class="table-responsive scrollAble2" id="doctorTablediv">
-                       <table class="table table-bordered" width="100%" style="font-size: 12px">
+                       <table class="table table-bordered doctorsTable" id="doctorsTable" width="100%" style="font-size: 12px">
                             <thead>
                              <tr>
                                <th width="15%">Date/Time</th>
-                               <th width="15%">Service Type</th>
-                               <th>Notes</th>
+                               <th width="10%">Service Type</th>
+                               <th width="50%">Notes</th>
                                <th width="15%">By</th>
                                <th width="10%">Action</th>
                             </tr>
@@ -72,29 +75,32 @@ section .section-title {
                           <tbody id="doctor-list" name="doctor-list">
                            @foreach ($patient_notes as $patient_note)
                              @if($patient_note->role_type == "doctor")
-                              <tr id="{{$patient_note->id}}">
-                                    <td>{{$patient_note->date_time}}</td>
-                                    <td>{{$patient_note->servicex->name}}</td>
-                                    <td>{{$patient_note->notes}}</td>
-                                    <td>{{$patient_note->userx->lname}}, {{$patient_note->userx->fname}}</td>
-                                    <td>{{$patient_note->note_by}}</td>
+                              <tr id="doctorNotesTr" value="{{$patient_note->id}}">
+                                    <td width="15%">{{$patient_note->date_time}}</td>
+                                    <td width="20%">{{$patient_note->servicex->name}}</td>
+                                    <td width="40%">{{$patient_note->notes}}</td>
+                                    <td width="15%">{{$patient_note->userx->lname}}, {{$patient_note->userx->fname}}</td>
+                                    <td width="5%">
+                                  @if((Auth::user()->role == 3 || Auth::user()->role == 2 || Auth::user()->role == 1) && Auth::user()->id == $patient_note->note_by)
+                                    <button id="addDoctortNotes" name="addDoctortNotes" style="font-size: 8px;" class="btn btn-info addDoctortNotes" value="{{$patient_note->id}}"><i class="fas fa-edit"></i></button>
+                                    @endif
+                                  </td>
                                 </tr>
-
                              @endif
                           @endforeach
                           </tbody>
                         </table>
-                  </div>  
-                </div> 
-              </div>      
+                     </div>
+             </div>          
+          </div>
 
-  <!--Nurse-->
-        <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
-          <div class="container">  
+  <!--nurse-->
+          <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
+             <div class="container">
                   <div class="form-group">
                      <div class="form-row">
                         <div class="col-md-6">
-            <div style="float:right;margin-bottom: 10px;margin-right: 10px;margin-top: 10px"><a data-patientid="{{$pats->id}}" data-doctorid="{{Auth::user()->id}}" data-toggle="modal" data-target="addNurseNotes"><button id="addNurseNotes" name="addNurseNotes" class="btn btn-success"><i class="fas fa-fw fa fa-plus"></i></button></a></div>
+
                              <select class="form-control" id="tableType" placeholder="tableType"name="tableType">
                                 <option value="S">Services</option>
                                 <option value="M">Medication Records</option>
@@ -104,11 +110,12 @@ section .section-title {
 
                         </div>
 
-              <div class="table-responsive scrollAble2">
-                    <table class="table table-bordered" id="nurseTable" width="100%" style="font-size: 12px">
                        <div class="col-md-6">
 
-                          <div style="float:right;margin-bottom: 10px;"><a data-patientid="{{$pats->id}}" data-doctorid="{{Auth::user()->id}}" data-toggle="modal" data-target="addNurseNotes"><button id="addNurseNotes" name="addNurseNotes" class="btn btn-success"><i class="fas fa-fw fa fa-plus"></i></button></a></div>
+                @if(Auth::user()->user_role->name == 'Nurse' || Auth::user()->user_role->name == 'Superadmin' || Auth::user()->user_role->name == 'Admin')
+
+                          <div style="float:right;margin-bottom: 10px;"><a data-patientid="{{$pats->id}}" data-doctorid="{{Auth::user()->id}}" data-toggle="modal" data-target="addNurseNotes"><button id="addNurseNotes" name="addNurseNotes" value="add" class="btn btn-success addNurseNotes"><i class="fas fa-fw fa fa-plus"></i></button></a></div>
+                  @endif
                   </div>
                 </div>
                 </div>
@@ -117,7 +124,7 @@ section .section-title {
                             <thead>
                               <tr>
                                <th width="15%">Date/Time</th>
-                               <th width=m"15%">Service Type</th>
+                               <th width="15%">Service Type</th>
                                <th>Notes</th>
                                <th width="15%">By</th>
                                <th width="10%">Action</th>
@@ -127,15 +134,19 @@ section .section-title {
                               @foreach ($patient_notes as $patient_note)
                              @if($patient_note->role_type == "nurse")
                               <tr id="{{$patient_note->id}}">
-                                    <td>{{$patient_note->date_time}}</td>
+                                    <td width="15%">{{$patient_note->date_time}}</td>
                                     @if($patient_note->service_id)
-                                    <td>{{$patient_note->servicex->name}}</td>
+                                    <td width="20%">{{$patient_note->servicex->name}}</td>
                                     @else
-                                    <td></td>
+                                    <td width="20%"></td>
                                     @endif
-                                    <td>{{$patient_note->notes}}</td>
-                                    <td>{{$patient_note->userx->lname}}, {{$patient_note->userx->fname}}</td>
-                                    <td>{{$patient_note->note_by}}</td>
+                                    <td width="40%">{{$patient_note->notes}}</td>
+                                    <td width="15%">{{$patient_note->userx->lname}}, {{$patient_note->userx->fname}}</td>
+                                    <td width="5%"> 
+                                     @if((Auth::user()->user_role->name == 'Nurse' || Auth::user()->user_role->name == 'Superadmin' || Auth::user()->user_role->name == 'Admin') && Auth::user()->id == $patient_note->note_by)
+                                      <button id="addNurseNotes" name="addNurseNotes" style="font-size: 8px;" class="btn btn-info addNurseNotes" value="{{$patient_note->id}}"><i class="fas fa-edit"></i></button>
+                                      @endif
+                                    </td>
                                 </tr>
                              @endif
                           @endforeach
@@ -147,22 +158,26 @@ section .section-title {
                             <thead>
                               <tr>
                                <th width="15%">Date/Time</th>
-                               <th width="10%">Reading (Before Breakfast)</th>
-                               <th>Notes</th>
+                               <th width="20%">Reading (Before Breakfast)</th>
+                               <th width="45%">Notes</th>
                                <th width="15%">By</th>
-                               <th width="10%">Action</th>
+                               <th width="5%">Action</th>
                             </tr>
                             </thead>
                           <tbody id="nurse-list" name="nurse-list">
+                            @foreach($blood_sugar as $bloodSugar)
                             <tr>
-                              <td></td>
-                              <td></td>
-                              <td></td>
-                              <td></td>
-                              <td></td>
-
+                              <td width="15%">{{$bloodSugar->dateTime}}</td>
+                              <td width="20%">{{$bloodSugar->reading}}</td>
+                              <td width="45%">{{$bloodSugar->notes}}</td>
+                              <td width="15%">{{$bloodSugar->userxe->lname}}, {{$bloodSugar->userxe->fname}}</td>
+                              <td  width="5%">
+                                @if((Auth::user()->user_role->name == 'Nurse' || Auth::user()->user_role->name == 'Superadmin' || Auth::user()->user_role->name == 'Admin') && Auth::user()->id == $patient_note->note_by)
+                              <button id="addNurseNotes" name="addNurseNotes" style="font-size: 8px;" class="btn btn-info addNurseNotes"><i class="fas fa-edit"></i></button>
+                              @endif
+                            </td>
                             </tr>
-                            
+                            @endforeach
                           </tbody>
                         </table>
                      </div>
@@ -174,19 +189,25 @@ section .section-title {
                                <th width="10%">Weight(KG)</th>
                                <th width="10%">BMI</th>
                                <th width="40%">Remarks</th>
-                              <th width="15%">By</th>
-                               <th width="10%">Action</th>
+                                <th width="15%">By</th>
+                               <th width="5%">Action</th>
                             </tr>
                             </thead>
                           <tbody id="nurse-list" name="nurse-list">
+                               @foreach($bmi_record as $bmi)
                               <tr>
-                              <td></td>
-                              <td></td>
-                              <td></td>
-                              <td></td>
-                              <td></td>
-                              <td></td>
+                              <td width="15%">{{$bmi->date}}</td>
+                              <td width="10%">{{$bmi->weight}}</td>
+                              <td width="10%">{{$bmi->bmi}}</td>
+                              <td width="40%">{{$bmi->remarks}}</td>
+                              <td width="15%">{{$bmi->userxe->lname}}, {{$bmi->userxe->fname}}</td>
+                              <td width="5%">
+@if((Auth::user()->user_role->name == 'Nurse' || Auth::user()->user_role->name == 'Superadmin' || Auth::user()->user_role->name == 'Admin') && Auth::user()->id == $patient_note->note_by)                     
+                               <button id="addNurseNotes" name="addNurseNotes" class="btn btn-info addNurseNotes" ><i class="fas fa-edit fa-xs"></i></button>
+                                @endif
+                              </td>
                             </tr>
+                            @endforeach
                           </tbody>
                         </table>
                      </div>
@@ -199,20 +220,26 @@ section .section-title {
                                <th width="15%">Date</th>
                                <th width="15%">Time</th>
                                <th width="15%">Medications</th>
-                               <th width="30%">Remarks</th>
+                               <th width="45%">Remarks</th>
                               <th width="15%">By</th>
-                               <th width="10%">Action</th>
+                               <th width="5%">Action</th>
                             </tr>
                             </thead>
                           <tbody id="nurse-list" name="nurse-list">
+                              @foreach ($medical_record as $record)
                                <tr>
-                              <td></td>
-                              <td></td>
-                              <td></td>
-                              <td></td>
-                              <td></td>
-                              <td></td>
+                              <td  width="10%">{{$record->intake_date}}</td>
+                              <td  width="10%">{{$record->intake_time}}</td>
+                              <td  width="20%">{{$record->medication}}</td>
+                              <td width="40%">{{$record->notes}}</td>
+                              <td width="15%">{{$record->userxe->lname}}, {{$record->userxe->fname}}</td>
+                              <td  width="5%">
+@if((Auth::user()->user_role->name == 'Nurse' || Auth::user()->user_role->name == 'Superadmin' || Auth::user()->user_role->name == 'Admin') && Auth::user()->id == $patient_note->note_by)
+                                <button id="addNurseNotes" name="addNurseNotes" class="btn btn-info addNurseNotes" style="font-size: 8px;"><i class="fas fa-edit"></i></button>
+                                @endif
+                              </td>
                             </tr>
+                           @endforeach
                           </tbody>
                         </table>
                      </div>
@@ -223,31 +250,38 @@ section .section-title {
     <!--Dental-->
           <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">
              <div class="container">
-                <div style="float:right;margin-bottom: 10px;margin-right: 10px;margin-top: 10px"><a data-patientid="{{$pats->id}}" data-doctorid="{{Auth::user()->id}}" data-toggle="modal" data-target="addDentalNotes"><button id="addDentalNotes" name="addDentalNotes" class="btn btn-success"><i class="fas fa-fw fa fa-plus"></i></button></a></div>
-                      
+
+@if(Auth::user()->user_role->name == 'Dentist' || Auth::user()->user_role->name == 'Superadmin' || Auth::user()->user_role->name == 'Admin')                
+                <div style="float:right;margin-bottom: 10px;margin-right: 10px;margin-top: 10px"><a data-patientid="{{$pats->id}}" data-doctorid="{{Auth::user()->id}}" data-toggle="modal" data-target="addDentalNotes"><button id="addDentalNotes" name="addDentalNotes" class="btn btn-success addDentalNotes"><i class="fas fa-fw fa fa-plus"></i></button></a></div>
+  @endif
                  <div class="table-responsive scrollAble2">
                        <table class="table table-bordered"  id="dentalTable" width="100%" style="font-size: 12px">
                             <thead>
                              <tr>
                                <th width="10%">Date</th>
                                <th width="25%">Diagnosis</th>
-                               <th>Tooth No.</th>
+                               <th width="10%">Tooth No.</th>
                                <th width="22%">Service Rendered</th>
                                 <th width="15%">Dentist</th>
                                 <th width="22%">Remarks</th>
+                                <th width="22%">Action</th>
                             </tr>
                             </thead>
                           <tbody id="dental-list" name="dental-list">
                               @foreach ($DentalNotes as $dental_notes)
                                <tr id="dental_{{$dental_notes->id}}">
-                                    <td>{{$dental_notes->date_time}}</td>
-                                    <td>{{$dental_notes->diagnose}}</td>
-                                    <td>{{$dental_notes->tooth_no}}</td>
-                                    <td>{{$dental_notes->service_rendered}}</td>
-                                    <td>{{$dental_notes->userxk->lname}}, {{$dental_notes->userxk->fname}}</td>
-                                    <td>{{$dental_notes->remarks}}</td>  
-                                </tr>
+                                    <td width="10%">{{$dental_notes->date_time}}</td>
+                                    <td width="25%">{{$dental_notes->diagnose}}</td>
+                                    <td width="5%">{{$dental_notes->tooth_no}}</td>
+                                    <td width="20%">{{$dental_notes->service_rendered}}</td>
+                                    <td width="10%">{{$dental_notes->userxk->lname}}, {{$dental_notes->userxk->fname}}</td>
+                                    <td width="25%">{{$dental_notes->remarks}}</td>  
+                                    <td width="5%">
+@if((Auth::user()->user_role->name == 'Dentist' || Auth::user()->user_role->name == 'Superadmin' || Auth::user()->user_role->name == 'Admin') && Auth::user()->id == $patient_note->note_by)
 
+                                    <button id="addDentalNotes" name="addDentalNotes" class="btn btn-info addDentalNotes" style="font-size: 8px;"><i class="fas fa-edit"></i></button></td>  
+                            </tr>
+@endif    
                               @endforeach
 
                           </tbody>
@@ -261,7 +295,10 @@ section .section-title {
           <div class="tab-pane fade" id="nav-about" role="tabpanel" aria-labelledby="nav-about-tab">
                  <div class="container">
 
-                <div style="float:right;margin-bottom: 10px;margin-right: 10px;margin-top: 10px"><a data-patientid="{{$pats->id}}" data-doctorid="{{Auth::user()->id}}" data-toggle="modal" data-target="addPyschiatristNotes"><button id="addPyschiatristNotes" name="addPsychiatristNotes" class="btn btn-success"><i class="fas fa-fw fa fa-plus"></i></button></a></div>
+              @if(Auth::user()->user_role->name == 'Physciatrist' || Auth::user()->user_role->name == 'Superadmin' || Auth::user()->user_role->name == 'Admin')                
+
+                <div style="float:right;margin-bottom: 10px;margin-right: 10px;margin-top: 10px"><a data-patientid="{{$pats->id}}" data-doctorid="{{Auth::user()->id}}" data-toggle="modal" data-target="addPyschiatristNotes"><button id="psychiatristNotes" class="btn btn-success psychiatristNotes" value="add"><i class="fas fa-fw fa fa-plus"></i></button></a></div>
+                @endif
 
                  <div class="table-responsive scrollAble2">
                        <table class="table table-bordered" id="psychiatristTable" width="100%" style="font-size: 12px">
@@ -273,20 +310,24 @@ section .section-title {
                                <th width="15%">By</th>
                                <th width="10%">Action</th>
                             </tr>
-                            </thead>
+                           </thead>
                           <tbody id="psychiatrist-list" name="psychiatrist-list">
                               @foreach ($patient_notes as $patient_note)
                              @if($patient_note->role_type == "psychiatrist")
                               <tr id="psychiatrist_{{$patient_note->id}}">
-                                    <td>{{$patient_note->date_time}}</td>
-                                    @if($patient_note->service_id)
-                                    <td>{{$patient_note->servicex->name}}</td>
+                                    <td width="15%">{{$patient_note->date_time}}</td>
+                                     @if($patient_note->service_id)
+                                    <td width="20%">{{$patient_note->servicex->name}}</td>
                                     @else
-                                    <td></td>
+                                    <td width="20%"></td>
                                     @endif 
-                                    <td>{{$patient_note->notes}}</td>
-                                    <td>{{$patient_note->userx->lname}}, {{$patient_note->userx->fname}}</td>
-                                    <td>{{$patient_note->note_by}}</td>
+                                    <td width="45%">{{$patient_note->notes}}</td>
+                                    <td width="15%">{{$patient_note->userx->lname}}, {{$patient_note->userx->fname}}</td>
+                                    <td width="5%">
+                                    @if((Auth::user()->user_role->name == 'Physciatrist' || Auth::user()->user_role->name == 'Superadmin' || Auth::user()->user_role->name == 'Admin') && Auth::user()->id == $patient_note->note_by)
+                                      <button id="psychiatristNotes" name="psychiatristNotes" class="btn btn-info psychiatristNotes" style="font-size: 8px;" value="{{$patient_note->id}}"><i class="fas fa-edit"></i></button>
+                                          @endif
+                                      </td>
                                 </tr>
 
                              @endif
@@ -300,8 +341,9 @@ section .section-title {
           <div class="tab-pane fade" id="nav-social-worker" role="tabpanel" aria-labelledby="nav-social-worker-tab">
                  <div class="container">
 
-                <div style="float:right;margin-bottom: 10px;margin-right: 10px;margin-top: 10px"><a data-patientid="{{$pats->id}}" data-doctorid="{{Auth::user()->id}}" data-toggle="modal" data-target="addSocialWorkerNotes"><button id="addSocialWorkerNotes" name="addSocialWorkerNotes" class="btn btn-success"><i class="fas fa-fw fa fa-plus"></i></button></a></div>
-
+@if(Auth::user()->user_role->name == 'Social Worker' || Auth::user()->user_role->name == 'Superadmin' || Auth::user()->user_role->name == 'Admin')
+                <div style="float:right;margin-bottom: 10px;margin-right: 10px;margin-top: 10px"><a data-patientid="{{$pats->id}}" data-doctorid="{{Auth::user()->id}}" data-toggle="modal" data-target="addSocialWorkerNotes"><button id="addSocialWorkerNotes" name="addSocialWorkerNotes" value="add" class="btn btn-success addSocialWorkerNotes"><i class="fas fa-fw fa fa-plus"></i></button></a></div>
+                @endif
                  <div class="table-responsive scrollAble2">
                        <table class="table table-bordered"  id="socialworkerTable" width="100%" style="font-size: 12px">
                             <thead>
@@ -317,13 +359,20 @@ section .section-title {
                               @foreach ($patient_notes as $patient_note)
                              @if($patient_note->role_type =="socialworker")
                               <tr id="socialworker_{{$patient_note->id}}">
-                                    <td>{{$patient_note->date_time}}</td>
-                                    <td>{{$patient_note->servicex->name}}</td>
-                                    <td>{{$patient_note->notes}}</td>
-                                    <td>{{$patient_note->userx->lname}}, {{$patient_note->userx->fname}}</td>
-                                    <td>{{$patient_note->note_by}}</td>
+                                    <td width="15%">{{$patient_note->date_time}}</td>
+                                    @if($patient_note->service_id)
+                                    <td width="20%">{{$patient_note->servicex->name}}</td>
+                                    @else
+                                    <td width="20%"></td>
+                                    @endif                                    
+                                    <td width="45%">{{$patient_note->notes}}</td>
+                                    <td width="15%">{{$patient_note->userx->lname}}, {{$patient_note->userx->fname}}</td>
+                                    <td width="5%">
+                      @if((Auth::user()->user_role->name == 'Social Worker' || Auth::user()->user_role->name == 'Superadmin' || Auth::user()->user_role->name == 'Admin') && Auth::user()->id == $patient_note->note_by)
+                                      <button id="addSocialWorkerNotes" name="addSocialWorkerNotes" class="btn btn-info addSocialWorkerNotes" value="{{$patient_note->id}}" style="font-size: 8px;"><i class="fas fa-edit"></i></button>
+                                      @endif
+                                    </td>
                                 </tr>
-
                              @endif
                           @endforeach
                           </tbody>
@@ -335,7 +384,7 @@ section .section-title {
       
       </div>
     </div>
-  </fieldset>
+
  </div>
 
   <div class="modal fade" id="AddSocialWorkerNotesModal" aria-hidden="true" >
@@ -344,15 +393,14 @@ section .section-title {
                               <div class="modal-header" style="width:800px">
                                   <h4 class="modal-title" id="AddSocialWorkerNotesModal">Add Social Worker Service</h4>
                               </div>
-
-                            <form id="DocotorNotesFormData" name="DoctorNotesFormData" class="form-horizontal" novalidate="">
-
-                              <div class="modal-body">
-                                 <div class="modal-body" style="width:800px">
+                              <form id="AddSocialWorkerFormData" name="AddSocialWorkerFormData" class="form-horizontal" novalidate="">
+                                    
+                              <div class="modal-body" style="width:800px">
 
                                   <div class="form-group">
                                     <h6>Service Type</h6>
                                       <select class="form-control" id="socialList"  name="socialList" data-hide-disabled="true" style="font-size: 16px; width: 500px;margin-left: 0px">
+                                          <option value=0>--NONE--</option>
                                           @foreach($service as $services)
                                           @if($services->role == 5)
                                           <option value="{{$services->services->id}}"> {{$services->services->name}}</option>
@@ -444,7 +492,7 @@ section .section-title {
                                   <div class="form-group">
                                     <h6>Service Type</h6>
                                       <select class="form-control nurseList" id="nurseList"  name="nurseList" data-hide-disabled="true" style="font-size: 16px; width: 500px;margin-left: 0px">
-                                        <option value=" ">--NONE--</option>
+                                        <option value=0>--NONE--</option>
                                         <option value="M">Medication Records</option>
                                         <option value="F">BMI</option>
                                         <option value="BS">Blood Sugar Daily Monitoring</option>

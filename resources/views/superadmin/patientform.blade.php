@@ -4,12 +4,12 @@
         <!-- Breadcrumbs-->
         <ol class="breadcrumb">
           <li class="breadcrumb-item">
-            <a href="{{URL::to('/profile')}}">Dashboard</a>
+            <a href="{{URL::to('/profile')}}"><b>Dashboard</b></a>
           </li>
           <li class="breadcrumb-item">
-            <a href="{{URL::to('/patient_dep')}}">Choose Department</a>
+            <a href="{{URL::to('/patient_dep')}}"><b>Choose Department</b></a>
           </li>
-          <li class="breadcrumb-item active">Choose What to fill-up</li>
+          <li class="breadcrumb-item active"><b>Choose What to fill-up</b></li>
         </ol>
 
         <!-- Icon Cards-->

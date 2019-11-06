@@ -23,7 +23,7 @@ class UserController extends Controller
 {
 	public function chooseuser_role()
 	{
-		$roles = User_roles::where('parent',0)->get();
+		$roles = User_roles::where('parent',0)->where('description','!=','Employee')->get();
 		$deps = Departments::all();
 		$users = Users::find(Auth::user()->id);
 		$transfer = Transfer_Requests::all();
@@ -42,7 +42,7 @@ class UserController extends Controller
 
 	public function create_user($id)
 	{
-		$roles = User_roles::all();
+		$roles = User_roles::where('description','!=','Employee')->get();
 		$rolex = User_roles::find($id);
 		$deps = Departments::all();
 		$users = Users::find(Auth::user()->id);
@@ -73,7 +73,7 @@ class UserController extends Controller
 
 	public function createuserrole()
 	{
-		$roles = User_roles::all();
+		$roles = User_roles::where('description','!=','Employee')->get();
 		$deps = Departments::all();
 		$users = Users::find(Auth::user()->id);
 		$transfer = Transfer_Requests::all();
@@ -89,7 +89,7 @@ class UserController extends Controller
 
 	public function postcreate_dep()
 	{
-		$roles = User_roles::all();
+		$roles = User_roles::where('description','!=','Employee')->get();
 		$deps = Departments::all();
 		$users = Users::find(Auth::user()->id);
 		$transfer = Transfer_Requests::all();
@@ -104,7 +104,7 @@ class UserController extends Controller
 
 	public function create_depnow()
 	{
-		$roles = User_roles::all();
+		$roles = User_roles::where('description','!=','Employee')->get();
 		$deps = Departments::all();
 		$users = Users::find(Auth::user()->id);
 		$transfer = Transfer_Requests::all();
@@ -179,8 +179,8 @@ class UserController extends Controller
 
 	public function deleteuser(Request $request)
 	{
-		$deleteuser = Users::findorfail($request->user_id);
-		$deleteuser->delete();
+	
+		$users = Users::where('id',$request->input('user_id'))->update(['flag' => 'deleted']);
 
 		date_default_timezone_set('Asia/Singapore');
 

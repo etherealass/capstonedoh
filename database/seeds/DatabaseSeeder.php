@@ -10,6 +10,8 @@ use App\Drugs_Abused;
 use App\Civil_Status;
 use App\Educational_Attainment;
 use App\Employment_Status;
+use App\services;
+
 
 class DatabaseSeeder extends Seeder
 {
@@ -82,13 +84,21 @@ class DatabaseSeeder extends Seeder
                 'court_order' => 0
 
          ]);
+
          DB::table('case__types')->insert([
                 'case_name' => 'Voluntary with Court Order',
                 'court_order' => 1
                 
          ]);
+
          DB::table('case__types')->insert([
                 'case_name' => 'Plea Bargain',
+                'court_order' => 0
+                
+         ]);
+
+         DB::table('case__types')->insert([
+                'case_name' => 'Plea Bargain with Court Order',
                 'court_order' => 1
                 
          ]);
@@ -500,6 +510,7 @@ class DatabaseSeeder extends Seeder
 
         DB::table('civil__statuses')->insert([
             'name' =>  'Widowed',
+        ]);
         DB::table('interventions')->insert([
             'interven_name' =>  'Individual Counseling',
             'descrp' => 'Individual Conseling',
@@ -547,6 +558,14 @@ class DatabaseSeeder extends Seeder
 
         DB::table('drugs__abuseds')->insert([
             'name' =>  'Not a Drug Dependent',
+        ]);
+
+        DB::table('city__jails')->insert([
+            'jail_id' =>  rand(),
+            'name' => 'Mandaue City Jail'
+        ]);
+
+
         DB::table('interventions')->insert([
             'interven_name' =>  'Group Therapy',
             'descrp' => 'Group Therapy',
@@ -670,9 +689,146 @@ class DatabaseSeeder extends Seeder
                 
          ]);
 
+        DB::table('services')->insert([
+            'name' => 'MEDICAL (INSIDE FACILITY)',
+            'description' => 'MEDICAL (INSIDE FACILITY)'
+
+        ]);
+
+        DB::table('services')->insert([
+            'name' => 'MEDICAL (OUTSOURCE)',
+            'description' => 'MEDICAL (OUTSOURCE)'
+
+        ]);
+
+        DB::table('services')->insert([
+            'name' => 'DENTAL',
+            'description' => 'DENTAL'
+
+        ]);
+
+        DB::table('services')->insert([
+            'name' => 'PSYCHIATRIC',
+            'description' => 'PSYCHIATRIC'
+
+        ]);
+
+         DB::table('services')->insert([
+            'name' => 'LOCAL HEALTH FACILITY',
+            'description' => 'LOCAL HEALTH FACILITY'
+
+        ]);
+
+        DB::table('services')->insert([
+            'name' => 'LIVELIHOOD SERVICE',
+            'description' => 'LIVELIHOOD SERVICE'
+
+        ]);
+
+         DB::table('services')->insert([
+            'name' => 'SOCIAL SERVICE',
+            'description' => 'SOCIAL SERVICE'
+
+        ]);
+
+
+
+        DB::table('services')->insert([
+            'name' => 'LEGAL SERVICE',
+            'description' => 'LEGAL SERVICE'
+
+        ]);
+
+        $Mif = Services::where('name','MEDICAL (INSIDE FACILITY)')->first();
+        $inside = $Mif->id;
+
+        $Mot = Services::where('name','MEDICAL (OUTSOURCE)')->first();
+        $out = $Mot->id;
+
+        $Dental = Services::where('name','DENTAL')->first();
+        $dent = $Dental->id;
+
+        $psychiatric = Services::where('name','PSYCHIATRIC')->first();
+        $pt = $psychiatric->id;
+
+        $localHealth = Services::where('name','LOCAL HEALTH FACILITY')->first();
+        $local = $localHealth->id;
+
+        $liveli = Services::where('name','LIVELIHOOD SERVICE')->first();
+        $hood = $liveli->id;
+
+        $legal = Services::where('name','LEGAL SERVICE')->first();
+        $legalServices = $legal->id;
+
+        $socialservice = Services::where('name','SOCIAL SERVICE')->first();
+        $ss = $socialservice->id;
+
+        $doctor = User_roles::where('name', 'Doctor')->first();
+            $doc =  $doctor->id;
+        $Nurse = User_roles::where('name', 'Nurse')->first();
+            $nur =  $Nurse->id;
+
+        $Soci = User_roles::where('name', 'Social Worker')->first();
+            $social = $Soci->id;
+
+        $Psyc = User_roles::where('name', 'Physciatrist')->first();
+            $psychiat = $Psyc->id;
+        $Dentist = User_roles::where('name', 'Dentist')->first();
+            $den = $Dentist->id;
+
+          DB::table('display')->insert([
+            'service_id' => $inside,
+            'role' => $doc
+
+        ]);
+
+         DB::table('display')->insert([
+            'service_id' => $out,
+            'role' => $doc
+
+        ]);
+
+
+         DB::table('display')->insert([
+            'service_id' => $dent,
+            'role' => $den
+
+        ]);
+
+        DB::table('display')->insert([
+            'service_id' =>  $ss,
+            'role' => $psychiat
+
+        ]);
+
+
+         DB::table('display')->insert([
+            'service_id' => $local,
+            'role' => $nur
+
+        ]);
+
+        DB::table('display')->insert([
+            'service_id' => $hood,
+            'role' => $nur
+
+        ]);
+
+        DB::table('display')->insert([
+            'service_id' => $hood,
+            'role' => $social
+
+        ]);
+
+        DB::table('display')->insert([
+            'service_id' => $legalServices,
+            'role' => $social
+
+        ]);
+
+
+
         
-
-
         $user = new Users([
             'user_id' => rand(),
             'fname' => 'Erol',

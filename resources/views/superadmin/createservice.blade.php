@@ -4,18 +4,18 @@
     <!-- Breadcrumbs-->
     <ol class="breadcrumb">
       <li class="breadcrumb-item">
-        <a href="{{URL::to('/profile')}}">Dashboard</a>
+        <a href="{{URL::to('/profile')}}"><b>Dashboard</b></a>
       </li>
      <li class="breadcrumb-item">
-        <a href="{{URL::to('/show_services')}}">Services</a>
+        <a href="{{URL::to('/show_services')}}"><b>Services</b></a>
       </li>
-      <li class="breadcrumb-item active">Service Creation</li>
+      <li class="breadcrumb-item active"><b>Service Creation</b></li>
     </ol>
 
     <!-- Icon Cards-->
     <div class="container">
       <div class="card card-register mx-auto mt-4">
-        <div class="card-header">Create Service</div>
+        <div class="card-header"><b>Create Service</b></div>
         <div class="card-body">
         @if ($errors->any())
           @foreach ($errors->all() as $error)

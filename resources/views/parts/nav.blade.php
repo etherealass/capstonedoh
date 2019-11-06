@@ -5,7 +5,7 @@
     </button> 
       <a class="navbar-brand mr-1" href="{{URL::to('/profile')}}">
           <img style="height:60px;margin-top: 5px;margin-right: 0px;" src="{{asset('images/logo3.png')}}">
-          <a class="navbar-brand mr-1" href="{{URL::to('/profile')}}"><h5><span>Treatment and Rehabilitation Center for Females - Cebu</span></h5></a>
+          <a class="navbar-brand mr-1" href="{{URL::to('/profile')}}"><h5><span><b>Treatment and Rehabilitation Center for Females - Cebu</b></span></h5></a>
         </a>  
     
     <!-- Navbar Search 
@@ -23,7 +23,7 @@
     <!-- Navbar -->
      <?php $count = 0;
            $countz = 0; ?>
-             @if(Auth::user()->user_role()->first()->name == 'Superadmin')
+             @if(Auth::user()->user_role()->first()->name == 'Superadmin' || Auth::user()->user_role()->first()->name == 'Admin')
                 @foreach($users->unreadNotifications as $user)
                   @if($user->type == 'App\Notifications\MySecondNotification')
                   <?php $count++; ?>
@@ -42,7 +42,7 @@
             @endif
 
       <?php $counts = 0;?>
-             @if(Auth::user()->user_role()->first()->name == 'Superadmin')
+             @if(Auth::user()->user_role()->first()->name == 'Superadmin' || Auth::user()->user_role()->first()->name == 'Admin')
                 @foreach($users->unreadNotifications as $user)
                   @if($user->type == 'App\Notifications\MyThirdNotifications')
                   <?php $counts++; ?>
@@ -59,16 +59,16 @@
             @endif
 
       <?php $countx = 0;?>
-             @if(Auth::user()->user_role()->first()->name == 'Superadmin')
+             @if(Auth::user()->user_role()->first()->name == 'Superadmin' || Auth::user()->user_role()->first()->name == 'Admin')
                 @foreach($users->unreadNotifications as $user)
                   @if($user->type == 'App\Notifications\MyFourthNotifications')
-                  <?php $countx++; ?>
+                  <?php $countx++; ?> 
                   @endif
                 @endforeach
             @endif  
 
     <ul class="navbar-nav ml-auto mr-0 mr-md-3 my-2 my-md-0">
-      <p style="color:white;margin-top: 12px;font-size: 15px;">Welcome {{Auth::user()->fname}} ({{Auth::user()->user_role()->first()->name}})</p>
+      <p style="color:white;margin-top: 12px;font-size: 15px;"><b>Welcome {{Auth::user()->fname}} ({{Auth::user()->user_role()->first()->name}})</b></p>
       <li class="nav-item dropdown no-arrow mx-1">
         <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="background-color: #343a40">
           <i class="fas fa-bell fa-fw" style="font-size: 30px;margin-top: 0px"></i>
@@ -78,7 +78,7 @@
           <div>
               <div class="card-header">Notifications </div>
               <div class="card-body scrollAble" style="margin-left: 0">
-              @if(Auth::user()->user_role()->first()->name == 'Superadmin') 
+              @if(Auth::user()->user_role()->first()->name == 'Superadmin' || Auth::user()->user_role()->first()->name == 'Admin') 
                 @foreach($users->unreadNotifications as $user)
                     @if($user->type == 'App\Notifications\MySecondNotification')
                 <div style="border:thin black;background-color: lightgray">
@@ -148,13 +148,13 @@
           <div>
             <div class="card-header" style="height: 50px">For Transfer Approval </div>
               <div class="card-body scrollAble" style="margin-left: 0;height: 170px">
-              @if(Auth::user()->user_role()->first()->name == 'Superadmin') 
+              @if(Auth::user()->user_role()->first()->name == 'Superadmin' || Auth::user()->user_role()->first()->name == 'Admin') 
                 @foreach($users->unreadNotifications as $user)
                   @foreach($transfer as $trans)
                     @if($user->type == 'App\Notifications\MyThirdNotifications' && $trans->transfer_id == $user->data['transfer_id'])
                       @if($trans->status != 'transfered')
                 <div style="border:thin black;background-color: lightgray">
-                <p style="margin-top: 5px;font-size: 16px;margin-left: 20px">A patient has requested to transfer from {{$user->data['from_department']}} Department</p>
+                <p style="margin-top: 5px;font-size: 16px;margin-left: 20px">A patient has requested to transfer from {{$user->data['from_department']}} Department to {{$user->data['to_department']}} Department</p>
                 <?php date_default_timezone_set('Asia/Singapore'); ?>
                 <p style="margin-left: 185px;font-size: 12px">{{$user->created_at->diffForHumans()}}</p>
                 <p style="margin-left: 90px"><a href="{{URL::to('/viewpatients/'.$user->data['patient_id']. '/'.$user->id.'/'.$user->data['transfer_id'])}}"><button class="btn btn-primary" style="margin-left: 100px">View</button></a></p>
@@ -174,7 +174,16 @@
                 @endforeach
                 @foreach($users->readNotifications as $user)
                  @foreach($transfer as $trans)
-                    @if($user->type == 'App\Notifications\MyThirdNotifications')
+                  @if($user->type == 'App\Notifications\MyThirdNotifications' && $trans->transfer_id == $user->data['transfer_id'])
+                   @if($trans->status != 'transfered')
+               <div style="border:thin black;background-color: lightgray">
+                <p style="margin-top: 5px;font-size: 16px;margin-left: 20px">A patient has requested to transfer from {{$user->data['from_department']}} Department to {{$user->data['to_department']}} Department</p>
+                <?php date_default_timezone_set('Asia/Singapore'); ?>
+                <p style="margin-left: 185px;font-size: 12px">{{$user->created_at->diffForHumans()}}</p>
+                <p style="margin-left: 90px"><a href="{{URL::to('/viewpatients/'.$user->data['patient_id']. '/'.$user->id.'/'.$user->data['transfer_id'])}}"><button class="btn btn-primary" style="margin-left: 100px">View</button></a></p>
+                <div style="border:solid 1px rgba(0, 0, 0, 0.125)"></div>
+                </div>
+                   @else
                 <div style="border:thin black">
                 <p style="margin-top: 5px;font-size: 16px;margin-left: 50px">A patient has been transfered from {{$user->data['from_department']}} Department to {{$user->data['to_department']}} Department</p>
                 <?php date_default_timezone_set('Asia/Singapore'); ?>
@@ -182,14 +191,14 @@
                 <p style="margin-left: 150px"><a href="{{URL::to('/viewpatient/'.$user->data['patient_id'])}}"><button class="btn btn-primary" style="margin-left: 30px">View</button></a>
                 <div style="border:solid 1px rgba(0, 0, 0, 0.125)"></div>
                 </div>
-                  @endif
+                   @endif
+                  @endif 
                  @endforeach
                 @endforeach
                 @elseif(Auth::user()->user_role()->first()->name == 'Social Worker')
                   @foreach($users->unreadNotifications as $user)
                    @foreach($transfer as $trans)
                     @if($user->type == 'App\Notifications\MyThirdNotifications' && $trans->transfer_id == $user->data['transfer_id'])
-                    @if(Auth::user()->user_department->department_name == $user->data['to_department'])
                     @if($trans->status != 'transfered')
                 <div style="border:thin black;background-color: lightgray">
                 <p style="margin-top: 0px;font-size: 16px;margin-left: 20px">A patient has requested to transfer from {{$user->data['from_department']}} Department</p>
@@ -202,34 +211,43 @@
                 <div style="border:thin black;background-color: lightgray">
                 <p style="margin-top: 5px;font-size: 16px;margin-left: 50px">A patient has been transfered from {{$user->data['from_department']}} Department to {{$user->data['to_department']}} Department</p>
                 <?php date_default_timezone_set('Asia/Singapore'); ?>
-                <p style="margin-left: 180px;font-size: 12px">{{$user->created_at->diffForHumans()}}</p>
+                <p style="margin-left: 180px;font-size: 12px">{{$user->updated_at->diffForHumans()}}</p>
                 <p style="margin-left: 150px"><a href="{{URL::to('/viewpatientz/'.$user->data['patient_id'].'/'.$user->id)}}"><button class="btn btn-primary" style="margin-left: 30px">View</button></a>
                 <div style="border:solid 1px rgba(0, 0, 0, 0.125)"></div>
                 </div>
                       @endif
-                    @endif
                   @endif
                  @endforeach
                 @endforeach
-                @foreach($users->readNotifications as $user)
-                  @if($user->type == 'App\Notifications\MyThirdNotifications')
-                  @if(Auth::user()->user_department->department_name == $user->data['to_department'])
+               @foreach($users->readNotifications as $user)
+                 @foreach($transfer as $trans)
+                  @if($user->type == 'App\Notifications\MyThirdNotifications' && $trans->transfer_id == $user->data['transfer_id'])
+                   @if($trans->status != 'transfered')
+               <div style="border:thin black;background-color: lightgray">
+                <p style="margin-top: 5px;font-size: 16px;margin-left: 20px">A patient has requested to transfer from {{$user->data['from_department']}} Department to {{$user->data['to_department']}} Department</p>
+                <?php date_default_timezone_set('Asia/Singapore'); ?>
+                <p style="margin-left: 185px;font-size: 12px">{{$user->created_at->diffForHumans()}}</p>
+                <p style="margin-left: 90px"><a href="{{URL::to('/viewpatients/'.$user->data['patient_id']. '/'.$user->id.'/'.$user->data['transfer_id'])}}"><button class="btn btn-primary" style="margin-left: 100px">View</button></a></p>
+                <div style="border:solid 1px rgba(0, 0, 0, 0.125)"></div>
+                </div>
+                   @else
                 <div style="border:thin black">
                 <p style="margin-top: 5px;font-size: 16px;margin-left: 50px">A patient has been transfered from {{$user->data['from_department']}} Department to {{$user->data['to_department']}} Department</p>
                 <?php date_default_timezone_set('Asia/Singapore'); ?>
-                <p style="margin-left: 180px;font-size: 12px">{{$user->created_at->diffForHumans()}}</p>
+                <p style="margin-left: 185px;font-size: 12px">{{$user->created_at->diffForHumans()}}</p>
                 <p style="margin-left: 150px"><a href="{{URL::to('/viewpatient/'.$user->data['patient_id'])}}"><button class="btn btn-primary" style="margin-left: 30px">View</button></a>
                 <div style="border:solid 1px rgba(0, 0, 0, 0.125)"></div>
                 </div>
-                    @endif
-                  @endif
+                   @endif
+                  @endif 
+                 @endforeach
                 @endforeach
               @endif
               </div>
             </div>
         </div>
       </li>
-      @if(Auth::user()->user_role()->first()->name == 'Superadmin')
+      @if(Auth::user()->user_role()->first()->name == 'Superadmin' || Auth::user()->user_role()->first()->name == 'Admin')
        <li class="nav-item dropdown no-arrow mx-1">
         <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           <i style="font-size: 30px;" class="fa fa-graduation-cap"></i>
@@ -239,7 +257,7 @@
           <div>
           <div class="card-header" style="height: 50px">For Graduation Approval</div>
               <div class="card-body scrollAble" style="margin-left: 0;height: 170px">
-              @if(Auth::user()->user_role()->first()->name == 'Superadmin') 
+              @if(Auth::user()->user_role()->first()->name == 'Superadmin' || Auth::user()->user_role()->first()->name == 'Admin') 
                 @foreach($users->unreadNotifications as $user)
                   @foreach($graduate as $grad)
                     @if($user->type == 'App\Notifications\MyFourthNotifications' && $grad->graduate_id == $user->data['graduate_id'])

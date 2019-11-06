@@ -4,19 +4,19 @@
         <!-- Breadcrumbs-->
         <ol class="breadcrumb">
           <li class="breadcrumb-item">
-            <a href="{{URL::to('/profile')}}">Dashboard</a>
+            <a href="{{URL::to('/profile')}}"><b>Dashboard</b></a>
           </li>
           <li class="breadcrumb-item">
-            <a href="{{URL::to('/show_case_types')}}">Case Types</a>
+            <a href="{{URL::to('/show_case_types')}}"><b>Case Types</b></a>
           </li>
-          <li class="breadcrumb-item active">Case type Creation</li>
+          <li class="breadcrumb-item active"><b>Case type Creation</b></li>
         </ol>
 
           @include('flash::message')
         <!-- Icon Cards-->
     <div class="container">
     <div class="card card-register mx-auto mt-4">
-      <div class="card-header">Create Case Type</div>
+      <div class="card-header"><b>Create Case Type</b></div>
       <div class="card-body">
       @if ($errors->any())
         @foreach ($errors->all() as $error)

@@ -4,18 +4,18 @@
         <!-- Breadcrumbs-->
         <ol class="breadcrumb">
           <li class="breadcrumb-item">
-            <a href="{{URL::to('/profile')}}">Dashboard</a>
+            <a href="{{URL::to('/profile')}}"><b>Dashboard</b></a>
           </li>
           <li class="breadcrumb-item">
-            <a href="{{URL::to('/choosef/'.$id)}}">Choose what to fill up</a>
+            <a href="{{URL::to('/patient_dep')}}"><b>Choose Department</b></a>
           </li>
-          <li class="breadcrumb-item active">Fill up</li>
+          <li class="breadcrumb-item active"><b>Fill-up</b></li>
         </ol>
 
 
-   <div style="background-color: white;border-radius: 5px;height: 1300px;padding-top: 10px">
+   <div style="background-color: white;border-radius: 5px;height: 1300px;width:1200px;padding-top: 10px;margin-left: 200px">
     <div class="container" style="margin-top: 30px">
-        <p style="font-size:50px">Intake Form</p>
+        <p style="font-size:50px"><b>Intake Form</b></p>
         <form action="{{URL::to('/patientsave_intake')}}" method="post">
           {{csrf_field()}}
           <fieldset style="margin-bottom: 30px">

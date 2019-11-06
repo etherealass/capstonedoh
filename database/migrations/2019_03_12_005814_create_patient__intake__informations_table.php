@@ -23,9 +23,9 @@ class CreatePatientIntakeInformationsTable extends Migration
             $table->foreign('educational_attainment')->references('id')->on('educational__attainments');
             $table->integer('employment_status')->unsigned();
             $table->foreign('employment_status')->references('id')->on('employment__statuses');
-            $table->string('spouse');
-            $table->string('father');
-            $table->string('mother');
+            $table->string('spouse')->nullable();
+            $table->string('father')->nullable();
+            $table->string('mother')->nullable();
             $table->text('presenting_problems');
             $table->text('impression');
             $table->string('date');

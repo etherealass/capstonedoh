@@ -68,7 +68,7 @@ class PatientController extends Controller
    
     public function addpatient()
     {
-    	$roles = User_roles::all();
+    	$roles = User_roles::where('description','!=','Employee')->get();
 		$deps = Departments::all();
         $users = Users::find(Auth::user()->id);
         $transfer = Transfer_Requests::all();
@@ -78,7 +78,7 @@ class PatientController extends Controller
 
     public function refer()
     {
-    	$roles = User_roles::all();
+    	$roles = User_roles::where('description','!=','Employee')->get();
 		$deps = Departments::all();
         $users = Users::find(Auth::user()->id);
         $transfer = Transfer_Requests::all();
@@ -89,7 +89,7 @@ class PatientController extends Controller
     public function showpatient($stat)
     {
         $pat = Patients::where('status',$stat)->with('departments')->with('address')->get();
-        $roles = User_roles::all();
+        $roles = User_roles::where('description','!=','Employee')->get();
         $deps = Departments::all();
         $users = Users::find(Auth::user()->id);
         $graduate = Graduate_Requests::all();
@@ -116,9 +116,24 @@ class PatientController extends Controller
         }
         else if(Auth::user()->user_role()->first()->name == 'Social Worker'){
             return view('socialworker.showpatient')->with('roles' , $roles)->with('deps',$deps)->with('pat' ,$pat)->with('users',$users)->with('transfer',$transfer)->with('graduate',$graduate)->with('service',$services)->with('user_dept', $depts);
-        }
-        else if(Auth::user()->user_role()->first()->name == 'Doctor'){
+        }else if(Auth::user()->user_role()->first()->name == 'Doctor'){
+
             return view('doctor.showpatient')->with('roles' , $roles)->with('deps',$deps)->with('pat' ,$pat)->with('users',$users)->with('transfer',$transfer)->with('graduate',$graduate)->with('service',$services)->with('user_dept', $depts);
+        }
+         else if(Auth::user()->user_role()->first()->name == 'Nurse'){
+            return view('socialworker.showpatient')->with('roles' , $roles)->with('deps',$deps)->with('pat' ,$pat)->with('users',$users)->with('transfer',$transfer)->with('graduate',$graduate)->with('service',$services)->with('user_dept', $depts);
+        
+        }else if(Auth::user()->user_role()->first()->name == 'Physciatrist'){
+
+            return view('doctor.showpatient')->with('roles' , $roles)->with('deps',$deps)->with('pat' ,$pat)->with('users',$users)->with('transfer',$transfer)->with('graduate',$graduate)->with('service',$services)->with('user_dept', $depts);
+
+        }else if(Auth::user()->user_role()->first()->name == 'Dentist'){
+
+            return view('doctor.showpatient')->with('roles' , $roles)->with('deps',$deps)->with('pat' ,$pat)->with('users',$users)->with('transfer',$transfer)->with('graduate',$graduate)->with('service',$services)->with('user_dept', $depts);
+        }else{
+
+            return view('socialworker.showpatient')->with('roles' , $roles)->with('deps',$deps)->with('pat' ,$pat)->with('users',$users)->with('transfer',$transfer)->with('graduate',$graduate)->with('service',$services)->with('user_dept', $depts);
+        
         }
     }
 
@@ -126,11 +141,12 @@ class PatientController extends Controller
     {   
         
         $pid = 0;
+        $stat = NULL;
         $pat = Patients::where('id',$id)->get();
         foreach($pat as $paty)
         $patos = Patient_Intake_Information::where('patient_id',$id)->get();
         $patis = Patient_Information::with('informants')->where('patient_id',$id)->get();
-        $roles = User_roles::all();
+        $roles = User_roles::where('description','!=','Employee')->get();
         $deps = Departments::all();
         $users = Users::find(Auth::user()->id);
         $transfer = Transfer_Requests::all();
@@ -152,7 +168,6 @@ class PatientController extends Controller
         $patient_note = ProgressNotes::where('patient_id', $id)->with('servicex')->with('userx')->get();
         $checklist = Checklist::where('flag',NULL)->get();
         $checklists = Checklist_Status::where('patient_id',$id)->where('department_id',$paty->department_id)->get();
-        $User_depart = User_departments::find(Auth::user()->id);
         $parentlist = Checklist::where('parent',0)->get();
         $haslist = Checklist::where('has_sublist',1)->get();
         $interven = Interventions::where('department_id', $pat[0]->department_id)->where(function ($query) {
@@ -163,42 +178,21 @@ class PatientController extends Controller
         $bmi_records = Bmi_records::where('patient_id', $id)->with('patientx')->with('userxe')->get();
         $blood_sugar_records = Blood_sugar_records::where('patient_id', $id)->with('patientx')->with('userxe')->get();      
         $medical_records = Medical_records::where('patient_id', $id)->with('patientx')->with('userxe')->get(); 
-
-        $notif = DB::table('notifications')->where('notifiable_id',Auth::user()->id)->update(['read_at' => date('Y-m-d')]);
         $User_depart = User_departments::where('user_id', Auth::user()->id)->get();
 
 
-         $depts = [];
+        $depts = [];
 
-        foreach ($User_depart as $user_depts) {
-
+        foreach ($User_depart as $user_depts) 
+        {
 
             $depts[] = $user_depts->department_id;
             
         }
+     
 
-
-        if(Auth::user()->user_role()->first()->name == 'Superadmin'){
-
-            return view('superadmin.viewpatient')->with('roles' , $roles)->with('deps',$deps)->with('pat' ,$pat)->with('users',$users)->with('pid',$pid)->with('transfer',$transfer)->with('history',$history)->with('reasons',$reasons)->with('graduate',$graduate)->with('refers', $refer)->with('notes',$notes)->with('patos',$patos)->with('case',$case)->with('jails',$jails)->with('patis',$patis)->with('service',$services)->with('visits', $event_patient)->with('patient_notes', $patient_note)->with('intv', $interven)->with('childIntervens', $childInterven)->with('DentalNotes', $dentalNotes)->with('checklist',$checklist)->with('checklists',$checklists)->with('parentlist',$parentlist)->with('cstatus',$cstatus)->with('eduatain',$eduatain)->with('dabused',$dabused)->with('estatus',$estatus)->with('gender',$gender)->with('haslist',$haslist)->with('user_dept', $depts)->with('bmi_record', $bmi_records)->with('medical_record', $medical_records)->with('blodd_sugar', $blood_sugar_records);
-        }
-        else if(Auth::user()->user_role()->first()->name == 'Admin'){
-
-            return view('admin.viewpatient')->with('roles' , $roles)->with('deps',$deps)->with('pat' ,$pat)->with('users',$users)->with('pid',$pid)->with('transfer',$transfer)->with('history',$history)->with('reasons',$reasons)->with('graduate',$graduate)->with('notes',$notes)->with('patos',$patos)->with('case',$case)->with('jails',$jails)->with('patis',$patis)->with('refers', $refer)->with('service',$services)->with('visits', $event_patient)->with('patient_notes', $patient_note)->with('intv', $interven)->with('childIntervens', $childInterven)->with('DentalNotes', $dentalNotes)->with('checklist',$checklist)->with('checklists',$checklists)->with('parentlist',$parentlist)->with('cstatus',$cstatus)->with('eduatain',$eduatain)->with('dabused',$dabused)->with('estatus',$estatus)->with('gender',$gender)->with('haslist',$haslist)->with('user_dept', $depts)->with('bmi_record', $bmi_records)->with('medical_record', $medical_records)->with('blodd_sugar', $blood_sugar_records);
-            
-
-        }    
-        else if(Auth::user()->user_role()->first()->name == 'Social Worker'){
-
-            return view('socialworker.viewpatient')->with('roles' , $roles)->with('deps',$deps)->with('pat' ,$pat)->with('users',$users)->with('pid',$pid)->with('transfer',$transfer)->with('history',$history)->with('reasons',$reasons)->with('graduate',$graduate)->with('notes',$notes)->with('patos',$patos)->with('case',$case)->with('jails',$jails)->with('patis',$patis)->with('refers', $refer)->with('service',$services)->with('visits', $event_patient)->with('patient_notes', $patient_note)->with('intv', $interven)->with('childIntervens', $childInterven)->with('DentalNotes', $dentalNotes)->with('checklist',$checklist)->with('checklists',$checklists)->with('parentlist',$parentlist)->with('cstatus',$cstatus)->with('eduatain',$eduatain)->with('dabused',$dabused)->with('estatus',$estatus)->with('gender',$gender)->with('user_dept', $depts)->with('bmi_record', $bmi_records)->with('medical_record', $medical_records)->with('blodd_sugar', $blood_sugar_records);
-           
-        }
-        else if(Auth::user()->user_role()->first()->name == 'Doctor'){
-
-            return view('doctor.viewpatient')->with('roles' , $roles)->with('deps',$deps)->with('pat' ,$pat)->with('users',$users)->with('pid',$pid)->with('transfer',$transfer)->with('history',$history)->with('reasons',$reasons)->with('graduate',$graduate)->with('notes',$notes)->with('patos',$patos)->with('case',$case)->with('jails',$jails)->with('patis',$patis)->with('refers', $refer)->with('service',$services)->with('visits', $event_patient)->with('patient_notes', $patient_note)->with('intv', $interven)->with('childIntervens', $childInterven)->with('DentalNotes', $dentalNotes)->with('checklist',$checklist)->with('checklists',$checklists)->with('parentlist',$parentlist)->with('cstatus',$cstatus)->with('eduatain',$eduatain)->with('dabused',$dabused)->with('estatus',$estatus)->with('gender',$gender)->with('haslist',$haslist)->with('user_dept', $depts)->with('bmi_record', $bmi_records)->with('medical_record', $medical_records)->with('blodd_sugar', $blood_sugar_records);
-            
-        }
-            
+            return view('superadmin.viewpatient')->with('roles' , $roles)->with('deps',$deps)->with('pat' ,$pat)->with('users',$users)->with('pid',$pid)->with('transfer',$transfer)->with('history',$history)->with('reasons',$reasons)->with('graduate',$graduate)->with('refers', $refer)->with('notes',$notes)->with('patos',$patos)->with('case',$case)->with('jails',$jails)->with('patis',$patis)->with('service',$services)->with('visits', $event_patient)->with('patient_notes', $patient_note)->with('intv', $interven)->with('childIntervens', $childInterven)->with('DentalNotes', $dentalNotes)->with('checklist',$checklist)->with('checklists',$checklists)->with('parentlist',$parentlist)->with('cstatus',$cstatus)->with('eduatain',$eduatain)->with('dabused',$dabused)->with('estatus',$estatus)->with('gender',$gender)->with('haslist',$haslist)->with('user_dept', $depts)->with('bmi_record', $bmi_records)->with('medical_record', $medical_records)->with('blood_sugar', $blood_sugar_records)->with('stat',$stat);
+    
 
     }
 
@@ -209,7 +203,7 @@ class PatientController extends Controller
         foreach($pat as $paty)
         $patos = Patient_Intake_Information::where('patient_id',$id)->with('eperson')->get();
         $patis = Patient_Information::with('informants')->where('patient_id',$id)->get();
-        $roles = User_roles::all();
+        $roles = User_roles::where('description','!=','Employee')->get();
         $deps = Departments::all();
         $users = Users::find(Auth::user()->id);
         $transfers = Transfer_Requests::where('transfer_id',$tid)->get();
@@ -240,29 +234,16 @@ class PatientController extends Controller
         $blood_sugar_records = Blood_sugar_records::where('patient_id', $id)->with('patientx')->with('userxe')->get();      
         $medical_records = Medical_records::where('patient_id', $id)->with('patientx')->with('userxe')->get(); 
 
-                     $depts = [];
+        $depts = [];
 
-        foreach ($User_depart as $user_depts) {
-
-
+        foreach ($User_depart as $user_depts) 
+        {
 
              $depts[] = $user_depts->department_id;
         }
 
-        if(Auth::user()->user_role()->first()->name == 'Superadmin'){
-
-            return view('superadmin.viewpatient')->with('roles' , $roles)->with('deps',$deps)->with('pat' ,$pat)->with('users',$users)->with('pid',$pid)->with('transfers',$transfers)->with('transfer',$transfer)->with('history',$history)->with('stat',$stat)->with('graduate',$graduate)->with('reasons',$reasons)->with('patos',$patos)->with('notes',$notes)->with('patient_notes', $patient_note)->with('intv', $interven)->with('childIntervens', $childInterven)->with('case',$case)->with('jails',$jails)->with('patis',$patis)->with('DentalNotes', $dentalNotes)->with('service',$services)->with('cstatus',$cstatus)->with('eduatain',$eduatain)->with('dabused',$dabused)->with('estatus',$estatus)->with('gender',$gender)->with('refers', $refer)->with('visits', $event_patient)->with('checklist',$checklist)->with('checklists',$checklists)->with('parentlist',$parentlist)->with('user_dept', $depts)->with('bmi_record', $bmi_records)->with('medical_record', $medical_records)->with('blodd_sugar', $blood_sugar_records); 
-
-        }else if(Auth::user()->user_role()->first()->name == 'Admin'){
-        
-            return view('admin.viewpatient')->with('roles' , $roles)->with('deps',$deps)->with('pat' ,$pat)->with('users',$users)->with('pid',$pid)->with('transfers',$transfers)->with('transfer',$transfer)->with('history',$history)->with('stat',$stat)->with('graduate',$graduate)->with('reasons',$reasons)->with('patos',$patos)->with('notes',$notes)->with('patient_notes', $patient_note)->with('intv', $interven)->with('childIntervens', $childInterven)->with('patis',$patis)->with('DentalNotes', $dentalNotes)->with('service',$services)->with('cstatus',$cstatus)->with('eduatain',$eduatain)->with('dabused',$dabused)->with('estatus',$estatus)->with('gender',$gender)->with('refers', $refer)->with('visits', $event_patient)->with('checklist',$checklist)->with('checklists',$checklists)->with('parentlist',$parentlist)->with('user_dept', $depts)->with('bmi_record', $bmi_records)->with('medical_record', $medical_records)->with('blodd_sugar', $blood_sugar_records);   
-           
-        }else if(Auth::user()->user_role()->first()->name == 'Social Worker'){
-           
-            return view('socialworker.viewpatient')->with('roles' , $roles)->with('deps',$deps)->with('pat' ,$pat)->with('users',$users)->with('pid',$pid)->with('transfers',$transfers)->with('transfer',$transfer)->with('history',$history)->with('stat',$stat)->with('graduate',$graduate)->with('reasons',$reasons)->with('patos',$patos)->with('notes',$notes)->with('patient_notes', $patient_note)->with('intv', $interven)->with('childIntervens', $childInterven)->with('case',$case)->with('jails',$jails)->with('patis',$patis)->with('DentalNotes', $dentalNotes)->with('service',$services)->with('cstatus',$cstatus)->with('eduatain',$eduatain)->with('dabused',$dabused)->with('estatus',$estatus)->with('gender',$gender)->with('refers', $refer)->with('visits', $event_patient)->with('checklist',$checklist)->with('checklists',$checklists)->with('parentlist',$parentlist)->with('user_dept', $depts)->with('bmi_record', $bmi_records)->with('medical_record', $medical_records)->with('blodd_sugar', $blood_sugar_records);   
-        }
-
-      
+            return view('superadmin.viewpatient')->with('roles' , $roles)->with('deps',$deps)->with('pat' ,$pat)->with('users',$users)->with('pid',$pid)->with('transfers',$transfers)->with('transfer',$transfer)->with('history',$history)->with('stat',$stat)->with('graduate',$graduate)->with('reasons',$reasons)->with('patos',$patos)->with('notes',$notes)->with('patient_notes', $patient_note)->with('intv', $interven)->with('childIntervens', $childInterven)->with('case',$case)->with('jails',$jails)->with('patis',$patis)->with('DentalNotes', $dentalNotes)->with('service',$services)->with('cstatus',$cstatus)->with('eduatain',$eduatain)->with('dabused',$dabused)->with('estatus',$estatus)->with('gender',$gender)->with('refers', $refer)->with('visits', $event_patient)->with('checklist',$checklist)->with('checklists',$checklists)->with('parentlist',$parentlist)->with('user_dept', $depts)->with('bmi_record', $bmi_records)->with('medical_record', $medical_records)->with('blood_sugar', $blood_sugar_records); 
+   
         
     }
 
@@ -273,7 +254,7 @@ class PatientController extends Controller
         foreach($pat as $paty)
         $patos = Patient_Intake_Information::where('patient_id',$id)->with('eperson')->get();
         $patis = Patient_Information::with('informants')->where('patient_id',$id)->get();
-        $roles = User_roles::all();
+        $roles = User_roles::where('description','!=','Employee')->get();
         $deps = Departments::all();
         $users = Users::find(Auth::user()->id);
         $graduates = Graduate_Requests::where('graduate_id',$gid)->get();
@@ -302,45 +283,25 @@ class PatientController extends Controller
         $interven = Interventions::all();
         $childInterven = ChildInterventions::all();
         $User_depart = User_departments::where('user_id', Auth::user()->id)->get();
-         $bmi_records = Bmi_records::where('patient_id', $id)->with('patientx')->with('userxe')->get();
+        $bmi_records = Bmi_records::where('patient_id', $id)->with('patientx')->with('userxe')->get();
         $blood_sugar_records = Blood_sugar_records::where('patient_id', $id)->with('patientx')->with('userxe')->get();      
         $medical_records = Medical_records::where('patient_id', $id)->with('patientx')->with('userxe')->get(); 
 
 
         $depts = [];
 
-        foreach ($User_depart as $user_depts) {
-
+        foreach ($User_depart as $user_depts) 
+        {
 
             $depts[] = $user_depts->department_id;
             
         }
 
-  
-
-
-        if(Auth::user()->user_role()->first()->name == 'Superadmin'){
-           
-            return view('superadmin.viewpatient')->with('roles' , $roles)->with('deps',$deps)->with('pat' ,$pat)->with('users',$users)->with('pid',$pid)->with('transfers',$transfers)->with('transfer',$transfer)->with('history',$history)->with('stat',$stat)->with('graduates',$graduates)->with('gid',$gid)->with('graduate',$graduate)->with('reasons',$reasons)->with('refers', $refer)->with('notes',$notes)->with('patos',$patos)->with('case',$case)->with('jails',$jails)->with('patis',$patis)->with('service',$services)->with('visits', $event_patient)->with('patient_notes', $patient_note)->with('intv', $interven)->with('childIntervens', $childInterven)->with('DentalNotes', $dentalNotes)->with('checklist',$checklist)->with('checklists',$checklists)->with('parentlist',$parentlist)->with('cstatus',$cstatus)->with('eduatain',$eduatain)->with('dabused',$dabused)->with('estatus',$estatus)->with('gender',$gender)->with('user_dept', $depts)->with('bmi_record', $bmi_records)->with('medical_record', $medical_records)->with('blodd_sugar', $blood_sugar_records);
+        
+            return view('superadmin.viewpatient')->with('roles' , $roles)->with('deps',$deps)->with('pat' ,$pat)->with('users',$users)->with('pid',$pid)->with('transfers',$transfers)->with('transfer',$transfer)->with('history',$history)->with('stat',$stat)->with('graduates',$graduates)->with('gid',$gid)->with('graduate',$graduate)->with('reasons',$reasons)->with('refers', $refer)->with('notes',$notes)->with('patos',$patos)->with('case',$case)->with('jails',$jails)->with('patis',$patis)->with('service',$services)->with('visits', $event_patient)->with('patient_notes', $patient_note)->with('intv', $interven)->with('childIntervens', $childInterven)->with('DentalNotes', $dentalNotes)->with('checklist',$checklist)->with('checklists',$checklists)->with('parentlist',$parentlist)->with('cstatus',$cstatus)->with('eduatain',$eduatain)->with('dabused',$dabused)->with('estatus',$estatus)->with('gender',$gender)->with('user_dept', $depts)->with('bmi_record', $bmi_records)->with('medical_record', $medical_records)->with('blood_sugar', $blood_sugar_records);
 
            
-        }
-        else if(Auth::user()->user_role()->first()->name == 'Admin'){
-
-            return view('admin.viewpatient')->with('roles' , $roles)->with('deps',$deps)->with('pat' ,$pat)->with('users',$users)->with('pid',$pid)->with('transfers',$transfers)->with('transfer',$transfer)->with('history',$history)->with('graduate',$graduate)->with('reasons',$reasons)->with('patos',$patos)->with('notes',$notes)->with('case',$case)->with('jails',$jails)->with('patis',$patis)->with('patient_notes', $patient_note)->with('intv', $interven)->with('childIntervens', $childInterven)->with('files',$files)->with('DentalNotes', $dentalNotes)->with('user_dept', $depts)->with('bmi_record', $bmi_records)->with('medical_record', $medical_records)->with('blodd_sugar', $blood_sugar_records);
-   
-        
-        }   
-        else if(Auth::user()->user_role()->first()->name == 'Social Worker'){
-
-            return view('socialworker.viewpatient')->with('roles' , $roles)->with('deps',$deps)->with('pat' ,$pat)->with('users',$users)->with('pid',$pid)->with('transfers',$transfers)->with('transfer',$transfer)->with('history',$history)->with('graduate',$graduate)->with('reasons',$reasons)->with('patos',$patos)->with('notes',$notes)->with('case',$case)->with('jails',$jails)->with('patis',$patis)->with('patient_notes', $patient_note)->with('intv', $interven)->with('childIntervens', $childInterven)->with('files',$files)->with('DentalNotes', $dentalNotes)->with('user_dept', $depts)->with('bmi_record', $bmi_records)->with('medical_record', $medical_records)->with('blodd_sugar', $blood_sugar_records);
-        
-            
-        }
-        else if(Auth::user()->user_role()->first()->name == 'Doctor'){
-
-            return view('doctor.viewpatient')->with('roles' , $roles)->with('deps',$deps)->with('pat' ,$pat)->with('users',$users)->with('pid',$pid)->with('transfer',$transfer)->with('history',$history)->with('reasons',$reasons)->with('graduate',$graduate)->with('patos',$patos)->with('notes',$notes)->with('case',$case)->with('jails',$jails)->with('patis',$patis)->with('notes',$notes)->with('patient_notes', $patient_note)->with('intv', $interven)->with('childIntervens', $childInterven)->with('files',$files)->with('DentalNotes', $dentalNotes)->with('user_dept', $depts)->with('bmi_record', $bmi_records)->with('medical_record', $medical_records)->with('blodd_sugar', $blood_sugar_records);
-        }
+     
 }
 
     public function viewpatientz($id,$nid)
@@ -350,7 +311,7 @@ class PatientController extends Controller
         foreach($pat as $paty)
         $patos = Patient_Intake_Information::where('patient_id',$id)->with('eperson')->get();
         $patis = Patient_Information::with('informants')->where('patient_id',$id)->get();
-        $roles = User_roles::all();
+        $roles = User_roles::where('description','!=','Employee')->get();
         $deps = Departments::all();
         $users = Users::find(Auth::user()->id);
         $transfer = Transfer_Requests::all();
@@ -382,35 +343,13 @@ class PatientController extends Controller
         $blood_sugar_records = Blood_sugar_records::where('patient_id', $id)->with('patientx')->with('userxe')->get();      
         $medical_records = Medical_records::where('patient_id', $id)->with('patientx')->with('userxe')->get(); 
 
-         $depts = [];
-
-        foreach ($User_depart as $user_depts) {
-
-
-            $depts[] = $user_depts->department_id;
-            
-        }
-
-        
-        if(Auth::user()->user_role()->first()->name == 'Superadmin'){
-            return view('superadmin.viewpatient')->with('roles' , $roles)->with('deps',$deps)->with('pat' ,$pat)->with('users',$users)->with('pid',$pid)->with('transfer',$transfer)->with('history',$history)->with('graduate',$graduate)->with('reasons',$reasons)->with('patos',$patos)->with('notes',$notes)->with('patient_notes', $patient_note)->with('intv', $interven)->with('childIntervens', $childInterven)->with('DentalNotes', $dentalNotes)->with('case',$case)->with('jails',$jails)->with('patis',$patis)->with('service',$services)->with('visits', $event_patient)->with('checklist',$checklist)->with('checklists',$checklists)->with('parentlist',$parentlist)->with('cstatus',$cstatus)->with('eduatain',$eduatain)->with('dabused',$dabused)->with('estatus',$estatus)->with('gender',$gender)->with('refers', $refer)->with('user_dept', $depts)->with('bmi_record', $bmi_records)->with('medical_record', $medical_records)->with('blodd_sugar', $blood_sugar_records);
-
-            
-        }
-        else if(Auth::user()->user_role()->first()->name == 'Admin'){
-             return view('superadmin.viewpatient')->with('roles' , $roles)->with('deps',$deps)->with('pat' ,$pat)->with('users',$users)->with('pid',$pid)->with('transfer',$transfer)->with('history',$history)->with('graduate',$graduate)->with('reasons',$reasons)->with('patos',$patos)->with('notes',$notes)->with('patient_notes', $patient_note)->with('intv', $interven)->with('childIntervens', $childInterven)->with('DentalNotes', $dentalNotes)->with('case',$case)->with('jails',$jails)->with('patis',$patis)->with('service',$services)->with('visits', $event_patient)->with('checklist',$checklist)->with('checklists',$checklists)->with('parentlist',$parentlist)->with('cstatus',$cstatus)->with('eduatain',$eduatain)->with('dabused',$dabused)->with('estatus',$estatus)->with('gender',$gender)->with('refers', $refer)->with('user_dept', $depts)->with('bmi_record', $bmi_records)->with('medical_record', $medical_records)->with('blodd_sugar', $blood_sugar_records);
-        }
-        else if(Auth::user()->user_role()->first()->name == 'Social Worker'){
-            return view('superadmin.viewpatient')->with('roles' , $roles)->with('deps',$deps)->with('pat' ,$pat)->with('users',$users)->with('pid',$pid)->with('transfer',$transfer)->with('history',$history)->with('graduate',$graduate)->with('reasons',$reasons)->with('patos',$patos)->with('notes',$notes)->with('patient_notes', $patient_note)->with('intv', $interven)->with('childIntervens', $childInterven)->with('DentalNotes', $dentalNotes)->with('case',$case)->with('jails',$jails)->with('patis',$patis)->with('service',$services)->with('visits', $event_patient)->with('checklist',$checklist)->with('checklists',$checklists)->with('parentlist',$parentlist)->with('cstatus',$cstatus)->with('eduatain',$eduatain)->with('dabused',$dabused)->with('estatus',$estatus)->with('gender',$gender)->with('refers', $refer)->with('user_dept', $depts)->with('bmi_record', $bmi_records)->with('medical_record', $medical_records)->with('blodd_sugar', $blood_sugar_records);
-        }
-        else if(Auth::user()->user_role()->first()->name == 'Doctor'){
-           return view('superadmin.viewpatient')->with('roles' , $roles)->with('deps',$deps)->with('pat' ,$pat)->with('users',$users)->with('pid',$pid)->with('transfer',$transfer)->with('history',$history)->with('graduate',$graduate)->with('reasons',$reasons)->with('patos',$patos)->with('notes',$notes)->with('patient_notes', $patient_note)->with('intv', $interven)->with('childIntervens', $childInterven)->with('DentalNotes', $dentalNotes)->with('case',$case)->with('jails',$jails)->with('patis',$patis)->with('service',$services)->with('visits', $event_patient)->with('checklist',$checklist)->with('checklists',$checklists)->with('parentlist',$parentlist)->with('cstatus',$cstatus)->with('eduatain',$eduatain)->with('dabused',$dabused)->with('estatus',$estatus)->with('gender',$gender)->with('refers', $refer)->with('user_dept', $depts)->with('bmi_record', $bmi_records)->with('medical_record', $medical_records)->with('blodd_sugar', $blood_sugar_records);
-        }
+        return redirect('/viewpatient/'.$id);
+      
     }
 
     public function patientdep()
     {
-        $roles = User_roles::all();
+        $roles = User_roles::where('description','!=','Employee')->get();
         $deps = Departments::all();
         $users = Users::find(Auth::user()->id);
         $graduate = Graduate_Requests::all();
@@ -426,11 +365,11 @@ class PatientController extends Controller
         }
         else if(Auth::user()->user_role()->first()->name == 'Social Worker'){
            // $id = Auth::user()->department;
-            $department = User_departments::where('user_id', Auth::user()->id);
+            $department = User_departments::where('user_id', Auth::user()->id)->with('departmentsc')->get();
 
-             return view('doctor.patientdep')->with('roles' , $roles)->with('deps',$department)->with('users',$users)->with('transfer',$transfer)->with('graduate',$graduate)->with('graduate',$graduate);
 
-           // return view('socialworker.chooseform')->with('roles' , $roles)->with('deps',$deps)->with('id',$id)->with('users',$users)->with('transfer',$transfer)->with('graduate',$graduate)->with('graduate',$graduate);;
+             return view('socialworker.patientdep')->with('roles' , $roles)->with('deps',$department)->with('users',$users)->with('transfer',$transfer)->with('graduate',$graduate)->with('graduate',$graduate);
+
         }else if(Auth::user()->user_role()->first()->name == 'Doctor'){
 
                   $department = User_departments::where('user_id', Auth::user()->id)->with('departmentsc')->get();
@@ -443,7 +382,7 @@ class PatientController extends Controller
 
     public function chooseform($id)
     {
-        $roles = User_roles::all();
+        $roles = User_roles::where('description','!=','Employee')->get();
         $deps = Departments::all();
         $users = Users::find(Auth::user()->id);
         $graduate = Graduate_Requests::all();
@@ -457,8 +396,7 @@ class PatientController extends Controller
 
         }else if(Auth::user()->user_role()->first()->name == 'Doctor'){
             return view('admin.ddeform')->with('roles' , $roles)->with('deps',$deps)->with('id',$id)->with('users',$users)->with('transfer',$transfer)->with('graduate',$graduate);
-        }else if(Auth::user()->user_role()->first()->name == 'Social Worker'){
-            
+        
         }
         else if(Auth::user()->user_role()->first()->name == 'Social Worker'){
             return view('socialworker.chooseform')->with('roles' , $roles)->with('deps',$deps)->with('id',$id)->with('users',$users)->with('transfer',$transfer)->with('graduate',$graduate);
@@ -620,8 +558,18 @@ class PatientController extends Controller
 
         $logs->save();
 
-        $allusers = Users::all();
-        
+        $User_depart = User_departments::where('department_id',$request->input('department'))->get();
+
+        foreach($User_depart as $udepts)
+        {
+            $allusers = Users::where('id',$udepts->user_id)->get();
+            Notification::send($allusers, new MySecondNotification($patz));
+        }
+
+        $allusers = Users::where('role',1)->get();
+        Notification::send($allusers, new MySecondNotification($patz));
+
+        $allusers = Users::where('role',2)->get();
         Notification::send($allusers, new MySecondNotification($patz));
 
         $pats = Patients::where('patient_id',$pat)->get();
@@ -686,7 +634,7 @@ class PatientController extends Controller
         flash('Patient Created', '')->overlay();
 
         $pat = Patients::with('departments')->with('address')->get();
-        $roles = User_roles::all();
+        $roles = User_roles::where('description','!=','Employee')->get();
         $deps = Departments::all();
         $users = Users::find(Auth::user()->id);
         $transfer = Transfer_Requests::all();
@@ -1170,7 +1118,7 @@ class PatientController extends Controller
 
         foreach($depart as $deppy)
         {
-            $name = $deppy->department_name;
+            $name = $deppy->department_name;                                                                                                                                                                                          
         }
 
         date_default_timezone_set('Asia/Singapore');
@@ -1360,9 +1308,12 @@ class PatientController extends Controller
 
     public function save_dde(Request $request)
     {
+
         $add = rand();
         $inf = rand();
         $pat = rand();
+        $mytime = Carbon::now();
+        $dateme = date('Y-m-d');
 
         $address = new Address([
             'address_id' => $add,
@@ -1392,10 +1343,15 @@ class PatientController extends Controller
             $address_id = $adds->id;
         }
 
+        $patcount = Patients::all();
+        $patycount = count($patcount);
+        $count = $patycount+1;
+
         date_default_timezone_set('Asia/Singapore');
 
         $patient = new Patients([
             'patient_id' => $pat,
+            'admission_no' => 'CTRC-'.$dateme.'-'.$count,
             'fname' => $request->input('fname'),
             'lname' => $request->input('lname'),
             'mname' => $request->input('mname'),
@@ -1412,7 +1368,7 @@ class PatientController extends Controller
             'jail' => $request->input('jail'),
             'caseno' => $request->input('caseno'),
             'status' => 'Enrolled',
-            'date_admitted' => date('M-j-Y g:i A'),
+            'date_admitted' => $mytime,
             'department_id' => $request->input('department'),
         ]);
 
@@ -1424,6 +1380,22 @@ class PatientController extends Controller
         {
             $id_patient = $patz->id;
             $department_patient = $patz->departments->department_name;
+
+        }
+
+        $checklist = Checklist::all();
+
+        foreach($checklist as $lists)
+        {
+
+        $patient_checklist = new Checklist_Status([
+            'checklist_id' => $lists->id,
+            'patient_id' => $id_patient,
+            'department_id' => $request->input('department'),
+            'has_files' => 0
+        ]);
+
+        $patient_checklist->save();
 
         }
 
@@ -1439,9 +1411,20 @@ class PatientController extends Controller
 
         $logs->save();
 
-        $allusers = Users::all();
-        
+        $User_depart = User_departments::where('department_id',$request->input('department'))->get();
+
+        foreach($User_depart as $udepts)
+        {
+            $allusers = Users::where('id',$udepts->user_id)->get();
+            Notification::send($allusers, new MySecondNotification($patz));
+        }
+
+        $allusers = Users::where('role',1)->get();
         Notification::send($allusers, new MySecondNotification($patz));
+
+        $allusers = Users::where('role',2)->get();
+        Notification::send($allusers, new MySecondNotification($patz));
+
 
         $pats = Patients::where('patient_id',$pat)->get();
 
@@ -1458,6 +1441,7 @@ class PatientController extends Controller
             'patient_id' => $patient_id,
             'by' => Auth::user()->id,
             'type' => 'Enrolled',
+            'from_dep' => $patient_department,
             'to_dep' => $patient_department,
         ]);
 
@@ -1499,7 +1483,7 @@ class PatientController extends Controller
         flash('Patient Created', '')->overlay();
 
         $pat = Patients::with('departments')->with('address')->get();
-        $roles = User_roles::all();
+        $roles = User_roles::where('description','!=','Employee')->get();
         $deps = Departments::all();
         $users = Users::find(Auth::user()->id);
         $transfer = Transfer_Requests::all();
@@ -1529,7 +1513,7 @@ class PatientController extends Controller
         flash('Patient Deleted', '')->overlay();
 
         $pat = Patients::with('departments')->with('address')->get();
-        $roles = User_roles::all();
+        $roles = User_roles::where('description','!=','Employee')->get();
         $deps = Departments::all();
 
 
@@ -1546,6 +1530,9 @@ class PatientController extends Controller
 
     public function transferPatient(Request $request)
     {
+
+        $pats = Patients::where('id',$request->input('patientid'))->update(['status' => 'For Transfer']);
+
         $trans = rand();
         
         $transfer = new Transfer_Requests([
@@ -1594,14 +1581,34 @@ class PatientController extends Controller
 
         $history->save();
 
-        $allusers = Users::all();
+        $User_depart = User_departments::where('department_id',$request->input('depid'))->get();
 
+        foreach($User_depart as $udepts)
+        {
+            $allusers = Users::where('id',$udepts->user_id)->get();
+            Notification::send($allusers, new MyThirdNotifications($transf));
+        }
+
+        $allusers = Users::where('role',1)->get();
         Notification::send($allusers, new MyThirdNotifications($transf));
 
-        Session::flash('alert-class', 'success'); 
-        flash('Transfer Request Sent', '')->overlay();
+        $allusers = Users::where('role',2)->get();
+        Notification::send($allusers, new MyThirdNotifications($transf));
 
-        return back();
+        $notif = DB::table('notifications')->where('data','LIKE','%"transfer_id":"'.$trans.'"%')->where('notifiable_id',Auth::user()->id)->get();
+
+        $user_depart = User_departments::where('user_id' ,Auth::user()->id)->where('department_id' ,$request->input('depid'))->get();
+
+        foreach($notif as $not)
+        $jcon = json_decode($not->data);
+
+        if($user_depart == '[]'){
+            return back();
+        }
+        else{
+            return redirect('/viewpatients/'.$request->input('patientid').'/'.$not->id.'/'.$jcon->transfer_id);
+        }
+      
     }
 
     public function adminpatientTransfer(Request $request)
@@ -1676,6 +1683,7 @@ class PatientController extends Controller
         $pat = Patients::where('id',$id)->get();
         foreach($pat as $paty)
 
+        Patients::where('id',$id)->update(['status' => 'Enrolled']);
         Patients::where('id',$id)->update(['department_id' => $did]);
         Patients::where('id',$id)->update(['date_admitted' => date('Y-m-d')]);
 
@@ -1693,6 +1701,7 @@ class PatientController extends Controller
         }
 
         Transfer_Requests::where('transfer_id',$tid)->update(['status' => 'transfered']);
+
         $notif = DB::table('notifications')->where('id',$pid)->update(['read_at' => date('Y-m-d')]);
         
         date_default_timezone_set('Asia/Singapore');
@@ -1722,7 +1731,7 @@ class PatientController extends Controller
 
         $pid = 0;
         $pat = Patients::where('id',$id)->get();
-        $roles = User_roles::all();
+        $roles = User_roles::where('description','!=','Employee')->get();
         $deps = Departments::all();
         $users = Users::find(Auth::user()->id);
         $graduate = Graduate_Requests::all(); 
@@ -1747,6 +1756,75 @@ class PatientController extends Controller
         }
         else if(Auth::user()->user_role()->first()->name == 'Social Worker'){
             return redirect('/viewpatient/'.$id);
+        }
+    }
+
+    public function patientdeclineTransfer($id,$did,$tid,$pid)
+    {
+
+        date_default_timezone_set('Asia/Singapore');
+
+        $pat = Patients::where('id',$id)->get();
+        foreach($pat as $paty)
+
+        Patients::where('id',$id)->update(['status' => 'Enrolled']);
+
+        Transfer_Requests::where('transfer_id',$tid)->delete();
+
+        $notif = DB::table('notifications')->where('id',$pid)->delete();
+        
+        date_default_timezone_set('Asia/Singapore');
+
+        $logs = new Logs([
+            'performer_id' => Auth::user()->id,
+            'type' => 'Patient Transfer Declined',
+            'action' => 'Declined a Transfer Request for Patient no. '.$id,
+            'date_time' => date('M-j-Y g:i A'),
+            'department_id' => Auth::user()->department,
+        ]);
+
+        $logs->save();
+
+        date_default_timezone_set('Asia/Singapore');
+
+        $nhistory = new Patient_History([
+            'date' => date('M-j-Y g:i A'),
+            'patient_id' => $id,
+            'by' => Auth::user()->id,
+            'type' => 'Transfer Declined',
+            'from_dep' => $paty->department_id,
+            'to_dep' => $did,
+        ]);
+
+        $nhistory->save();
+
+        $pid = 0;
+        $pat = Patients::where('id',$id)->get();
+        $roles = User_roles::where('description','!=','Employee')->get();
+        $deps = Departments::all();
+        $users = Users::find(Auth::user()->id);
+        $graduate = Graduate_Requests::all(); 
+        $transfer = Transfer_Requests::where('transfer_id',$tid)->get();
+        $history = Patient_History::where('patient_id',$id)->get();
+        $reasons = Dismissal_Reason::all();
+        $notes = Doctors_Progress_Notes::where('patient_id',$id)->get();
+        $patos = Patient_Intake_Information::where('patient_id',$id)->with('eperson')->get();
+        $patis = Patient_Information::with('informants')->where('patient_id',$id)->get();
+        $reasons = Dismissal_Reason::all();
+        $case = Case_Type::where('flag',NULL)->get();
+        $jails = City_Jails::where('flag',NULL)->get();
+
+        Session::flash('alert-class', 'danger'); 
+        flash('Transfer Declined', '')->overlay();
+
+        if(Auth::user()->user_role()->first()->name == 'Superadmin'){
+            return redirect('/showpatients/Enrolled');
+        }
+        else if(Auth::user()->user_role()->first()->name == 'Admin'){
+            return redirect('/showpatients/Enrolled');
+        }
+        else if(Auth::user()->user_role()->first()->name == 'Social Worker'){
+            return redirect('/showpatients/Enrolled');
         }
     }
 
@@ -1858,7 +1936,7 @@ class PatientController extends Controller
             'graduate_id' => $grad,
             'in_department' => $request->input('patientdep'),
             'patient_id' => $request->input('patientid'),
-            'remarks' => $request->input('remarks'), 
+            'remarks' => $request->input('remarks'),
         ]);
 
         $graduate->save();
@@ -1991,7 +2069,7 @@ class PatientController extends Controller
 
         $pid = 0;   
         $pat = Patients::where('id',$id)->get();
-        $roles = User_roles::all();
+        $roles = User_roles::where('description','!=','Employee')->get();
         $deps = Departments::all();
         $users = Users::find(Auth::user()->id); 
         $transfer = Transfer_Requests::all();
@@ -2008,15 +2086,12 @@ class PatientController extends Controller
         flash('Patient Graduated', '')->overlay();
 
         if(Auth::user()->user_role()->first()->name == 'Superadmin'){
-            return view('superadmin.viewpatient')->with('roles' , $roles)->with('deps',$deps)->with('pat' ,$pat)->with('users',$users)->with('pid',$pid)->with('transfer',$transfer)->with('history',$history)->with('graduate',$graduate)->with('notes',$notes)->with('patos',$patos)->with('reasons',$reasons)->with('patis',$patis)->with('case',$case)->with('jails',$jails);
+             return redirect('/viewpatient/'.$id);
         }
         else if(Auth::user()->user_role()->first()->name == 'Admin'){
-            return view('admin.viewpatient')->with('roles' , $roles)->with('deps',$deps)->with('pat' ,$pat)->with('users',$users)->with('pid',$pid)->with('transfer',$transfer)->with('history',$history)->with('graduate',$graduate)->with('notes',$notes)->with('patos',$patos)->with('reasons',$reasons)->with('patis',$patis)->with('case',$case)->with('jails',$jails);
+             return redirect('/viewpatient/'.$id);
         }
-        else if(Auth::user()->user_role()->first()->name == 'Social Worker'){
-            return view('socialworker.viewpatient')->with('roles' , $roles)->with('deps',$deps)->with('pat' ,$pat)->with('users',$users)->with('pid',$pid)->with('transfer',$transfer)->with('history',$history)->with('graduate',$graduate)->with('notes',$notes)->with('patos',$patos)->with('reasons',$reasons)->with('patis',$patis)->with('case',$case)->with('jails',$jails);
-        }
-    }
+    }   
 
     public function declineGraduate($id,$did,$gid,$pid)
     {
@@ -2054,7 +2129,7 @@ class PatientController extends Controller
 
         $pid = 0;
         $pat = Patients::where('id',$id)->get();
-        $roles = User_roles::all();
+        $roles = User_roles::where('description','!=','Employee')->get();
         $deps = Departments::all();
         $users = Users::find(Auth::user()->id); 
         $transfer = Transfer_Requests::all();

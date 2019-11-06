@@ -12,9 +12,9 @@
         <!-- Breadcrumbs-->
         <ol class="breadcrumb">
           <li class="breadcrumb-item">
-            <a href="{{URL::to('/profile')}}">Dashboard</a>
+            <a href="{{URL::to('/profile')}}"><b>Dashboard</b></a>
           </li>
-          <li class="breadcrumb-item active">Checklist</li>
+          <li class="breadcrumb-item active"><b>Checklist</b></li>
         </ol> 
 
       <div style="background-color: white;border-radius: 5px">
@@ -23,7 +23,7 @@
             <div class="mb-3 text-black o-hidden h-100">
               <div class="card-body">
                 @foreach($mainlist as $mlist)
-                  <p style="font-size: 50px;margin-top: 0px">{{$mlist->name}}</p> 
+                  <p style="font-size: 50px;margin-top: 0px"><b>{{$mlist->name}}</b></p> 
                 @endforeach
               </div>
 
