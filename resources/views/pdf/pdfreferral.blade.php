@@ -66,7 +66,11 @@ table, th, td {
 		<td><b>Age</b></td>
 		<td>{{\Carbon\Carbon::parse($pats->birthdate)->age}}</td>
 		<td><b>Gender</b></td>
+	@if($pats->gender != NULL)
 		<td>{{$pats->genders->name}}</td>
+	@else
+		<td></td>
+	@endif
 	</tr>
 	<tr>
 		<td><b>Birthdate:</b></td>

@@ -42,7 +42,7 @@
               <div class="col-md-3">
                 <div class="form-label-group">
                    <h6>Birthday*</h6>
-                  <input type="date" id="bday" class="form-control" placeholder="Birthday" required="required" autofocus="autofocus" name="bday">
+                  <input type="date" id="bday" class="form-control" placeholder="Birthday" required="required" autofocus="autofocus" name="bday" value="{!! old('bday') !!}">
                 </div>
               </div>
             </div>
@@ -52,25 +52,25 @@
               <div class="col-md-2">
                 <div class="form-label-group">
                    <h6>Birth Order*</h6>
-                  <input type="number" id="border" class="form-control" placeholder="" required="required" autofocus="autofocus" name="border">
+                  <input type="number" id="border" class="form-control" placeholder="" required="required" autofocus="autofocus" name="border" value="{!! old('border') !!}">
                 </div>
               </div>
               <div class="col-md-4">
               <div class="form-label-group">
                <h6>Street Address*</h6>
-              <input type="text" id="street" class="form-control" placeholder="Address" required="required" name="street">
+              <input type="text" id="street" class="form-control" placeholder="Address" required="required" name="street" value="{!! old('street') !!}">
             </div>
            </div>
             <div class="col-md-3  ">
               <div class="form-label-group">
                <h6>Barangay*</h6>
-              <input type="text" id="barangay" class="form-control" placeholder="Address" required="required" name="barangay">
+              <input type="text" id="barangay" class="form-control" placeholder="Address" required="required" name="barangay" value="{!! old('barangay') !!}">
             </div>
            </div>
            <div class="col-md-3">
               <div class="form-label-group">
                <h6>City*</h6>
-              <input type="text" id="city" class="form-control" placeholder="Address" required="required" name="city">
+              <input type="text" id="city" class="form-control" placeholder="Address" required="required" name="city" value="{!! old('city') !!}">
             </div>
            </div>
           </div>
@@ -80,7 +80,7 @@
               <div class="col-md-3">
                 <div class="form-label-group">
                    <h6>Contact no.*</h6>
-                  <input type="tel" id="contact" class="form-control" placeholder="Contact No." required="required" name="contact">
+                  <input type="tel" id="contact" class="form-control" placeholder="Contact No." required="required" name="contact" value="{!! old('contact') !!}">
                   <input type="hidden" name="_token" value="{{csrf_token()}}">
                   <input type="hidden" name="department" value="{{$id}}">
               </div>
@@ -111,13 +111,13 @@
               <div class="col-md-2">
                 <div class="form-label-group">
                    <h6>Nationality*</h6>
-                <input type="text" id="nation" class="form-control" placeholder="Nationality" required="required" name="nation">
+                <input type="text" id="nation" class="form-control" placeholder="Nationality" required="required" name="nation" value="{!! old('nation') !!}">
                 </div>
               </div>
                <div class="col-md-2">
                 <div class="form-label-group">
                    <h6>Religion*</h6>
-                <input type="text" id="religion" class="form-control" placeholder="Nationality" required="required" name="religion">
+                <input type="text" id="religion" class="form-control" placeholder="Nationality" required="required" name="religion" value="{!! old('religion') !!}">
                 </div>
               </div>
             </div>
@@ -152,7 +152,7 @@
               <div class="col-md-4 mb-4">
                 <div class="form-label-group" id="textb" style="display: none;">
                   <h6>Case Number*</h6>
-                    <input type="text" id="caseno" class="form-control" placeholder="Case Number" autofocus="autofocus" name="caseno" value="">
+                    <input type="text" id="caseno" class="form-control" placeholder="Case Number" autofocus="autofocus" name="caseno" value="" value="{!! old('caseno') !!}">
                 </div>
               </div>
             </div>
@@ -168,13 +168,13 @@
                         <div class="col-md-6">
                          <div class="form-label-group">
                           <h6>Name*</h6>
-                           <input type="text" id="infoname" class="form-control" placeholder="Last name"  name="infoname" required="required">
+                           <input type="text" id="infoname" class="form-control" placeholder="Last name"  name="infoname" required="required" value="{!! old('infoname') !!}">
                          </div>
                         </div>
                          <div class="col-md-6">
                            <div class="form-label-group">
                              <h6>Contact no.*</h6>
-                              <input type="text" id="infocontact" class="form-control" placeholder="Last name"  name="infocontact" required="required">
+                              <input type="text" id="infocontact" class="form-control" placeholder="Last name"  name="infocontact" required="required" value="{!! old('infocontact') !!}">
                            </div>
                          </div>
                        </div>
@@ -182,7 +182,7 @@
                     <div class="form-group">
                      <div class="form-label-group">
                       <h6>Address*</h6>
-                       <input type="text" id="infoadd" class="form-control" placeholder="Last name"  name="infoadd" required="required">
+                       <input type="text" id="infoadd" class="form-control" placeholder="Last name"  name="infoadd" required="required" value="{!! old('infoadd') !!}">
                      </div>
                     </div>
                   </div>
@@ -195,7 +195,7 @@
               <div class="col-md-12">
                 <div class="form-label-group">
                   <h6>Referred By*</h6>
-                    <input type="text" id="referred" class="form-control" placeholder="Referred By" name="referred" required="required">
+                    <input type="text" id="referred" class="form-control" placeholder="Referred By" name="referred" required="required" value="{!! old('referred') !!}">
                 </div>
               </div>
             </div>
@@ -221,7 +221,7 @@
               <div class="col-md-12">
               <div class="form-label-group">
                  <h6>Chief Complaint*</h6>
-                  <input type="text" id="ccomplaint" class="form-control" placeholder="Chief Complaint" name="ccomplaint" required="required">
+                  <input type="text" id="ccomplaint" class="form-control" placeholder="Chief Complaint" name="ccomplaint" required="required" value="{!! old('ccomplaint') !!}">
               </div>
             </div>
               </div>
@@ -232,19 +232,19 @@
           <div class="form-group">
             <div class="form-label-group">
               <h6>History of Present Illness*</h6>
-              <textarea type="text" id="pillness" class="form-control" placeholder="Please Specify" name="pillness" required="required"></textarea>
+              <textarea type="text" id="pillness" class="form-control" placeholder="Please Specify" name="pillness" required="required" value="{!! old('pillness') !!}"></textarea>
             </div>
           </div>
           <div class="form-group">
                 <div class="form-label-group">
                   <h6>History of Drug Used*</h6>
-                  <textarea style="height: 120px" type="text" id="dused" class="form-control" placeholder="Please Specify" name="dused" required="required"></textarea>
+                  <textarea style="height: 120px" type="text" id="dused" class="form-control" placeholder="Please Specify" name="dused" required="required" value="{!! old('dused') !!}"></textarea>
               </div>
           </div>
           <div class="form-group">
                 <div class="form-label-group">
                   <h6>Family/Personal Background*</h6>
-                  <textarea style="height:200px" type="text" id="background" class="form-control" placeholder="Please Specify" name="background" required="required"></textarea>
+                  <textarea style="height:200px" type="text" id="background" class="form-control" placeholder="Please Specify" name="background" required="required" value="{!! old('background') !!}"></textarea>
               </div>
           </div>
         </fieldset>

@@ -471,6 +471,8 @@ Route::group(['middleware' =>'auth'], function()
 
 	 Route::post('/changepassword',"UserController@change_pass");
 
+	 Route::post('/changepass',"UserController@change_password");
+
 	 Route::get('/file','UploadController@index');
 
 	 Route::post('/store','UploadController@store')->name('upload.file');

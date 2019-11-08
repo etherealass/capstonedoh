@@ -45,7 +45,7 @@
                 @if($patos != '[]')
                 @foreach($patos as $patss)
               <div class="row" style="font-size: 14px">
-                <div class="col-md-6"><p><b>Educational Attainment: </b><u>_______{{$patss ->educational_attainment}}_______</u><span style="float: right;margin-right:120px"><b>Employement Status: </b><u style="font-size: 14px">_____{{$patss->employment_status}}____</u></span></p></div>
+                <div class="col-md-12"><p><b>Educational Attainment: </b><u>_______{{$patss ->eduatain->name}}__</u><span style="float: right;margin-right:50px"><b>Employement Status: </b><u style="font-size: 14px">_____{{$patss->estat->name}}____</u></span></p></div>
               </div>
               <div class="row" style="font-size: 14px">
                 <div class="col-md-12"><p><b>Name of Spouse: </b><u>__________{{$patss->spouse}}__________</u></p></div>

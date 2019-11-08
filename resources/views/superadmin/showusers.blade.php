@@ -58,7 +58,13 @@
                     @if($uroles->department == '')
                     <td>--{{$uroles->user_roles->name}}--</td>
                     @else
-                    <td>{{$uroles->user_departments->department_name}} Department</td>
+                    <td>
+                      @foreach($udepts as $udep)
+                        @if($udep->user_id == $uroles->id)
+                          {{$udep->departmentsc->department_name}}
+                        @endif
+                      @endforeach
+                    </td>
                     @endif
                     <td style="text-align: center"><a class="btn btn-success" style="margin-right: 10px" href="{{URL::to('/viewuser/'.$uroles->id)}}">View</a><button class="btn btn-primary" style="margin-right: 10px" data-toggle="modal" data-target="#editModal" data-userid="{{$uroles->id}}" data-fname="{{$uroles->fname}}" data-lname="{{$uroles->lname}}" data-uname="{{$uroles->username}}" data-email="{{$uroles->email}}" data-contact="{{$uroles->contact}}" data-department="{{$uroles->department}}" data-userid="{{$uroles->id}}" data-password="{{$uroles->password}}">Edit</button><button class="btn btn-danger" data-toggle="modal" data-target="#deleteModal" data-userid="{{$uroles->id}}">Delete</button></td>
                   </tr>
@@ -149,7 +155,7 @@
                   <label for="designation">Designation/Position</label>
                    <option disabled selected hidden>Designation/Position</option>
                    <option value="">--NONE--</option>
-                  @foreach($designation as $des)
+                  @foreach($roles as $des)
                     @if($des->parent == $rolex->id)
                     <option value="{{$des->id}}">{{$des->name}}</option>
                     @endif

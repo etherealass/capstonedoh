@@ -14,6 +14,7 @@ use Auth;
 use DB;
 use App\Users;
 use App\User_roles;
+use App\User_departments;
 use App\Departments;
 use App\Transfer_Requests;
 use App\Employees;
@@ -43,12 +44,22 @@ class OthersController extends Controller
         $deps = Departments::all();
         $users = Users::find(Auth::user()->id);
         $transfer = Transfer_Requests::all();
+        $User_depart = User_departments::where('user_id', Auth::user()->id)->get();
+
+        $depts = [];
+
+        foreach ($User_depart as $user_depts) 
+        {
+
+            $depts[] = $user_depts->department_id;
+            
+        }
 
         if(Auth::user()->user_role()->first()->name == 'Superadmin'){
-            return view('superadmin.addcity')->with('roles',$roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer);
+            return view('superadmin.addcity')->with('roles',$roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('user_dept', $depts);
         }
         else if(Auth::user()->user_role()->first()->name == 'Admin'){
-            return view('superadmin.addcity')->with('roles',$roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer);
+            return view('superadmin.addcity')->with('roles',$roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('user_dept', $depts);
         }
 	}
 
@@ -79,12 +90,22 @@ class OthersController extends Controller
       	$users = Users::find(Auth::user()->id);
       	$transfer = Transfer_Requests::all();
       	$city = Cities::all();
+        $User_depart = User_departments::where('user_id', Auth::user()->id)->get();
+
+        $depts = [];
+
+        foreach ($User_depart as $user_depts) 
+        {
+
+            $depts[] = $user_depts->department_id;
+            
+        }
 
         if(Auth::user()->user_role()->first()->name == 'Superadmin'){
-             return view('superadmin.cities')->with('roles' , $roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('city',$city);
+             return view('superadmin.cities')->with('roles' , $roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('city',$city)->with('user_dept', $depts);
         }
         else if(Auth::user()->user_role()->first()->name == 'Admin'){
-             return view('superadmin.cities')->with('roles' , $roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('city',$city);
+             return view('superadmin.cities')->with('roles' , $roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('city',$city)->with('user_dept', $depts);
         }
 	  }
 	}
@@ -127,12 +148,22 @@ class OthersController extends Controller
         $deps = Departments::all();
         $users = Users::find(Auth::user()->id);
         $transfer = Transfer_Requests::all();
+        $User_depart = User_departments::where('user_id', Auth::user()->id)->get();
+
+        $depts = [];
+
+        foreach ($User_depart as $user_depts) 
+        {
+
+            $depts[] = $user_depts->department_id;
+            
+        }
 
         if(Auth::user()->user_role()->first()->name == 'Superadmin'){
-            return view('superadmin.addstatus')->with('roles',$roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer);
+            return view('superadmin.addstatus')->with('roles',$roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('user_dept', $depts);
         }
         else if(Auth::user()->user_role()->first()->name == 'Admin'){
-            return view('superadmin.addstatus')->with('roles',$roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer);
+            return view('superadmin.addstatus')->with('roles',$roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('user_dept', $depts);
         }
   }
 
@@ -163,12 +194,22 @@ class OthersController extends Controller
         $users = Users::find(Auth::user()->id);
         $transfer = Transfer_Requests::all();
         $status = Civil_Status::all();
+        $User_depart = User_departments::where('user_id', Auth::user()->id)->get();
+
+        $depts = [];
+
+        foreach ($User_depart as $user_depts) 
+        {
+
+            $depts[] = $user_depts->department_id;
+            
+        }
 
         if(Auth::user()->user_role()->first()->name == 'Superadmin'){
-             return view('superadmin.civilstat')->with('roles' , $roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('status',$status);
+             return view('superadmin.civilstat')->with('roles' , $roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('status',$status)->with('user_dept', $depts);
         }
         else if(Auth::user()->user_role()->first()->name == 'Admin'){
-             return view('superadmin.civilstat')->with('roles' , $roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('status',$status);
+             return view('superadmin.civilstat')->with('roles' , $roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('status',$status)->with('user_dept', $depts);
         }
     }
   }
@@ -211,12 +252,22 @@ class OthersController extends Controller
         $deps = Departments::all();
         $users = Users::find(Auth::user()->id);
         $transfer = Transfer_Requests::all();
+        $User_depart = User_departments::where('user_id', Auth::user()->id)->get();
+
+        $depts = [];
+
+        foreach ($User_depart as $user_depts) 
+        {
+
+            $depts[] = $user_depts->department_id;
+            
+        }
 
         if(Auth::user()->user_role()->first()->name == 'Superadmin'){
-            return view('superadmin.addgender')->with('roles',$roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer);
+            return view('superadmin.addgender')->with('roles',$roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('user_dept', $depts);
         }
         else if(Auth::user()->user_role()->first()->name == 'Admin'){
-            return view('superadmin.addgender')->with('roles',$roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer);
+            return view('superadmin.addgender')->with('roles',$roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('user_dept', $depts);
         }
   }
 
@@ -247,12 +298,22 @@ class OthersController extends Controller
         $users = Users::find(Auth::user()->id);
         $transfer = Transfer_Requests::all();
         $gender = Gender::all();
+        $User_depart = User_departments::where('user_id', Auth::user()->id)->get();
+
+        $depts = [];
+
+        foreach ($User_depart as $user_depts) 
+        {
+
+            $depts[] = $user_depts->department_id;
+            
+        }
 
         if(Auth::user()->user_role()->first()->name == 'Superadmin'){
-             return view('superadmin.gender')->with('roles' , $roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('gender',$gender);
+             return view('superadmin.gender')->with('roles' , $roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('gender',$gender)->with('user_dept', $depts);
         }
         else if(Auth::user()->user_role()->first()->name == 'Admin'){
-             return view('superadmin.gender')->with('roles' , $roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('gender',$gender);
+             return view('superadmin.gender')->with('roles' , $roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('gender',$gender)->with('user_dept', $depts);
         }
     }
   }
@@ -295,12 +356,22 @@ class OthersController extends Controller
         $deps = Departments::all();
         $users = Users::find(Auth::user()->id);
         $transfer = Transfer_Requests::all();
+        $User_depart = User_departments::where('user_id', Auth::user()->id)->get();
+
+        $depts = [];
+
+        foreach ($User_depart as $user_depts) 
+        {
+
+            $depts[] = $user_depts->department_id;
+            
+        }
 
         if(Auth::user()->user_role()->first()->name == 'Superadmin'){
-            return view('superadmin.addabused')->with('roles',$roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer);
+            return view('superadmin.addabused')->with('roles',$roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('user_dept', $depts);
         }
         else if(Auth::user()->user_role()->first()->name == 'Admin'){
-            return view('superadmin.addabused')->with('roles',$roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer);
+            return view('superadmin.addabused')->with('roles',$roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('user_dept', $depts);
         } 
   }
 
@@ -331,12 +402,22 @@ class OthersController extends Controller
         $users = Users::find(Auth::user()->id);
         $transfer = Transfer_Requests::all();
         $dab = Drugs_Abused::all();
+        $User_depart = User_departments::where('user_id', Auth::user()->id)->get();
+
+        $depts = [];
+
+        foreach ($User_depart as $user_depts) 
+        {
+
+            $depts[] = $user_depts->department_id;
+            
+        }
 
         if(Auth::user()->user_role()->first()->name == 'Superadmin'){
-             return view('superadmin.dabused')->with('roles' , $roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('dab',$dab);
+             return view('superadmin.dabused')->with('roles' , $roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('dab',$dab)->with('user_dept', $depts);
         }
         else if(Auth::user()->user_role()->first()->name == 'Admin'){
-             return view('superadmin.dabused')->with('roles' , $roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('dab',$dab);
+             return view('superadmin.dabused')->with('roles' , $roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('dab',$dab)->with('user_dept', $depts);
         }
     }
   }
@@ -379,12 +460,22 @@ class OthersController extends Controller
         $deps = Departments::all();
         $users = Users::find(Auth::user()->id);
         $transfer = Transfer_Requests::all();
+        $User_depart = User_departments::where('user_id', Auth::user()->id)->get();
+
+        $depts = [];
+
+        foreach ($User_depart as $user_depts) 
+        {
+
+            $depts[] = $user_depts->department_id;
+            
+        }
 
         if(Auth::user()->user_role()->first()->name == 'Superadmin'){
-            return view('superadmin.addeduatain')->with('roles',$roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer);
+            return view('superadmin.addeduatain')->with('roles',$roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('user_dept', $depts);
         }
         else if(Auth::user()->user_role()->first()->name == 'Admin'){
-            return view('superadmin.addeduatain')->with('roles',$roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer);
+            return view('superadmin.addeduatain')->with('roles',$roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('user_dept', $depts);
         } 
   }
 
@@ -415,12 +506,22 @@ class OthersController extends Controller
         $users = Users::find(Auth::user()->id);
         $transfer = Transfer_Requests::all();
         $eduatain = Educational_Attainment::all();
+        $User_depart = User_departments::where('user_id', Auth::user()->id)->get();
+
+        $depts = [];
+
+        foreach ($User_depart as $user_depts) 
+        {
+
+            $depts[] = $user_depts->department_id;
+            
+        }
 
         if(Auth::user()->user_role()->first()->name == 'Superadmin'){
-             return view('superadmin.eduatain')->with('roles' , $roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('eduatain',$eduatain);
+             return view('superadmin.eduatain')->with('roles' , $roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('eduatain',$eduatain)->with('user_dept', $depts);
         }
         else if(Auth::user()->user_role()->first()->name == 'Admin'){
-             return view('superadmin.eduatain')->with('roles' , $roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('eduatain',$eduatain);
+             return view('superadmin.eduatain')->with('roles' , $roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('eduatain',$eduatain)->with('user_dept', $depts);
         }
     }
   }
@@ -463,12 +564,22 @@ class OthersController extends Controller
         $deps = Departments::all();
         $users = Users::find(Auth::user()->id);
         $transfer = Transfer_Requests::all();
+        $User_depart = User_departments::where('user_id', Auth::user()->id)->get();
+
+        $depts = [];
+
+        foreach ($User_depart as $user_depts) 
+        {
+
+            $depts[] = $user_depts->department_id;
+            
+        }
 
         if(Auth::user()->user_role()->first()->name == 'Superadmin'){
-            return view('superadmin.addestat')->with('roles',$roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer);
+            return view('superadmin.addestat')->with('roles',$roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('user_dept', $depts);
         }
         else if(Auth::user()->user_role()->first()->name == 'Admin'){
-            return view('superadmin.addestat')->with('roles',$roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer);
+            return view('superadmin.addestat')->with('roles',$roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('user_dept', $depts);
         } 
   }
 
@@ -499,12 +610,22 @@ class OthersController extends Controller
         $users = Users::find(Auth::user()->id);
         $transfer = Transfer_Requests::all();
         $estat = Employment_Status::all();
+        $User_depart = User_departments::where('user_id', Auth::user()->id)->get();
+
+        $depts = [];
+
+        foreach ($User_depart as $user_depts) 
+        {
+
+            $depts[] = $user_depts->department_id;
+            
+        }
 
         if(Auth::user()->user_role()->first()->name == 'Superadmin'){
-             return view('superadmin.estat')->with('roles' , $roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('estat',$estat);
+             return view('superadmin.estat')->with('roles' , $roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('estat',$estat)->with('user_dept', $depts);
         }
         else if(Auth::user()->user_role()->first()->name == 'Admin'){
-             return view('superadmin.estat')->with('roles' , $roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('estat',$estat);
+             return view('superadmin.estat')->with('roles' , $roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('estat',$estat)->with('user_dept', $depts);
         }
     }
   }
@@ -548,12 +669,22 @@ class OthersController extends Controller
     $deps = Departments::all();
     $users = Users::find(Auth::user()->id);
     $transfer = Transfer_Requests::all();
+    $User_depart = User_departments::where('user_id', Auth::user()->id)->get();
+
+        $depts = [];
+
+        foreach ($User_depart as $user_depts) 
+        {
+
+            $depts[] = $user_depts->department_id;
+            
+        }
 
       if(Auth::user()->user_role()->first()->name == 'Superadmin'){
-            return view('superadmin.addcityjail')->with('roles',$roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer);
+            return view('superadmin.addcityjail')->with('roles',$roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('user_dept', $depts);
       }
       else if(Auth::user()->user_role()->first()->name == 'Admin'){
-            return view('superadmin.addcityjail')->with('roles',$roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer);
+            return view('superadmin.addcityjail')->with('roles',$roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('user_dept', $depts);
       }
   }
 
@@ -587,12 +718,22 @@ class OthersController extends Controller
         $users = Users::find(Auth::user()->id);
         $transfer = Transfer_Requests::all();
         $jails = City_Jails::all();
+        $User_depart = User_departments::where('user_id', Auth::user()->id)->get();
+
+        $depts = [];
+
+        foreach ($User_depart as $user_depts) 
+        {
+
+            $depts[] = $user_depts->department_id;
+            
+        }
 
         if(Auth::user()->user_role()->first()->name == 'Superadmin'){
-             return view('superadmin.jails')->with('roles' , $roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('jails',$jails);
+             return view('superadmin.jails')->with('roles' , $roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('jails',$jails)->with('user_dept', $depts);
         }
         else if(Auth::user()->user_role()->first()->name == 'Admin'){
-             return view('superadmin.jails')->with('roles' , $roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('jails',$jails);
+             return view('superadmin.jails')->with('roles' , $roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('jails',$jails)->with('user_dept', $depts);
         }
     }
   }
@@ -637,12 +778,22 @@ class OthersController extends Controller
       $list->where('parent','=',0)
            ->orWhere('has_sublist','=',1);
     })->get();
+    $User_depart = User_departments::where('user_id', Auth::user()->id)->get();
+
+        $depts = [];
+
+        foreach ($User_depart as $user_depts) 
+        {
+
+            $depts[] = $user_depts->department_id;
+            
+        }
 
       if(Auth::user()->user_role()->first()->name == 'Superadmin'){
-            return view('superadmin.addchecklist')->with('roles',$roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('list',$list);
+            return view('superadmin.addchecklist')->with('roles',$roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('list',$list)->with('user_dept', $depts);
       }
       else if(Auth::user()->user_role()->first()->name == 'Admin'){
-            return view('superadmin.addchecklist')->with('roles',$roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('list',$list);
+            return view('superadmin.addchecklist')->with('roles',$roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('list',$list)->with('user_dept', $depts);
       }
   }
 
@@ -688,21 +839,31 @@ class OthersController extends Controller
         $users = Users::find(Auth::user()->id);
         $transfer = Transfer_Requests::all();
         $checklist = Checklist::all();
+        $User_depart = User_departments::where('user_id', Auth::user()->id)->get();
+
+        $depts = [];
+
+        foreach ($User_depart as $user_depts) 
+        {
+
+            $depts[] = $user_depts->department_id;
+            
+        }
 
        if($request->input('parentlist') == NULL){
         if(Auth::user()->user_role()->first()->name == 'Superadmin'){
-             return redirect('/show_checklist')->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('checklist',$checklist);
+             return redirect('/show_checklist')->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('checklist',$checklist)->with('user_dept', $depts);
         }
         else if(Auth::user()->user_role()->first()->name == 'Admin'){
-             return redirect('/show_checklist')->with('roles' , $roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('checklist',$checklist);
+             return redirect('/show_checklist')->with('roles' , $roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('checklist',$checklist)->with('user_dept', $depts);
         }
       }
       else{
         if(Auth::user()->user_role()->first()->name == 'Superadmin'){
-             return redirect('/show_sub_checklist/'.$request->input('parentlist'))->with('roles' , $roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('checklist',$checklist);
+             return redirect('/show_sub_checklist/'.$request->input('parentlist'))->with('roles' , $roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('checklist',$checklist)->with('user_dept', $depts);
         }
         else if(Auth::user()->user_role()->first()->name == 'Admin'){
-             return redirect('/show_sub_checklist/'.$request->input('parentlist'))->with('roles' , $roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('checklist',$checklist);
+             return redirect('/show_sub_checklist/'.$request->input('parentlist'))->with('roles' , $roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('checklist',$checklist)->with('user_dept', $depts);
         }
       }
   }
@@ -747,13 +908,23 @@ class OthersController extends Controller
         $deps = Departments::all();
         $users = Users::find(Auth::user()->id);
         $transfer = Transfer_Requests::all();
+        $User_depart = User_departments::where('user_id', Auth::user()->id)->get();
+
+        $depts = [];
+
+        foreach ($User_depart as $user_depts) 
+        {
+
+            $depts[] = $user_depts->department_id;
+            
+        }
 
 
         if(Auth::user()->user_role()->first()->name == 'Superadmin'){
-            return view('superadmin.addcasetype')->with('roles',$roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer);
+            return view('superadmin.addcasetype')->with('roles',$roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('user_dept', $depts);
         }
         else if(Auth::user()->user_role()->first()->name == 'Admin'){
-            return view('superadmin.addcasetype')->with('roles',$roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer);
+            return view('superadmin.addcasetype')->with('roles',$roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('user_dept', $depts);
         }
 	 }
 
@@ -797,12 +968,22 @@ class OthersController extends Controller
       	$users = Users::find(Auth::user()->id);
       	$transfer = Transfer_Requests::all();
       	$case = Case_Type::all();
+        $User_depart = User_departments::where('user_id', Auth::user()->id)->get();
+
+        $depts = [];
+
+        foreach ($User_depart as $user_depts) 
+        {
+
+            $depts[] = $user_depts->department_id;
+            
+        }
 
         if(Auth::user()->user_role()->first()->name == 'Superadmin'){
-             return view('superadmin.casetypes')->with('roles' , $roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('case',$case);
+             return view('superadmin.casetypes')->with('roles' , $roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('case',$case)->with('user_dept', $depts);
         }
         else if(Auth::user()->user_role()->first()->name == 'Admin'){
-             return view('superadmin.casetypes')->with('roles' , $roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('case',$case);
+             return view('superadmin.casetypes')->with('roles' , $roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('case',$case)->with('user_dept', $depts);
         }
 	  }
 	}
@@ -848,13 +1029,23 @@ class OthersController extends Controller
         $users = Users::find(Auth::user()->id);
         $transfer = Transfer_Requests::all();
         $graduate = Graduate_Requests::all();
+        $User_depart = User_departments::where('user_id', Auth::user()->id)->get();
+
+        $depts = [];
+
+        foreach ($User_depart as $user_depts) 
+        {
+
+            $depts[] = $user_depts->department_id;
+            
+        }
 
 
         if(Auth::user()->user_role()->first()->name == 'Superadmin'){
-            return view('superadmin.addreason')->with('roles',$roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('graduate',$graduate);
+            return view('superadmin.addreason')->with('roles',$roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('graduate',$graduate)->with('user_dept', $depts);
         }
         else if(Auth::user()->user_role()->first()->name == 'Admin'){
-            return view('superadmin.addreason')->with('roles',$roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('graduate',$graduate);
+            return view('superadmin.addreason')->with('roles',$roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('graduate',$graduate)->with('user_dept', $depts);
         }
    }
 
@@ -900,12 +1091,22 @@ class OthersController extends Controller
         $transfer = Transfer_Requests::all();
         $graduate = Graduate_Requests::all();
         $reasons = Dismissal_Reason::all();
+        $User_depart = User_departments::where('user_id', Auth::user()->id)->get();
+
+        $depts = [];
+
+        foreach ($User_depart as $user_depts) 
+        {
+
+            $depts[] = $user_depts->department_id;
+            
+        }
 
         if(Auth::user()->user_role()->first()->name == 'Superadmin'){
-             return view('superadmin.reasons')->with('roles' , $roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('reasons',$reasons)->with('gradute',$graduate);
+             return view('superadmin.reasons')->with('roles' , $roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('reasons',$reasons)->with('gradute',$graduate)->with('user_dept', $depts);
         }
         else if(Auth::user()->user_role()->first()->name == 'Admin'){
-             return view('superadmin.reasons')->with('roles' , $roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('reasons',$reasons)->with('graduate',$graduate);
+             return view('superadmin.reasons')->with('roles' , $roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('reasons',$reasons)->with('graduate',$graduate)->with('user_dept', $depts);
         }
     }
   }

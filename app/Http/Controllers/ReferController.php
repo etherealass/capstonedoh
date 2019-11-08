@@ -14,6 +14,7 @@ use DB;
 use Calendar;
 use App\Users;
 use App\User_roles;
+use App\User_departments;
 use App\Departments;
 use App\Events;
 use App\Patients;

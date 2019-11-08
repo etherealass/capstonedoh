@@ -13,6 +13,7 @@ use App\Notifications\MyNotifications;
 use App\Notifications\MySecondNotification;
 use App\Notifications\MyThirdNotifications;
 use App\Notifications\MyFourthNotifications;
+use Illuminate\Support\MessageBag;
 use Auth;
 use DB;
 use App\Users;
@@ -469,6 +470,20 @@ class PatientController extends Controller
         $pat = rand();
         $mytime = Carbon::now();
         $dateme = date('Y-m-d');
+
+        /*$validation = $this->validate($request,[
+        
+            'phone' =>'required|unique:emergency__persons|digits:11',
+            'cellphone'=>'required|unique:emergency__persons|digits:11',
+            'email' => 'required|unique:emergency__persons' 
+
+        ]);
+
+        if(!$validation){
+                
+            $errors = new MessageBag(['phone' => ['Please enter valid emergency phone number'],'cellphone' => ['Please enter valid emergency cellphone number'],'email' => ['Please enter valid emergency email']]);
+            return Redirect::back()->withErrors($errors)->withInput(Input::all());
+        }*/
 
         $address = new Address([
             'address_id' => $add,
@@ -1262,7 +1277,7 @@ class PatientController extends Controller
             $nhistory->save();
 
             Session::flash('alert-class', 'success'); 
-            flash('Patient Re-enrolled', '')->overlay();
+            flash('Patient Re-enrolled', '')->overlay(); 
 
             return back();
         }

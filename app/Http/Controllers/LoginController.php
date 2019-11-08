@@ -15,6 +15,7 @@ use Auth;
 use DB;
 use App\Users;
 use App\User_roles;
+use App\User_departments;
 use App\Departments;
 use App\Patients;
 use App\Transfer_Requests;
@@ -33,10 +34,20 @@ class LoginController extends Controller
 
       $roles = User_roles::where('description','!=','Employee')->get();
       $deps = Departments::all();
-  
 
       if(Auth::check()){
-        return redirect()->route('user.dashboard')->with('roles',$roles)->with('deps',$deps)->with('users',$users);
+        $User_depart = User_departments::where('user_id', Auth::user()->id)->get();
+
+        $depts = [];
+
+        foreach ($User_depart as $user_depts) 
+        {
+
+            $depts[] = $user_depts->department_id;
+            
+        }
+  
+        return redirect()->route('user.dashboard')->with('roles',$roles)->with('deps',$deps)->with('users',$users)->with('user_dept', $depts);
       }
       else{
         return redirect('/login')->with('roles',$roles)->with('deps',$deps);
@@ -45,7 +56,7 @@ class LoginController extends Controller
 
     public function loginnow(request $request)
     {
-        $this->validate($request,[
+      $this->validate($request,[
         'username' =>'required',
         'password'=>'required'
       ]);
@@ -56,11 +67,24 @@ class LoginController extends Controller
 
       if(Auth::attempt(['username'=>$request->input('username'), 'password'=>$request->input('password'),'flag'=>NULL]))
         {
-          return redirect()->route('user.dashboard')->with('roles',$roles)->with('deps',$deps);
+          $User_depart = User_departments::where('user_id', Auth::user()->id)->get();
+
+          $depts = [];
+
+          foreach ($User_depart as $user_depts) 
+          {
+
+             $depts[] = $user_depts->department_id;
+            
+           }
+
+          return redirect()->route('user.dashboard')->with('roles',$roles)->with('deps',$deps)->with('user_dept', $depts);
         }
         else{
-          $errors = new MessageBag(['password' => ['Username and/or password invalid.']]);
-           return Redirect::back()->withErrors($errors)->withInput(Input::except('password'));
+
+          $errors = new MessageBag;
+          $errors->add('password','Username and/or password invalid.');
+          return back()->withErrors($errors)->withInput(Input::except('password'));
         }
     }
 
@@ -73,10 +97,22 @@ class LoginController extends Controller
 
 
       if(Auth::check()){
-        return redirect()->route('user.dashboard')->with('roles',$roles)->with('deps',$deps)->with('users',$users);
+
+        $User_depart = User_departments::where('user_id', Auth::user()->id)->get();
+
+        $depts = [];
+
+        foreach ($User_depart as $user_depts) 
+        {
+
+            $depts[] = $user_depts->department_id;
+            
+        }
+        
+        return redirect()->route('user.dashboard')->with('roles',$roles)->with('deps',$deps)->with('users',$users)->with('user_dept', $depts);
       }
       else{
-        return redirect('/login')->with('roles',$roles)->with('deps',$deps);
+        return redirect('/login')->with('roles',$roles)->with('deps',$deps)->with('user_dept', $depts);
       }
     }
 
@@ -96,6 +132,16 @@ class LoginController extends Controller
       $transfer = Transfer_Requests::all();
       $graduate = Graduate_Requests::all();
       $userss = Patients::where('department_id', Auth::user()->department)->get();
+      $User_depart = User_departments::where('user_id', Auth::user()->id)->get();
+
+        $depts = [];
+
+        foreach ($User_depart as $user_depts) 
+        {
+
+            $depts[] = $user_depts->department_id;
+            
+        }
 
       date_default_timezone_set('Asia/Singapore');
 
@@ -127,38 +173,34 @@ class LoginController extends Controller
       $chart->height(250);
       
       if(Auth::user()->user_role()->first()->name == 'Superadmin'){
-        return view('superadmin.index', compact('chart'))->with('roles',$roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('graduate',$graduate)->with('pat',$pat)->with('patx',$patx)->with('patz',$patz);
+        return view('superadmin.index', compact('chart'))->with('roles',$roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('graduate',$graduate)->with('pat',$pat)->with('patx',$patx)->with('patz',$patz)->with('user_dept', $depts);
       }
       else if(Auth::user()->user_role()->first()->name == 'Admin'){
-        return view('superadmin.index', compact('chart'))->with('roles',$roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('graduate',$graduate)->with('pat',$pat)->with('patx',$patx)->with('patz',$patz);
+        return view('superadmin.index', compact('chart'))->with('roles',$roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('graduate',$graduate)->with('pat',$pat)->with('patx',$patx)->with('patz',$patz)->with('user_dept', $depts);
       }
       else if(Auth::user()->user_role()->first()->name == 'Social Worker'){
-         return view('socialworker.index', compact('chart'))->with('roles',$roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('graduate',$graduate)->with('pat',$pat)->with('patx',$patx)->with('patz',$patz);
+         return view('socialworker.index', compact('chart'))->with('roles',$roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('graduate',$graduate)->with('pat',$pat)->with('patx',$patx)->with('patz',$patz)->with('user_dept', $depts);
 
       }
       else if(Auth::user()->user_role()->first()->name == 'Nurse'){
-         return view('socialworker.index', compact('chart'))->with('roles',$roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('graduate',$graduate)->with('pat',$pat)->with('patx',$patx)->with('patz',$patz);
+         return view('socialworker.index', compact('chart'))->with('roles',$roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('graduate',$graduate)->with('pat',$pat)->with('patx',$patx)->with('patz',$patz)->with('user_dept', $depts);
 
       }
       else if(Auth::user()->user_role()->first()->name == 'Doctor'){
 
-         return view('doctor.index')->with('roles',$roles)->with('deps',$deps)->with('users',$users);
+         return view('doctor.index')->with('roles',$roles)->with('deps',$deps)->with('users',$users)->with('user_dept', $depts);
 
       }else if(Auth::user()->user_role()->first()->name == 'Physciatrist'){
 
-         return view('doctor.index')->with('roles',$roles)->with('deps',$deps)->with('users',$users);
+         return view('doctor.index')->with('roles',$roles)->with('deps',$deps)->with('users',$users)->with('user_dept', $depts);
 
       }else if(Auth::user()->user_role()->first()->name == 'Dentist'){
 
-         return view('doctor.index')->with('roles',$roles)->with('deps',$deps)->with('users',$users);
-
-      }else if(Auth::user()->user_role()->first()->name == 'Dentist'){
-
-         return view('doctor.index')->with('roles',$roles)->with('deps',$deps)->with('users',$users);
+         return view('doctor.index')->with('roles',$roles)->with('deps',$deps)->with('users',$users)->with('user_dept', $depts);
 
       }else{
 
-          return view('socialworker.index')->with('roles',$roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer);
+          return view('socialworker.index')->with('roles',$roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('user_dept', $depts);
 
       }
       

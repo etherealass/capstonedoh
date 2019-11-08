@@ -15,9 +15,14 @@
           <li class="breadcrumb-item active"><b>Fill up</b></li>
         </ol>
 
-  <div style="background-color: white;border-radius: 5px;height: 1300px;padding-top: 10px">
+  <div style="background-color: white;border-radius: 5px;height: 1500px;padding-top: 10px">
     <div class="container" style="margin-top: 30px">
         <p style="font-size:50px"><b>Intake Form</b></p>
+        @if ($errors->any())
+          @foreach ($errors->all() as $error)
+          <div class="alert alert-danger">{{$error}}</div>
+          @endforeach
+        @endif
         <form action="{{URL::to('/patientsave_intake')}}" method="post">
           {{csrf_field()}}
           <fieldset style="margin-bottom: 30px">
@@ -28,7 +33,8 @@
                 <select class="form-control" id="patype" placeholder="Patient Type" required="required" name="ptype" style="margin-left: 20px">
                     <option value="" disabled selected hidden>Patient Type</option>
                   @foreach($case as $cases)
-                    <option id="{{$cases->court_order}}" value="{{$cases->id}}">{{$cases->case_name}}</option>
+                    <option id="{{$cases->court_order}}" value="{{$cases->id}}" @if (old('ptype') == $cases->id)
+                     selected @endif>{{$cases->case_name}}</option>
                   @endforeach
                 </select>
                 </div>
@@ -39,7 +45,8 @@
                 <select class="form-control" id="jail" placeholder="Patient Type" required="required" name="jail" style="margin-left: 20px">
                     <option value="" disabled selected hidden>City Jail</option>
                 @foreach($jails as $jail)
-                    <option value="{{$jail->id}}">{{$jail->name}}</option>
+                    <option value="{{$jail->id}}" @if (old('jail') == $jail->id)
+                     selected @endif>{{$jail->name}}</option>
                 @endforeach
                 </select>
                 </div>
@@ -47,7 +54,7 @@
               <div class="col-md-3 mb-4">
                 <div class="form-label-group" id="textc" style="display: none;margin-top: 20px">
                   <h6>Case Number*</h6>
-                    <input type="text" id="caseno" class="form-control" placeholder="Case Number" required="required" autofocus="autofocus" name="caseno" value="" style="margin-left: 20px">
+                    <input type="text" id="caseno" class="form-control" placeholder="Case Number" required="required" autofocus="autofocus" name="caseno" value="{!! old('caseno') !!}"style="margin-left: 20px">
                 </div>
               </div>
             </div></legend>
@@ -74,7 +81,7 @@
               <div class="col-md-2">
                 <div class="form-label-group">
                    <h6>Birthday*</h6>
-                  <input type="date" id="bday" class="form-control" placeholder="Birthday" required="required" autofocus="autofocus" name="bday">
+                  <input type="date" id="bday" class="form-control" placeholder="Birthday" required="required" autofocus="autofocus" name="bday" value="{!! old('bday') !!}">
                   <input type="hidden" name="_token" value="{{csrf_token()}}">
                   <input type="hidden" name="department" value="{{$id}}">
                 </div>
@@ -86,19 +93,19 @@
               <div class="col-md-3">
               <div class="form-label-group">
                <h6>Street Address*</h6>
-              <input type="text" id="street" class="form-control" placeholder="Address" required="required" name="street">
+              <input type="text" id="street" class="form-control" placeholder="Address" required="required" name="street" value="{!! old('street') !!}">
             </div>
            </div>
             <div class="col-md-3  ">
               <div class="form-label-group">
                <h6>Barangay*</h6>
-              <input type="text" id="barangay" class="form-control" placeholder="Address" required="required" name="barangay">
+              <input type="text" id="barangay" class="form-control" placeholder="Address" required="required" name="barangay" value="{!! old('barangay') !!}">
             </div>
            </div>
            <div class="col-md-3">
               <div class="form-label-group">
                <h6>City*</h6>
-              <input type="text" id="city" class="form-control" placeholder="Address" required="required" name="city">
+              <input type="text" id="city" class="form-control" placeholder="Address" required="required" name="city" value="{!! old('city') !!}">
             </div>
            </div>
             <div class="col-md-2">
@@ -108,7 +115,8 @@
                   <label for="civils">Civil Status</label>
                     <option value="" disabled selected hidden>--Choose--</option>
                     @foreach($status as $stat)
-                    <option value="{{$stat->id}}">{{$stat->name}}</option>
+                    <option value="{{$stat->id}}" @if (old('civils') == $stat->id)
+                     selected @endif>{{$stat->name}}</option>
                     @endforeach
                 </select>
                 </div>
@@ -128,13 +136,13 @@
                         <div class="col-md-6">
                          <div class="form-label-group">
                           <h6>Name*</h6>
-                           <input type="text" id="emername" class="form-control" placeholder="Last name" required="required" name="emername">
+                           <input type="text" id="emername" class="form-control" placeholder="Last name" required="required" name="emername" value="{!! old('emername') !!}">
                          </div>
                         </div>
                          <div class="col-md-6">
                            <div class="form-label-group">
                              <h6>Relationship*</h6>
-                              <input type="text" id="emerelation" class="form-control" placeholder="Last name" required="required" name="emerelation">
+                              <input type="text" id="emerelation" class="form-control" placeholder="Last name" required="required" name="emerelation" value="{!! old('emerelation') !!}">
                            </div>
                          </div>
                        </div>
@@ -144,13 +152,13 @@
                      <div class="col-md-6">
                      <div class="form-label-group">
                       <h6>Phone No.(Home)*</h6>
-                       <input type="text" id="emerphone" class="form-control" placeholder="Last name" required="required" name="emerphone">
+                       <input type="text" id="emerphone" class="form-control" placeholder="Last name" required="required" name="emerphone" value="{!! old('emerphone') !!}">
                      </div>
                    </div>
                    <div class="col-md-6">
                      <div class="form-label-group">
                       <h6>Cellphone No.*</h6>
-                       <input type="text" id="emercell" class="form-control" placeholder="Last name" required="required" name="emercell">
+                       <input type="text" id="emercell" class="form-control" placeholder="Last name" required="required" name="emercell" value="{!! old('emercell') !!}">
                      </div>
                    </div>
                     </div>
@@ -158,7 +166,7 @@
                    <div class="form-group">
                       <div class="form-label-group">
                       <h6>Email add*</h6>
-                       <input type="text" id="emeremail" class="form-control" placeholder="Last name" required="required" name="emeremail">
+                       <input type="email" id="emeremail" class="form-control" placeholder="Last name" required="required" name="emeremail" value="{!! old('emeremail') !!}">
                     </div>
                   </div>
                   </div>
@@ -174,7 +182,8 @@
                             <label for="eduattain">Educational Attainment</label>
                             @foreach($eduatain as $edu)
                             <option value="" disabled selected hidden>--Choose--</option>
-                            <option value="{{$edu->id}}">{{$edu->name}}</option>
+                            <option value="{{$edu->id}}" @if (old('eduattain') == $edu->id)
+                            selected @endif>{{$edu->name}}</option>
                             @endforeach
                         </select>
                         </div>
@@ -186,7 +195,8 @@
                             <label for="edstat">Employement Status</label>
                             @foreach($estat as $estats)
                             <option value="" disabled selected hidden>--Choose--</option>
-                            <option value="{{$estats->id}}">{{$estats->name}}</option>
+                            <option value="{{$estats->id}}" @if (old('edstat') == $estats->id)
+                            selected @endif>{{$estats->name}}</option>
                             @endforeach
                         </select>
                         </div>
@@ -198,7 +208,7 @@
                       <div class="col-md-9">
                         <div class="form-label-group">
                           <h6>Name of Spouse*</h6>
-                          <input type="text" id="spouse" class="form-control" placeholder="Chief Complaint" name="spouse">
+                          <input type="text" id="spouse" class="form-control" placeholder="Chief Complaint" name="spouse" value="{!! old('spouse') !!}">
                         </div>
                       </div>
                    </div>
@@ -211,13 +221,13 @@
                         <div class="col-md-6">
                          <div class="form-label-group">
                           <h6>Father's name*</h6>
-                           <input type="text" id="fathname" class="form-control" placeholder="Last name"  name="fathname">
+                           <input type="text" id="fathname" class="form-control" placeholder="Last name"  name="fathname" value="{!! old('fathname') !!}">
                          </div>
                         </div>
                          <div class="col-md-6">
                            <div class="form-label-group">
                              <h6>Mother's name*</h6>
-                              <input type="text" id="mothname" class="form-control" placeholder="Last name"  name="mothname">
+                              <input type="text" id="mothname" class="form-control" placeholder="Last name"  name="mothname" value="{!! old('mothname') !!}">
                              </div>
                            </div>
                         </div>
@@ -230,13 +240,13 @@
           <div class="form-group" style="margin-left:20px">
             <div class="form-label-group">
               <h6>Presenting Problems*</h6>
-              <textarea type="text" id="preprob" class="form-control" placeholder="Please Specify" name="preprob" required="required"></textarea>
+              <textarea type="text" id="preprob" class="form-control" placeholder="Please Specify" name="preprob" required="required" value="{!! old('preprob') !!}">{{Request::old('preprob')}}</textarea>
             </div>
           </div>
           <div class="form-group" style="margin-left:20px">
                 <div class="form-label-group">
                   <h6>Impression*</h6>
-                  <textarea style="height: 120px" type="text" id="impre" class="form-control" placeholder="Please Specify" name="impre" required="required"></textarea>
+                  <textarea style="height: 120px" type="text" id="impre" class="form-control" placeholder="Please Specify" name="impre" required="required" value="{!! old('impre') !!}">{{Request::old('impre')}}</textarea>
               </div>
           </div>
         </fieldset>

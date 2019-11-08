@@ -12,6 +12,7 @@ use Auth;
 use DB;
 use App\Users;
 use App\User_roles;
+use App\User_departments;
 use App\Interventions;
 use App\Departments;
 use App\Transfer_Requests;
@@ -36,13 +37,23 @@ class InterventionController extends Controller
         $transfer = Transfer_Requests::all();
         $child = ChildInterventions::all();
         $graduate = Graduate_Requests::all();
+        $User_depart = User_departments::where('user_id', Auth::user()->id)->get();
+
+        $depts = [];
+
+        foreach ($User_depart as $user_depts) 
+        {
+
+            $depts[] = $user_depts->department_id;
+            
+        }
 
 
         if(Auth::user()->user_role()->first()->name == 'Superadmin'){
-            return view('intervention.showintervention')->with('roles',$roles)->with('deps',$deps)->with('inter', $inter)->with('users',$users)->with('transfer',$transfer)->with('child', $child)->with('graduate',$graduate);
+            return view('intervention.showintervention')->with('roles',$roles)->with('deps',$deps)->with('inter', $inter)->with('users',$users)->with('transfer',$transfer)->with('child', $child)->with('graduate',$graduate)->with('user_dept', $depts)->with('user_dept', $depts);
         }
         else if(Auth::user()->user_role()->first()->name == 'Admin'){
-            return view('intervention.showintervention')->with('roles',$roles)->with('deps',$deps)->with('inter', $inter)->with('users',$users)->with('transfer',$transfer)->with('child', $child)->with('graduate',$graduate);
+            return view('intervention.showintervention')->with('roles',$roles)->with('deps',$deps)->with('inter', $inter)->with('users',$users)->with('transfer',$transfer)->with('child', $child)->with('graduate',$graduate)->with('user_dept', $depts)->with('user_dept', $depts);
         }
         else{
             return abort(404);
@@ -58,16 +69,26 @@ class InterventionController extends Controller
         $deps = Departments::all();
         $users = Users::find(Auth::user()->id);
         $transfer = Transfer_Requests::all();
+        $User_depart = User_departments::where('user_id', Auth::user()->id)->get();
+
+        $depts = [];
+
+        foreach ($User_depart as $user_depts) 
+        {
+
+            $depts[] = $user_depts->department_id;
+            
+        }
 
      //   $inter = Interventions::all();
 
         $inter = Interventions::all();
 
         if(Auth::user()->user_role()->first()->name == 'Superadmin'){
-            return view('intervention.addIntervention')->with('roles',$roles)->with('deps',$deps)->with('inter', $inter)->with('users',$users)->with('transfer',$transfer);
+            return view('intervention.addIntervention')->with('roles',$roles)->with('deps',$deps)->with('inter', $inter)->with('users',$users)->with('transfer',$transfer)->with('user_dept', $depts);
         }
         else if(Auth::user()->user_role()->first()->name == 'Admin'){
-            return view('intervention.addIntervention')->with('roles',$roles)->with('deps',$deps)->with('inter', $inter)->with('users',$users)->with('transfer',$transfer);
+            return view('intervention.addIntervention')->with('roles',$roles)->with('deps',$deps)->with('inter', $inter)->with('users',$users)->with('transfer',$transfer)->with('user_dept', $depts);
         }
         else{
             return abort(404);
@@ -107,12 +128,22 @@ class InterventionController extends Controller
 
         $roles = User_roles::where('description','!=','Employee')->get();
         $deps = Departments::all();
+        $User_depart = User_departments::where('user_id', Auth::user()->id)->get();
+
+        $depts = [];
+
+        foreach ($User_depart as $user_depts) 
+        {
+
+            $depts[] = $user_depts->department_id;
+            
+        }
 
         if(Auth::user()->user_role()->first()->name == 'Superadmin'){
-           return view('intervention.addIntervention')->with('roles',$roles)->with('deps',$deps)->with('inter', $inter)->with('users',$users)->with('transfer',$transfer);
+           return view('intervention.addIntervention')->with('roles',$roles)->with('deps',$deps)->with('inter', $inter)->with('users',$users)->with('transfer',$transfer)->with('user_dept', $depts);
         }
         else if(Auth::user()->user_role()->first()->name == 'Admin'){
-           return view('intervention.addIntervention')->with('roles',$roles)->with('deps',$deps)->with('inter', $inter)->with('users',$users)->with('transfer',$transfer);
+           return view('intervention.addIntervention')->with('roles',$roles)->with('deps',$deps)->with('inter', $inter)->with('users',$users)->with('transfer',$transfer)->with('user_dept', $depts);
         }
         else{
 
@@ -145,12 +176,22 @@ class InterventionController extends Controller
 
         $roles = User_roles::where('description','!=','Employee')->get();
         $deps = Departments::all();
+        $User_depart = User_departments::where('user_id', Auth::user()->id)->get();
+
+        $depts = [];
+
+        foreach ($User_depart as $user_depts) 
+        {
+
+            $depts[] = $user_depts->department_id;
+            
+        }
 
           if(Auth::user()->user_role()->first()->name == 'Superadmin'){
-           return view('intervention.addIntervention')->with('roles',$roles)->with('deps',$deps)->with('inter', $inter)->with('users',$users)->with('transfer',$transfer);
+           return view('intervention.addIntervention')->with('roles',$roles)->with('deps',$deps)->with('inter', $inter)->with('users',$users)->with('transfer',$transfer)->with('user_dept', $depts);
         }
         else if(Auth::user()->user_role()->first()->name == 'Admin'){
-           return view('intervention.addIntervention')->with('roles',$roles)->with('deps',$deps)->with('inter', $inter)->with('users',$users)->with('transfer',$transfer);
+           return view('intervention.addIntervention')->with('roles',$roles)->with('deps',$deps)->with('inter', $inter)->with('users',$users)->with('transfer',$transfer)->with('user_dept', $depts);
         }
       }
          
@@ -165,17 +206,25 @@ class InterventionController extends Controller
         $roles = User_roles::where('description','!=','Employee')->get();
         $deps = Departments::all();
         $intersx = Interventions::find($id);
-
         $inter = Interventions::all();
         $users = Users::find(Auth::user()->id);
-
         $transfer = Transfer_Requests::all();
+        $User_depart = User_departments::where('user_id', Auth::user()->id)->get();
+
+        $depts = [];
+
+        foreach ($User_depart as $user_depts) 
+        {
+
+            $depts[] = $user_depts->department_id;
+            
+        }
 
           if(Auth::user()->user_role()->first()->name == 'Superadmin'){
-           return view('intervention.viewIntervention')->with('interven', $intersx)->with('roles',$roles)->with('deps',$deps)->with('inter', $inter)->with('users',$users)->with('transfer',$transfer);
+           return view('intervention.viewIntervention')->with('interven', $intersx)->with('roles',$roles)->with('deps',$deps)->with('inter', $inter)->with('users',$users)->with('transfer',$transfer)->with('user_dept', $depts);
         }
         else if(Auth::user()->user_role()->first()->name == 'Admin'){
-           return view('intervention.viewIntervention')->with('interven', $intersx)->with('roles',$roles)->with('deps',$deps)->with('inter', $inter)->with('users',$users)->with('transfer',$transfer);
+           return view('intervention.viewIntervention')->with('interven', $intersx)->with('roles',$roles)->with('deps',$deps)->with('inter', $inter)->with('users',$users)->with('transfer',$transfer)->with('user_dept', $depts);
         }
          
          

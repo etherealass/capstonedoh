@@ -15,6 +15,102 @@
     </div>
 </div>
 
+<div class="modal3 fade" id="viewProfile" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content" style="width: 1000px">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel"><b>USER PROFILE</b></h5>
+          <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <h1 style="font-size: 50px;text-align: center"><b>{{Auth::user()->user_role->name}}</b></h1>
+          <div class="dropdown-divider"></div>
+          <div class="row">
+            <div class="col-md-3">
+              <i class="fas fa-user-circle fa-fw" style="font-size: 200px"></i>
+            </div>
+            <div class="col-md-9">
+              <div class="row">
+                <div class="col-md-9" style="margin-top: 10px">
+                  <h5><b>Name: </b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{Auth::user()->fname}} {{Auth::user()->lname}}</h5>
+                </div>
+                <div class="col-md-9">
+                  <h5><b>Username: </b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{Auth::user()->username}}</h5>
+                </div>
+                <div class="col-md-9">
+                  <h5><b>Email: </b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{Auth::user()->email}}</h5>
+                </div>
+                <div class="col-md-9">
+                  <h5><b>Contact: </b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{Auth::user()->contact}}</h5>
+                </div>
+                <div class="col-md-9">
+                  @if(Auth::user()->user_role->name == 'Superadmin' || Auth::user()->user_role->name == 'Admin')
+                  <h5><b>Departments: </b>&nbsp;&nbsp;Administrator</h5>
+                  @else
+                  <h5><b>Departments: </b>&nbsp;
+                    @foreach($deps as $dep)
+                      @if(in_array($dep->id,$user_dept) == 1)
+                      {{$dep->department_name}}
+                      @endif
+                    @endforeach
+                    </h5>
+                  @endif
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+    </div>
+</div>
+</div>
+
+<div class="modal fade" id="changepassword" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel"><b>Change Password</b></h5>
+          <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <form action="{{URL::to('/changepass')}}" method="post" id="changep">
+          {{csrf_field()}} 
+          <div class="modal-body">
+           <div class="alert alert-danger" id="wrong" style="display: none">Current Password does not match</div>
+           <div class="alert alert-danger" id="correct" style="display: none">New Password same as Old Password</div>
+           <label for="oldpass"><h6>Current Password*</h6></label>
+           <input type="password" id="oldpass" name="oldpass" placeholder="Enter current password" class="form-control" value="">
+           <div style="margin-bottom: 10px"></div>
+           <label for="newpass"><h6>New Password*</h6></label>
+           <input type="password" id="newpass" name="newpass" placeholder="Enter new password" class="form-control" value="">
+           <input type="hidden" id="userid" name="userid" class="form-control" value="{{Auth::user()->id}}">
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-primary" data-dismiss="modal">Cancel</button>
+            <button type="submit" class="btn btn-danger">Change Password</button>  
+          </div>
+        </form>
+      </div>
+    </div>
+</div>
+
+<div class="modal fade" id="passwordsuccess" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+          <div class="modal-body">
+            <h2 class="text-success">Password Changed Successfuly</h2>
+          </div>
+      </div>
+    </div>
+</div>
+
 <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
       <div class="modal-content">

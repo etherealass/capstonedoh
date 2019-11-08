@@ -19,7 +19,7 @@
            {{csrf_field()}}
           <div class="form-group">
             <div class="form-label-group">
-              <input type="text" id="username" class="form-control" placeholder="Username" required="required" autofocus="autofocus" name="username">
+              <input type="text" id="username" class="form-control" placeholder="Username" required="required" autofocus="autofocus" name="username" value="{{ old('username') }}">
               <label for="username">Username</label>
             </div>
           </div>

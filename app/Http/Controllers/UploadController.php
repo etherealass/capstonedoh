@@ -16,6 +16,7 @@ use DB;
 use App\Files;
 use App\User_roles;
 use App\Users;
+use App\User_departments;
 use App\Departments;
 use App\Transfer_Requests;
 use App\Graduate_Requests;

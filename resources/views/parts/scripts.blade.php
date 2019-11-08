@@ -55,6 +55,37 @@
 
   <script>
 
+  $('#changep').submit(function( event ) {
+    event.preventDefault();
+    $.ajax({
+        url: '{{URL::to('/changepass')}}',
+        type: 'post',
+        data: $('#changep').serialize(), 
+        dataType: 'json',
+        success: function(data){
+          if(data.res == 1){
+            $('#changepassword').show();
+            $('#wrong').show();
+            $('#correct').hide();
+          }
+          else if(data.res == 0){
+            $('#wrong').hide();
+            $('#correct').show();
+
+          }
+          else if(data.res == 2){
+            $('#changepassword').hide();
+            $('#passwordsuccess').modal('show');
+            setTimeout(function(){
+              $('#passwordsuccess').modal('hide');
+              $('.modal-backdrop').remove();
+            }, 3000);
+            
+          }
+        }
+    });
+  });
+
   $('#myform').submit(function( event ) {
     $('.loader').show();
     $('.successload').hide();
@@ -1033,6 +1064,20 @@ $(function() {
   $('select[id="report"]').on('click', function(){
 
   if ($(this).children(":selected").attr("value") == 'Plea Bargain') {
+      $('#depsa').hide();
+      document.getElementById("datefrom").disabled = true;
+      document.getElementById("dateto").disabled = true;
+      document.getElementById("department").disabled = true;
+      document.getElementById("month").disabled = false;
+      document.getElementById("year").disabled = false;
+      document.getElementById("mon").hidden = false;
+      document.getElementById("yea").hidden = false;
+      $('#datef').hide();
+      $('#datet').hide();
+      $('#depsa').hide();
+
+  }
+  else if ($(this).children(":selected").attr("value") == 'Accomplishment Report') {
       $('#depsa').hide();
       document.getElementById("datefrom").disabled = true;
       document.getElementById("dateto").disabled = true;
