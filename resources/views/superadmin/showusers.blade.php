@@ -45,8 +45,8 @@
                     <th>Name</th>
                     <th>Contact</th>
                     <th>Email</th>
-                    <th>Department</th>
-                    <th>Action</th>
+<!--                     <th>Department</th>
+ -->                    <th>Action</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -55,12 +55,12 @@
                     <td>{{$uroles->fname}} {{$uroles->lname}}</td>
                     <td>{{$uroles->contact}}</td>
                     <td>{{$uroles->email}}</td>
-                    @if($uroles->department == '')
+<!--                     @if($uroles->department == '')
                     <td>--{{$uroles->user_roles->name}}--</td>
                     @else
-                    <td>{{$uroles->user_departments->department_name}} Department</td>
-                    @endif
-                    <td style="text-align: center"><a class="btn btn-success" style="margin-right: 10px" href="{{URL::to('/viewuser/'.$uroles->id)}}">View</a><button class="btn btn-primary" style="margin-right: 10px" data-toggle="modal" data-target="#editModal" data-userid="{{$uroles->id}}" data-fname="{{$uroles->fname}}" data-lname="{{$uroles->lname}}" data-uname="{{$uroles->username}}" data-email="{{$uroles->email}}" data-contact="{{$uroles->contact}}" data-department="{{$uroles->department}}" data-userid="{{$uroles->id}}" data-password="{{$uroles->password}}">Edit</button><button class="btn btn-danger" data-toggle="modal" data-target="#deleteModal" data-userid="{{$uroles->id}}">Delete</button></td>
+                    <td>{{$uroles->user_departments}} Department</td>
+                    @endif -->
+                    <td style="text-align: center"><a class="btn btn-success" style="margin-right: 10px" href="{{URL::to('/viewuser/'.$uroles->id)}}">View</a><button class="btn btn-primary" style="margin-right: 10px" data-toggle="modal" data-target="#editModal" data-userid="{{$uroles->id}}" data-fname="{{$uroles->fname}}" data-lname="{{$uroles->lname}}" data-uname="{{$uroles->username}}" data-email="{{$uroles->email}}" data-contact="{{$uroles->contact}}" data-department="{{$uroles->department}}" data-userid="{{$uroles->id}}" data-password="{{$uroles->password}}" data-designation="{{$uroles->designation}}">Edit</button><button class="btn btn-danger" data-toggle="modal" data-target="#deleteModal" data-userid="{{$uroles->id}}">Delete</button></td>
                   </tr>
                 @endforeach
                 </tbody>
@@ -131,7 +131,7 @@
                <label for="department">Department</label>
               <div class="form-group">
                 <div class="form-label-group">
-                 <select class="form-control selectpicker" id="depart[]" placeholder="Department" required="required" name="depart[]" multiple="multiple">
+                 <select class="form-control selectpicker depart" id="depart[]" placeholder="Department" required="required" name="depart[]" multiple="multiple">
                   @foreach($deps as $dep)
                     <option value="{{$dep->id}}">{{$dep->department_name}} Department</option>
                   @endforeach
@@ -161,7 +161,7 @@
               </div>
 
               <div class="col-md-6">
-                <div class="form-label-group" id="design" style="display:none">
+                <div class="form-label-group" id="designat" style="display:none">
                   <input type="text" id="designat" class="form-control" placeholder="Designation" name="designat">
                   <label for="designat">Please specify designation</label>
                 </div>

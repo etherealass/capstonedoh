@@ -32,6 +32,7 @@ use App\Patients;
 use App\Patient_Intake_Information;
 use App\ProgressNotes;
 use App\Patient_Information;
+use App\Patient_Event_List;
 use App\Patient_History;
 use App\Checklist;
 use App\Checklist_Files;
@@ -43,7 +44,9 @@ use App\Employment_Status;
 use App\Services;
 use App\Refers;
 use App\User_departments;
-use App\Patient_Event_List;
+use App\Bmi_records;
+use App\Blood_sugar_records;
+use App\Medical_records;
 use Hash;
 use Session;
 use NumConvert;
@@ -60,14 +63,16 @@ class ViewController extends Controller
    {
    	
    	$rolex = User_roles::find($id);
-    $urole = Users::where('role',$id)->where('flag',NULL)->with('user_departments')->with('user_roles')->get();
+    $urole = Users::where('role',$id)->where('flag',NULL)->with(['user_departments', 'user_roles'])->get();
+  //  $urodep = User_departments::where('role',$id)->where('flag',NULL)->with('user_departments')->with('user_roles')->get();
    	$roles = User_roles::where('description','!=','Employee')->get();
    	$deps = Departments::all();
     $users = Users::find(Auth::user()->id);
     $transfer = Transfer_Requests::all();
     $graduate = Graduate_Requests::all();
-          $designation = User_roles::where('parent', 3)->get();
+    $designation = User_roles::where('parent', 3)->get();
 
+//
       if(Auth::user()->user_role()->first()->name == 'Superadmin'){
    	  return view('superadmin.showusers')->with('rolex',$rolex)->with('deps',$deps)->with('roles',$roles)->with('urole' ,$urole)->with('users',$users)->with('transfer',$transfer)->with('graduate',$graduate)->with('designation', $designation);
       }
@@ -630,6 +635,19 @@ public function pdfintake($id)
       return $pdf->stream();
    }
 
+public function MonitoringTool($id)
+{
+      
+      $pat = Patients::where('id',$id)->get();
+      $patos = Patient_Event_List::where('patient_id',$id)->where('status', 1)->get();
+
+
+      $customPaper = array(0,0,900,600);
+      $pdf = \App::make('dompdf.wrapper');
+      $pdf = PDF::loadView('pdf.intervention',compact(['patos','pat']))->setPaper($customPaper);
+      return $pdf->stream();
+   }
+
    public function doctorsNotes($recordType,$id)
    {
       
@@ -652,11 +670,50 @@ public function pdfintake($id)
       $pdf = \App::make('dompdf.wrapper');
       $pdf = PDF::loadView('pdf.dental',compact(['notes', 'pat']));
       return $pdf->stream();
-}
+  }
+
+  public function BMINotes($id){
+
+       $pat = Patients::where('id',$id)->first();
+      $notes = Bmi_records::where('patient_id', $id)->with('userxe')->get();
+
+
+
+      $pdf = \App::make('dompdf.wrapper');
+      $pdf = PDF::loadView('pdf.bmi',compact(['notes', 'pat']));
+      return $pdf->stream();
+
+
+  }
+
+  public function BloodSugarPDF($id){
+       $pat = Patients::where('id',$id)->first();
+      $notes = Blood_sugar_records::where('patient_id', $id)->with('userxe')->get();
+
+
+      $pdf = \App::make('dompdf.wrapper');
+      $pdf = PDF::loadView('pdf.bloodsugar',compact(['notes', 'pat']));
+      return $pdf->stream();
+
+
+  }
+
+   public function MedicalRecordsPDF($id){
+       $pat = Patients::where('id',$id)->first();
+      $notes = Medical_records::where('patient_id', $id)->with('userxe')->get();
+
+
+      $pdf = \App::make('dompdf.wrapper');
+      $pdf = PDF::loadView('pdf.pdfmedicalrecord',compact(['notes', 'pat']));
+      return $pdf->stream();
+
+
+  }
 
 public function pdfreferral($id,$rid)
 {
-      $refers = Refers::where('id',$rid)->where('patient_id',$id)->get();
+      $refers = Refers::where('id',$rid)->where('patient_id',$id)->with('patients')->with('users')->with('accepted_bys')->get();
+
       $pat = Patients::where('id',$id)->get();
       $history = Patient_History::where('patient_id',$id)->get();
 

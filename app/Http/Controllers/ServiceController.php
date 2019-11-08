@@ -50,10 +50,18 @@ class ServiceController extends Controller
 
             $services->update(array('parent' => $request->parent, 'name' => $request->servicename, 'description'=> $request->servicedesc));
 
+
+            if($services->parent != 0){
+
             $parent = Services::where('id', $services->parent)->get();
+
 
             $parentName = $parent[0]->name;
 
+            }else{
+
+            $parentName = " ";
+            }
             $role = Display::where('service_id', $id)->pluck('role')->toArray();
 
             $display = Display::where('service_id', $id)->get();
@@ -62,7 +70,8 @@ class ServiceController extends Controller
 
             $notify = Notify::where('service_id', $id)->get();
 
-            if (isset($request->display)) {
+            if (isset($request->display)){
+
                 foreach($request->display as $val) {
                     if(!in_array($val, $role)){
 

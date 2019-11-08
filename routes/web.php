@@ -30,7 +30,14 @@ Route::get('/logout', "LoginController@logout");
 
 
 
-Route::group(['middleware' =>'auth'], function()
+Route::group(['middleware' => 'prevent-back-history'],function(){
+
+  Auth::routes();
+Route::view('/login', "login");
+
+});
+
+Route::group(['middleware' => ['auth']], function()
 {
 	 Route::get('/profile', [
       	'uses'=>'LoginController@getProfile',
@@ -83,6 +90,9 @@ Route::group(['middleware' =>'auth'], function()
 	]); 
 
 
+	 Route::any('/editEmployeeDepartment/{id}', "UserController@editEmployeeDepartment");
+
+
 	 Route::any('/create_event/{date}', "CalendarController@create_event");
 
 	 Route::get('/event_patient/{id}', "CalendarController@event_patient");
@@ -93,6 +103,7 @@ Route::group(['middleware' =>'auth'], function()
 	 Route::get('/view_event/{id}', "CalendarController@viewevent");
 
 	 Route::get('/cancel_event/{id}', "CalendarController@updateEvent");
+
 
 	 Route::get('/bar', 'CalendarController@chart');
 
@@ -458,9 +469,19 @@ Route::group(['middleware' =>'auth'], function()
 
 	 Route::any('/pdfintake/{id}',"ViewController@pdfintake");
 
+	 Route::any('/MonitoringTool/{id}',"ViewController@MonitoringTool");
+
+
 	 Route::any('/pdfdde/{id}',"ViewController@pdfdde");
 
 	 Route::any('/doctorsNotes/{recordType}/{id}',"ViewController@doctorsNotes");
+
+	 Route::any('/BMINotes/{id}',"ViewController@BMINotes");
+
+	 Route::any('/BloodSugarPDF/{id}',"ViewController@BloodSugarPDF");
+
+	 Route::any('/MedicalRecordsPDF/{id}',"ViewController@MedicalRecordsPDF");
+	 
 	 Route::any('/pdfreferral/{id}/{rid}',"ViewController@pdfreferral");
 
 	 Route::any('/dentalNotes/{id}',"ViewController@dentalNotes");
@@ -470,6 +491,8 @@ Route::group(['middleware' =>'auth'], function()
 	 Route::post('/add_notes',"PatientController@doctor_notes");
 
 	 Route::post('/changepassword',"UserController@change_pass");
+
+	 Route::post('/changepass',"UserController@change_password");
 
 	 Route::get('/file','UploadController@index');
 

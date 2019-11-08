@@ -38,12 +38,18 @@ class CalendarController extends Controller
        $roles = User_roles::where('description','!=','Employee')->get();
        $deps = Departments::all();
        $graduate = Graduate_Requests::all();
-
+       $dentist = User_roles::where('name', 'Dentist')->get();
+       $psychiatrist = User_roles::where('name', 'Physciatrist')->get();
        $users = Users::find(Auth::user()->id);
        $transfer = Transfer_Requests::all();
       
+      if(Auth::user()->designation != $dentist[0]->id && Auth::user()->designation != $psychiatrist[0]->id){
 
        return view('calendar.viewCalendar')->with('roles',$roles)->with('deps',$deps)->with('users',$users)->with('graduate',$graduate)->with('transfer',$transfer);
+      }else{
+
+          return view('calendar.viewCalendarDentist')->with('roles',$roles)->with('deps',$deps)->with('users',$users)->with('graduate',$graduate)->with('transfer',$transfer);
+      }
 
    }
 
@@ -63,7 +69,7 @@ class CalendarController extends Controller
 
    }
 
-    
+  
    public function create_event($date){
 
        $roles = User_roles::where('description','!=','Employee')->get();
@@ -212,7 +218,7 @@ class CalendarController extends Controller
         $evt = Events::find($id);
         $evts = Events::where('id', $id)->with('Departments')->get();
         $event_assignee = EventAssignee::where('event_id', $id)->with('assignee')->get();
-        $users_assignee = EventAssignee::select('assignee_id')->where('event_id', $id)->get();
+        $users_assignee = EventAssignee::where('event_id', $id)->pluck('assignee_id')->toArray();
 
         $graduate = Graduate_Requests::all();
         $assignee  = Users::with('user_roles')->get();
@@ -231,7 +237,8 @@ class CalendarController extends Controller
         $childInterven = ChildInterventions::all();
 
         $users = Users::find(Auth::user()->id);
-        //$users_assignee = Users::where('flag', '!=', "deleted")->get();
+
+        $userSome = Users::all();
 
         $transfer = Transfer_Requests::all();
 
@@ -286,7 +293,7 @@ class CalendarController extends Controller
 
 
 
-        return view('calendar.viewEvent')->with('roles' , $roles)->with('deps',$deps)->with('evts' ,$evts)->with('users',$users)->with('pats', $event_patient)->with('intv', $interven)->with('transfer',$transfer)->with('isEventExpired', $isEventExpired)->with('isEventCancelled', $isEventCancelled)->with('graduate',$graduate)->with('isPatientRemove', $isPatientRemove)->with('patients', $patients)->with('childIntervens', $childInterven)->with('assignee',  $assignee)->with('evt', $evt)->with('users_assignee', $users_assignee);
+        return view('calendar.viewEvent')->with('roles' , $roles)->with('deps',$deps)->with('evts' ,$evts)->with('users',$users)->with('pats', $event_patient)->with('intv', $interven)->with('transfer',$transfer)->with('isEventExpired', $isEventExpired)->with('isEventCancelled', $isEventCancelled)->with('graduate',$graduate)->with('isPatientRemove', $isPatientRemove)->with('patients', $patients)->with('childIntervens', $childInterven)->with('assignee',  $assignee)->with('evt', $evt)->with('users_assignee', $users_assignee)->with('userSome', $userSome);
 
 
     }

@@ -68,7 +68,7 @@
                     <td style="text-align: center"><a class="btn btn-success" href="{{URL::to('/viewpatient/'.$pats->id)}}" style="margin-right: 10px;color:white">View</a></td>
                      @endif
                   </tr>
-                  @elseif(Auth::user()->user_role()->first()->name == 'Superadmin')
+                  @elseif(Auth::user()->user_role()->first()->name == 'Superadmin' || Auth::user()->user_role()->first()->name == 'Admin')
                     @if($pats->flag != 'deleted')
                   <tr>
                     <td>{{$pats->id}}</td>
@@ -94,18 +94,6 @@
                     <td style="text-align: center"><a class="btn btn-success" href="{{URL::to('/viewpatient/'.$pats->id)}}" style="margin-right: 10px;color:white">View</a></td>
                     </tr>
                   @endif
-                    @endif
-                  @elseif(Auth::user()->user_role()->first()->name == 'Admin')
-                    @if($pats->flag != 'deleted')
-                  <tr>
-                    <td>{{$pats->id}}</td>
-                    <td>{{$pats->fname}} {{$pats->mname}}. {{$pats->lname}}</td>
-                    <td>{{\Carbon\Carbon::parse($pats->birthdate)->age}}</td>
-                    <td>{{$pats->birthdate}}</td>
-                    <td>{{$pats->address->street}},{{$pats->address->barangay}},{{$pats->address->city}}</td>
-                    <td>{{$pats->departments->department_name}} Department</td>
-                    <td style="text-align: center"><a class="btn btn-success" href="{{URL::to('/viewpatient/'.$pats->id)}}" style="margin-right: 10px;color:white">View</a></td>
-                  </tr>
                     @endif
                   @endif
                 @endforeach

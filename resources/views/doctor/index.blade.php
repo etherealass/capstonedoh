@@ -2,7 +2,7 @@
 @section('content')
         <!-- Breadcrumbs-->
         <ol class="breadcrumb" style="height: 80px;font-size:30px;text-align: center">
-          <li class="breadcrumb-item active" style="margin-left: 450px"><i class="fas fa-fw fa fa-hospital"></i>{{Auth::user()->user_department()->first()->department_name}} Department</li>
+          <li class="breadcrumb-item active" style="margin-left: 450px"><i class="fas fa-fw fa fa-hospital"></i>Department</li>
         </ol> 
 
         <!-- Icon Cards-->

@@ -1,3 +1,110 @@
+<div class="modal fade" id="transferReferral" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content"> 
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel"><b>Specify Transfer Remarks</b></h5>
+          <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <form action="{{URL::to('/patientTransfer')}}" method="post">
+          {{csrf_field()}} 
+          <div class="modal-body">
+          <input type="hidden" id="depid" name="depid" class="form-control" value="">
+          <input type="hidden" id="patientid" name="patientid" class="form-control" value="">
+           <input type="hidden" id="patientdep" name="patientdep" class="form-control" value="">
+          <textarea type="text" id="referral" name="referral" class="form-control" value="" style="height: 100px"></textarea>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-primary" data-dismiss="modal" data-target="#transferPatient" data-toggle="modal">Back</button>
+            <button type="submit" class="btn btn-success">Submit</button>  
+          </div>
+        </form>
+      </div>
+    </div>
+</div>
+
+
+
+
+<div class="modal fade" id="patientadminGraduate" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">  
+          <h5 class="modal-title" id="exampleModalLabel"><b>Graduate</b></h5>
+          <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <form action="{{URL::to('/graduateadmin_patient')}}" method="post">
+          {{csrf_field()}} 
+          <div class="modal-body">
+          <input type="hidden" id="patientid" name="patientid" class="form-control" value="">
+          <input type="hidden" id="patientdep" name="patientdep" class="form-control" value="">
+          <h6> You are about to graduate this patient. Proceed?</h6>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-primary" data-dismiss="modal">Cancel</button>
+            <button type="submit" class="btn btn-success">Proceed</button>  
+          </div>
+        </form>
+      </div>
+    </div>
+</div>
+
+<div class="modal fade" id="deptransferReferral" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel"><b>Are you sure you want to proceed?</b></h5>
+          <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <form action="{{URL::to('/admin_transfer_patient')}}" method="post">
+          {{csrf_field()}} 
+          <div class="modal-body">
+          <input type="hidden" id="depid" name="depid" class="form-control" value="">
+          <input type="hidden" id="patientid" name="patientid" class="form-control" value="">
+           <input type="hidden" id="patientdep" name="patientdep" class=" form-control" value="">
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-primary" data-dismiss="modal" data-target="#transferPatient" data-toggle="modal">Back</button>
+            <button type="submit" class="btn btn-success">Submit</button>  
+          </div>
+        </form>
+      </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="patientGraduate" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">  
+          <h5 class="modal-title" id="exampleModalLabel"><b>Graduate</b></h5>
+          <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <form action="{{URL::to('/graduate_patient')}}" method="post">
+          {{csrf_field()}} 
+          <div class="modal-body">
+          <input type="hidden" id="patientid" name="patientid" class="form-control" value="">
+          <input type="hidden" id="patientdep" name="patientdep" class="form-control" value="">
+          <textarea type="text" id="remarks" name="remarks" class="form-control" placeholder="Specify graduate remarks" value=""></textarea>
+          </div>
+          <div class="modal-footer">
+            <span><h6><b>Important Note:</b> Upon submitting, this will be sent to the Administrator for further confirmation</h6></span>
+            <button type="button" class="btn btn-primary" data-dismiss="modal">Cancel</button>
+            <button type="submit" class="btn btn-success">Submit</button>  
+          </div>
+        </form>
+      </div>
+    </div>
+</div>
+
+
 <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
@@ -11,6 +118,65 @@
           <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
           <a class="btn btn-primary" href="{{URL::to('/logout')}}">Logout</a>
         </div>
+      </div>
+    </div>
+</div>
+
+<div class="modal3 fade" id="viewProfile" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content" style="width: 1000px">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel"><b>USER PROFILE</b></h5>
+          <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <div class="modal-body">
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="changepassword" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel"><b>Change Password</b></h5>
+          <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <form action="{{URL::to('/changepass')}}" method="post" id="changep">
+          {{csrf_field()}} 
+          <div class="modal-body">
+           <div class="alert alert-danger" id="wrong" style="display: none">Current Password does not match</div>
+           <div class="alert alert-danger" id="correct" style="display: none">New Password same as Old Password</div>
+           <label for="oldpass"><h6>Current Password*</h6></label>
+           <input type="password" id="oldpass" name="oldpass" placeholder="Enter current password" class="form-control" value="">
+           <div style="margin-bottom: 10px"></div>
+           <label for="newpass"><h6>New Password*</h6></label>
+           <input type="password" id="newpass" name="newpass" placeholder="Enter new password" class="form-control" value="">
+           <input type="hidden" id="userid" name="userid" class="form-control" value="{{Auth::user()->id}}">
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-primary" data-dismiss="modal">Cancel</button>
+            <button type="submit" class="btn btn-danger">Change Password</button>  
+          </div>
+        </form>
+      </div>
+    </div>
+</div>
+
+<div class="modal fade" id="passwordsuccess" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+          <div class="modal-body">
+            <h2 class="text-success">Password Changed Successfuly</h2>
+          </div>
       </div>
     </div>
 </div>
@@ -161,108 +327,8 @@
     </div>
 </div>
 
-<div class="modal fade" id="transferReferral" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content"> 
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel"><b>Specify Transfer Remarks</b></h5>
-          <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">×</span>
-          </button>
-        </div>
-        <form action="{{URL::to('/patientTransfer')}}" method="post">
-          {{csrf_field()}} 
-          <div class="modal-body">
-          <input type="hidden" id="depid" name="depid" class="form-control" value="">
-          <input type="hidden" id="patientid" name="patientid" class="form-control" value="">
-           <input type="hidden" id="patientdep" name="patientdep" class="form-control" value="">
-          <textarea type="text" id="referral" name="referral" class="form-control" value="" style="height: 100px"></textarea>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-primary" data-dismiss="modal" data-target="#transferPatient" data-toggle="modal">Back</button>
-            <button type="submit" class="btn btn-success">Submit</button>  
-          </div>
-        </form>
-      </div>
-    </div>
-</div>
-
-<div class="modal fade" id="deptransferReferral" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel"><b>Are you sure you want to proceed?</b></h5>
-          <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">×</span>
-          </button>
-        </div>
-        <form action="{{URL::to('/admin_transfer_patient')}}" method="post">
-          {{csrf_field()}} 
-          <div class="modal-body">
-          <input type="hidden" id="depid" name="depid" class="form-control" value="">
-          <input type="hidden" id="patientid" name="patientid" class="form-control" value="">
-           <input type="hidden" id="patientdep" name="patientdep" class=" form-control" value="">
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-primary" data-dismiss="modal" data-target="#transferPatient" data-toggle="modal">Back</button>
-            <button type="submit" class="btn btn-success">Submit</button>  
-          </div>
-        </form>
-      </div>
-    </div>
-</div>
 
 
-<div class="modal fade" id="patientGraduate" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">  
-          <h5 class="modal-title" id="exampleModalLabel"><b>Graduate</b></h5>
-          <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">×</span>
-          </button>
-        </div>
-        <form action="{{URL::to('/graduate_patient')}}" method="post">
-          {{csrf_field()}} 
-          <div class="modal-body">
-          <input type="hidden" id="patientid" name="patientid" class="form-control" value="">
-          <input type="hidden" id="patientdep" name="patientdep" class="form-control" value="">
-          <textarea type="text" id="remarks" name="remarks" class="form-control" placeholder="Specify graduate remarks" value=""></textarea>
-          </div>
-          <div class="modal-footer">
-            <span><h6><b>Important Note:</b> Upon submitting, this will be sent to the Administrator for further confirmation</h6></span>
-            <button type="button" class="btn btn-primary" data-dismiss="modal">Cancel</button>
-            <button type="submit" class="btn btn-success">Submit</button>  
-          </div>
-        </form>
-      </div>
-    </div>
-</div>
-
-<div class="modal fade" id="patientadminGraduate" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">  
-          <h5 class="modal-title" id="exampleModalLabel"><b>Graduate</b></h5>
-          <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">×</span>
-          </button>
-        </div>
-        <form action="{{URL::to('/graduateadmin_patient')}}" method="post">
-          {{csrf_field()}} 
-          <div class="modal-body">
-          <input type="hidden" id="patientid" name="patientid" class="form-control" value="">
-          <input type="hidden" id="patientdep" name="patientdep" class="form-control" value="">
-          <h6> You are about to graduate this patient. Proceed?</h6>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-primary" data-dismiss="modal">Cancel</button>
-            <button type="submit" class="btn btn-success">Proceed</button>  
-          </div>
-        </form>
-      </div>
-    </div>
-</div>
 
 <div class="modal fade" id="patientadminReenroll" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">

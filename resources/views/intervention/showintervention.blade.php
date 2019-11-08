@@ -147,8 +147,8 @@
 
               $('#InterventionTable').DataTable();
 
-          $(".deleteIntervention").click(function (e) {
-
+//     $(".deleteIntervention").click(function (e) {
+  $('body').on('click', '.deleteIntervention', function () {
             //alert("sample");
 
             var stat = $(this).text();
@@ -175,8 +175,10 @@
 
           });
 
-          $(".editIntervention").click(function (e) {
-                    
+   //       $(".editIntervention").click(function (e) {
+
+  $('body').on('click', '.editIntervention', function () {
+               
                   var id = $(this).val();
 
                   var ajaxurl = '{{URL::to("/edit/intervention")}}';
@@ -271,89 +273,6 @@
 
                 
               });
-
-
-
-              //  $(".deletebtn").click(function (e) {
-                    
-              //   var stat = $(this).text();
-
-              //       var result = confirm('Your are about to '+stat+' this Intervention. Would you like to continue?');
-    
-              //             if(result == true){
-
-              //                  var id = $(this).val();
-
-
-              //                  var set;
-
-
-              //                  if(stat == "Inactive"){
-
-              //                     set = 1;
-              //                  }else{
-
-              //                     set =0;
-              //                  }
-                               
-
-              //               $.ajaxSetup({
-              //                 headers: {
-              //                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-              //                 }
-
-              //                });
-
-              //               var ajaxurl = '{{URL::to("/inactive/intervention")}}'+ '/' + id;
-
-              //            $.ajax({
-              //               //contentType: "application/json; charset=utf-8",
-              //               type: "POST",
-              //               url: ajaxurl,
-              //               data: {status: set},
-
-              //                 success: function (data) {
-
-              //                   // var link ='<td id="button_'+data.id+'">';
-
-
-              //                   // if(data.inactive == 1){
-
-              //                   //    /* link += '<button class="btn btn-success deleteIntervention" id="deleteIntervention" name="deleteIntervention" value="'+data.id+'">Active</button></td>';*/
-
-
-
-
-
-              //                   // }else{
-
-              //                   //    link += '<button class="btn btn-info editIntervention" id="editIntervention" name="editIntervention" value="'+data.id+'">Edit</button>';
-              //                   //      link += '<button class="btn btn-success" id="ViewIntervention" name="ViewIntervention" value="'+data.id+'">View</button>';
-              //                   //     link += '<button class="btn btn-danger deleteIntervention" id="deleteIntervention" name="deleteIntervention" value="'+data.id+'">Inactive</button></td>';
-
-              //                   // }
-
-              //                   //       $('#button_'+data.id).replaceWith(link);
-
-
-
-              //                  },
-              //                 error: function (data) {
-              //                   console.log('Error:', data);
-
-              //               }
-
-              // });
-
-
-
-                    
-              //   }
-
-              // });
-
-              
-
   
 
   })

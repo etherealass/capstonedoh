@@ -43,6 +43,7 @@ class RegisterController extends Controller
     $id = rand();
     $depts = $request->input('depart');
 
+    $designation_id = $request->designation;
 
      if($request->input('designat')){
         $role = new User_roles([

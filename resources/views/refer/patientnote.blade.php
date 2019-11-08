@@ -55,13 +55,19 @@ section .section-title {
   <!--DOCTOR-->
           <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
              <div class="container">
-
+               <div style="float:right;margin-bottom: 10px;margin-right: 10px;margin-top: 10px"><a href="{{URL::to('doctorsNotes/doctor/'.$pats->id)}}" target="_blank"><button class="btn btn-danger"><i class="fas fa-fw fa fa-file-pdf"></i></button></a></div>
+              @if(Auth::user()->designation != $dentist[0]->id && Auth::user()->designation != $psychiatrist[0]->id)
                 @if(Auth::user()->user_role->name == 'Doctor' || Auth::user()->user_role->name == 'Superadmin')
-
-                <div style="float:right;margin-bottom: 10px;margin-right: 10px;margin-top: 10px"><a data-patientid="{{$pats->id}}" data-doctorid="{{Auth::user()->id}}" data-toggle="modal" data-target="addDoctortNotes"><a href="{{URL::to('doctorsNotes/doctor/'.$pats->id)}}" target="_blank"><button class="btn btn-danger"><i class="fas fa-fw fa fa-file-pdf"></i></button></a>
+                                @if($pats->status == 'Enrolled')
+                <div style="float:right;margin-bottom: 10px;margin-right: 10px;margin-top: 10px"><a data-patientid="{{$pats->id}}" data-doctorid="{{Auth::user()->id}}" data-toggle="modal" data-target="addDoctortNotes">
                   <button id="addDoctortNotes" name="addDoctortNotes" class="btn btn-success addDoctortNotes" value="add"><i class="fas fa-fw fa fa-plus"></i></button></a></div>
 
                 @endif
+                @endif
+                @endif
+
+               
+
                  <div class="table-responsive scrollAble2" id="doctorTablediv">
                        <table class="table table-bordered doctorsTable" id="doctorsTable" width="100%" style="font-size: 12px">
                             <thead>
@@ -83,7 +89,9 @@ section .section-title {
                                     <td width="15%">{{$patient_note->userx->lname}}, {{$patient_note->userx->fname}}</td>
                                     <td width="5%">
                                   @if((Auth::user()->role == 3 || Auth::user()->role == 2 || Auth::user()->role == 1) && Auth::user()->id == $patient_note->note_by)
+                                   @if($pats->status == 'Enrolled')
                                     <button class="btn btn-info addDoctortNotes" id="addDoctortNote" name="addDoctortNote" style="font-size: 8px;"  value="{{$patient_note->id}}"><i class="fas fa-edit"></i></button>
+                                    @endif
                                     @endif
                                   </td>
                                 </tr>
@@ -114,9 +122,20 @@ section .section-title {
                        <div class="col-md-6">
 
                 @if(Auth::user()->user_role->name == 'Nurse' || Auth::user()->user_role->name == 'Superadmin' || Auth::user()->user_role->name == 'Admin')
+                @if($pats->status == 'Enrolled')
 
                           <div style="float:right;margin-bottom: 10px;"><a data-patientid="{{$pats->id}}" data-doctorid="{{Auth::user()->id}}" data-toggle="modal" data-target="addNurseNotes"><button id="addNurseNotes" name="addNurseNotes" value="add" class="btn btn-success addNurseNotes"><i class="fas fa-fw fa fa-plus"></i></button></a></div>
                   @endif
+                  @endif
+
+                        <div class="dropdown" style="float:right;margin-bottom: 10px;margin-right: 10px">
+                          <button class="btn btn-danger dropdown-toggle"  type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-fw fa fa-file-pdf"></i></button>
+                          <div class="dropdown-menu menu_btn" aria-labelledby="dropdownMenuButton">
+                            <a class="dropdown-item" href="{{URL::to('MedicalRecordsPDF/'.$pats->id)}}" target="_blank">Medication Records</a>
+                            <a class="dropdown-item"  href="{{URL::to('BMINotes/'.$pats->id)}}"  target="_blank">BMI</a>
+                            <a class="dropdown-item"   href="{{URL::to('BloodSugarPDF/'.$pats->id)}}"  target="_blank">Blood Sugar</a>
+                          </div>
+                      </div>
                   </div>
                 </div>
                 </div>
@@ -144,7 +163,7 @@ section .section-title {
                                     <td width="40%" id="nurseNote_{{$patient_note->id}}">{{$patient_note->notes}}</td>
                                     <td width="15%">{{$patient_note->userx->lname}}, {{$patient_note->userx->fname}}</td>
                                     <td width="5%"> 
-                                     @if((Auth::user()->user_role->name == 'Nurse' || Auth::user()->user_role->name == 'Superadmin' || Auth::user()->user_role->name == 'Admin') && Auth::user()->id == $patient_note->note_by)
+                                     @if(Auth::user()->id == $patient_note->note_by && $pats->status == 'Enrolled')
                                       <button id="addNurseNotes" name="addNurseNotes" style="font-size: 8px;" class="btn btn-info addNurseNotes" value="{{$patient_note->id}}"><i class="fas fa-edit"></i></button>
                                       @endif
                                     </td>
@@ -173,7 +192,7 @@ section .section-title {
                               <td width="45%" id="bloodSugarNotes_{{$bloodSugar->id}}">{{$bloodSugar->notes}}</td>
                               <td width="15%">{{$bloodSugar->userxe->lname}}, {{$bloodSugar->userxe->fname}}</td>
                               <td  width="5%">
-                                @if((Auth::user()->user_role->name == 'Nurse' || Auth::user()->user_role->name == 'Superadmin' || Auth::user()->user_role->name == 'Admin') && Auth::user()->id == $patient_note->note_by)
+                                @if(Auth::user()->id == $bloodSugar->created_by && $pats->status == 'Enrolled')
                               <button id="addNurseNotes" name="addNurseNotes" style="font-size: 8px;" class="btn btn-info addNurseNotes" value="{{$bloodSugar->id}}"><i class="fas fa-edit"></i></button>
                               @endif
                             </td>
@@ -203,7 +222,7 @@ section .section-title {
                               <td width="40%" id="bmiRemarks_{{$bmi->id}}">{{$bmi->remarks}}</td>
                               <td width="15%">{{$bmi->userxe->lname}}, {{$bmi->userxe->fname}}</td>
                               <td width="5%">
-@if((Auth::user()->user_role->name == 'Nurse' || Auth::user()->user_role->name == 'Superadmin' || Auth::user()->user_role->name == 'Admin') && Auth::user()->id == $patient_note->note_by)                     
+                              @if(Auth::user()->id == $bmi->created_by && $pats->status == 'Enrolled')                     
                                <button id="addNurseNotes" name="addNurseNotes" class="btn btn-info addNurseNotes" value="{{$bmi->id}}"><i class="fas fa-edit fa-xs"></i></button>
                                 @endif
                               </td>
@@ -212,7 +231,6 @@ section .section-title {
                           </tbody>
                         </table>
                      </div>
-
 
                       <div class="table-responsive scrollAble2" id="MedicationRecordsdiv" hidden="hidden">
                        <table class="table table-bordered MedicationRecords" id="MedicationRecords"  width="100%" style="font-size: 12px" >
@@ -235,7 +253,7 @@ section .section-title {
                               <td width="40%"  id="medicineNotes_{{$record->id}}">{{$record->notes}}</td>
                               <td width="15%">{{$record->userxe->lname}}, {{$record->userxe->fname}}</td>
                               <td  width="5%">
-@if((Auth::user()->user_role->name == 'Nurse' || Auth::user()->user_role->name == 'Superadmin' || Auth::user()->user_role->name == 'Admin') && Auth::user()->id == $patient_note->note_by)
+                            @if(Auth::user()->id == $record->created_by && $pats->status == 'Enrolled')
                                 <button id="addNurseNotes" name="addNurseNotes" class="btn btn-info addNurseNotes" value="{{$record->id}}" style="font-size: 8px;"><i class="fas fa-edit"></i></button>
                                 @endif
                               </td>
@@ -251,13 +269,14 @@ section .section-title {
     <!--Dental-->
           <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">
              <div class="container">
-
-@if(Auth::user()->user_role->name == 'Dentist' || Auth::user()->user_role->name == 'Superadmin' || Auth::user()->user_role->name == 'Admin')                
                 <div style="float:right;margin-bottom: 10px;margin-right: 10px;margin-top: 10px">
                 <a href="{{URL::to('dentalNotes/'.$pats->id)}}" target="_blank"><button class="btn btn-danger"><i class="fas fa-fw fa fa-file-pdf"></i></button></a>
-                  <a data-patientid="{{$pats->id}}" data-doctorid="{{Auth::user()->id}}" data-toggle="modal" data-target="addDentalNotes">
-<button id="addDentalNotes" name="addDentalNotes" class="btn btn-success addDentalNotes" value="add"><i class="fas fa-fw fa fa-plus"></i></button></a></div>
-  @endif
+
+              @if((Auth::user()->designation == $dentist[0]->id || Auth::user()->user_role->name == 'Superadmin') && $pats->status == 'Enrolled')                
+
+                  <a data-patientid="{{$pats->id}}" data-doctorid="{{Auth::user()->id}}" data-toggle="modal" data-target="addDentalNotes"><button id="addDentalNotes" name="addDentalNotes" class="btn btn-success addDentalNotes" value="add"><i class="fas fa-fw fa fa-plus"></i></button></a>
+             @endif
+              </div>
                  <div class="table-responsive scrollAble2">
                        <table class="table table-bordered"  id="dentalTable" width="100%" style="font-size: 12px">
                             <thead>
@@ -282,12 +301,12 @@ section .section-title {
                                     <td width="10%">{{$dental_notes->userx->lname}}, {{$dental_notes->userx->fname}}</td>
                                     <td width="25%" id="dentalRemarks_{{$dental_notes->id}}">{{$dental_notes->notes}}</td>  
                                     <td width="5%">
-@if((Auth::user()->user_role->name == 'Dentist' || Auth::user()->user_role->name == 'Superadmin' || Auth::user()->user_role->name == 'Admin') && Auth::user()->id == $patient_note->note_by)
+                        @if(Auth::user()->id == $patient_note->note_by && $pats->status == 'Enrolled')
 
                                     <button id="addDentalNotes" name="addDentalNotes" class="btn btn-info addDentalNotes" style="font-size: 8px;" value="{{$dental_notes->id}}"><i class="fas fa-edit" ></i></button></td>  
                             </tr>
-@endif    
-@endif
+                          @endif    
+                          @endif
                               @endforeach
 
                           </tbody>
@@ -301,7 +320,7 @@ section .section-title {
           <div class="tab-pane fade" id="nav-about" role="tabpanel" aria-labelledby="nav-about-tab">
                  <div class="container">
 
-              @if(Auth::user()->user_role->name == 'Physciatrist' || Auth::user()->user_role->name == 'Superadmin' || Auth::user()->user_role->name == 'Admin')                
+              @if((Auth::user()->designation == $psychiatrist[0]->id || Auth::user()->user_role->name == 'Superadmin') && $pats->status == 'Enrolled')        
 
                 <div style="float:right;margin-bottom: 10px;margin-right: 10px;margin-top: 10px"><a data-patientid="{{$pats->id}}" data-doctorid="{{Auth::user()->id}}" data-toggle="modal" data-target="addPyschiatristNotes"><button id="psychiatristNotes" class="btn btn-success psychiatristNotes" value="add"><i class="fas fa-fw fa fa-plus"></i></button></a></div>
                 @endif
@@ -330,7 +349,7 @@ section .section-title {
                                     <td width="45%" id="psychiatristNote_{{$patient_note->id}}">{{$patient_note->notes}}</td>
                                     <td width="15%">{{$patient_note->userx->lname}}, {{$patient_note->userx->fname}}</td>
                                     <td width="5%">
-                                    @if((Auth::user()->user_role->name == 'Physciatrist' || Auth::user()->user_role->name == 'Superadmin' || Auth::user()->user_role->name == 'Admin') && Auth::user()->id == $patient_note->note_by)
+                                    @if($pats->status == 'Enrolled' && Auth::user()->id == $patient_note->note_by)
                                       <button id="psychiatristNotes" name="psychiatristNotes" class="btn btn-info psychiatristNotes" style="font-size: 8px;" value="{{$patient_note->id}}"><i class="fas fa-edit"></i></button>
                                           @endif
                                       </td>
@@ -347,7 +366,7 @@ section .section-title {
           <div class="tab-pane fade" id="nav-social-worker" role="tabpanel" aria-labelledby="nav-social-worker-tab">
                  <div class="container">
 
-@if(Auth::user()->user_role->name == 'Social Worker' || Auth::user()->user_role->name == 'Superadmin' || Auth::user()->user_role->name == 'Admin')
+@if((Auth::user()->user_role->name == 'Social Worker' || Auth::user()->user_role->name == 'Superadmin' || Auth::user()->user_role->name == 'Admin') && $pats->status == 'Enrolled')
                 <div style="float:right;margin-bottom: 10px;margin-right: 10px;margin-top: 10px"><a data-patientid="{{$pats->id}}" data-doctorid="{{Auth::user()->id}}" data-toggle="modal" data-target="addSocialWorkerNotes"><button id="addSocialWorkerNotes" name="addSocialWorkerNotes" value="add" class="btn btn-success addSocialWorkerNotes"><i class="fas fa-fw fa fa-plus"></i></button></a></div>
                 @endif
                  <div class="table-responsive scrollAble2">
@@ -374,7 +393,7 @@ section .section-title {
                                     <td width="45%" id="socialworkerNote_{{$patient_note->id}}">{{$patient_note->notes}}</td>
                                     <td width="15%">{{$patient_note->userx->lname}}, {{$patient_note->userx->fname}}</td>
                                     <td width="5%">
-                      @if((Auth::user()->user_role->name == 'Social Worker' || Auth::user()->user_role->name == 'Superadmin' || Auth::user()->user_role->name == 'Admin') && Auth::user()->id == $patient_note->note_by)
+                      @if(Auth::user()->id == $patient_note->note_by && $pats->status == 'Enrolled')
                                       <button id="addSocialWorkerNotes" name="addSocialWorkerNotes" class="btn btn-info addSocialWorkerNotes" value="{{$patient_note->id}}" style="font-size: 8px;"><i class="fas fa-edit"></i></button>
                                       @endif
                                     </td>

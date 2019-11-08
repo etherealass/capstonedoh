@@ -748,6 +748,40 @@ class DatabaseSeeder extends Seeder
 
         ]);
 
+
+        $socialservice = Services::where('name','SOCIAL SERVICE')->first();
+        $ss = $socialservice->id;
+
+
+        DB::table('services')->insert([
+            'parent' => $ss,
+            'name' => 'CASE STUDY WORK',
+            'description' => 'CASE STUDY WORK'
+
+        ]);
+
+        DB::table('services')->insert([
+            'parent' => $ss,
+            'name' => 'HOME VISITATION',
+            'description' => 'HOME VISITATION'
+
+        ]);
+
+         DB::table('services')->insert([
+            'parent' => $ss,
+            'name' => 'FAMILY PSYCHOTHERAPY',
+            'description' => 'FAMILY PSYCHOTHERAPY'
+
+        ]);
+
+        DB::table('services')->insert([
+            'parent' => $ss,
+            'name' => 'COURT APPEARANCE',
+            'description' => 'COURT APPEARANCE'
+
+        ]);
+
+
         $Mif = Services::where('name','MEDICAL (INSIDE FACILITY)')->first();
         $inside = $Mif->id;
 
@@ -769,8 +803,6 @@ class DatabaseSeeder extends Seeder
         $legal = Services::where('name','LEGAL SERVICE')->first();
         $legalServices = $legal->id;
 
-        $socialservice = Services::where('name','SOCIAL SERVICE')->first();
-        $ss = $socialservice->id;
 
         $doctor = User_roles::where('name', 'Doctor')->first();
             $doc =  $doctor->id;

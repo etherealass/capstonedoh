@@ -20,6 +20,7 @@ use App\Interventions;
 use App\Patient_Event_List;
 use App\Transfer_Requests;
 use App\Visit_interven;
+use App\EventAssignee;
 
 use Hash;
 use Session;
@@ -66,6 +67,78 @@ class EventController extends Controller
             ]);
         }
     }
+
+
+     public function event_save_edit(Request $request){
+        
+
+           $id = $request->eventId;
+           $title = $request->title;
+           $venue = $request->venue;
+           $description = $request->description;
+           $start = $request->start;
+           $time = $request->time;
+           $end_time = $request->end_time;
+           $nameid = $request->nameid;
+
+           $startDateTime = $start." ".date("H:m:s", strtotime($time));
+           $endDateTime =  $start." ".date("H:m:s", strtotime($end_time));
+
+         $event = Events::find($id);
+
+        $event->update(array('title'=> $title, 'venue'=>$venue, 'description'=>$description, 'start'=>$startDateTime, 'end'=>$endDateTime, 'start_date'=> $start, 'end_date' => $start, 'start_time'=> $time, 'end_time'=>  $end_time));
+
+        $patient = Patient_Event_List::where('event_id', $event->id)->get();
+
+        foreach ($patient as $pats) {
+        
+            $patientz = Patient_Event_List::find($pats->id);
+
+            $patientz->update(array('date'=>$start));
+
+        }
+
+        $assign = EventAssignee::where('event_id', $event->id)->get();
+
+        $assignee_id = EventAssignee::where('event_id', $id)->pluck('assignee_id')->toArray();
+
+
+        if($nameid){
+                foreach ($request->nameid as $assignee) {
+
+                     if(!in_array($assignee, $assignee_id)){
+
+                            $d = new EventAssignee;
+                            $d->event_id = $event->id;
+                            $d->assignee_id = $assignee;
+
+                            $d->save();
+
+                    
+                    }
+                }
+
+                foreach ($assign as $noshow) {
+                    if(!in_array($noshow->assignee_id, $request->nameid)){
+
+                        EventAssignee::where('id', $noshow->id)->delete();
+
+
+                    }
+
+                }
+
+        }else{
+
+            EventAssignee::where('event_id', $id)->delete();
+
+        }
+
+            Session::flash('success', 'Event edited');
+            return back();
+
+   }
+    
 
     public function delete_patient_event($id){
 

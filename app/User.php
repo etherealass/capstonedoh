@@ -17,7 +17,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'role', 'department',
+        'name', 'email', 'password', 'role', 'department', 'designation'
     ];
 
     /**
@@ -34,8 +34,19 @@ class User extends Authenticatable
         return $this->belongsTo('App\User_roles', 'role');
     }
 
-    public function user_department()
+    // public function user_department()
+    // {
+    //     return $this->belongsTo('App\Departments', 'department');
+    // }
+
+    public function user_departments()
     {
-        return $this->belongsTo('App\Departments', 'department');
+        return $this->hasMany('App\User_departments', 'user_id', 'id');
+    }
+
+    public function designation()
+    {
+        return $this->belongsTo('App\User_roles', 'designation');
+
     }
 }

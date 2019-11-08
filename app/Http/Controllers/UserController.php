@@ -12,10 +12,13 @@ use Auth;
 use DB;
 use App\Users;
 use App\User_roles;
+use App\User_departments;
 use App\Departments;
 use App\Transfer_Requests;
 use App\Logs;
 use App\Graduate_Requests;
+use Response;
+
 use Hash;
 use Session;
 
@@ -38,6 +41,13 @@ class UserController extends Controller
 		else{
 			return abort(404);
 		}
+	}
+
+	public function editEmployeeDepartment($id){
+
+			$depart = User_departments::where('user_id', $id)->with('departmentsc')->get();
+
+			return Response::json($depart);
 	}
 
 	public function create_user($id)
@@ -69,6 +79,25 @@ class UserController extends Controller
 		flash('Password Changed', '')->overlay();
 
 		return back();
+	}
+
+	public function change_password(Request $request)
+	{
+		if (!(Hash::check($request->get('oldpass'), Auth::user()->password))) {
+            $res = 1;
+        	return \Response::json(['res' => $res]);
+        }
+        elseif(strcmp($request->get('oldpass'), $request->get('newpass')) == 0){
+            $res = 0;
+        	return \Response::json(['res' => $res]);
+        }
+        elseif (Hash::check($request->get('oldpass'), Auth::user()->password)){
+        	
+        	$user = Users::where('id',$request->input('userid'))->update(['password' => Hash::make($request->input('newpass'))]);
+
+			$res = 2;
+        	return \Response::json(['res' => $res]);
+        }
 	}
 
 	public function createuserrole()
@@ -153,13 +182,51 @@ class UserController extends Controller
 
 		$users = Users::findorfail($request->userid);
 
-		
 		$users->update($request->all());
+
+		$departmentList = User_departments::where('user_id', $request->userid)->get();
+
+		$department_idList = User_departments::where('user_id', $request->userid)->pluck('department_id')->toArray();
 
 		foreach($user as $us)
 		{
 			$id  = $us->id;
 		}
+
+		if(isset($request->depart)){
+				foreach ($request->depart as $val) {
+
+						if(!in_array($val, $department_idList)){
+
+							$d = new User_departments;
+                            $d->department_id = $val;
+                            $d->user_id = $users->id;
+
+                            $d->save();
+						}
+
+				}
+
+				foreach ($departmentList as $depart_id) {
+					
+					  if(!in_array($depart_id->department_id, $request->depart)){
+
+					  	  User_departments::where('id', $depart_id->id)->delete();
+
+
+					  }
+				}
+
+		}else{
+
+			 User_departments::where('user_id', $id)->delete();
+
+		}
+
+
+		// dd($request->depart);
+
+		// exit;
 
 		date_default_timezone_set('Asia/Singapore');
 

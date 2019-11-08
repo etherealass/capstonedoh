@@ -30,6 +30,7 @@
 
             </div>
           </div>
+          @if(Auth::user()->designation != $dentist[0]->id && Auth::user()->designation != $psychiatrist[0]->id)
           <div class="col-xl-4 col-sm-9 mb-10">
             <div class="mb-3 text-black o-hidden h-100">
               <div class="card-body">
@@ -37,6 +38,7 @@
               </div>
           </div>
         </div>
+        @endif
         </div>
          <div class="card-body" style="margin-left: 10px">
             <div class="table-responsive">

@@ -66,7 +66,7 @@ table, th, td {
 		<td><b>Age</b></td>
 		<td>{{\Carbon\Carbon::parse($pats->birthdate)->age}}</td>
 		<td><b>Gender</b></td>
-		<td>{{$pats->genders->name}}</td>
+		<td>{{$pats->genders}}</td>
 	</tr>
 	<tr>
 		<td><b>Birthdate:</b></td>

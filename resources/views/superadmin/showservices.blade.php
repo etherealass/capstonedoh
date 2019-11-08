@@ -205,7 +205,10 @@
 
               $(".notify").selectpicker();
 
-      $(".deleteServices").click(function (e) {
+
+
+//      $(".deleteServices").click(function (e) {
+$('body').on('click', '.deleteServices', function () {
 
             //alert("sample");
 
@@ -307,8 +310,7 @@
       });
 
 
-        $('.editServices').click(function () {
-
+$('body').on('click', '.editServices', function () {
 
                     $('#EditServiceModalData').find("input, select").val("");
                  
@@ -318,7 +320,6 @@
                   $('#EditServiceModal').modal('show');
                    
                 var ajaxurl = '{{URL::to("/view/service")}}';
-                   //var data = [{'id': $(this).val()}]
 
               $.ajax({
                 contentType: "application/json; charset=utf-8",

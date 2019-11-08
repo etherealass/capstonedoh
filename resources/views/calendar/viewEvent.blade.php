@@ -57,7 +57,7 @@ select
 
           </li>
         @if($isEventCancelled)
-         <button class="btn btn-success edit-event" style="float:right;margin-right: 10px;height: 60px;width: 90px;margin-top: 10px">Edit</button><button class="btn btn-danger cancel-event" style="float:right; margin-right: 10px;height: 60px;width: 90px;margin-top: 10px" name="cancel-event" id="cancel-event">Cancel</button>
+         <button class="btn btn-success edit-event pull-right" style="float:right;margin-right: 10px;height: 60px;width: 90px;margin-top: 10px">Edit</button><button class="btn btn-danger pull-right cancel-event" style="float:right; margin-right: 10px;height: 60px;width: 90px;margin-top: 10px" name="cancel-event" id="cancel-event">Cancel</button>
             @endif
         
         </ol> 
@@ -232,6 +232,8 @@ select
                                   <h6>Title:</h6>
                               </div>
                               <div class="col-md-10">
+                                  <input type="hidden" id="eventId" class="form-control" placeholder="Title" required="required" name="eventId" value="{{$evt->id}}">
+
                                   <input type="text" id="title" class="form-control" placeholder="Title" required="required" name="title" value="{{$evt->title}}">
                               </div>
                               </div>
@@ -276,14 +278,6 @@ select
                               <div class="col-md-4">
                                   <input type="time" id="start_time" class="form-control" placeholder="Start Time" required="required" name="time" value="{{$evt->start_time}}">
                               </div>
-                           
-                             
-                            <!--   <div class="col-md-2">
-                                  <h6>End Date:</h6>
-                              </div>
-                              <div class="col-md-4">
-                                  <input type="date" id="end" class="form-control" placeholder="start" required="required" name="end" value="{{$evt->end_date}}">
-                              </div> -->
                             
                               <div class="col-md-2">
                                   <h6>End Time:</h6>
@@ -299,24 +293,15 @@ select
                         <label for="inputPassword" class="col-md-2 col-form-label" style="text-align: right;">Assignee:</label>
                         <div class="col-md-9">
                              <select id="nameid[]" class="selectpicker show-menu-arrow form-control" style="font-size: 18px;overflow: hidden;" name="nameid[]" multiple="multiple">
-                                        @foreach($assignee->groupby('role') as $assign => $user)
-                                        @foreach($roles as $role)
-                                        @if($assign == $role->id)
-                                            <optgroup label="{{$role->name}}">
-                                          @foreach($user as $assgnee)
-                                            @foreach($users_assignee as $event_Assign)
-                                            @if($assgnee['id'] == $event_Assign['assignee_id'])
-                                            <option  value="{{$assgnee['id']}}" selected>{{$assgnee['fname']}} {{$assgnee['lname']}}</option>
-                                            @else
-                                             <option value="{{$assgnee['id']}}">{{$assgnee['fname']}} {{$assgnee['lname']}}</option>
-                                          @endif
-                                          @endforeach
-                                          @endforeach
-                                        </optgroup>
-                                        @endif
-                                        @endforeach
-                                        @endforeach
-                                    </select>
+                                        @foreach($userSome  as $user)
+                                              @if(in_array($user->id, $users_assignee))
+                                             <option value="{{$user->id}}" selected>{{$user->fname}} {{$user->lname}}</option>
+                                              @else
+                                             <option value="{{$user->id}}">{{$user->fname}} {{$user->lname}}</option>
+                                             @endif
+                                          @endforeach 
+                                       
+                            </select>
                         </div>
                      </div>
                         

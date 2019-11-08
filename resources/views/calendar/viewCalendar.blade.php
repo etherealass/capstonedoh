@@ -26,7 +26,7 @@
         </ol>
 
  <div style="background-color: white;border-radius: 5px;height: 800px">
-        <div class="row" style="">
+        <div class="row" style=""> 
           <div class="col-md-4">
             <div class="text-black o-hidden h-100">
               <div class="card-body">
@@ -44,12 +44,9 @@
             </div>
           </div>
       </div>
-<center>
-  
-
-                    <div class="card border-dark mb-3" style="max-width: 14rem; margin-top: 50px;">
-        <div class="col-md-3">
+        <div class="col-md-4">
             <div class="card border-dark mb-3" style="max-width: 28rem;margin-left: 20px">
+                <input type="hidden" id="note_by" name="note_by" value="{{Auth::user()->id}}">
                 <div class="card-header" style="background-color: #343a40;color: white">Legend</div>
                   <div class="card-body text-dark">
                     <p style="text-align: left; margin-left: 20px"><span class="dot"  style="background-color: #32CD32;" ></span>&nbsp;&nbsp;&nbsp;Inpatient Events</p>
@@ -57,14 +54,10 @@
                     <p style="text-align: left;  margin-left: 20px"><span class="dot"  style="background-color: #5bc0de;" ></span>&nbsp;&nbsp;&nbsp;Aftacare Events</p>
                     <p style="text-align: left;  margin-left: 20px"><span class="dot"  style="background-color: #d9534f;" ></span>&nbsp;&nbsp;&nbsp;Cancelled Events</p>
                     <p style="text-align: left;  margin-left: 20px"><span class="dot"  style="background-color: #f0ad4e;" ></span>&nbsp;&nbsp;&nbsp;Other Events</p>
-          <div class="col-md-8" style="border: solid black 2px;border-radius: 5px;padding:10px">
-                  </div>
-  </div>
+                </div>
+              </div>
           </div>
-        </div>
 
-  </center>
-</div>
 
 
 @endsection
@@ -106,7 +99,7 @@
       maxTime: "20:00:00",
       events: evt,
 
-  
+
 
       dayClick: function(date, end, jsEvent, view, resourceObj) {
 

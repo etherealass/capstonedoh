@@ -215,8 +215,11 @@
     <div class="tab-pane fade" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">
       <fieldset style="margin-bottom: 10px;margin-left: 0px;border:solid thin gray;border-radius: 10px;">
             <legend style="color:white;text-indent: 20px;width:900px;margin-bottom: 10px;border-radius: 5px" class="bg bg-dark">Patient Referral</legend>
+
+           @if($pats->status == 'Enrolled')
                 @if(Auth::user()->user_role->name == 'Social Worker' || Auth::user()->user_role->name == 'Superadmin' )
                       <button id="add-patient-refer" name="add-patient-refer" class="btn btn-dark btn-block" style="height: 50px; width:200px;margin-top: 0px;margin-left: 750px">Refer Patient</button>
+                  @endif
                   @endif
                         <br>
                         <br>
@@ -269,6 +272,9 @@
       <div class="tab-pane fade" id="v-pills-contact" role="tabpanel" aria-labelledby="v-pills-profile-tab">
         <fieldset style="margin-bottom: 10px;margin-left: 0px;border:solid thin gray;border-radius: 10px;">
             <legend style="color:white;text-indent: 20px;width:900px;margin-bottom: 10px;border-radius: 5px" class="bg bg-dark">Sessions</legend>
+            
+               <a href="{{URL::to('MonitoringTool/'.$pats->id)}}" target="_blank"><button class="btn btn-danger"><i class="fas fa-fw fa fa-file-pdf"></i></button></a>
+              @if($pats->status == 'Enrolled')
                 @if(Auth::user()->user_role->name == 'Social Worker' || Auth::user()->user_role->name == 'Superadmin')              
                    <div class="dropdown">
                           <button class="btn btn-dark dropdown-toggle"  style="height: 50px; width:200px;margin-top: 0px;margin-left: 750px" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -288,6 +294,8 @@
                           </div>
                       </div>
                   @endif
+                  @endif
+
                         <br>
 
                         <div class="card-body" style="margin-left: 10px;margin-top: 20px">

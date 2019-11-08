@@ -2274,7 +2274,10 @@ $today = $year . '-' . $month . '-' . $day;
  
 
 
-    $('.addDoctortNotes').click(function () {
+
+
+      $('body').on('click', '.addDoctortNotes', function () {
+
 
 
         if($(this).val() != 'add'){
@@ -2305,7 +2308,10 @@ $today = $year . '-' . $month . '-' . $day;
     
     });
 
-       $('.psychiatristNotes').click(function () {
+
+    $('body').on('click', '.psychiatristNotes', function () {
+
+
 
           if($(this).val() != 'add'){
 
@@ -2348,12 +2354,17 @@ $today = $year . '-' . $month . '-' . $day;
        });
     
 
- $('.addDentalNotes').click(function () {
-
-      if($(this).val != "add"){
+    $('body').on('click', '.addDentalNotes', function () {
 
 
-               var type = "GET";
+      var note_id = $(this).val();
+
+
+
+      if($(this).val() != "add"){
+
+
+        var type = "GET";
         var id = $(this).val();
         var ajaxurl = '{{URL::to("/findNotes")}}/' + id;
 
@@ -2372,6 +2383,10 @@ $today = $year . '-' . $month . '-' . $day;
 
                 }
               })
+      }else{
+
+                  $("#noteId").val("add");
+
       }
 
         $('#AddDentalFormData').trigger("reset");
@@ -2381,7 +2396,9 @@ $today = $year . '-' . $month . '-' . $day;
 
 
 
-$('.addSocialWorkerNotes').click(function () {
+
+    $('body').on('click', '.addSocialWorkerNotes', function () {
+
 
 
       
@@ -2650,6 +2667,8 @@ $('.addSocialWorkerNotes').click(function () {
 
      $('#btn-attended').click(function (e){
 
+
+
     $.ajaxSetup({
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -2763,82 +2782,6 @@ $('.addSocialWorkerNotes').click(function () {
 
   
 
-
-
-
-// $("#btn_activate").click(function (e) {
-
-//           var curStat = $(this).val();
-
-//           var patient_id = $("#patient-id").val();
-
-//           console.log(curStat);
-
-//           var newStat;
-
-//           if(curStat == 1){
-
-//               newStat = 0;
-//           }else{
-
-//               newStat = 1;
-//           }
-
-//           alert(patient_id);
-
-
-//         $.ajaxSetup({
-//             headers: {
-//                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-//             }
-//             });
-//                e.preventDefault();
-//               var formData = {
-
-//                     remarks:  $("#note").val(),
-//                     inactive: newStat,
-
-//               };
-
-
-//             $.ajax({
-//             type: "PUT",
-//             url: '{{URL::to("/activation")}}'+ '/' + patient_id,
-//             data: formData,
-//             dataType: 'json',
-//             success: function (data) {
-
-//                       $('#inactivemodalFormData').trigger("reset");
-//                       $('#inactiveEditorModal').modal('hide');
-
-//                           var link = '<div class="dropdown-menu menu_btn2" aria-labelledby="dropdownMenuButton">';
-                       
-
-//                        if(curStat == 1){
-//                            link += ' <a class="dropdown-item visit_btn" id="a-visit" name="a-visit" href="#"><button id="btn-visit" name="btn-visit" class="btn">Patient Visit</button></a>';
-//                             link += '<a class="dropdown-item inactive_btn"  id="a-inactive" name="a-inactive" href="#"><button id="btn-inactive" name="btn-inactive" class="btn" value="{{$pats->inactive}}">Inactive</button></a>';
-
-
-                        
-//                         }else{
-//                              link += '<a class="dropdown-item inactive_btn"  id="a-inactive" name="a-inactive" href="#"><button id="btn-inactive" name="btn-inactive" class="btn" value="{{$pats->inactive}}">Active</button></a>';
-
-//                         }
-
-//                        $('.menu_btn').replaceWith(link);
-
-
-                 
-//             },
-//            error: function (data) {
-//                 console.log('Error:', data);
-//             }
-//           });
-
-
-
-// });
-
 $("#btn-save-socialworker").click(function (e) {
    
 
@@ -2865,7 +2808,6 @@ $("#btn-save-socialworker").click(function (e) {
 
       e.preventDefault();
          var formData = {
-            progress_id: "sample",
             patient_id: $('#patient_id').val(),
             date_time: dateTime,
             service_id: service_id,
@@ -2883,7 +2825,7 @@ $("#btn-save-socialworker").click(function (e) {
                var ajaxurl ="";
 
 
-        if(noteid == "add" ){
+        if(noteid == "add"  || noteid==""){
 
               console.log("here");
 
@@ -2917,7 +2859,7 @@ $("#btn-save-socialworker").click(function (e) {
                 if(noteid == "add" ){
 
                     var link = '<tr id="socialworker_' + data[0].id + '"><td>' + data[0].date_time + '</td><td>' + service + '</td><td>' + data[0].notes + '</td><td>' + data[0]['userx'].lname +', '+ data[0]['userx'].fname + '</td>';
-                link += '<td></td>';
+                link += '<td><button id="addSocialWorkerNotes" name="addSocialWorkerNotes" class="btn btn-info addSocialWorkerNotes" value="'+ data[0].id +'" style="font-size: 8px;"><i class="fas fa-edit"></i></button></td>';
                 
 
                     $('#socialworker-list').append(link);
@@ -3273,7 +3215,6 @@ $("#btn-save-nursenotes").click(function (e) {
 
       e.preventDefault();
          var formData = {
-            progress_id: "sample",
             patient_id: $('#patient_id').val(),
             date_time: dateTime,
             service_id: service_id,
@@ -3369,7 +3310,6 @@ $("#btn-save-psychiatristnotes").click(function (e) {
 
       e.preventDefault();
          var formData = {
-            progress_id: "sample",
             patient_id: $('#patient_id').val(),
             date_time: dateTime,
             service_id: $('#psychiatristList').val(),
@@ -3410,7 +3350,7 @@ $("#btn-save-psychiatristnotes").click(function (e) {
 
 
                    var link = '<tr id="psychiatrist_' + data[0].id + '"><td>' + data[0].date_time + '</td><td>' + data[0]['servicex'].name + '</td><td>' + data[0].notes + '</td><td>' + data[0]['userx'].lname +', '+ data[0]['userx'].fname + '</td>';
-                link += '<td><button id="addNurseNotes" name="addNurseNotes" style="font-size: 8px;" class="btn btn-info addNurseNotes" value="'+data[0].id+'"><i class="fas fa-edit"></i></button></td>';
+                link += '<td><button id="psychiatristNotes" name="psychiatristNotes" style="font-size: 8px;" class="btn btn-info psychiatristNotes" value="'+data[0].id+'"><i class="fas fa-edit"></i></button></td>';
                 
 
                     $('#psychiatrist-list').append(link);
@@ -3462,7 +3402,6 @@ $("#btn-save-dentalServices").click(function (e) {
  var formData = {
    
             patient_id: $('#patient_id').val(),
-            progress_id: "sample",
             date_time: dateTime,
             note_by: $('#note_by').val(),
             tooth_no: $('#tooth_no').val(),
@@ -3510,7 +3449,7 @@ $("#btn-save-dentalServices").click(function (e) {
                   if(noteid == "add"){
                    var link = '<tr id="dental_' + data[0].id + '"><td>' + data[0].date_time + '</td><td>' + data[0].diagnose + '</td><td>' + data[0].tooth_no + '</td><td>' + data[0].service_rendered +'</td><td>'+ data[0]['userx'].lname +', '+data[0]['userx'].fname+'</td><td>'+data[0].notes+'</td>';
                   
-                link += '<td></td>';
+                link += '<td> <button id="addDentalNotes" name="addDentalNotes" class="btn btn-info addDentalNotes" style="font-size: 8px;" value="'+data[0].id+'"><i class="fas fa-edit" ></i></button></td>';
                 
 
                     $('#dental-list').append(link);
@@ -3570,7 +3509,6 @@ $("#btn-save-doctornotes").click(function (e) {
 
       e.preventDefault();
          var formData = {
-            progress_id: "sample",
             patient_id: $('#patient_id').val(),
             date_time: dateTime,
             service_id: $('#doctorList').val(),
@@ -3710,7 +3648,9 @@ $("#btn-save").click(function (e) {
       });
 
 
-$('.accept_patient_referal').click(function (e) {
+
+  $('body').on('click', '.accept_patient_referal', function () {
+
 
            var result = confirm('Your are about to accept this referal. Would you like to continue?');
     

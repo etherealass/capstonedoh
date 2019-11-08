@@ -55,6 +55,37 @@
 
   <script>
 
+  $('#changep').submit(function( event ) {
+    event.preventDefault();
+    $.ajax({
+        url: '{{URL::to('/changepass')}}',
+        type: 'post',
+        data: $('#changep').serialize(), 
+        dataType: 'json',
+        success: function(data){
+          if(data.res == 1){
+            $('#changepassword').show();
+            $('#wrong').show();
+            $('#correct').hide();
+          }
+          else if(data.res == 0){
+            $('#wrong').hide();
+            $('#correct').show();
+
+          }
+          else if(data.res == 2){
+            $('#changepassword').hide();
+            $('#passwordsuccess').modal('show');
+            setTimeout(function(){
+              $('#passwordsuccess').modal('hide');
+              $('.modal-backdrop').remove();
+            }, 3000);
+            
+          }
+        }
+    });
+  });
+
   $('#myform').submit(function( event ) {
     $('.loader').show();
     $('.successload').hide();
@@ -140,6 +171,16 @@
 </script>
 
   <script type="text/javascript">  
+
+      $('#editModal').on('hidden.bs.modal', function () {
+        //$(this).removeData('bs.modal');
+
+          $('#editModal .depart option').removeAttr('selected','selected');
+          $('select[name="depart[]"]').next('.btn').attr('title', "Nothing selected");
+          $('select[name="depart[]"]').next('.btn').find('div.filter-option-inner-inner').text("Nothing selected")
+
+      });
+
   $('#editModal').on('show.bs.modal', function (event) {
 
     var button = $(event.relatedTarget)
@@ -152,7 +193,41 @@
     var contact = button.data('contact')
     var department = button.data('department')
     var password = button.data('password')
+    var designation = button.data('designation')
     var modal = $(this)
+
+                  var notifytitles = [];
+
+                var ajaxurl = '{{URL::to("/editEmployeeDepartment")}}/'+ userid;
+
+              $.ajax({
+                type: "GET",
+                url: ajaxurl,
+               success: function (data) {  
+
+                    if (data.length> 0){
+
+                             $('#editModal li, #editModal li a').removeClass('selected');
+                        for(var i=0; i<data.length; i++){
+
+
+                                  $('#editModal .depart option[value='+data[i].department_id+']').attr('selected','selected');
+
+                                  notifytitles.push(" "+data[i].departmentsc.department_name+" department");
+
+                        }
+
+                    }
+
+                      $('select[name="depart[]"]').next('.btn').attr('title',notifytitles);
+                      $('select[name="depart[]"]').next('.btn').find('div.filter-option-inner-inner').text(notifytitles);
+
+               },
+               error: function (data) {
+                    console.log('Error:', data);
+
+                }
+               });
 
     modal.find('.modal-body #userid').val(userid);
     modal.find('.modal-body #fname').val(fname);
@@ -162,6 +237,11 @@
     modal.find('.modal-body #contact').val(contact);
     modal.find('.modal-body #department').val(department);
     modal.find('.modal-body #password').val(password);
+    modal.find('.modal-body #designation').val(designation);
+
+             // $(".modal-body designation[value="+designation"]").prop("selected", true);
+
+
   })
 
    $('#editemployeeModal').on('show.bs.modal', function (event) {
@@ -1033,6 +1113,20 @@ $(function() {
   $('select[id="report"]').on('click', function(){
 
   if ($(this).children(":selected").attr("value") == 'Plea Bargain') {
+      $('#depsa').hide();
+      document.getElementById("datefrom").disabled = true;
+      document.getElementById("dateto").disabled = true;
+      document.getElementById("department").disabled = true;
+      document.getElementById("month").disabled = false;
+      document.getElementById("year").disabled = false;
+      document.getElementById("mon").hidden = false;
+      document.getElementById("yea").hidden = false;
+      $('#datef').hide();
+      $('#datet').hide();
+      $('#depsa').hide();
+
+  }
+  else if ($(this).children(":selected").attr("value") == 'Accomplishment Report') {
       $('#depsa').hide();
       document.getElementById("datefrom").disabled = true;
       document.getElementById("dateto").disabled = true;
