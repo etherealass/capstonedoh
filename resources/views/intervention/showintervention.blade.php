@@ -65,8 +65,8 @@
                                     @else
                                       <div class="foractive">
                                       <button class="btn btn-info editIntervention" id="editIntervention" name="editIntervention" value="{{$intervention->id}}">Edit</button>
-                                     <button class="btn btn-success" id="ViewIntervention" name="ViewIntervention" value="{{$intervention->id}}">View</button>
-                                    <button class="btn btn-danger deleteIntervention" id="deleteIntervention" name="deleteIntervention" value="{{$intervention->id}}">Delete</button></td>
+<!--                                      <button class="btn btn-success" id="ViewIntervention" name="ViewIntervention" value="{{$intervention->id}}">View</button>
+ -->                                    <button class="btn btn-danger deleteIntervention" id="deleteIntervention" name="deleteIntervention" value="{{$intervention->id}}">Delete</button></td>
                                   </div>
 
                                     @endif

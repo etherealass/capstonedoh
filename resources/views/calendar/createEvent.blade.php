@@ -41,8 +41,15 @@
                  <h5 class="card-title">Create Event</h5>
               </div>
 
+                        @include('flash::message')
 
               <div class="card-body">
+
+                      @if ($errors->any())
+        @foreach ($errors->all() as $error)
+         <div class="alert alert-danger">{{$error}}</div>
+        @endforeach
+      @endif
                      <div class="form-group row">
                         <label for="inputPassword" class="col-sm-2 col-form-label" style="text-align: right;">Title:</label>
                         <div class="col-sm-10">
@@ -58,7 +65,7 @@
                        <div class="form-group row">
                         <label for="inputPassword" class="col-sm-2 col-form-label" style="text-align: right;">Description:</label>
                         <div class="col-sm-10">
-                              <textarea class="form-control" id="description" name="description" rows="4"></textarea>
+                              <textarea class="form-control" id="description" name="description" rows="4" required="required"></textarea>
 
                         </div>
                      </div>
@@ -72,25 +79,24 @@
                       <div class="form-group row">
                         <label for="inputPassword" class="col-sm-2 col-form-label" style="text-align: right;">Start Time:</label>
                         <div class="col-sm-3">
-                                    <input type="time" id="start_time" class="form-control" placeholder="start Time" name="start_time" value="12:00">
+                                    <input type="time" id="start_time" class="form-control" placeholder="start Time" name="start_time" value="12:00" required="required">
+                                     <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
+                                    <span class="text-danger">
+                                        <strong id="start_time-error"></strong>
+                                    </span>
 
                         </div>
-                    <!---<div class="form-group row">
-                        <label for="inputPassword" class="col-sm-2 col-form-label" style="text-align: right;">End Date:</label>
-                        <div class="col-sm-3">
-                              <input type="date" id="end_date" class="form-control"  placeholder="End Date" name="end_date" value='{{$date}}'>
 
-                        </div>-->
                         <label for="inputPassword" class="col-sm-2 col-form-label" style="text-align: right;">End Time:</label>
                         <div class="col-sm-3">
-                                    <input type="time" id="end_time" class="form-control" placeholder="End Time" name="end_time" value="12:00">
+                              <input type="time" id="end_time" class="form-control" placeholder="End Time" name="end_time" value="12:00" required="required">
 
                         </div>
                      </div>
                        <div class="form-group row">
                         <label for="inputPassword" class="col-sm-2 col-form-label" style="text-align: right;">Assignee:</label>
-                        <div class="col-sm-10">
-                             <select id="nameid[]" class="selectpicker show-menu-arrow form-control" width="300" style="font-size: 18px; width: 300px;overflow: hidden;" name="nameid[]" multiple="multiple">
+                        <div class="col-sm-10 col-md-4">
+                             <select id="nameid[]" class="selectpicker show-menu-arrow form-control"  style="font-size: 18px; width: 300px;overflow: hidden;" name="nameid[]" multiple="multiple"required="required">
                                         @foreach($assignee->groupby('role') as $assign => $user)
 
                                         @foreach($roles as $role)
@@ -109,9 +115,8 @@
                        <div class="form-group row">
                         <label for="inputPassword" class="col-sm-2 col-form-label" style="text-align: right;">Department:</label>
                         <div class="col-sm-10">
-                             <select id="department" class="form-control dept_picker" style="font-size: 18px;" name="department" required="required">
-                                        <option disabled selected value> -- select an option -- </option> 
-                                        <option value=''> Employee Assembly </option>                                                                               
+                             <select id="department" class="form-control dept_picker" style="font-size: 18px;" name="department">
+                                                                     <option value=''> Employee Assembly </option>                                                                               
                                         @foreach($deps as $department)
                                             <option value="{{$department->id}}">{{$department->department_name}}</option>
                                         @endforeach
@@ -142,7 +147,7 @@
                  </div>
               </div>
                       <div class="col-md-12">
-             <input style="width:400px;float:right;margin-top: 10px" class="btn btn-primary btn-block" type="submit" name="submit" value="Create">
+             <input style="width:400px;float:right;margin-top: 10px" class="btn btn-primary btn-block" type="submit" name="event-create" id="event-create" value="Create">
            </div><br>
           </div>
         </form>
@@ -163,7 +168,6 @@
 
        $(document).ready(function () {
 
-       
 
         $("#end_date").change(function(){
 

@@ -37,11 +37,11 @@
                 <div class="form-label-group">
                   <h6 style="margin-top: 20px;margin-left: 20px">Addtional Textbox?</h6>
                    <div class="custom-control custom-radio custom-control-inline" style="font-size: 50px;margin-left: 20px">
-                    <input type="radio" class="custom-control-input" id="yescourt" name="court" value="1">
-                    <label class="custom-control-label" for="yescourt"><h6>Yes</h6></label>
+                    <input type="radio" class="custom-control-input" required id="yescourt" name="court" value="1">
+                    <label class="custom-control-label"  for="yescourt"><h6>Yes</h6></label>
                   </div>
                   <div class="custom-control custom-radio custom-control-inline" style="font-size: 50px">
-                    <input type="radio" class="custom-control-input" id="nocourt" name="court" value="0">
+                    <input type="radio" class="custom-control-input" required id="nocourt" name="court" value="0">
                     <label class="custom-control-label" for="nocourt"><h6>No</h6></label>
                   </div>
                 </div>

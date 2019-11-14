@@ -117,7 +117,7 @@
                                     </div>
                                 </div>
 
-                                <div class="form-group">
+                                <!-- <div class="form-group">
                                       <label>Notify</label>
                                       <select id="notify" class="notify form-control notify " style="font-size: 18px; width: 500px;height: 100px" name="notify[]" multiple="multiple">
                                       @foreach($roles as $role)
@@ -125,7 +125,7 @@
                                       @endforeach
                                 
                                     </select>
-                                </div>
+                                </div> -->
                         </div>
                         <div class="modal-footer">
                           <input type="hidden" id="serviceId" class="form-control" required="required" autofocus="autofocus" name="serviceId">

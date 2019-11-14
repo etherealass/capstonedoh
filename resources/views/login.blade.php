@@ -19,7 +19,7 @@
            {{csrf_field()}}
           <div class="form-group">
             <div class="form-label-group">
-              <input type="text" id="username" class="form-control" placeholder="Username" required="required" autofocus="autofocus" name="username">
+              <input type="text" id="username" class="form-control" placeholder="Username" required="required" autofocus="autofocus" name="username" value="{{ old('username') }}">
               <label for="username">Username</label>
             </div>
           </div>
@@ -32,9 +32,6 @@
           <input type="hidden" name="_token" value="{{csrf_token()}}">
           <input class="btn btn-primary btn-block" type="submit" name="submit" value="Login">
         </form>
-        <div class="text-center">
-          <a class="d-block small mt-3" href="{{URL::to('/register')}}">Register an Account</a>
-        </div> 
       </div>
     </div>
   </div>

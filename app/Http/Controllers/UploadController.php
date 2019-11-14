@@ -16,6 +16,7 @@ use DB;
 use App\Files;
 use App\User_roles;
 use App\Users;
+use App\User_departments;
 use App\Departments;
 use App\Transfer_Requests;
 use App\Graduate_Requests;
@@ -74,21 +75,19 @@ class UploadController extends Controller
 
         foreach($list as $lists)
 
-        $checklists = Checklist_Files::where('checklist_id',$lists->checklist_id)->where('department_id',$lists->department_id)->where('patient_id',$lists->patient_id)->get();
-
-        foreach($checklists as $listz)
-
         unlink(public_path($lists->location));
 
         $checklist = Checklist_Files::where('id',$request->input('fileid'))->delete();
 
-        if(count($checklists) != 0){
+        $checklistx = Checklist_Files::where('checklist_id',$lists->checklist_id)->where('department_id',$lists->department_id)->where('patient_id',$lists->patient_id)->get();
 
-           Checklist_Status::where('checklist_id',$listz->checklist_id)->where('department_id',$listz->department_id)->where('patient_id',$listz->patient_id)->update(['has_files' => 0]);
+        if(count($checklistx) != 0){
+
+           Checklist_Status::where('checklist_id',$lists->checklist_id)->where('department_id',$lists->department_id)->where('patient_id',$lists->patient_id)->update(['has_files' => 1]);
         }
         else{
 
-           Checklist_Status::where('checklist_id',$listz->checklist_id)->where('department_id',$listz->department_id)->where('patient_id',$listz->patient_id)->update(['has_files' => 1]);
+           Checklist_Status::where('checklist_id',$lists->checklist_id)->where('department_id',$lists->department_id)->where('patient_id',$lists->patient_id)->update(['has_files' => 0]);
         }
 
         Session::flash('alert-class', 'danger'); 

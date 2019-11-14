@@ -9,6 +9,12 @@ th, td {
   padding: 5px;
   text-align: center;    
 }
+  .footer{ 
+       position: fixed;     
+       text-align: center;    
+       bottom: 0px; 
+       width: 100%;
+   }
 </style>
 <div>
     <p style="float: left;"><img style="margin-top: 20px" src="http://localhost/capstone/public/images/logo.png" height="100px" width="100px"></p>
@@ -37,6 +43,7 @@ th, td {
   </tr>
   @endforeach  
 </table>
+<p class="footer">CopyRight 2019 - Jose Miguel Bojos</p>
 </body>
 
 </html>

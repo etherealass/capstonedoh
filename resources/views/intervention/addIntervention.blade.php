@@ -27,7 +27,7 @@
         <form action="{{URL::to('/create_intervention')}}" method="post">
           {{csrf_field()}}
 
-            <div class="form-group">         
+          <!--   <div class="form-group">         
                   <div class="form-label-group">
                     <h6>Parent Intervention</h6>
                    <select class="form-control parent" id="parent" placeholder="Civil Status" name="parent">
@@ -37,11 +37,11 @@
                         @endforeach
                   </select>
                   </div>
-                </div>
+                </div> -->
              <div class="form-group">
                   <div class="form-label-group">
                     <h6>Name</h6>
-                      <input type="text" id="name" class="form-control" placeholder="Name" required="required" name="name">
+                      <input type="text" id="interven_name" class="form-control" placeholder="Name" required="required" name="interven_name">
                   </div>
                 </div>
                 <div class="form-group depts">

@@ -95,6 +95,10 @@ Route::group(['middleware' => ['auth']], function()
 
 	 Route::any('/create_event/{date}', "CalendarController@create_event");
 
+
+
+	 
+
 	 Route::get('/event_patient/{id}', "CalendarController@event_patient");
 
 
@@ -133,6 +137,11 @@ Route::group(['middleware' => ['auth']], function()
 
 	Route::get('/getCurrentEvent/{id}', "EventController@getCurrentEvent");
 
+	Route::get('/getEvent/{id}', "EventController@getEvent");
+
+	
+
+	Route::get('/getEventAttended/{id}/{date}', "EventController@getEventAttended");
 
 
 	  Route::any('/add_intervention', "InterventionController@addintervention");
@@ -377,7 +386,7 @@ Route::group(['middleware' => ['auth']], function()
 
 	 Route::post('/update_city',"OthersController@updatecity");
 
-	 Route::any('/add_a_status',"OthersController@add_a_status");
+	 Route::any('/add_a_status',"OthersController@add_status");
 
 	 Route::post('/add_status',"OthersController@addstatus");
 
@@ -475,6 +484,8 @@ Route::group(['middleware' => ['auth']], function()
 	 Route::any('/pdfdde/{id}',"ViewController@pdfdde");
 
 	 Route::any('/doctorsNotes/{recordType}/{id}',"ViewController@doctorsNotes");
+
+	 Route::any('/clearanceNotes/{id}',"ViewController@clearanceNotes");
 
 	 Route::any('/BMINotes/{id}',"ViewController@BMINotes");
 

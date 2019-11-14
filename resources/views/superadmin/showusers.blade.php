@@ -45,8 +45,8 @@
                     <th>Name</th>
                     <th>Contact</th>
                     <th>Email</th>
-<!--                     <th>Department</th>
- -->                    <th>Action</th>
+                    <th>Department</th>
+                    <th>Action</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -55,12 +55,18 @@
                     <td>{{$uroles->fname}} {{$uroles->lname}}</td>
                     <td>{{$uroles->contact}}</td>
                     <td>{{$uroles->email}}</td>
-<!--                     @if($uroles->department == '')
+                    @if($uroles->department == '')
                     <td>--{{$uroles->user_roles->name}}--</td>
                     @else
-                    <td>{{$uroles->user_departments}} Department</td>
-                    @endif -->
-                    <td style="text-align: center"><a class="btn btn-success" style="margin-right: 10px" href="{{URL::to('/viewuser/'.$uroles->id)}}">View</a><button class="btn btn-primary" style="margin-right: 10px" data-toggle="modal" data-target="#editModal" data-userid="{{$uroles->id}}" data-fname="{{$uroles->fname}}" data-lname="{{$uroles->lname}}" data-uname="{{$uroles->username}}" data-email="{{$uroles->email}}" data-contact="{{$uroles->contact}}" data-department="{{$uroles->department}}" data-userid="{{$uroles->id}}" data-password="{{$uroles->password}}" data-designation="{{$uroles->designation}}">Edit</button><button class="btn btn-danger" data-toggle="modal" data-target="#deleteModal" data-userid="{{$uroles->id}}">Delete</button></td>
+                    <td>
+                      @foreach($udepts as $udep)
+                        @if($udep->user_id == $uroles->id)
+                          {{$udep->departmentsc->department_name}}
+                        @endif
+                      @endforeach
+                    </td>
+                    @endif
+                    <td style="text-align: center"><a class="btn btn-success" style="margin-right: 10px" href="{{URL::to('/viewuser/'.$uroles->id)}}">View</a><button class="btn btn-primary" style="margin-right: 10px" data-toggle="modal" data-target="#editModal" data-userid="{{$uroles->id}}" data-fname="{{$uroles->fname}}" data-lname="{{$uroles->lname}}" data-uname="{{$uroles->username}}" data-email="{{$uroles->email}}" data-contact="{{$uroles->contact}}" data-department="{{$uroles->department}}" data-designation="{{$uroles->designation}}" data-userid="{{$uroles->id}}" data-password="{{$uroles->password}}">Edit</button><button class="btn btn-danger" data-toggle="modal" data-target="#deleteModal" data-userid="{{$uroles->id}}">Delete</button></td>
                   </tr>
                 @endforeach
                 </tbody>
@@ -149,7 +155,7 @@
                   <label for="designation">Designation/Position</label>
                    <option disabled selected hidden>Designation/Position</option>
                    <option value="">--NONE--</option>
-                  @foreach($designation as $des)
+                  @foreach($roles as $des)
                     @if($des->parent == $rolex->id)
                     <option value="{{$des->id}}">{{$des->name}}</option>
                     @endif
@@ -161,7 +167,7 @@
               </div>
 
               <div class="col-md-6">
-                <div class="form-label-group" id="designat" style="display:none">
+                <div class="form-label-group" id="design" style="display:none">
                   <input type="text" id="designat" class="form-control" placeholder="Designation" name="designat">
                   <label for="designat">Please specify designation</label>
                 </div>

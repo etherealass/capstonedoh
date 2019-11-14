@@ -792,7 +792,7 @@ $today = $year . '-' . $month . '-' . $day;
               <div class="col-md-2">
                 <div class="form-label-group">
                    <h6>Middle name*</h6>
-                  <input type="text" id="mname" class="form-control" placeholder="Middle name" required="required" name="mname" value="{{$pats->mname}}">
+                  <input type="text" id="mname" class="form-control" placeholder="Middle name" name="mname" value="{{$pats->mname}}">
                 </div>
               </div>
               <div class="col-md-3">
@@ -1114,6 +1114,8 @@ $today = $year . '-' . $month . '-' . $day;
   </div>
 </div>
 
+
+
 <div class="modal2 fade" id="ddeForm" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
       <div class="modal-content" style="width: 1000px;">
@@ -1145,7 +1147,7 @@ $today = $year . '-' . $month . '-' . $day;
               <div class="col-md-2">
                 <div class="form-label-group">
                    <h6>Middle name*</h6>
-                  <input type="text" id="mname" class="form-control" placeholder="Middle name" required="required" name="mname" value="{{$pats->mname}}">
+                  <input type="text" id="mname" class="form-control" placeholder="Middle name" name="mname" value="{{$pats->mname}}">
                 </div>
               </div>
               <div class="col-md-1">
@@ -1313,14 +1315,14 @@ $today = $year . '-' . $month . '-' . $day;
                         @foreach($patis as $patin)
                          <div class="form-label-group">
                           <h6>Name*</h6>
-                           <input type="text" id="infoname" class="form-control" placeholder="Last name"  name="infoname" value="{{$patin->informants->name}}">
+                           <input type="text" id="infoname" class="form-control" placeholder="Last name" required="required" name="infoname" value="{{$patin->informants->name}}">
                            <input type="hidden" name="patientinfor" value="{{$patin->informant_id}}">
                          </div>
                         </div>
                          <div class="col-md-6">
                            <div class="form-label-group">
                              <h6>Contact no.*</h6>
-                              <input type="text" id="infocontact" class="form-control" placeholder="Last name"  name="infocontact" value="{{$patin->informants->contact}}">
+                              <input type="text" id="infocontact" class="form-control" placeholder="Last name" required="required" name="infocontact" value="{{$patin->informants->contact}}">
                            </div>
                          </div>
                        </div>
@@ -1328,7 +1330,7 @@ $today = $year . '-' . $month . '-' . $day;
                     <div class="form-group">
                      <div class="form-label-group">
                       <h6>Address*</h6>
-                       <input type="text" id="infoadd" class="form-control" placeholder="Last name"  name="infoadd" value="{{$patin->informants->address}}">
+                       <input type="text" id="infoadd" class="form-control" placeholder="Last name"  name="infoadd" required="required" value="{{$patin->informants->address}}">
                      </div>
                     </div>
                   </div>
@@ -1341,7 +1343,7 @@ $today = $year . '-' . $month . '-' . $day;
               <div class="col-md-12">
                 <div class="form-label-group">
                   <h6>Referred By*</h6>
-                    <input type="text" id="referred" class="form-control" placeholder="Referred By" name="referred" value="{{$patin->referred_by}}">
+                    <input type="text" id="referred" class="form-control" placeholder="Referred By" name="referred" required="required" value="{{$patin->referred_by}}">
                 </div>
               </div>
             </div>
@@ -1351,7 +1353,7 @@ $today = $year . '-' . $month . '-' . $day;
               <div class="col-md-12">
                 <div class="form-label-group">
                    <h6>Drug Abused (Present)*</h6>
-                  <select class="form-control" id="dabused" placeholder="Gender" required="required" name="dabused">
+                  <select class="form-control" id="dabused" placeholder="Gender" required="required" name="dabused" >
                  @foreach($dabused as $dab)
                     @if($dab->id == $pats->drugs_abused)
                     <option value="{{$dab->id}}" selected>{{$dab->name}}</option>
@@ -1369,7 +1371,7 @@ $today = $year . '-' . $month . '-' . $day;
               <div class="col-md-12">
               <div class="form-label-group">
                  <h6>Chief Complaint*</h6>
-                  <input type="text" id="ccomplaint" class="form-control" placeholder="Chief Complaint" name="ccomplaint" value="{{$patin->chief_complaint}}">
+                  <input type="text" id="ccomplaint" class="form-control" placeholder="Chief Complaint" name="ccomplaint" required="required" value="{{$patin->chief_complaint}}">
               </div>
             </div>
               </div>
@@ -1380,19 +1382,19 @@ $today = $year . '-' . $month . '-' . $day;
           <div class="form-group" style="margin-left: 20px">
             <div class="form-label-group">
               <h6>History of Present Illness*</h6>
-              <textarea type="text" id="pillness" class="form-control" placeholder="Please Specify" name="pillness">{{$patin->h_present_illness}}</textarea>
+              <textarea type="text" id="pillness" class="form-control" required="required" placeholder="Please Specify" name="pillness">{{$patin->h_present_illness}}</textarea>
             </div>
           </div>
           <div class="form-group" style="margin-left: 20px">
                 <div class="form-label-group">
                   <h6>History of Drug Used*</h6>
-                  <textarea style="height: 120px" type="text" id="dused" class="form-control" placeholder="Please Specify" name="dused">{{$patin->h_drug_abuse}}</textarea>
+                  <textarea style="height: 120px" type="text" id="dused" required="required" class="form-control" placeholder="Please Specify" name="dused">{{$patin->h_drug_abuse}}</textarea>
               </div>
           </div>
           <div class="form-group" style="margin-left: 20px">
                 <div class="form-label-group">
                   <h6>Family/Personal Background*</h6>
-                  <textarea style="height:200px" type="text" id="background" class="form-control" placeholder="Please Specify" name="background">{{$patin->famper_history}}</textarea>
+                  <textarea style="height:200px" type="text" id="background" required="required" class="form-control" placeholder="Please Specify" name="background">{{$patin->famper_history}}</textarea>
               </div>
           </div>
             @endforeach
@@ -1408,14 +1410,14 @@ $today = $year . '-' . $month . '-' . $day;
                         <div class="col-md-6">
                          <div class="form-label-group">
                           <h6>Name*</h6>
-                           <input type="text" id="infoname" class="form-control" placeholder="Last name"  name="infoname">
+                           <input type="text" id="infoname" class="form-control" placeholder="Last name"  name="infoname" required="required">
                            <input type="hidden" name="patientinfor">
                          </div>
                         </div>
                          <div class="col-md-6">
                            <div class="form-label-group">
                              <h6>Contact no.*</h6>
-                              <input type="text" id="infocontact" class="form-control" placeholder="Last name"  name="infocontact">
+                              <input type="text" id="infocontact" class="form-control" placeholder="Last name"  required="required" name="infocontact">
                            </div>
                          </div>
                        </div>
@@ -1423,7 +1425,7 @@ $today = $year . '-' . $month . '-' . $day;
                     <div class="form-group">
                      <div class="form-label-group">
                       <h6>Address*</h6>
-                       <input type="text" id="infoadd" class="form-control" placeholder="Last name"  name="infoadd">
+                       <input type="text" id="infoadd" class="form-control" placeholder="Last name"  name="infoadd" required="required">
                      </div>
                     </div>
                   </div>
@@ -1436,7 +1438,7 @@ $today = $year . '-' . $month . '-' . $day;
               <div class="col-md-12">
                 <div class="form-label-group">
                   <h6>Referred By*</h6>
-                    <input type="text" id="referred" class="form-control" placeholder="Referred By" name="referred">
+                    <input type="text" id="referred" class="form-control" placeholder="Referred By" name="referred" required="required">
                 </div>
               </div>
             </div>
@@ -1446,7 +1448,7 @@ $today = $year . '-' . $month . '-' . $day;
               <div class="col-md-12">
                 <div class="form-label-group">
                    <h6>Drug Abused (Present)*</h6>
-                  <select class="form-control" id="dabused" placeholder="Gender" required="required" name="dabused">
+                  <select class="form-control" id="dabused" placeholder="Gender" required="required" name="dabused" required="required">
                  @foreach($dabused as $dab)
                     <option value="{{$dab->id}}">{{$dab->name}}</option>
                   @endforeach
@@ -1460,7 +1462,7 @@ $today = $year . '-' . $month . '-' . $day;
               <div class="col-md-12">
               <div class="form-label-group">
                  <h6>Chief Complaint*</h6>
-                  <input type="text" id="ccomplaint" class="form-control" placeholder="Chief Complaint" name="ccomplaint">
+                  <input type="text" id="ccomplaint" class="form-control" placeholder="Chief Complaint" required="required" name="ccomplaint">
               </div>
             </div>
               </div>
@@ -1471,19 +1473,19 @@ $today = $year . '-' . $month . '-' . $day;
           <div class="form-group" style="margin-left: 20px">
             <div class="form-label-group">
               <h6>History of Present Illness*</h6>
-              <textarea type="text" id="pillness" class="form-control" placeholder="Please Specify" name="pillness"></textarea>
+              <textarea type="text" required="required" id="pillness" class="form-control" placeholder="Please Specify" name="pillness"></textarea>
             </div>
           </div>
           <div class="form-group" style="margin-left: 20px">
                 <div class="form-label-group">
                   <h6>History of Drug Used*</h6>
-                  <textarea style="height: 120px" type="text" id="dused" class="form-control" placeholder="Please Specify" name="dused"></textarea>
+                  <textarea style="height: 120px" type="text" id="dused" class="form-control" placeholder="Please Specify" required="required" name="dused"></textarea>
               </div>
           </div>
           <div class="form-group" style="margin-left: 20px">
                 <div class="form-label-group">
                   <h6>Family/Personal Background*</h6>
-                  <textarea style="height:200px" type="text" id="background" class="form-control" placeholder="Please Specify" name="background"></textarea>
+                  <textarea style="height:200px" type="text" id="background" class="form-control" placeholder="Please Specify" required="required" name="background"></textarea>
               </div>
           </div>
           @endif
@@ -1515,10 +1517,10 @@ $today = $year . '-' . $month . '-' . $day;
           <input type="hidden" name="departmentid" id="departmentid" value="">
           <div class="form-label-group">
             <h6>Filename*</h6>
-              <input type="text" id="filename" class="form-control" placeholder="Filename"  name="filename">
+              <input type="text" id="filename" class="form-control" placeholder="Filename"  name="filename" required="required">
           </div>
           <div class="form-label-group">
-              <input type="file" name="file" id="file">
+              <input type="file" name="file" id="file" required="required">
           </div>
           </div>
           <div class="modal-footer">
@@ -1575,6 +1577,7 @@ $today = $year . '-' . $month . '-' . $day;
   </div>
 </div>
 
+
 <div class=" modal2 fade" id="ddeFormEdit" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
       <div class="modal-content" style="width: 1000px;">
@@ -1606,7 +1609,7 @@ $today = $year . '-' . $month . '-' . $day;
               <div class="col-md-2">
                 <div class="form-label-group">
                    <h6>Middle name*</h6>
-                  <input type="text" id="mname" class="form-control" placeholder="Middle name" required="required" name="mname" value="{{$pats->mname}}">
+                  <input type="text" id="mname" class="form-control" placeholder="Middle name" name="mname" value="{{$pats->mname}}">
                 </div>
               </div>
               <div class="col-md-1">
@@ -1715,7 +1718,7 @@ $today = $year . '-' . $month . '-' . $day;
             <div class="col-md-4 mb-4">
               <div class="form-label-group">
                <h6>Patient Type*</h6>
-                <select class="form-control" id="ddes" placeholder="Patient Type" required="required" name="ddes">
+                <select class="form-control" id="ddes" placeholder="Patient Type" name="ddes">
                     <option value="{{$pats->type->id}}" selected hidden>{{$pats->type->case_name}}</option> 
                   @foreach($case as $cases)
                     <option id="{{$cases->court_order}}" value="{{$cases->id}}">{{$cases->case_name}}</option>
@@ -1775,14 +1778,14 @@ $today = $year . '-' . $month . '-' . $day;
                         @foreach($patis as $patin)
                          <div class="form-label-group">
                           <h6>Name*</h6>
-                           <input type="text" id="infoname" class="form-control" placeholder="Last name"  name="infoname" value="{{$patin->informants->name}}">
+                           <input type="text" required="required" id="infoname" class="form-control" placeholder="Last name"  name="infoname" value="{{$patin->informants->name}}">
                            <input type="hidden" name="patientinfor" value="{{$patin->informant_id}}">
                          </div>
                         </div>
                          <div class="col-md-6">
                            <div class="form-label-group">
                              <h6>Contact no.*</h6>
-                              <input type="text" id="infocontact" class="form-control" placeholder="Last name"  name="infocontact" value="{{$patin->informants->contact}}">
+                              <input type="text" required="required" id="infocontact" class="form-control" placeholder="Last name"  name="infocontact" value="{{$patin->informants->contact}}">
                            </div>
                          </div>
                        </div>
@@ -1790,7 +1793,7 @@ $today = $year . '-' . $month . '-' . $day;
                     <div class="form-group">
                      <div class="form-label-group">
                       <h6>Address*</h6>
-                       <input type="text" id="infoadd" class="form-control" placeholder="Last name"  name="infoadd" value="{{$patin->informants->address}}">
+                       <input type="text" required="required" id="infoadd" class="form-control" placeholder="Last name"  name="infoadd" value="{{$patin->informants->address}}">
                      </div>
                     </div>
                   </div>
@@ -1803,7 +1806,7 @@ $today = $year . '-' . $month . '-' . $day;
               <div class="col-md-12">
                 <div class="form-label-group">
                   <h6>Referred By*</h6>
-                    <input type="text" id="referred" class="form-control" placeholder="Referred By" name="referred" value="{{$patin->referred_by}}">
+                    <input type="text" required="required" id="referred" class="form-control" placeholder="Referred By" name="referred" value="{{$patin->referred_by}}">
                 </div>
               </div>
             </div>
@@ -1813,7 +1816,7 @@ $today = $year . '-' . $month . '-' . $day;
               <div class="col-md-12">
                 <div class="form-label-group">
                    <h6>Drug Abused (Present)*</h6>
-                  <select class="form-control" id="dabused" placeholder="Gender" required="required" name="dabused">
+                  <select class="form-control" required="required" id="dabused" placeholder="Gender" required="required" name="dabused">
                  @foreach($dabused as $dab)
                     @if($dab->id == $pats->drugs_abused)
                     <option value="{{$dab->id}}" selected>{{$dab->name}}</option>
@@ -1831,7 +1834,7 @@ $today = $year . '-' . $month . '-' . $day;
               <div class="col-md-12">
               <div class="form-label-group">
                  <h6>Chief Complaint*</h6>
-                  <input type="text" id="ccomplaint" class="form-control" placeholder="Chief Complaint" name="ccomplaint" value="{{$patin->chief_complaint}}">
+                  <input type="text" id="ccomplaint" required="required" class="form-control" placeholder="Chief Complaint" name="ccomplaint" value="{{$patin->chief_complaint}}">
               </div>
             </div>
               </div>
@@ -1842,19 +1845,19 @@ $today = $year . '-' . $month . '-' . $day;
           <div class="form-group" style="margin-left: 20px">
             <div class="form-label-group">
               <h6>History of Present Illness*</h6>
-              <textarea type="text" id="pillness" class="form-control" placeholder="Please Specify" name="pillness">{{$patin->h_present_illness}}</textarea>
+              <textarea type="text" id="pillness" required="required" class="form-control" placeholder="Please Specify" name="pillness">{{$patin->h_present_illness}}</textarea>
             </div>
           </div>
           <div class="form-group" style="margin-left: 20px">
                 <div class="form-label-group">
                   <h6>History of Drug Used*</h6>
-                  <textarea style="height: 120px" type="text" id="dused" class="form-control" placeholder="Please Specify" name="dused">{{$patin->h_drug_abuse}}</textarea>
+                  <textarea style="height: 120px" required="required" type="text" id="dused" class="form-control" placeholder="Please Specify" name="dused">{{$patin->h_drug_abuse}}</textarea>
               </div>
           </div>
           <div class="form-group" style="margin-left: 20px">
                 <div class="form-label-group">
                   <h6>Family/Personal Background*</h6>
-                  <textarea style="height:200px" type="text" id="background" class="form-control" placeholder="Please Specify" name="background">{{$patin->famper_history}}</textarea>
+                  <textarea style="height:200px" required="required" type="text" id="background" class="form-control" placeholder="Please Specify" name="background">{{$patin->famper_history}}</textarea>
               </div>
           </div>
             @endforeach
@@ -1870,14 +1873,14 @@ $today = $year . '-' . $month . '-' . $day;
                         <div class="col-md-6">
                          <div class="form-label-group">
                           <h6>Name*</h6>
-                           <input type="text" id="infoname" class="form-control" placeholder="Last name"  name="infoname">
+                           <input type="text" id="infoname" class="form-control" placeholder="Last name"  name="infoname" required="required">
                            <input type="hidden" name="patientinfor">
                          </div>
                         </div>
                          <div class="col-md-6">
                            <div class="form-label-group">
                              <h6>Contact no.*</h6>
-                              <input type="text" id="infocontact" class="form-control" placeholder="Last name"  name="infocontact">
+                              <input type="text" id="infocontact" class="form-control" placeholder="Last name"  name="infocontact" required="required">
                            </div>
                          </div>
                        </div>
@@ -1885,7 +1888,7 @@ $today = $year . '-' . $month . '-' . $day;
                     <div class="form-group">
                      <div class="form-label-group">
                       <h6>Address*</h6>
-                       <input type="text" id="infoadd" class="form-control" placeholder="Last name"  name="infoadd">
+                       <input type="text" id="infoadd" class="form-control" placeholder="Last name"  name="infoadd" required="required">
                      </div>
                     </div>
                   </div>
@@ -1898,7 +1901,7 @@ $today = $year . '-' . $month . '-' . $day;
               <div class="col-md-12">
                 <div class="form-label-group">
                   <h6>Referred By*</h6>
-                    <input type="text" id="referred" class="form-control" placeholder="Referred By" name="referred">
+                    <input type="text" id="referred" class="form-control" placeholder="Referred By" name="referred" required="required">
                 </div>
               </div>
             </div>
@@ -1922,7 +1925,7 @@ $today = $year . '-' . $month . '-' . $day;
               <div class="col-md-12">
               <div class="form-label-group">
                  <h6>Chief Complaint*</h6>
-                  <input type="text" id="ccomplaint" class="form-control" placeholder="Chief Complaint" name="ccomplaint">
+                  <input type="text" id="ccomplaint" class="form-control" placeholder="Chief Complaint" name="ccomplaint" required="required">
               </div>
             </div>
               </div>
@@ -1933,19 +1936,19 @@ $today = $year . '-' . $month . '-' . $day;
           <div class="form-group" style="margin-left: 20px">
             <div class="form-label-group">
               <h6>History of Present Illness*</h6>
-              <textarea type="text" id="pillness" class="form-control" placeholder="Please Specify" name="pillness"></textarea>
+              <textarea type="text" id="pillness" class="form-control" placeholder="Please Specify" name="pillness" required="required"></textarea>
             </div>
           </div>
           <div class="form-group" style="margin-left: 20px">
                 <div class="form-label-group">
                   <h6>History of Drug Used*</h6>
-                  <textarea style="height: 120px" type="text" id="dused" class="form-control" placeholder="Please Specify" name="dused"></textarea>
+                  <textarea style="height: 120px" type="text" id="dused" class="form-control" placeholder="Please Specify" required="required" name="dused"></textarea>
               </div>
           </div>
           <div class="form-group" style="margin-left: 20px">
                 <div class="form-label-group">
                   <h6>Family/Personal Background*</h6>
-                  <textarea style="height:200px" type="text" id="background" class="form-control" placeholder="Please Specify" name="background"></textarea>
+                  <textarea style="height:200px" type="text" id="background" class="form-control" placeholder="Please Specify" required="required" name="background"></textarea>
               </div>
           </div>
           @endif
@@ -2274,10 +2277,8 @@ $today = $year . '-' . $month . '-' . $day;
  
 
 
-
-
-      $('body').on('click', '.addDoctortNotes', function () {
-
+//    $('.addDoctortNotes').click(function () {
+          $('body').on('click', '.addDoctortNotes', function () {
 
 
         if($(this).val() != 'add'){
@@ -2308,10 +2309,7 @@ $today = $year . '-' . $month . '-' . $day;
     
     });
 
-
-    $('body').on('click', '.psychiatristNotes', function () {
-
-
+       $('.psychiatristNotes').click(function () {
 
           if($(this).val() != 'add'){
 
@@ -2354,17 +2352,11 @@ $today = $year . '-' . $month . '-' . $day;
        });
     
 
-    $('body').on('click', '.addDentalNotes', function () {
-
-
-      var note_id = $(this).val();
-
-
+ $('.addDentalNotes').click(function () {
 
       if($(this).val() != "add"){
 
-
-        var type = "GET";
+               var type = "GET";
         var id = $(this).val();
         var ajaxurl = '{{URL::to("/findNotes")}}/' + id;
 
@@ -2385,7 +2377,7 @@ $today = $year . '-' . $month . '-' . $day;
               })
       }else{
 
-                  $("#noteId").val("add");
+              $("#noteId").val("add");
 
       }
 
@@ -2396,9 +2388,7 @@ $today = $year . '-' . $month . '-' . $day;
 
 
 
-
-    $('body').on('click', '.addSocialWorkerNotes', function () {
-
+$('.addSocialWorkerNotes').click(function () {
 
 
       
@@ -2580,6 +2570,9 @@ $today = $year . '-' . $month . '-' . $day;
         //$(this).removeData('bs.modal');
         console.log('hide');
         $(this).find('form').trigger("reset");
+              $('.textboxes').hide();
+              $('.select1').hide();
+
     });
 
  $('#NurseNotesModal').on('hidden.bs.modal', function () {
@@ -2596,12 +2589,53 @@ $today = $year . '-' . $month . '-' . $day;
   });
 
 
-   $(".btn-visit-view").click(function(e){
+
+  $('body').on('click', '.btn-visit-view', function () {
+
+           $('#modalFormData').trigger("reset");
+           $('#linkEditor').modal('show');
+
+           $('#btn-attended').hide();
+
+
+            $('#linkEditor input:checkbox[name="checkitem[]"]').attr('disabled','disabled');
+
+            var id = $(this).attr('data-id');
+
+              var ajaxurl = '{{ URL::to("/getEvent") }}/' + id;
+              $.ajax({
+                // contentType: "application/json; charset=utf-8",
+                type: 'GET',
+                url: ajaxurl,
+                success: function (data) {
+
+                      for(var i=0; i< data.length; ++i){
+
+                        $('#linkEditor input:checkbox[value='+ data[i].interven_id +']').prop('checked', true);
+
+                      }
+
+                 },
+               error: function (data) {
+                    console.log('Error:', data);
+                }
+
+            });
+
+
 
    });
 
-     $('.btn-visit').click(function(e){
-     
+$('body').on('click', '.btn-visit', function () {  
+
+           $('#modalFormData').trigger("reset");
+           $('#linkEditor').modal('show');
+
+           $('#btn-attended').show();
+
+
+            $('#linkEditor input:checkbox[name="checkitem[]"]').removeAttr('disabled','disabled');
+
         var date = $('.visit_event_date').val();
 
 
@@ -2630,8 +2664,6 @@ $today = $year . '-' . $month . '-' . $day;
 
                         $('#linkEditor input:checkbox[value='+ visitIntervens[i].interven_id +']').click();
 
-
-                        //.prop('checked', true);
 
                         var remarks = visitIntervens[i].remarks;
                         var id = visitIntervens[i].id;
@@ -2666,8 +2698,6 @@ $today = $year . '-' . $month . '-' . $day;
 
 
      $('#btn-attended').click(function (e){
-
-
 
     $.ajaxSetup({
             headers: {
@@ -2782,8 +2812,14 @@ $today = $year . '-' . $month . '-' . $day;
 
   
 
+
+
 $("#btn-save-socialworker").click(function (e) {
    
+
+    if(nursenote == null  || nursenote == ""){
+
+    }else{
 
  $.ajaxSetup({
             headers: {
@@ -2825,7 +2861,7 @@ $("#btn-save-socialworker").click(function (e) {
                var ajaxurl ="";
 
 
-        if(noteid == "add"  || noteid==""){
+        if(noteid == "add" ){
 
               console.log("here");
 
@@ -2858,8 +2894,11 @@ $("#btn-save-socialworker").click(function (e) {
 
                 if(noteid == "add" ){
 
+                                  $(".odd").remove();
+
+
                     var link = '<tr id="socialworker_' + data[0].id + '"><td>' + data[0].date_time + '</td><td>' + service + '</td><td>' + data[0].notes + '</td><td>' + data[0]['userx'].lname +', '+ data[0]['userx'].fname + '</td>';
-                link += '<td><button id="addSocialWorkerNotes" name="addSocialWorkerNotes" class="btn btn-info addSocialWorkerNotes" value="'+ data[0].id +'" style="font-size: 8px;"><i class="fas fa-edit"></i></button></td>';
+                link += '<td></td>';
                 
 
                     $('#socialworker-list').append(link);
@@ -2888,6 +2927,7 @@ $("#btn-save-socialworker").click(function (e) {
             }
 
         });
+  }
 
 });
 
@@ -2970,6 +3010,9 @@ $("#btn-save-nursenotes").click(function (e) {
             success: function (data) {
 
                   if(noteId == "add"){
+
+                                    $(".odd").remove();
+
 
                                 var link = '<tr id="bmiMonitor_' + data[0].id + '"><td>' + data[0].date + '</td><td id = "bmiWeight_'+data[0].id+'">' + data[0].weight + '</td><td id="bmi_'+data[0].id+'">' + data[0].bmi + '</td><td id="bmiRemarks_'+data[0].id+'">' + data[0].remarks + '</td><td>' + data[0]['userxe'].lname +', '+ data[0]['userxe'].fname + '</td>';
                                   link += '<td><button id="addNurseNotes" name="addNurseNotes" style="font-size: 8px;" class="btn btn-info addNurseNotes" value="'+data[0].id+'"><i class="fas fa-edit"></i></button></td>';
@@ -3062,6 +3105,7 @@ $("#btn-save-nursenotes").click(function (e) {
 
 
                             if(noteId == "add"){
+                $(".odd").remove();
 
                                 var link = '<tr id="bloodSugar_' + data[0].id + '"><td>' + data[0].dateTime + '</td><td id = "bloodSugarReading_'+data[0].id+'">' + data[0].reading + '</td><td id="bloodSugarNotes_'+data[0].id+'">' + data[0].notes + '</td><td>' + data[0]['userxe'].lname +', '+ data[0]['userxe'].fname + '</td>';
                                   link += '<td><button id="addNurseNotes" name="addNurseNotes" style="font-size: 8px;" class="btn btn-info addNurseNotes" value="'+data[0].id+'"><i class="fas fa-edit"></i></button></td>';
@@ -3152,6 +3196,7 @@ $("#btn-save-nursenotes").click(function (e) {
 
 
                             if(noteId == "add"){
+                                              $(".odd").remove();
 
                                 var link = '<tr id="medication_' + data[0].id + '"><td>' + data[0].intake_date + '</td><td>' + data[0].intake_time + '</td><td id = "medicine_'+data[0].id+'">' + data[0].medication + '</td><td id="medicineNotes_'+data[0].id+'">' + data[0].notes + '</td><td>' + data[0]['userxe'].lname +', '+ data[0]['userxe'].fname + '</td>';
                                   link += '<td><button id="addNurseNotes" name="addNurseNotes" style="font-size: 8px;" class="btn btn-info addNurseNotes" value="'+data[0].id+'"><i class="fas fa-edit"></i></button></td>';
@@ -3245,6 +3290,8 @@ $("#btn-save-nursenotes").click(function (e) {
             dataType: 'json',
             success: function (data) {
 
+
+
                 var service = " ";
 
                   console.log(data[0].service_id);
@@ -3255,8 +3302,11 @@ $("#btn-save-nursenotes").click(function (e) {
 
                    if(noteId == "add"){
 
+                                    $(".odd").remove();
+
+
                     var link = '<tr id="nurse_' + data[0].id + '"><td>' + data[0].date_time + '</td><td id="nurseService_' + data[0].id + '">' + service + '</td><td id="nurseNote_' + data[0].id + '">' + data[0].notes + '</td><td>' + data[0]['userx'].lname +', '+ data[0]['userx'].fname + '</td>';
-                link += '<td></td>';
+                    link += '<td><button id="addNurseNotes" name="addNurseNotes" style="font-size: 8px;" class="btn btn-info addNurseNotes" value="'+data[0].id+'"><i class="fas fa-edit"></i></button></td>';
                 
 
                     $('#nurse-list').append(link);
@@ -3348,9 +3398,11 @@ $("#btn-save-psychiatristnotes").click(function (e) {
 
               if(noteid == "add" ){
 
+                                  $(".odd").remove();
 
                    var link = '<tr id="psychiatrist_' + data[0].id + '"><td>' + data[0].date_time + '</td><td>' + data[0]['servicex'].name + '</td><td>' + data[0].notes + '</td><td>' + data[0]['userx'].lname +', '+ data[0]['userx'].fname + '</td>';
-                link += '<td><button id="psychiatristNotes" name="psychiatristNotes" style="font-size: 8px;" class="btn btn-info psychiatristNotes" value="'+data[0].id+'"><i class="fas fa-edit"></i></button></td>';
+
+                link += '<td><button id="addNurseNotes" name="addNurseNotes" style="font-size: 8px;" class="btn btn-info addNurseNotes" value="'+data[0].id+'"><i class="fas fa-edit"></i></button></td>';
                 
 
                     $('#psychiatrist-list').append(link);
@@ -3384,7 +3436,7 @@ $("#btn-save-psychiatristnotes").click(function (e) {
 
 
 $("#btn-save-dentalServices").click(function (e) {
-   
+
 
  $.ajaxSetup({
             headers: {
@@ -3443,13 +3495,14 @@ $("#btn-save-dentalServices").click(function (e) {
             dataType: 'json',
             success: function (data) {
 
+                              $(".odd").remove();
 
                   console.log(data);
 
                   if(noteid == "add"){
                    var link = '<tr id="dental_' + data[0].id + '"><td>' + data[0].date_time + '</td><td>' + data[0].diagnose + '</td><td>' + data[0].tooth_no + '</td><td>' + data[0].service_rendered +'</td><td>'+ data[0]['userx'].lname +', '+data[0]['userx'].fname+'</td><td>'+data[0].notes+'</td>';
                   
-                link += '<td> <button id="addDentalNotes" name="addDentalNotes" class="btn btn-info addDentalNotes" style="font-size: 8px;" value="'+data[0].id+'"><i class="fas fa-edit" ></i></button></td>';
+                link += '<td><button id="addDentalNotes" name="addDentalNotes" style="font-size: 8px;" class="btn btn-info addDentalNotes" value="'+data[0].id+'"><i class="fas fa-edit"></i></button><</td>';
                 
 
                     $('#dental-list').append(link);
@@ -3492,7 +3545,8 @@ $("#btn-save-dentalServices").click(function (e) {
 
 
 $("#btn-save-doctornotes").click(function (e) {
-   
+
+
 
  $.ajaxSetup({
             headers: {
@@ -3545,9 +3599,12 @@ $("#btn-save-doctornotes").click(function (e) {
             data: formData,
             dataType: 'json',
             success: function (data) {
+              $(".odd").remove();
+
 
                   if(noteid == "add" ){
 
+                                      $(".odd").remove();
 
                    var link = '<tr id="doctor_' + data[0].id + '"><td>' + data[0].date_time + '</td><td>' + data[0]['servicex'].name + '</td><td>' + data[0].notes + '</td><td>' + data[0]['userx'].lname +', '+ data[0]['userx'].fname + '</td>';
                 link += '<td><button class="btn btn-info addDoctortNotes"  id="addDoctortNote" name="addDoctortNote" style="font-size: 8px;" value="'+data[0].id+'"><i class="fas fa-edit"></i></button></td>';
@@ -3578,20 +3635,28 @@ $("#btn-save-doctornotes").click(function (e) {
             }
 
         });
- // }
+  
 
 });
 
 $("#btn-save").click(function (e) {
 
-  
-        $.ajaxSetup({
+//$('body').on('click', '#btn-save', function () {
+$.ajaxSetup({
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             }
             
         });
-        e.preventDefault();
+
+  
+  if($("#refAt").val() == "" || $("#reason").val() == "" || $("#refby").val() == "" || $("#ref_recom").val() == "" || $("#contactPer").val() == ""){
+
+        console.log("sulod");
+
+  }else{
+            e.preventDefault();
+        
          var formData = {
             patient_id: $('#patient_id').val(),
             ref_date:  $('#refDate').val(),
@@ -3624,32 +3689,53 @@ $("#btn-save").click(function (e) {
             dataType: 'json',
             success: function (data) {
 
+              if (state == "add") {
+
               $(".odd").remove();
 
-                var link = '<tr id="refer' + data.id + '"><td>' + data.ref_date + '</td><td>' + data.ref_at + '</td><td>' + data.ref_reason + '</td><td>' + data.ref_by + '</td>';
+                var link = '<tr id="refer' + data.id + '"><td>' + data.ref_date + '</td><td id="refer_at_'+data.id+'">' + data.ref_at + '</td><td id="refer_reason_'+data.id+'">' + data.ref_reason + '</td><td>' + data.ref_by + '</td>';
                 link += '<td><button class="btn btn-info edit-refer-modal" value="' + data.id + '">Edit</button>';
                 link += '<button class="btn btn-secondary accept_patient_referal" id="btn-accept" name ="btn-accept" value="' + data.id + '">Accept</button>';
-                 link += '<button class="btn btn-light print-link" id="btn-ptint" name ="btn-print" value="' + data.id + '">Print</button>';
+                 link += '<button class="btn btn-light print-link" id="btn-print" name ="btn-print" value="' + data.id + '">Print</button>';
                 
-                if (state == "add") {
-                    $('#links-list').append(link);
+                
+                    $('#refer-list tr:last').after(link);
+
                 } else {
-                    $("#refer" + id).replaceWith(link);
+
+
+                         var link = '<td id="refer_at_'+data.id+'">'+data.ref_at+'</td>';
+
+                                   $('#refer_at_'+data.id).replaceWith(link);
+
+                        
+
+                                var depart = '<td id="refer_reason_'+data.id+'">'+data.ref_reason+'</td>';
+
+                                  $('#refer_reason_'+data.id).replaceWith(depart);
+
+
                 }
     
                 $('#modalFormData').trigger("reset");
                 $('#linkEditorModal').modal('hide');
+
+
         },
            error: function (data) {
                 console.log('Error:', data);
             }
 
         });
-      });
+
+
+      }
+
+ });
 
 
 
-  $('body').on('click', '.accept_patient_referal', function () {
+$('body').on('click', '.accept_patient_referal', function () {
 
 
            var result = confirm('Your are about to accept this referal. Would you like to continue?');
@@ -3673,7 +3759,7 @@ $("#btn-save").click(function (e) {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             }
             });
-               e.preventDefault();
+
               var formData = {
 
                     ref_slip_return:  output,
@@ -3682,7 +3768,6 @@ $("#btn-save").click(function (e) {
               };
 
 
-            }
 
             $.ajax({
             type: "PUT",
@@ -3692,15 +3777,18 @@ $("#btn-save").click(function (e) {
             success: function (data) {
                   var link = '<tr id="refer' + data.id + '"><td>' + data.ref_date + '</td><td>' + data.ref_at + '</td><td>' + data.ref_reason + '</td><td>' + data.ref_by + '</td>';
                 link += '<td><button class="btn btn-info view-link" value="' + data.id + '">View</button>';
-                link += '<button class="btn btn-light print-link" id="btn-print" name ="btn-print" value="' + data.id +'">Print</button></td>';
+                link += '<button class="btn btn-danger print-link" id="btn-print" name ="btn-print" value="' + data.id +'">Print</button></td>';
                
                     $("#refer" + refer_id).replaceWith(link);
+
+                    alert("Refer Accepted");
             },
            error: function (data) {
                 console.log('Error:', data);
             }
           });
         
+        }
 });
 
 $('body').on('click', '.view-refer-patient-modal', function () {

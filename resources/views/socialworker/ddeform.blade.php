@@ -2,19 +2,19 @@
 @section('content')
 
         <!-- Breadcrumbs-->
-        <ol class="breadcrumb">
+        <ol class="breadcrumb"> 
           <li class="breadcrumb-item">
-            <a href="{{URL::to('/profile')}}">Dashboard</a>
+            <a href="{{URL::to('/profile')}}"><b>Dashboard</b></a>
           </li>
           <li class="breadcrumb-item">
-            <a href="{{URL::to('/choosef/'.$id)}}">Choose what to fill up</a>
+            <a href="{{URL::to('/choosef/'.$id)}}"><b>Choose what to fill up</b></a>
           </li>
-          <li class="breadcrumb-item active">Fill up</li>
+          <li class="breadcrumb-item active"><b>Fill up<</b>/li>
         </ol>
 
-  <div style="background-color: white;border-radius: 5px;height: 1600px;padding-top: 10px">
+   <div style="background-color: white;border-radius: 5px;height: 1600px;padding-top: 10px">
     <div class="container" style="margin-top: 30px">
-        <p style="font-size:50px;margin-bottom: 20px">Drug Dependency Examination Report</p>
+        <p style="font-size:50px;margin-bottom: 20px"><b>Drug Dependency Examination Report</b></p>
         <form action="{{URL::to('/patientsave_dde')}}" method="post">
           {{csrf_field()}}
           <fieldset style="margin-bottom: 30px">
@@ -36,19 +36,13 @@
               <div class="col-md-2">
                 <div class="form-label-group">
                    <h6>Middle name*</h6>
-                  <input type="text" id="mname" class="form-control" placeholder="Middle name" required="required" name="mname" value="{{ old('mname') }}">
+                  <input type="text" id="mname" class="form-control" placeholder="Middle name" name="mname" value="{{ old('mname') }}">
                 </div>
               </div>
-              <div class="col-md-1">
-                <div class="form-label-group">
-                   <h6>Age*</h6>
-                  <input type="number" id="age" class="form-control" placeholder="Age" required="required" autofocus="autofocus" name="age" value="{{ old('age') }}">
-                </div>
-              </div>
-              <div class="col-md-2">
+              <div class="col-md-3">
                 <div class="form-label-group">
                    <h6>Birthday*</h6>
-                  <input type="date" id="bday" class="form-control" placeholder="Birthday" required="required" autofocus="autofocus" name="bday">
+                  <input type="date" id="bday" class="form-control" placeholder="Birthday" required="required" autofocus="autofocus" name="bday" value="{!! old('bday') !!}">
                 </div>
               </div>
             </div>
@@ -58,25 +52,25 @@
               <div class="col-md-2">
                 <div class="form-label-group">
                    <h6>Birth Order*</h6>
-                  <input type="number" id="border" class="form-control" placeholder="" required="required" autofocus="autofocus" name="border">
+                  <input type="number" id="border" class="form-control" placeholder="" required="required" autofocus="autofocus" name="border" value="{!! old('border') !!}">
                 </div>
               </div>
               <div class="col-md-4">
               <div class="form-label-group">
                <h6>Street Address*</h6>
-              <input type="text" id="street" class="form-control" placeholder="Address" required="required" name="street">
+              <input type="text" id="street" class="form-control" placeholder="Address" required="required" name="street" value="{!! old('street') !!}">
             </div>
            </div>
             <div class="col-md-3  ">
               <div class="form-label-group">
                <h6>Barangay*</h6>
-              <input type="text" id="barangay" class="form-control" placeholder="Address" required="required" name="barangay">
+              <input type="text" id="barangay" class="form-control" placeholder="Address" required="required" name="barangay" value="{!! old('barangay') !!}">
             </div>
            </div>
            <div class="col-md-3">
               <div class="form-label-group">
                <h6>City*</h6>
-              <input type="text" id="city" class="form-control" placeholder="Address" required="required" name="city">
+              <input type="text" id="city" class="form-control" placeholder="Address" required="required" name="city" value="{!! old('city') !!}">
             </div>
            </div>
           </div>
@@ -86,7 +80,7 @@
               <div class="col-md-3">
                 <div class="form-label-group">
                    <h6>Contact no.*</h6>
-                  <input type="tel" id="contact" class="form-control" placeholder="Contact No." required="required" name="contact">
+                  <input type="tel" id="contact" class="form-control" placeholder="Contact No." required="required" name="contact" value="{!! old('contact') !!}">
                   <input type="hidden" name="_token" value="{{csrf_token()}}">
                   <input type="hidden" name="department" value="{{$id}}">
               </div>
@@ -95,8 +89,8 @@
                 <div class="form-label-group">
                    <h6>Gender*</h6>
                  <select class="form-control" id="gender" placeholder="Gender" required="required" name="gender">
-                     @foreach($gender as $gend)
                         <option value="" disabled selected hidden>--Choose--</option>
+                     @foreach($gender as $gend)
                         <option value="{{$gend->id}}">{{$gend->name}}</option>
                      @endforeach
                 </select>
@@ -107,8 +101,8 @@
                    <h6>Civil Status*</h6>
                  <select class="form-control" id="civils" placeholder="Civil Status" required="required" name="civils">
                   <label for="civils">Civil Status</label>
-                     @foreach($status as $stat)
                         <option value="" disabled selected hidden>--Choose--</option>
+                     @foreach($status as $stat)
                         <option value="{{$stat->id}}">{{$stat->name}}</option>
                      @endforeach
                 </select>
@@ -117,13 +111,13 @@
               <div class="col-md-2">
                 <div class="form-label-group">
                    <h6>Nationality*</h6>
-                <input type="text" id="nation" class="form-control" placeholder="Nationality" required="required" name="nation">
+                <input type="text" id="nation" class="form-control" placeholder="Nationality" required="required" name="nation" value="{!! old('nation') !!}">
                 </div>
               </div>
                <div class="col-md-2">
                 <div class="form-label-group">
                    <h6>Religion*</h6>
-                <input type="text" id="religion" class="form-control" placeholder="Nationality" required="required" name="religion">
+                <input type="text" id="religion" class="form-control" placeholder="Nationality" required="required" name="religion" value="{!! old('religion') !!}">
                 </div>
               </div>
             </div>
@@ -137,8 +131,8 @@
                 <div class="form-label-group">
                   <h6>Patient Type*</h6>
                 <select class="form-control" id="ptype" placeholder="Patient Type" required="required" name="ptype">
+                  <option value="" disabled selected hidden>Patient Type</option>
                   @foreach($case as $cases)
-                    <option value="" disabled selected hidden>Patient Type</option>
                     <option id="{{$cases->court_order}}" value="{{$cases->id}}">{{$cases->case_name}}</option>
                   @endforeach
                 </select>
@@ -147,9 +141,9 @@
               <div class="col-md-4 mb-4">
                 <div class="form-label-group" id="textas" style="display: none;">
                   <h6>City Jail*</h6>
-                <select class="form-control" id="jail" placeholder="Patient Type" required="required" name="jail">
+                <select class="form-control" id="jail" placeholder="Patient Type" name="jail">
+                  <option value="" disabled selected hidden>City Jail</option>
                 @foreach($jails as $jail)
-                    <option value="" disabled selected hidden>City Jail</option>
                     <option value="{{$jail->id}}">{{$jail->name}}</option>
                 @endforeach
                 </select>
@@ -158,7 +152,7 @@
               <div class="col-md-4 mb-4">
                 <div class="form-label-group" id="textb" style="display: none;">
                   <h6>Case Number*</h6>
-                    <input type="text" id="caseno" class="form-control" placeholder="Case Number" required="required" autofocus="autofocus" name="caseno" value="">
+                    <input type="text" id="caseno" class="form-control" placeholder="Case Number" autofocus="autofocus" name="caseno" value="" value="{!! old('caseno') !!}">
                 </div>
               </div>
             </div>
@@ -174,13 +168,13 @@
                         <div class="col-md-6">
                          <div class="form-label-group">
                           <h6>Name*</h6>
-                           <input type="text" id="infoname" class="form-control" placeholder="Last name"  name="infoname">
+                           <input type="text" id="infoname" class="form-control" placeholder="Last name"  name="infoname" required="required" value="{!! old('infoname') !!}">
                          </div>
                         </div>
                          <div class="col-md-6">
                            <div class="form-label-group">
                              <h6>Contact no.*</h6>
-                              <input type="text" id="infocontact" class="form-control" placeholder="Last name"  name="infocontact">
+                              <input type="text" id="infocontact" class="form-control" placeholder="Last name"  name="infocontact" required="required" value="{!! old('infocontact') !!}">
                            </div>
                          </div>
                        </div>
@@ -188,7 +182,7 @@
                     <div class="form-group">
                      <div class="form-label-group">
                       <h6>Address*</h6>
-                       <input type="text" id="infoadd" class="form-control" placeholder="Last name"  name="infoadd">
+                       <input type="text" id="infoadd" class="form-control" placeholder="Last name"  name="infoadd" required="required" value="{!! old('infoadd') !!}">
                      </div>
                     </div>
                   </div>
@@ -201,7 +195,7 @@
               <div class="col-md-12">
                 <div class="form-label-group">
                   <h6>Referred By*</h6>
-                    <input type="text" id="referred" class="form-control" placeholder="Referred By" name="referred">
+                    <input type="text" id="referred" class="form-control" placeholder="Referred By" name="referred" required="required" value="{!! old('referred') !!}">
                 </div>
               </div>
             </div>
@@ -211,9 +205,9 @@
               <div class="col-md-12">
                 <div class="form-label-group">
                    <h6>Drug Abused (Present)*</h6>
-                   <select class="form-control" id="jail" placeholder="Patient Type" required="required" name="jail">
+                   <select class="form-control" id="dabused" placeholder="Patient Type" required="required" name="dabused">
+                    <option value=" " disabled selected hidden>--Chooose--</option>
                 @foreach($dabused as $dab)
-                    <option value="" disabled selected hidden>--Chooose--</option>
                     <option value="{{$dab->id}}">{{$dab->name}}</option>
                 @endforeach
                 </select>
@@ -227,7 +221,7 @@
               <div class="col-md-12">
               <div class="form-label-group">
                  <h6>Chief Complaint*</h6>
-                  <input type="text" id="ccomplaint" class="form-control" placeholder="Chief Complaint" name="ccomplaint">
+                  <input type="text" id="ccomplaint" class="form-control" placeholder="Chief Complaint" name="ccomplaint" required="required" value="{!! old('ccomplaint') !!}">
               </div>
             </div>
               </div>
@@ -238,19 +232,19 @@
           <div class="form-group">
             <div class="form-label-group">
               <h6>History of Present Illness*</h6>
-              <textarea type="text" id="pillness" class="form-control" placeholder="Please Specify" name="pillness"></textarea>
+              <textarea type="text" id="pillness" class="form-control" placeholder="Please Specify" name="pillness" required="required" value="{!! old('pillness') !!}"></textarea>
             </div>
           </div>
           <div class="form-group">
                 <div class="form-label-group">
                   <h6>History of Drug Used*</h6>
-                  <textarea style="height: 120px" type="text" id="dused" class="form-control" placeholder="Please Specify" name="dused"></textarea>
+                  <textarea style="height: 120px" type="text" id="dused" class="form-control" placeholder="Please Specify" name="dused" required="required" value="{!! old('dused') !!}"></textarea>
               </div>
           </div>
           <div class="form-group">
                 <div class="form-label-group">
                   <h6>Family/Personal Background*</h6>
-                  <textarea style="height:200px" type="text" id="background" class="form-control" placeholder="Please Specify" name="background"></textarea>
+                  <textarea style="height:200px" type="text" id="background" class="form-control" placeholder="Please Specify" name="background" required="required" value="{!! old('background') !!}"></textarea>
               </div>
           </div>
         </fieldset>

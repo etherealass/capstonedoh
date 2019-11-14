@@ -15,8 +15,8 @@
           <b>Dashboard</b></span>
         </a>
       </li>
-      <li class="nav-item dropdown no-arrow ml-4">
-        <?php $enrolled = 'Enrolled'; $for = 'For Graduate'; $grad = 'Graduated'; $dis = 'Dismissed'; ?>
+       <li class="nav-item dropdown">
+        <?php $enrolled = 'Enrolled'; $for = 'For Graduate'; $fort = 'For Transfer'; $grad = 'Graduated'; $dis = 'Dismissed'; ?>
         <a class="nav-link dropdown-toggle" href="#" id="pagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           <i class="fas fa-fw fa-user"></i>
           <span><b>Patients</b></span>
@@ -27,7 +27,7 @@
           <a class="dropdown-item" href="{{URL::to('/showpatients/'.$grad)}}">Graduated</a>
           <a class="dropdown-item" href="{{URL::to('/showpatients/'.$dis)}}">Dismissed</a>
         </div>
-      </li> 
+      </li>  
       <li class="nav-item ml-4">
         <a class="nav-link" href="{{URL::to('/showCalendar')}}">
           <i class="fas fa-fw fa-calendar"></i>

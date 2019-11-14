@@ -58,7 +58,7 @@
             </select>
             </div>
 
-            <div class="form-group">
+         <!--    <div class="form-group">
               <label>Notify</label>
               <select id="notify[]" class="selectpicker form-control" style="font-size: 18px; width: 500px;height: 100px" name="notify[]" multiple="multiple">
               @foreach($roles as $role)
@@ -66,7 +66,7 @@
               @endforeach
         
             </select>
-            </div>
+            </div> -->
 
              <input class="btn btn-primary btn-block" type="submit" name="submit" value="Create">
           </form>

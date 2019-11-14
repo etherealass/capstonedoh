@@ -215,11 +215,8 @@
     <div class="tab-pane fade" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">
       <fieldset style="margin-bottom: 10px;margin-left: 0px;border:solid thin gray;border-radius: 10px;">
             <legend style="color:white;text-indent: 20px;width:900px;margin-bottom: 10px;border-radius: 5px" class="bg bg-dark">Patient Referral</legend>
-
-           @if($pats->status == 'Enrolled')
-                @if(Auth::user()->user_role->name == 'Social Worker' || Auth::user()->user_role->name == 'Superadmin' )
+                @if(Auth::user()->user_role->name == 'Social Worker' || Auth::user()->user_role->name == 'Superadmin' || Auth::user()->user_role->name == 'Admin')
                       <button id="add-patient-refer" name="add-patient-refer" class="btn btn-dark btn-block" style="height: 50px; width:200px;margin-top: 0px;margin-left: 750px">Refer Patient</button>
-                  @endif
                   @endif
                         <br>
                         <br>
@@ -235,15 +232,16 @@
                                     <th>Action</th>
                                   </tr>
                                 </thead>
-                                <tbody id="links-list" name="links-list">
+                                <tbody id="refer-list" name="refer-list">
                                 @if($refers != '[]')
                                     @foreach ($refers as $refer)
                                     <tr id="refer{{$refer->id}}">
                                     <td>{{$refer->ref_date}}</td>
-                                    <td>{{$refer->ref_at}}</td>
-                                    <td>{{$refer->ref_reason}}</td>
-                                    <td>{{$refer->users->fname}} {{$refer->users->lname}}</td>
+                                    <td id="refer_at_{{$refer->id}}">{{$refer->ref_at}}</td>
+                                    <td id="refer_reason_{{$refer->id}}">{{$refer->ref_reason}}</td>
+                                    <td >{{$refer->users->fname}} {{$refer->users->lname}}</td>
                               <td>
+                                @if($pats->status == 'Enrolled')
                                 @if($refer->accepted_by)
                                 <button class="btn btn-info view-refer-patient-modal" value="{{$refer->id}}">View
                                   </button>
@@ -257,7 +255,8 @@
                                   </button>
                                   <a href="{{URL::to('pdfreferral/'.$pats->id.'/'.$refer->id)}}" target="_blank"><button class="btn btn-danger print-link" id="btn-ptint" name ="btn-print" value="{{$refer->id}}">Print
                                   </button></a>
-                                @endif 
+                                @endif
+                                @endif
                               </td>
                           </tr>
                           @endforeach
@@ -273,14 +272,12 @@
         <fieldset style="margin-bottom: 10px;margin-left: 0px;border:solid thin gray;border-radius: 10px;">
             <legend style="color:white;text-indent: 20px;width:900px;margin-bottom: 10px;border-radius: 5px" class="bg bg-dark">Sessions</legend>
             
-               <a href="{{URL::to('MonitoringTool/'.$pats->id)}}" target="_blank"><button class="btn btn-danger"><i class="fas fa-fw fa fa-file-pdf"></i></button></a>
-              @if($pats->status == 'Enrolled')
-                @if(Auth::user()->user_role->name == 'Social Worker' || Auth::user()->user_role->name == 'Superadmin')              
                    <div class="dropdown">
                           <button class="btn btn-dark dropdown-toggle"  style="height: 50px; width:200px;margin-top: 0px;margin-left: 750px" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             Action
                           </button>
                           <div class="dropdown-menu menu_btn" aria-labelledby="dropdownMenuButton">
+                          @if(Auth::user()->user_role->name == 'Social Worker' || Auth::user()->user_role->name == 'Superadmin')  
                           @if($pats->inactive != 1)
                             <a class="dropdown-item btn-visit" id="a-visit" name="a-visit" href="#"><button id="btn-visit" name="btn-visit" class="btn">Patient Visit</button></a>
                           @endif
@@ -291,11 +288,10 @@
                              Active
                              @endif
                             </button></a>
+                            @endif
+                             <a class="dropdown-item pdf_btn"  id="a-inactive" name="a-inactive" href="{{URL::to('MonitoringTool/'.$pats->id)}}"  target="_blank" style="text-align: center">PDF<i class="fas fa-fw fa fa-file-pdf"></i></a>
                           </div>
                       </div>
-                  @endif
-                  @endif
-
                         <br>
 
                         <div class="card-body" style="margin-left: 10px;margin-top: 20px">
@@ -324,10 +320,14 @@
                                     Not Attended
                                     @endif</td>
                                     <td><input type="hidden" class="visit_event_date_{{$pat_visit->id}}" id="visit_event_date" name="visit_event_date" value="{{$pat_visit->date}}">
-                                      @if($pat_visit->status == 1 && $pat_visit->date == $today)
+                                        @if($pats->status == 'Enrolled')
+                                      @if($pat_visit->status == 1)
+                                      @if($pat_visit->date == $today)
                                         <button class="btn btn-success btn-visit" value="edit" id="attend_btn"  name="attend_btn"><i class="far fa-calendar-check" aria-hidden="true"></i></button>
                                         @else
-                                         <button class="btn btn-info btn-visit-view" value="edit" id="btn-visit-view"  name="btn-visit-view"><i class="far fa-calendar-check" aria-hidden="true"></i></button>
+                                         <button class="btn btn-info btn-visit-view" value="edit" id="btn-visit-view" data-id="{{$pat_visit->id}}" name="btn-visit-view"><i class="far fa-calendar-check" aria-hidden="true"></i></button>
+                                         @endif
+                                      @endif
                                       @endif
                                     </td>
                          
@@ -346,10 +346,8 @@
             <legend style="color:white;text-indent: 20px;width:900px;margin-bottom: 10px;border-radius: 5px" class="bg bg-dark">Intake Form </legend>
             <div style="float:right;margin-bottom: 10px;margin-right: 10px;margin-top: 10px"><a href="{{URL::to('pdfintake/'.$pats->id)}}" target="_blank"><button class="btn btn-danger"><i class="fas fa-fw fa fa-file-pdf"></i>Print</button></a></div>
           @if($pats->status == 'Enrolled')
-            @if(in_array($pats->department_id,$user_dept))
             @if(Auth::user()->user_role->name == 'Superadmin' || Auth::user()->user_role->name == 'Admin' || Auth::user()->user_role->name == 'Social Worker' || Auth::user()->user_role->name == 'Nurse')
             <div style="float:right;margin-bottom: 10px;margin-right: 10px;margin-top: 10px"><button class="btn btn-success" data-toggle="modal" data-target="#intakeFormEdit"><i class="fas fa-fw fa fa-pen"></i>Edit</button></div>
-            @endif
             @endif
           @endif
           <div class="container" style="margin-top: 60px;margin-bottom: 30px">
@@ -495,9 +493,11 @@
               <legend style="color:white;text-indent: 20px;width:900px;margin-bottom: 20px;border-radius: 5px" class="bg bg-dark">Drug Dependency Examination Report</legend>
                 <div style="float:right;margin-bottom: 10px;margin-right: 10px;margin-top: 10px"><a href="{{URL::to('pdfdde/'.$pats->id)}}" target="_blank"><button class="btn btn-danger"><i class="fas fa-fw fa fa-file-pdf"></i>Print</button></a></div>
               @if($pats->status == 'Enrolled')
+              @if(Auth::user()->designation != $dentist[0]->id && Auth::user()->designation != $psychiatrist[0]->id)
                 @if(Auth::user()->user_role->name == 'Superadmin' || Auth::user()->user_role->name == 'Admin' || Auth::user()->user_role->name == 'Doctor')
                 <div style="float:right;margin-bottom: 10px;margin-right: 10px;margin-top: 10px"><button class="btn btn-success" data-toggle="modal" data-target="#ddeFormEdit"><i class="fas fa-fw fa fa-pen"></i>Edit</button></div>
                 @endif
+              @endif
               @endif
                       <div class="container" style="margin-top: 60px;margin-bottom: 30px">
                         <div class="container">

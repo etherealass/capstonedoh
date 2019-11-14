@@ -1,12 +1,13 @@
 @extends('main')
 @section('content')
+
 <style>
 
-  th {
-  text-align: inherit;
-  background-color: #212529;
-  color:white;
-  }
+      th {
+      text-align: inherit;
+      background-color: #343a40;
+      color:white;
+      }
 
 </style>
  
@@ -18,7 +19,8 @@
           <li class="breadcrumb-item active"><b>Patients</b></li>
         </ol> 
 
-        <div style="background-color: white;border-radius: 5px">
+        <!-- Icon Cards-->
+      <div style="background-color: white;border-radius: 5px">
         <div class="row" style="margin-left: 5px;margin-bottom: 0px">
           <div class="col-xl-8 col-sm-9 mb-10" style="height: 6rem;">
             <div class="mb-3 text-black o-hidden h-100">
@@ -37,12 +39,14 @@
               </div>
           </div>
         </div>
+
         </div>
          <div class="card-body" style="margin-left: 10px">
             <div class="table-responsive">
               <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                 <thead>
                   <tr>
+                    <th>Patient No.</th>
                     <th>Name</th>
                     <th>Age</th>
                     <th>Birthday</th>
@@ -52,58 +56,86 @@
                   </tr>
                 </thead>
                 <tbody>
-                @foreach($pat as $pats)  
-                  @if(in_array($pats->department_id, $user_dept)) 
-                    @if($pats->flag != 'deleted')    
+            @foreach($pat as $pats)  
+              @if(in_array($pats->department_id, $user_dept))  
+                @if($pats->flag != 'deleted')    
                   <tr>
+                    <td>{{$pats->id}}</td>
                     <td>{{$pats->fname}} {{$pats->mname}}. {{$pats->lname}}</td>
                     <td>{{\Carbon\Carbon::parse($pats->birthdate)->age}}</td>
-                    <td>{{$pats->birthdate}}</td>
+                    <td>{{\Carbon\Carbon::parse($pats->birthdate)->format('M-j-Y')}}</td>
                     <td>{{$pats->address->street}},{{$pats->address->barangay}},{{$pats->address->city}}</td>
                     <td>{{$pats->departments->department_name}} Department</td>
-                    <td style="text-align: center"><a class="btn btn-success" href="{{URL::to('/viewpatient/'.$pats->id)}}" style="margin-right: 10px;color:white">View</a>
-                     @if(Auth::user()->user_role()->first()->name == 'Superadmin' || Auth::user()->user_role()->first()->name == 'Admin')
-                      <button class="btn btn-danger" data-toggle="modal" data-target="#deletePatient" data-patientid="{{$pats->id}}">Delete</button>
+                    <td style="text-align: center"><a class="btn btn-success" href="{{URL::to('/viewpatient/'.$pats->id)}}" style="margin-right: 10px;color:white">View</a></td>
+                  </tr>
+                @endif
+              @elseif(Auth::user()->user_role->name == 'Superadmin')
+                @if($pats->flag != 'deleted')
+                  <tr>
+                    <td>{{$pats->id}}</td>
+                    <td>{{$pats->fname}} {{$pats->mname}}. {{$pats->lname}}</td>
+                    <td>{{\Carbon\Carbon::parse($pats->birthdate)->age}}</td>
+                    <td>{{\Carbon\Carbon::parse($pats->birthdate)->format('M-j-Y')}}</td>
+                    <td>{{$pats->address->street}},{{$pats->address->barangay}},{{$pats->address->city}}</td>
+                    <td>{{$pats->departments->department_name}} Department</td>
+                  @if($pats->status == 'For Graduate')
+                    @foreach($users->notifications as $user)
+                      @foreach($graduate as $grad)
+                        @if($user->type == 'App\Notifications\MyFourthNotifications' && $grad->graduate_id == $user->data['graduate_id'])
+                          @if($user->data['patient_id'] == $pats->id && $grad->patient_id == $pats->id)
+                            @if($grad->status == "")
+                            <td style="text-align: center"><a class="btn btn-success" href="{{URL::to('/viewpatientx/'.$pats->id.'/'.$user->id).'/'.$user->data['graduate_id']}}" style="margin-right: 10px;color:white">View</a></td>
+                            </tr>
+                            @endif
+                          @endif
                       @endif
-                     @endif
-                  </tr>
-                  @elseif(Auth::user()->user_role()->first()->name == 'Superadmin')
-                    @if($pats->flag != 'deleted')
-                  <tr>
-                    <td>{{$pats->fname}} {{$pats->mname}}. {{$pats->lname}}</td>
-                    <td>{{\Carbon\Carbon::parse($pats->birthdate)->age}}</td>
-                    <td>{{$pats->birthdate}}</td>
-                    <td>{{$pats->address->street}},{{$pats->address->barangay}},{{$pats->address->city}}</td>
-                    <td>{{$pats->departments->department_name}} Department</td>
-                    <td style="text-align: center"><a class="btn btn-success" href="{{URL::to('/viewpatient/'.$pats->id)}}" style="margin-right: 10px;color:white">View</a>
-                     @if(Auth::user()->user_role()->first()->name == 'Superadmin' || Auth::user()->user_role()->first()->name == 'Admin')
-                      <button class="btn btn-danger" data-toggle="modal" data-target="#deletePatient" data-patientid="{{$pats->id}}">Delete</button>
-                     @endif
-                    </td>
-                  </tr>
-                    @endif
-                  @elseif(Auth::user()->user_role()->first()->name == 'Admin')
-                    @if($pats->flag != 'deleted')
-                  <tr>
-                    <td>{{$pats->fname}} {{$pats->mname}}. {{$pats->lname}}</td>
-                    <td>{{\Carbon\Carbon::parse($pats->birthdate)->age}}</td>
-                    <td>{{$pats->birthdate}}</td>
-                    <td>{{$pats->address->street}},{{$pats->address->barangay}},{{$pats->address->city}}</td>
-                    <td>{{$pats->departments->department_name}} Department</td>
-                    <td style="text-align: center"><a class="btn btn-success" href="{{URL::to('/viewpatient/'.$pats->id)}}" style="margin-right: 10px;color:white">View</a>
-                      @if(Auth::user()->user_role()->first()->name == 'Superadmin' || Auth::user()->user_role()->first()->name == 'Admin')
-                      <button class="btn btn-danger" data-toggle="modal" data-target="#deletePatient" data-patientid="{{$pats->id}}">Delete</button>
-                      @endif
-                    </td>
-                  </tr>
-                    @endif
+                    @endforeach
+                  @endforeach
+                  @else
+                    <td style="text-align: center"><a class="btn btn-success" href="{{URL::to('/viewpatient/'.$pats->id)}}" style="margin-right: 10px;color:white">View</a></td>
+                    </tr>
                   @endif
+                @endif
+              @elseif(Auth::user()->user_role()->first()->name == 'Admin')
+                  @if($pats->flag != 'deleted')
+                  <tr>
+                    <td>{{$pats->id}}</td>
+                    <td>{{$pats->fname}} {{$pats->mname}}. {{$pats->lname}}</td>
+                    <td>{{\Carbon\Carbon::parse($pats->birthdate)->age}}</td>
+                    <td>{{\Carbon\Carbon::parse($pats->birthdate)->format('M-j-Y')}}</td>
+                    <td>{{$pats->address->street}},{{$pats->address->barangay}},{{$pats->address->city}}</td>
+                    <td>{{$pats->departments->department_name}} Department</td>
+                    <td style="text-align: center"><a class="btn btn-success" href="{{URL::to('/viewpatient/'.$pats->id)}}" style="margin-right: 10px;color:white">View</a></td>
+                  </tr>
+                  @endif
+               @elseif(in_array($pats->department_id,$user_dept) != 1)
+                @if($pats->status == 'For Transfer')
+                <tr>
+                    <td>{{$pats->id}}</td>
+                    <td>{{$pats->fname}} {{$pats->mname}}. {{$pats->lname}}</td>
+                    <td>{{\Carbon\Carbon::parse($pats->birthdate)->age}}</td>
+                    <td>{{\Carbon\Carbon::parse($pats->birthdate)->format('M-j-Y')}}</td>
+                    <td>{{$pats->address->street}},{{$pats->address->barangay}},{{$pats->address->city}}</td>
+                    <td>{{$pats->departments->department_name}} Department</td>
+                @foreach($users->unreadNotifications as $user)
+                   @foreach($transfer as $trans)
+                    @if($user->type == 'App\Notifications\MyThirdNotifications' && $trans->transfer_id == $user->data['transfer_id'])
+                    @if($trans->status != 'transfered')
+                    <td style="text-align: center"><a class="btn btn-success" href="{{URL::to('/viewpatients/'.$user->data['patient_id']. '/'.$user->id.'/'.$user->data['transfer_id'])}}" style="margin-right: 10px;color:white">View</a></td>
+                </tr>
+                    @endif
+                    @endif
+                  @endforeach
                 @endforeach
+                @endif
+               @endif
+            @endforeach
                 </tbody>
               </table>
             </div>
           </div>
         </div>
+      </div>
 
 
 @endsection

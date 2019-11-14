@@ -105,7 +105,7 @@
               </div>
               @endif
               @if($rolex->name == 'Doctor')
-               <div class="col-md-6">
+               <div class="col-md-6"> 
                 <div class="form-label-group">
                  <select class="form-control" id="designation" placeholder="Designation" required="required" name="designation">
                   <label for="designation">Designation/Position</label>

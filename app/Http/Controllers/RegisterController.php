@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Notifications\Notifiable;
 use App\Notifications\MyNotifications;
+use Illuminate\Support\MessageBag;
 use Auth;
 use DB;
 use App\Users;
@@ -28,25 +29,28 @@ class RegisterController extends Controller
 {
     public function registernow(request $request)
     {
+    
     $validation = $this->validate($request,[
-        'username' =>'required|unique:users',
-        'contact'=>'required|unique:users|digits:11',
-        'email' => 'required|unique:users'
+            'username' =>'required|unique:users',
+            'contact'=>'required|unique:users|digits:11',
+            'email' => 'required|unique:users'
       ]);
 
       if(!$validation){
-        $errors = new MessageBag(['username' => ['Username should be unique'],'contact' => ['Contact number should be unique'],'email' => ['Email should be unique']]);
-           return Redirect::back()->withErrors($errors)->withInput(Input::all());
-      }
-      else{
+        
+        $errors = new MessageBag;
+        $errors->add(['username' => ['Username already taken'],'contact' => ['Contact number already taken'],'email' => ['Email already taken']]);
 
-    $id = rand();
-    $depts = $request->input('depart');
+           return back()->with($errors);
+      }
+
+        $id = rand();
+        $depts = $request->input('depart');
 
     $designation_id = $request->designation;
 
-     if($request->input('designat')){
-        $role = new User_roles([
+        if($request->input('designat')){
+            $role = new User_roles([
             'parent' => $request->input('roleid'),
             'name' =>  $request->input('designat'),
             'description' => 'Designation',
@@ -62,6 +66,11 @@ class RegisterController extends Controller
         }
     }
 
+    elseif($request->input('designation')){
+
+        $designation_id = $request->input('designation');
+
+    }
     else{
 
         $designation_id = NULL;
@@ -140,15 +149,24 @@ class RegisterController extends Controller
         $users = Users::find(Auth::user()->id);
         $transfer = Transfer_Requests::all();
         $graduate = Graduate_Requests::all();
+        $User_depart = User_departments::where('user_id', Auth::user()->id)->get();
+        $udepts = User_departments::all();
+
+        $depts = [];
+
+        foreach ($User_depart as $user_depts) 
+        {
+
+            $depts[] = $user_depts->department_id;
+            
+        }
 
         if(Auth::user()->user_role()->first()->name == 'Superadmin'){
-            return view('superadmin.showusers')->with('roles',$roles)->with('deps',$deps)->with('rolex',$rolex)->with('urole' ,$urole)->with('users',$users)->with('transfer',$transfer)->with('graduate',$graduate);
+            return view('superadmin.showusers')->with('roles',$roles)->with('deps',$deps)->with('rolex',$rolex)->with('urole' ,$urole)->with('users',$users)->with('transfer',$transfer)->with('graduate',$graduate)->with('user_dept', $depts)->with('udepts',$udepts);
         }
         else if (Auth::user()->user_role()->first()->name == 'Admin'){
-            return view('admin.showusers')->with('roles',$roles)->with('deps',$deps)->with('rolex',$rolex)->with('urole' ,$urole)->with('users',$users)->with('transfer',$transfer)->with('graduate',$graduate);
+            return view('admin.showusers')->with('roles',$roles)->with('deps',$deps)->with('rolex',$rolex)->with('urole' ,$urole)->with('users',$users)->with('transfer',$transfer)->with('graduate',$graduate)->with('user_dept', $depts)->with('udepts',$udepts);
         }
-
-    }
 
 }
 
@@ -194,12 +212,22 @@ class RegisterController extends Controller
         $users = Users::find(Auth::user()->id);
         $transfer = Transfer_Requests::all();
         $graduate = Graduate_Requests::all();
+        $User_depart = User_departments::where('user_id', Auth::user()->id)->get();
+
+        $depts = [];
+
+        foreach ($User_depart as $user_depts) 
+        {
+
+            $depts[] = $user_depts->department_id;
+            
+        }
 
         if(Auth::user()->user_role()->first()->name == 'Superadmin'){
-            return view('superadmin.chooseuser')->with('roles',$roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('graduate',$graduate);
+            return view('superadmin.chooseuser')->with('roles',$roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('graduate',$graduate)->with('user_dept', $depts);
         }
         else if(Auth::user()->user_role()->first()->name == 'Admin'){
-            return view('admin.chooseuser')->with('roles',$roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('graduate',$graduate);
+            return view('admin.chooseuser')->with('roles',$roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('graduate',$graduate)->with('user_dept', $depts);
         }
     }
 
@@ -233,12 +261,22 @@ class RegisterController extends Controller
         $users = Users::find(Auth::user()->id);
         $transfer = Transfer_Requests::all();
         $graduate = Graduate_Requests::all();
+        $User_depart = User_departments::where('user_id', Auth::user()->id)->get();
+
+        $depts = [];
+
+        foreach ($User_depart as $user_depts) 
+        {
+
+            $depts[] = $user_depts->department_id;
+            
+        }
 
       if(Auth::user()->user_role()->first()->name == 'Superadmin'){
-        return view('superadmin.postcreatedep')->with('roles',$roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('graduate',$graduate);
+        return view('superadmin.postcreatedep')->with('roles',$roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('graduate',$graduate)->with('user_dept', $depts);
       }
       elseif(Auth::user()->user_role()->first()->name == 'Admin'){
-        return view('admin.postcreatedep')->with('roles',$roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('graduate',$graduate);
+        return view('admin.postcreatedep')->with('roles',$roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('graduate',$graduate)->with('user_dept', $depts);
       }
     }   
 
@@ -251,12 +289,22 @@ class RegisterController extends Controller
         $transfer = Transfer_Requests::all();
         $graduate = Graduate_Requests::all();
         $designation = User_roles::where('description','Employee')->get();
+        $User_depart = User_departments::where('user_id', Auth::user()->id)->get();
+
+        $depts = [];
+
+        foreach ($User_depart as $user_depts) 
+        {
+
+            $depts[] = $user_depts->department_id;
+            
+        }
 
         if(Auth::user()->user_role()->first()->name == 'Superadmin'){
-            return view('superadmin.createemployee')->with('roles',$roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('graduate',$graduate)->with('designation',$designation);
+            return view('superadmin.createemployee')->with('roles',$roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('graduate',$graduate)->with('designation',$designation)->with('user_dept', $depts);
         }
         else if(Auth::user()->user_role()->first()->name == 'Admin'){
-            return view('superadmin.createemployee')->with('roles',$roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('graduate',$graduate)->with('designation',$designation);
+            return view('superadmin.createemployee')->with('roles',$roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('graduate',$graduate)->with('designation',$designation)->with('user_dept', $depts);
         }
 
     }
@@ -347,17 +395,27 @@ class RegisterController extends Controller
         $transfer = Transfer_Requests::all();
         $emp = Employees::all();
         $graduate = Graduate_Requests::all();
+        $User_depart = User_departments::where('user_id', Auth::user()->id)->get();
+
+        $depts = [];
+
+        foreach ($User_depart as $user_depts) 
+        {
+
+            $depts[] = $user_depts->department_id;
+            
+        }
 
 
         
        if(Auth::user()->user_role()->first()->name == 'Superadmin'){
-            return view('superadmin.showemployees')->with('roles' , $roles)->with('deps',$deps)->with('emp' ,$emp)->with('users',$users)->with('transfer',$transfer)->with('graduate',$graduate);
+            return view('superadmin.showemployees')->with('roles' , $roles)->with('deps',$deps)->with('emp' ,$emp)->with('users',$users)->with('transfer',$transfer)->with('graduate',$graduate)->with('user_dept', $depts);
         }
         else if(Auth::user()->user_role()->first()->name == 'Admin'){
-            return view('admin.showemployees')->with('roles' , $roles)->with('deps',$deps)->with('emp' ,$emp)->with('users',$users)->with('transfer',$transfer)->with('graduate',$graduate);
+            return view('admin.showemployees')->with('roles' , $roles)->with('deps',$deps)->with('emp' ,$emp)->with('users',$users)->with('transfer',$transfer)->with('graduate',$graduate)->with('user_dept', $depts);
         }
         else if(Auth::user()->user_role()->first()->name == 'Social Worker'){
-            return view('socialworker.showemployees')->with('roles' , $roles)->with('deps',$deps)->with('emp' ,$emp)->with('users',$users)->with('transfer',$transfer)->with('graduate',$graduate);
+            return view('socialworker.showemployees')->with('roles' , $roles)->with('deps',$deps)->with('emp' ,$emp)->with('users',$users)->with('transfer',$transfer)->with('graduate',$graduate)->with('user_dept', $depts);
         }
     }
 

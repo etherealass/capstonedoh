@@ -18,12 +18,12 @@
                   <p style="font-size: 40px;margin-top: 7px">{{$dep->department_name}}</p>
                 <div class="mr-5">{{$dep->description}}</div>
               </div>
-              <a style="color:black" class="card-footer text-white clearfix small z-1" href="#">
+              <!-- <a style="color:black" class="card-footer text-white clearfix small z-1" href="#">
                 <span style="color:black" class="float-left" >View Details</span>
                 <span  style="color:black" class="float-right">
                   <i class="fas fa-angle-right"></i>
                 </span>
-              </a>
+              </a> -->
             </div>
         </div>
         @endforeach

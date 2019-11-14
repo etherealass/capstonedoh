@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\URL;
-use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Validator; 
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Redirect;
 use Auth;
@@ -31,12 +31,22 @@ class UserController extends Controller
 		$users = Users::find(Auth::user()->id);
 		$transfer = Transfer_Requests::all();
 		$graduate = Graduate_Requests::all();
+		$User_depart = User_departments::where('user_id', Auth::user()->id)->get();
+
+        $depts = [];
+
+        foreach ($User_depart as $user_depts) 
+        {
+
+            $depts[] = $user_depts->department_id;
+            
+        }
 
 		if(Auth::user()->user_role()->first()->name == 'Superadmin'){
-			return view('superadmin.chooseuser')->with('roles',$roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('graduate',$graduate);
+			return view('superadmin.chooseuser')->with('roles',$roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('graduate',$graduate)->with('user_dept', $depts);
 		}
 		elseif(Auth::user()->user_role()->first()->name == 'Admin'){
-			return view('admin.chooseuser')->with('roles',$roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('graduate',$graduate);
+			return view('admin.chooseuser')->with('roles',$roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('graduate',$graduate)->with('user_dept', $depts);
 		}
 		else{
 			return abort(404);
@@ -59,12 +69,22 @@ class UserController extends Controller
 		$transfer = Transfer_Requests::all();
 		$graduate = Graduate_Requests::all();
 		$designation = User_roles::where('parent','!=','0')->get();
+		$User_depart = User_departments::where('user_id', Auth::user()->id)->get();
+
+        $depts = [];
+
+        foreach ($User_depart as $user_depts) 
+        {
+
+            $depts[] = $user_depts->department_id;
+            
+        }
 
 		if(Auth::user()->user_role()->first()->name == 'Superadmin'){
-			return view('superadmin.createuser')->with('roles',$roles)->with('deps',$deps)->with('rolex',$rolex)->with('users',$users)->with('transfer',$transfer)->with('graduate',$graduate)->with('designation',$designation);
+			return view('superadmin.createuser')->with('roles',$roles)->with('deps',$deps)->with('rolex',$rolex)->with('users',$users)->with('transfer',$transfer)->with('graduate',$graduate)->with('designation',$designation)->with('user_dept', $depts);
 		}
 		elseif(Auth::user()->user_role()->first()->name == 'Admin'){
-			return view('admin.createuser')->with('roles',$roles)->with('deps',$deps)->with('rolex',$rolex)->with('users',$users)->with('transfer',$transfer)->with('graduate',$graduate)->with('designation',$designation);
+			return view('admin.createuser')->with('roles',$roles)->with('deps',$deps)->with('rolex',$rolex)->with('users',$users)->with('transfer',$transfer)->with('graduate',$graduate)->with('designation',$designation)->with('user_dept', $depts);
 		}
 		else{
 			return abort(404);
@@ -107,9 +127,19 @@ class UserController extends Controller
 		$users = Users::find(Auth::user()->id);
 		$transfer = Transfer_Requests::all();
 		$graduate = Graduate_Requests::all();
+		$User_depart = User_departments::where('user_id', Auth::user()->id)->get();
+
+        $depts = [];
+
+        foreach ($User_depart as $user_depts) 
+        {
+
+            $depts[] = $user_depts->department_id;
+            
+        }
 
 		if(Auth::user()->user_role()->first()->name == 'Superadmin'){
-			return view('superadmin.createrole')->with('roles',$roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('graduate',$graduate);
+			return view('superadmin.createrole')->with('roles',$roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('graduate',$graduate)->with('user_dept', $depts);
 		}
 		else{
 			return abort(404);
@@ -123,8 +153,19 @@ class UserController extends Controller
 		$users = Users::find(Auth::user()->id);
 		$transfer = Transfer_Requests::all();
 		$graduate = Graduate_Requests::all();
+		$User_depart = User_departments::where('user_id', Auth::user()->id)->get();
+
+        $depts = [];
+
+        foreach ($User_depart as $user_depts) 
+        {
+
+            $depts[] = $user_depts->department_id;
+            
+        }
+
 		if(Auth::user()->user_role()->first()->name == 'Superadmin'){
-			return view('superadmin.postcreatedep')->with('roles',$roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('graduate',$graduate);
+			return view('superadmin.postcreatedep')->with('roles',$roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('graduate',$graduate)->with('user_dept', $depts);
 		}
 		else{
 			return abort(404);
@@ -138,8 +179,19 @@ class UserController extends Controller
 		$users = Users::find(Auth::user()->id);
 		$transfer = Transfer_Requests::all();
 		$graduate = Graduate_Requests::all();
+		$User_depart = User_departments::where('user_id', Auth::user()->id)->get();
+
+        $depts = [];
+
+        foreach ($User_depart as $user_depts) 
+        {
+
+            $depts[] = $user_depts->department_id;
+            
+        }
+
 		if(Auth::user()->user_role()->first()->name == 'Superadmin'){
-			return view('superadmin.createdep')->with('roles',$roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('graduate',$graduate);
+			return view('superadmin.createdep')->with('roles',$roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('graduate',$graduate)->with('user_dept', $depts);
 		}
 		else{
 			return abort(404);

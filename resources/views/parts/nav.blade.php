@@ -77,7 +77,7 @@
         <div class="dropdown-menu dropdown-menu-right" style="width: 500px;border:solid gray 1px" aria-labelledby="alertsDropdown">
           <div>
               <div class="card-header">Notifications </div>
-              <div class="card-body scrollAble" style="margin-left: 0">
+              <div class="card-body scrollAble" style="margin-left: 0"> 
               @if(Auth::user()->user_role()->first()->name == 'Superadmin' || Auth::user()->user_role()->first()->name == 'Admin') 
                 @foreach($users->unreadNotifications as $user)
                     @if($user->type == 'App\Notifications\MySecondNotification')

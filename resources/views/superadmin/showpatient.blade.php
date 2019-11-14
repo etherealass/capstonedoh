@@ -57,13 +57,13 @@
                 </thead>
                 <tbody>
                 @foreach($pat as $pats)  
-                  @if(Auth::user()->department == $pats->department_id) 
+                 @if(in_array($pats->department_id, $user_dept))  
                     @if($pats->flag != 'deleted')    
                   <tr>
                     <td>{{$pats->id}}</td>
                     <td>{{$pats->fname}} {{$pats->mname}}. {{$pats->lname}}</td>
                     <td>{{\Carbon\Carbon::parse($pats->birthdate)->age}}</td>
-                    <td>{{$pats->birthdate}}</td>
+                    <td>{{\Carbon\Carbon::parse($pats->birthdate)->format('M-j-Y')}}</td>
                     <td>{{$pats->address->street}},{{$pats->address->barangay}},{{$pats->address->city}}</td>
                     <td>{{$pats->departments->department_name}} Department</td>
                     <td style="text-align: center"><a class="btn btn-success" href="{{URL::to('/viewpatient/'.$pats->id)}}" style="margin-right: 10px;color:white">View</a></td>
@@ -75,7 +75,7 @@
                     <td>{{$pats->id}}</td>
                     <td>{{$pats->fname}} {{$pats->mname}}. {{$pats->lname}}</td>
                     <td>{{\Carbon\Carbon::parse($pats->birthdate)->age}}</td>
-                    <td>{{$pats->birthdate}}</td>
+                    <td>{{\Carbon\Carbon::parse($pats->birthdate)->format('M-j-Y')}}</td>
                     <td>{{$pats->address->street}},{{$pats->address->barangay}},{{$pats->address->city}}</td>
                     <td>{{$pats->departments->department_name}} Department</td>
                   @if($pats->status == 'For Graduate')
@@ -102,7 +102,7 @@
                     <td>{{$pats->id}}</td>
                     <td>{{$pats->fname}} {{$pats->mname}}. {{$pats->lname}}</td>
                     <td>{{\Carbon\Carbon::parse($pats->birthdate)->age}}</td>
-                    <td>{{$pats->birthdate}}</td>
+                    <td>{{\Carbon\Carbon::parse($pats->birthdate)->format('M-j-Y')}}</td>
                     <td>{{$pats->address->street}},{{$pats->address->barangay}},{{$pats->address->city}}</td>
                     <td>{{$pats->departments->department_name}} Department</td>
                     <td style="text-align: center"><a class="btn btn-success" href="{{URL::to('/viewpatient/'.$pats->id)}}" style="margin-right: 10px;color:white">View</a></td>

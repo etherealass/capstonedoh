@@ -111,10 +111,10 @@ section .section-title {
                         <div class="col-md-6">
 
                              <select class="form-control tableType" id="tableType" placeholder="tableType"name="tableType">
-                                <option value="S">Services</option>
+                                 <option value="BS">Blood Sugar Daily Monitoring</option>
+                                  <option value="F">BMI</option>
                                 <option value="M">Medication Records</option>
-                                <option value="F">BMI</option>
-                                <option value="BS">Blood Sugar Dailt Monitoring</option>
+                                 <option value="S">Services</option>
                               </select>
 
                         </div>
@@ -418,12 +418,12 @@ section .section-title {
                               <div class="modal-header" style="width:800px">
                                   <h4 class="modal-title" id="AddSocialWorkerNotesModal">Add Social Worker Service</h4>
                               </div>
-                              <form id="AddSocialWorkerFormData" name="AddSocialWorkerFormData" class="form-horizontal" novalidate="">
+                              <form id="AddSocialWorkerFormData" name="AddSocialWorkerFormData" class="form-horizontal">
                                     
                               <div class="modal-body" style="width:800px">
 
                                   <div class="form-group">
-                                    <h6>Service Type</h6>
+                                    <h6>Service Type</h6> 
                                       <select class="form-control" id="socialList"  name="socialList" data-hide-disabled="true" style="font-size: 16px; width: 500px;margin-left: 0px">
                                           <option value=0>--NONE--</option>
                                           @foreach($service as $services)
@@ -519,14 +519,14 @@ section .section-title {
                                     <h6>Service Type</h6>
                                       <select class="form-control nurseList" id="nurseList"  name="nurseList" data-hide-disabled="true" style="font-size: 16px; width: 500px;margin-left: 0px">
                                         <option value=0>--NONE--</option>
-                                        <option value="M">Medication Records</option>
-                                        <option value="F">BMI</option>
                                         <option value="BS">Blood Sugar Daily Monitoring</option>
+                                        <option value="F">BMI</option>
                                           @foreach($service as $services)
                                           @if($services->role == 4)
                                           <option value="{{$services->services->id}}"> {{$services->services->name}}</option>
                                           @endif
                                           @endforeach
+                                        <option value="M">Medication Records</option>
                                         </select>
                                  
                                       
@@ -594,22 +594,21 @@ section .section-title {
                               <div class="modal-header" style="width:800px">
                                   <h4 class="modal-title" id="AddDoctorNotesModal">Add Doctor Service</h4>
                               </div>
-                              <form id="AddDoctorFormData" name="AddDoctorFormData" class="form-horizontal" novalidate="">
+                              
+
+                          <form id="AddDoctorFormData" name="AddDoctorFormData">
                                     
                               <div class="modal-body" style="width:800px">
-
                                   <div class="form-group">
                                     <h6>Service Type</h6>
-                                      <select class="form-control doctorList" id="doctorList"  name="doctorList" data-hide-disabled="true" style="font-size: 16px; width: 500px;margin-left: 0px">
+                                      <select class="form-control doctorList" id="doctorList"  name="doctorList"  data-hide-disabled="true" style="font-size: 16px; width: 500px;margin-left: 0px">
                                           @foreach($service as $services)
                                           @if($services->role == 3)
                                           <option value="{{$services->services->id}}"> {{$services->services->name}}</option>
                                           @endif
                                           @endforeach
                                           </select>
-                                  </div>
-
-                                  <div class="form-group">
+                  
                                         <h6>Notes</h6>
                                            <textarea style="margin-left:0px;height: 150px;width:760px;margin-bottom: 10px" type="text" id="notes" class="form-control has-error" placeholder="Note" name="notes" required="required"></textarea>
                                   </div>
@@ -617,18 +616,16 @@ section .section-title {
 
                                     
                               </div>
-                            </form>
+                             </form>
                               <div class="modal-footer">
-                                  <button type="button" class="btn btn-primary" id="btn-save-doctornotes" name ="btn-save-doctornotes" value="add">Save changes
-                                  </button>
+                                  <button type="button" class="btn btn-primary" id="btn-save-doctornotes" name ="btn-save-doctornotes" value="add">Save changes</button>
                                  <input type="hidden" id="id" name="id" value="0">
                                   <input type="hidden" id="patient_id" name="patient_id" value="{{$pats->id}}">
                                   <input type="hidden" id="note_by" name="note_by" value="{{Auth::user()->id}}">
                                   <input type="hidden" id="noteId" name="noteId" value="">
                                   <input type="hidden" id="creator_role" name="creator_role" value="doctor">
-
-
                               </div>
+
                   </div>
           </div>
   </div>
@@ -662,7 +659,7 @@ section .section-title {
                                   </button>
                                   <input type="hidden" id="patient_id" name="patient_id" value="{{$pats->id}}">
                                   <input type="hidden" id="note_by" name="note_by" value="{{Auth::user()->id}}">
-                                  <input type="hidden" id="noteId" name="noteId">                            
+                                  <input type="hidden" class="noteId" id="noteId" name="noteId">                            
                                   <input type="hidden" id="creator_role" name="creator_role" value="social_worker">
                   </div>
           </div>

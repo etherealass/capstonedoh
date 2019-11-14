@@ -40,6 +40,9 @@ th, td {
 </head>
 <body>
   <p style="text-align: center"><b>DENTAL SERVICE RECORD</b></p>
+
+  <label>Name:   <b>{{$pat->fname}} {{$pat->lname}}</b></label> 
+
   <table style="width:100%">
   <tr>
          <th width="15%">Date</th>

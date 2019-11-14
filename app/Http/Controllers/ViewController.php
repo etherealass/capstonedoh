@@ -71,13 +71,24 @@ class ViewController extends Controller
     $transfer = Transfer_Requests::all();
     $graduate = Graduate_Requests::all();
     $designation = User_roles::where('parent', 3)->get();
+    $User_depart = User_departments::where('user_id', Auth::user()->id)->get();
+    $udepts = User_departments::all();
+
+        $depts = [];
+
+        foreach ($User_depart as $user_depts) 
+        {
+
+            $depts[] = $user_depts->department_id; 
+            
+        }
 
 //
       if(Auth::user()->user_role()->first()->name == 'Superadmin'){
-   	  return view('superadmin.showusers')->with('rolex',$rolex)->with('deps',$deps)->with('roles',$roles)->with('urole' ,$urole)->with('users',$users)->with('transfer',$transfer)->with('graduate',$graduate)->with('designation', $designation);
+   	  return view('superadmin.showusers')->with('rolex',$rolex)->with('deps',$deps)->with('roles',$roles)->with('urole' ,$urole)->with('users',$users)->with('transfer',$transfer)->with('graduate',$graduate)->with('designation', $designation)->with('user_dept', $depts)->with('udepts',$udepts);
       }
       elseif(Auth::user()->user_role()->first()->name == 'Admin'){
-         return view('admin.showusers')->with('rolex',$rolex)->with('deps',$deps)->with('roles',$roles)->with('urole' ,$urole)->with('users',$users)->with('transfer',$transfer)->with('graduate',$graduate)->with('designation', $designation);
+         return view('admin.showusers')->with('rolex',$rolex)->with('deps',$deps)->with('roles',$roles)->with('urole' ,$urole)->with('users',$users)->with('transfer',$transfer)->with('graduate',$graduate)->with('designation', $designation)->with('user_dept', $depts)->with('udepts',$udepts);
       }
    }
 
@@ -90,8 +101,18 @@ class ViewController extends Controller
     $users = Users::find(Auth::user()->id);
     $transfer = Transfer_Requests::all();
     $graduate = Graduate_Requests::all();
+    $User_depart = User_departments::where('user_id', Auth::user()->id)->get();
 
-   	return view('superadmin.showdeps')->with('depsx',$depsx)->with('deps',$deps)->with('roles',$roles)->with('users',$users)->with('transfer',$transfer)->with('graduate',$graduate);
+        $depts = [];
+
+        foreach ($User_depart as $user_depts) 
+        {
+
+            $depts[] = $user_depts->department_id;
+            
+        }
+
+   	return view('superadmin.showdeps')->with('depsx',$depsx)->with('deps',$deps)->with('roles',$roles)->with('users',$users)->with('transfer',$transfer)->with('graduate',$graduate)->with('user_dept', $depts);
    }
 
    public function showdepuser($did,$rid)
@@ -104,8 +125,19 @@ class ViewController extends Controller
       $users = Users::find(Auth::user()->id);
       $transfer = Transfer_Requests::all();
       $graduate = Graduate_Requests::all();
+      $User_depart = User_departments::where('user_id', Auth::user()->id)->get();
+      $udepts = User_departments::all();
 
-      return view('superadmin.showusers')->with('rolex',$rolex)->with('deps',$deps)->with('roles',$roles)->with('urole' ,$urole)->with('users',$users)->with('transfer',$transfer)->with('graduate',$graduate);
+        $depts = [];
+
+        foreach ($User_depart as $user_depts) 
+        {
+
+            $depts[] = $user_depts->department_id;
+            
+        }
+
+      return view('superadmin.showusers')->with('rolex',$rolex)->with('deps',$deps)->with('roles',$roles)->with('urole' ,$urole)->with('users',$users)->with('transfer',$transfer)->with('graduate',$graduate)->with('user_dept', $depts)->with('udepts',$udepts);
 
    }
    public function showemployees()
@@ -117,12 +149,22 @@ class ViewController extends Controller
       $transfer = Transfer_Requests::all();
       $emp = Employees::where('flag',NULL)->get();
       $graduate = Graduate_Requests::all();
+      $User_depart = User_departments::where('user_id', Auth::user()->id)->get();
+
+        $depts = [];
+
+        foreach ($User_depart as $user_depts) 
+        {
+
+            $depts[] = $user_depts->department_id;
+            
+        }
 
        if(Auth::user()->user_role()->first()->name == 'Superadmin'){
-            return view('superadmin.showemployees')->with('roles' , $roles)->with('deps',$deps)->with('emp' ,$emp)->with('users',$users)->with('transfer',$transfer)->with('graduate',$graduate);
+            return view('superadmin.showemployees')->with('roles' , $roles)->with('deps',$deps)->with('emp' ,$emp)->with('users',$users)->with('transfer',$transfer)->with('graduate',$graduate)->with('user_dept', $depts);
         }
         else if(Auth::user()->user_role()->first()->name == 'Admin'){
-            return view('admin.showemployees')->with('roles' , $roles)->with('deps',$deps)->with('emp' ,$emp)->with('users',$users)->with('transfer',$transfer)->with('graduate',$graduate);
+            return view('admin.showemployees')->with('roles' , $roles)->with('deps',$deps)->with('emp' ,$emp)->with('users',$users)->with('transfer',$transfer)->with('graduate',$graduate)->with('user_dept', $depts);
         }
 
    }
@@ -135,12 +177,22 @@ class ViewController extends Controller
       $transfer = Transfer_Requests::all();
       $emp = Employees::where('flag',NULL)->where('id',$id)->get();
       $graduate = Graduate_Requests::all();
+      $User_depart = User_departments::where('user_id', Auth::user()->id)->get();
+
+        $depts = [];
+
+        foreach ($User_depart as $user_depts) 
+        {
+
+            $depts[] = $user_depts->department_id;
+            
+        }
 
       if(Auth::user()->user_role()->first()->name == 'Superadmin'){
-            return view('superadmin.viewemployee')->with('roles' , $roles)->with('deps',$deps)->with('emp' ,$emp)->with('users',$users)->with('transfer',$transfer)->with('graduate',$graduate);
+            return view('superadmin.viewemployee')->with('roles' , $roles)->with('deps',$deps)->with('emp' ,$emp)->with('users',$users)->with('transfer',$transfer)->with('graduate',$graduate)->with('user_dept', $depts);
         }
         else if(Auth::user()->user_role()->first()->name == 'Admin'){
-            return view('admin.viewemployee')->with('roles' , $roles)->with('deps',$deps)->with('emp' ,$emp)->with('users',$users)->with('transfer',$transfer)->with('graduate',$graduate);
+            return view('admin.viewemployee')->with('roles' , $roles)->with('deps',$deps)->with('emp' ,$emp)->with('users',$users)->with('transfer',$transfer)->with('graduate',$graduate)->with('user_dept', $depts);
         }
      }
 
@@ -152,14 +204,22 @@ class ViewController extends Controller
       $transfer = Transfer_Requests::all();
       $uses = Users::where('flag',NULL)->where('id',$id)->get();
       $graduate = Graduate_Requests::all();
+      $User_depart = User_departments::where('user_id', Auth::user()->id)->get();
 
-      $notif = DB::table('notifications')->where('notifiable_id',Auth::user()->id)->update(['read_at' => date('Y-m-d')]);
+        $depts = [];
+
+        foreach ($User_depart as $user_depts) 
+        {
+
+            $depts[] = $user_depts->department_id;
+            
+        }
 
       if(Auth::user()->user_role()->first()->name == 'Superadmin'){
-            return view('superadmin.viewuser')->with('roles' , $roles)->with('deps',$deps)->with('uses' ,$uses)->with('users',$users)->with('transfer',$transfer)->with('graduate',$graduate);
+            return view('superadmin.viewuser')->with('roles' , $roles)->with('deps',$deps)->with('uses' ,$uses)->with('users',$users)->with('transfer',$transfer)->with('graduate',$graduate)->with('user_dept', $depts);
         }
         else if(Auth::user()->user_role()->first()->name == 'Admin'){
-            return view('admin.viewuser')->with('roles' , $roles)->with('deps',$deps)->with('uses' ,$uses)->with('users',$users)->with('transfer',$transfer)->with('graduate',$graduate);
+            return view('admin.viewuser')->with('roles' , $roles)->with('deps',$deps)->with('uses' ,$uses)->with('users',$users)->with('transfer',$transfer)->with('graduate',$graduate)->with('user_dept', $depts);
         }
    }
 
@@ -171,14 +231,24 @@ class ViewController extends Controller
       $transfer = Transfer_Requests::all();
       $uses = Users::where('flag',NULL)->where('id',$id)->get();
       $graduate = Graduate_Requests::all();
+      $User_depart = User_departments::where('user_id', Auth::user()->id)->get();
 
-      $notif = DB::table('notifications')->where('notifiable_id',Auth::user()->id)->update(['read_at' => date('Y-m-d')]);
+        $depts = [];
+
+        foreach ($User_depart as $user_depts) 
+        {
+
+            $depts[] = $user_depts->department_id;
+            
+        }
+
+      $notif = DB::table('notifications')->where('id',$pid)->update(['read_at' => date('Y-m-d')]);
 
       if(Auth::user()->user_role()->first()->name == 'Superadmin'){
-            return view('superadmin.viewuser')->with('roles' , $roles)->with('deps',$deps)->with('uses' ,$uses)->with('users',$users)->with('transfer',$transfer)->with('graduate',$graduate);
+            return view('superadmin.viewuser')->with('roles' , $roles)->with('deps',$deps)->with('uses' ,$uses)->with('users',$users)->with('transfer',$transfer)->with('graduate',$graduate)->with('user_dept', $depts);
         }
         else if(Auth::user()->user_role()->first()->name == 'Admin'){
-            return view('admin.viewuser')->with('roles' , $roles)->with('deps',$deps)->with('uses' ,$uses)->with('users',$users)->with('transfer',$transfer)->with('graduate',$graduate);
+            return view('admin.viewuser')->with('roles' , $roles)->with('deps',$deps)->with('uses' ,$uses)->with('users',$users)->with('transfer',$transfer)->with('graduate',$graduate)->with('user_dept', $depts);
         }
    }
 
@@ -192,12 +262,22 @@ class ViewController extends Controller
       $graduate = Graduate_Requests::all();
       $logs = Logs::all();
       $graduate = Graduate_Requests::all();
+      $User_depart = User_departments::where('user_id', Auth::user()->id)->get();
+
+        $depts = [];
+
+        foreach ($User_depart as $user_depts) 
+        {
+
+            $depts[] = $user_depts->department_id;
+            
+        }
 
       if(Auth::user()->user_role()->first()->name == 'Superadmin'){
-            return view('superadmin.logs')->with('roles' , $roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('logs',$logs)->with('graduate',$graduate);
+            return view('superadmin.logs')->with('roles' , $roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('logs',$logs)->with('graduate',$graduate)->with('user_dept', $depts);
       }
       else if(Auth::user()->user_role()->first()->name == 'Admin'){
-            return view('admin.logs')->with('roles' , $roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('logs',$logs)->with('graduate',$graduate);
+            return view('admin.logs')->with('roles' , $roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('logs',$logs)->with('graduate',$graduate)->with('user_dept', $depts);
       }
       else{
 
@@ -215,24 +295,34 @@ class ViewController extends Controller
       $graduate = Graduate_Requests::all();
       $logs = Logs::where('performer_id',$id)->get();
       $graduate = Graduate_Requests::all();
+      $User_depart = User_departments::where('user_id', Auth::user()->id)->get();
+
+        $depts = [];
+
+        foreach ($User_depart as $user_depts) 
+        {
+
+            $depts[] = $user_depts->department_id;
+            
+        }
 
       if(Auth::user()->user_role()->first()->name == 'Superadmin'){
-            return view('superadmin.logs')->with('roles' , $roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('logs',$logs)->with('graduate',$graduate);
+            return view('superadmin.logs')->with('roles' , $roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('logs',$logs)->with('graduate',$graduate)->with('user_dept', $depts);
         }
       else if(Auth::user()->user_role()->first()->name == 'Admin'){
-            return view('admin.logs')->with('roles' , $roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('logs',$logs)->with('graduate',$graduate);
+            return view('admin.logs')->with('roles' , $roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('logs',$logs)->with('graduate',$graduate)->with('user_dept', $depts);
         }
       else if(Auth::user()->user_role()->first()->name == 'Social Worker'){
-            return view('socialworker.logs')->with('roles' , $roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('logs',$logs)->with('graduate',$graduate);
+            return view('socialworker.logs')->with('roles' , $roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('logs',$logs)->with('graduate',$graduate)->with('user_dept', $depts);
         }
       else if(Auth::user()->user_role()->first()->name == 'Doctor'){
-            return view('doctor.logs')->with('roles' , $roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('logs',$logs)->with('graduate',$graduate);
+            return view('doctor.logs')->with('roles' , $roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('logs',$logs)->with('graduate',$graduate)->with('user_dept', $depts);
         }
       else if(Auth::user()->user_role()->first()->name == 'Psychiatrist'){
-            return view('psychiatrist.logs')->with('roles' , $roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('logs',$logs)->with('graduate',$graduate);
+            return view('psychiatrist.logs')->with('roles' , $roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('logs',$logs)->with('graduate',$graduate)->with('user_dept', $depts);
         }
       else if(Auth::user()->user_role()->first()->name == 'Dentist'){
-            return view('dentist.logs')->with('roles' , $roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('logs',$logs)->with('graduate',$graduate);
+            return view('dentist.logs')->with('roles' , $roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('logs',$logs)->with('graduate',$graduate)->with('user_dept', $depts);
         }
         else{
           return abort(404);
@@ -248,12 +338,22 @@ class ViewController extends Controller
       $transfer = Transfer_Requests::all();
       $case = Case_Type::all();
       $graduate = Graduate_Requests::all();
+      $User_depart = User_departments::where('user_id', Auth::user()->id)->get();
+
+        $depts = [];
+
+        foreach ($User_depart as $user_depts) 
+        {
+
+            $depts[] = $user_depts->department_id;
+            
+        }
 
       if(Auth::user()->user_role()->first()->name == 'Superadmin'){
-            return view('superadmin.casetypes')->with('roles' , $roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('case',$case)->with('graduate',$graduate);
+            return view('superadmin.casetypes')->with('roles' , $roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('case',$case)->with('graduate',$graduate)->with('user_dept', $depts);
         }
         else if(Auth::user()->user_role()->first()->name == 'Admin'){
-             return view('superadmin.casetypes')->with('roles' , $roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('case',$case)->with('graduate',$graduate);
+             return view('superadmin.casetypes')->with('roles' , $roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('case',$case)->with('graduate',$graduate)->with('user_dept', $depts);
         }
         else{
           return abort(404);
@@ -269,12 +369,22 @@ class ViewController extends Controller
       $transfer = Transfer_Requests::all();
       $city = Cities::all();
       $graduate = Graduate_Requests::all();
+      $User_depart = User_departments::where('user_id', Auth::user()->id)->get();
+
+        $depts = [];
+
+        foreach ($User_depart as $user_depts) 
+        {
+
+            $depts[] = $user_depts->department_id;
+            
+        }
 
       if(Auth::user()->user_role()->first()->name == 'Superadmin'){
-            return view('superadmin.cities')->with('roles' , $roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('city',$city)->with('graduate',$graduate);
+            return view('superadmin.cities')->with('roles' , $roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('city',$city)->with('graduate',$graduate)->with('user_dept', $depts);
       }
       else if(Auth::user()->user_role()->first()->name == 'Admin'){
-            return view('superadmin.cities')->with('roles' , $roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('city',$city)->with('graduate',$graduate);
+            return view('superadmin.cities')->with('roles' , $roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('city',$city)->with('graduate',$graduate)->with('user_dept', $depts);
       }
       else{
           return abort(404);
@@ -290,12 +400,22 @@ class ViewController extends Controller
       $transfer = Transfer_Requests::all();
       $graduate = Graduate_Requests::all();
       $jails = City_Jails::all();
+      $User_depart = User_departments::where('user_id', Auth::user()->id)->get();
+
+        $depts = [];
+
+        foreach ($User_depart as $user_depts) 
+        {
+
+            $depts[] = $user_depts->department_id;
+            
+        }
 
       if(Auth::user()->user_role()->first()->name == 'Superadmin'){
-            return view('superadmin.jails')->with('roles' , $roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('graduate',$graduate)->with('jails',$jails);
+            return view('superadmin.jails')->with('roles' , $roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('graduate',$graduate)->with('jails',$jails)->with('user_dept', $depts);
       }
       else if(Auth::user()->user_role()->first()->name == 'Admin'){
-            return view('superadmin.jails')->with('roles' , $roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('graduate',$graduate)->with('jails',$jails);
+            return view('superadmin.jails')->with('roles' , $roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('graduate',$graduate)->with('jails',$jails)->with('user_dept', $depts);
       }
       else{
           return abort(404);
@@ -334,12 +454,22 @@ class ViewController extends Controller
       $transfer = Transfer_Requests::all();
       $graduate = Graduate_Requests::all();
       $reasons = Dismissal_Reason::all();
+      $User_depart = User_departments::where('user_id', Auth::user()->id)->get();
+
+        $depts = [];
+
+        foreach ($User_depart as $user_depts) 
+        {
+
+            $depts[] = $user_depts->department_id;
+            
+        }
 
       if(Auth::user()->user_role()->first()->name == 'Superadmin'){
-            return view('superadmin.reasons')->with('roles' , $roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('reasons',$reasons)->with('graduate',$graduate);
+            return view('superadmin.reasons')->with('roles' , $roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('reasons',$reasons)->with('graduate',$graduate)->with('user_dept', $depts);
       }
       else if(Auth::user()->user_role()->first()->name == 'Admin'){
-            return view('superadmin.reasons')->with('roles' , $roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('reasons',$reasons)->with('graduate',$graduate);
+            return view('superadmin.reasons')->with('roles' , $roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('reasons',$reasons)->with('graduate',$graduate)->with('user_dept', $depts);
       }
       else{
           return abort(404);
@@ -356,14 +486,24 @@ class ViewController extends Controller
       $graduate = Graduate_Requests::all();
       $reasons = Dismissal_Reason::all();
       $status = Civil_Status::all();
+      $User_depart = User_departments::where('user_id', Auth::user()->id)->get();
+
+        $depts = [];
+
+        foreach ($User_depart as $user_depts) 
+        {
+
+            $depts[] = $user_depts->department_id;
+            
+        }
 
       if(Auth::user()->user_role()->first()->name == 'Superadmin')
       {
-            return view('superadmin.civilstat')->with('roles' , $roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('reasons',$reasons)->with('graduate',$graduate)->with('status',$status);
+            return view('superadmin.civilstat')->with('roles' , $roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('reasons',$reasons)->with('graduate',$graduate)->with('status',$status)->with('user_dept', $depts);
       }
       else if(Auth::user()->user_role()->first()->name == 'Admin')
       {
-            return view('superadmin.civilstat')->with('roles' , $roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('reasons',$reasons)->with('graduate',$graduate)->with('status',$status);
+            return view('superadmin.civilstat')->with('roles' , $roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('reasons',$reasons)->with('graduate',$graduate)->with('status',$status)->with('user_dept', $depts);
       }
       else
       {
@@ -381,14 +521,24 @@ class ViewController extends Controller
       $graduate = Graduate_Requests::all();
       $reasons = Dismissal_Reason::all();
       $gender = Gender::all();
+      $User_depart = User_departments::where('user_id', Auth::user()->id)->get();
+
+        $depts = [];
+
+        foreach ($User_depart as $user_depts) 
+        {
+
+            $depts[] = $user_depts->department_id;
+            
+        }
 
       if(Auth::user()->user_role()->first()->name == 'Superadmin')
       {
-            return view('superadmin.gender')->with('roles' , $roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('reasons',$reasons)->with('graduate',$graduate)->with('gender',$gender);
+            return view('superadmin.gender')->with('roles' , $roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('reasons',$reasons)->with('graduate',$graduate)->with('gender',$gender)->with('user_dept', $depts);
       }
       else if(Auth::user()->user_role()->first()->name == 'Admin')
       {
-            return view('superadmin.gender')->with('roles' , $roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('reasons',$reasons)->with('graduate',$graduate)->with('gender',$gender);
+            return view('superadmin.gender')->with('roles' , $roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('reasons',$reasons)->with('graduate',$graduate)->with('gender',$gender)->with('user_dept', $depts);
       }
       else
       {
@@ -406,14 +556,24 @@ class ViewController extends Controller
       $graduate = Graduate_Requests::all();
       $reasons = Dismissal_Reason::all();
       $dabused = Drugs_Abused::all();
+      $User_depart = User_departments::where('user_id', Auth::user()->id)->get();
+
+        $depts = [];
+
+        foreach ($User_depart as $user_depts) 
+        {
+
+            $depts[] = $user_depts->department_id;
+            
+        }
 
       if(Auth::user()->user_role()->first()->name == 'Superadmin')
       {
-            return view('superadmin.dabused')->with('roles' , $roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('reasons',$reasons)->with('graduate',$graduate)->with('dabused',$dabused);
+            return view('superadmin.dabused')->with('roles' , $roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('reasons',$reasons)->with('graduate',$graduate)->with('dabused',$dabused)->with('user_dept', $depts);
       }
       else if(Auth::user()->user_role()->first()->name == 'Admin')
       {
-            return view('superadmin.dabused')->with('roles' , $roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('reasons',$reasons)->with('graduate',$graduate)->with('dabused',$dabused);
+            return view('superadmin.dabused')->with('roles' , $roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('reasons',$reasons)->with('graduate',$graduate)->with('dabused',$dabused)->with('user_dept', $depts);
       }
       else
       {
@@ -432,14 +592,24 @@ class ViewController extends Controller
       $graduate = Graduate_Requests::all();
       $reasons = Dismissal_Reason::all();
       $eduatain = Educational_Attainment::all();
+      $User_depart = User_departments::where('user_id', Auth::user()->id)->get();
+
+        $depts = [];
+
+        foreach ($User_depart as $user_depts) 
+        {
+
+            $depts[] = $user_depts->department_id;
+            
+        }
 
       if(Auth::user()->user_role()->first()->name == 'Superadmin')
       {
-            return view('superadmin.eduatain')->with('roles' , $roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('reasons',$reasons)->with('graduate',$graduate)->with('eduatain',$eduatain);
+            return view('superadmin.eduatain')->with('roles' , $roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('reasons',$reasons)->with('graduate',$graduate)->with('eduatain',$eduatain)->with('user_dept', $depts);
       }
       else if(Auth::user()->user_role()->first()->name == 'Admin')
       {
-            return view('superadmin.eduatain')->with('roles' , $roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('reasons',$reasons)->with('graduate',$graduate)->with('eduatain',$eduatain);
+            return view('superadmin.eduatain')->with('roles' , $roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('reasons',$reasons)->with('graduate',$graduate)->with('eduatain',$eduatain)->with('user_dept', $depts);
       }
       else
       {
@@ -458,14 +628,24 @@ class ViewController extends Controller
       $graduate = Graduate_Requests::all();
       $reasons = Dismissal_Reason::all();
       $estat = Employment_Status::all();
+      $User_depart = User_departments::where('user_id', Auth::user()->id)->get();
+
+        $depts = [];
+
+        foreach ($User_depart as $user_depts) 
+        {
+
+            $depts[] = $user_depts->department_id;
+            
+        }
 
       if(Auth::user()->user_role()->first()->name == 'Superadmin')
       {
-            return view('superadmin.estat')->with('roles' , $roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('reasons',$reasons)->with('graduate',$graduate)->with('estat',$estat);
+            return view('superadmin.estat')->with('roles' , $roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('reasons',$reasons)->with('graduate',$graduate)->with('estat',$estat)->with('user_dept', $depts);
       }
       else if(Auth::user()->user_role()->first()->name == 'Admin')
       {
-            return view('superadmin.estat')->with('roles' , $roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('reasons',$reasons)->with('graduate',$graduate)->with('estat',$estat);
+            return view('superadmin.estat')->with('roles' , $roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('reasons',$reasons)->with('graduate',$graduate)->with('estat',$estat)->with('user_dept', $depts);
       }
       else
       {
@@ -483,14 +663,23 @@ class ViewController extends Controller
       $transfer = Transfer_Requests::all();
       $graduate = Graduate_Requests::all();
       $checklist = Checklist::where('parent',0)->get();
+      $User_depart = User_departments::where('user_id', Auth::user()->id)->get();
+
+        $depts = [];
+
+        foreach ($User_depart as $user_depts) 
+        {
+
+            $depts[] = $user_depts->department_id;
+            
+        }
 
       if(Auth::user()->user_role()->first()->name == 'Superadmin'){
-            return view('superadmin.checklist')->with('roles' , $roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('checklist',$checklist)->with('graduate',$graduate);
+            return view('superadmin.checklist')->with('roles' , $roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('checklist',$checklist)->with('graduate',$graduate)->with('user_dept', $depts);
         }
       else if(Auth::user()->user_role()->first()->name == 'Admin'){
-            return view('superadmin.checklist')->with('roles' , $roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('checklist',$checklist)->with('graduate',$graduate);
-        }
-        else{
+            return view('superadmin.checklist')->with('roles' , $roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('checklist',$checklist)->with('graduate',$graduate)->with('user_dept', $depts);
+       } else{
           return abort(404);
         }
    }
@@ -506,14 +695,24 @@ class ViewController extends Controller
       $mainlist = Checklist::where('id',$id)->get();
       $checklist = Checklist::where('parent',$id)->get();
       $sublist = Checklist::all();
+      $User_depart = User_departments::where('user_id', Auth::user()->id)->get();
+
+        $depts = [];
+
+        foreach ($User_depart as $user_depts) 
+        {
+
+            $depts[] = $user_depts->department_id;
+            
+        }
 
      
      if(Auth::user()->user_role()->first()->name == 'Superadmin'){
-            return view('superadmin.subchecklist')->with('roles' , $roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('checklist',$checklist)->with('graduate',$graduate)->with('mainlist',$mainlist)->with('sublist',$sublist);
+            return view('superadmin.subchecklist')->with('roles' , $roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('checklist',$checklist)->with('graduate',$graduate)->with('mainlist',$mainlist)->with('sublist',$sublist)->with('user_dept', $depts);
         }
 
     else if(Auth::user()->user_role()->first()->name == 'Admin'){
-            return view('superadmin.subchecklist')->with('roles' , $roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('checklist',$checklist)->with('graduate',$graduate)->with('mainlist',$mainlist)->with('sublist',$sublist);
+            return view('superadmin.subchecklist')->with('roles' , $roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('checklist',$checklist)->with('graduate',$graduate)->with('mainlist',$mainlist)->with('sublist',$sublist)->with('user_dept', $depts);
       }
       else{
           return abort(404);
@@ -543,7 +742,6 @@ class ViewController extends Controller
                         <thead style="width:200px">
                         <tr>
                           <th style="width:200px">Name</th>
-                          <th style="width:200px">Path</th>
                           <th style="width:200px">Action</th>
                         </tr>
                       </thead>
@@ -552,7 +750,7 @@ class ViewController extends Controller
                   foreach($checklist as $list)
                   {
 
-                      $output .= '<tr><td style="width:200px">'.$list->name.'</td><td style="width:200px"><a href="http://localhost/capstone/public/'.$list->location.'">'.$list->location.'</a></td><td style="width:200px"><button class="btn btn-danger" data-toggle="modal" data-target="#deleteFile" data-fileid="'.$list->id.'" style="margin-left:100px">Delete</button></td></tr>';
+                      $output .= '<tr><td style="width:200px">'.$list->name.'</td><td style="width:200px"><a href="http://localhost/capstone/public/'.$list->location.'" target="_blank"><button class="btn btn-success" style="margin-left:100px">View</button></a><button class="btn btn-danger" data-toggle="modal" data-target="#deleteFile" data-fileid="'.$list->id.'" style="margin-left:10px">Delete</button></td></tr>';
 
                   }
 
@@ -637,8 +835,7 @@ public function pdfintake($id)
 
 public function MonitoringTool($id)
 {
-      
-      $pat = Patients::where('id',$id)->get();
+      $pat = Patients::where('id',$id)->with('address')->first();
       $patos = Patient_Event_List::where('patient_id',$id)->where('status', 1)->get();
 
 
@@ -659,6 +856,20 @@ public function MonitoringTool($id)
       $pdf = PDF::loadView('pdf.doctors',compact(['notes', 'pat']));
       return $pdf->stream();
    }
+     public function clearanceNotes($id)
+   {
+      
+      $pat = Patients::where('id',$id)->first();
+      $notes = ProgressNotes::where(['patient_id'=>$id, 'role_type'=>"Dentist"])->with('userx')->get();
+
+
+      $pdf = \App::make('dompdf.wrapper');
+      $pdf = PDF::loadView('pdf.clearance',compact(['notes', 'pat']));
+      return $pdf->stream();
+  }
+
+
+
 
     public function dentalNotes($id)
    {
@@ -1390,7 +1601,7 @@ public function samplecsv(request $request)
       $sheet->setCellValue('J'.$nextm,$percent);
 
 
-      $nextk = $nextm+1;
+      $nextk = $nextm+8;
       
       $sheet->mergeCells("B$nextk:J$nextk");
       $sheet->getStyle("B$nextk")->applyFromArray($style2)->getFont()->setSize(10);
@@ -1417,11 +1628,63 @@ public function samplecsv(request $request)
       $sheet->setCellValue('I'.$nextl, '%');
 
       $nexto = $nextl+1;
+      $services = Services::where('inactive',0)->where('parent',7)->get();
+      $index = $nexto;
+      $totalall = 0;
 
-      $sheet->mergeCells("B$nexto:J$nexto");
-      $sheet->setCellValue('B'.$nexto, '----TO BE CONTINUED----');
+      foreach($services as $servs)
+      {
+        $sheet->mergeCells("B$index:D$index");
+        $sheet->mergeCells("E$index:F$index");
+        $sheet->mergeCells("G$index:H$index");
+        $sheet->mergeCells("I$index:J$index");
+        $sheet->getStyle("B$index")->applyFromArray($style);
+        $sheet->getStyle("E$index")->applyFromArray($style);
+        $sheet->getStyle("G$index")->applyFromArray($style);
+        $sheet->getStyle("I$index")->applyFromArray($style);
+        $sheet->setCellValue('B'.$index, $servs->name);
+
+
+        $patsev = Patients::where('status','Enrolled')->whereMonth('date_admitted',$request->input('months'))->whereYear('date_admitted',$request->input('years'))->join('progress_notes','patients.id','=','progress_notes.patient_id')->where('progress_notes.service_id',$servs->id)->get()->count();
+
+        $sheet->getStyle('E'.$index)->getNumberFormat()->setFormatCode( PHPExcel_Style_NumberFormat::FORMAT_TEXT );
+        $sheet->setCellValue('E'.$index, 2);
+        $sheet->getStyle('G'.$index)->getNumberFormat()->setFormatCode( PHPExcel_Style_NumberFormat::FORMAT_TEXT );
+        $sheet->setCellValue('G'.$index, $patsev);
+
+        $perce = $patsev / 2;
+        $percent = round((float)$perce * 100 ) . '%';
+        $sheet->getStyle("I$index")->getFont()->setBold(true);
+        $sheet->setCellValue('I'.$index,$percent);
+
+        $index++;
+      }
+
+      $totalall = $patsev;
 
       $next = $nexto+1;
+
+      $sheet->mergeCells("B$next:D$next");
+      $sheet->mergeCells("E$next:F$next");
+      $sheet->mergeCells("G$next:H$next");
+      $sheet->mergeCells("I$next:J$next");
+      $sheet->getStyle("B$next")->applyFromArray($style)->getFont()->setBold(true)->setSize(10);
+      $sheet->getStyle("E$next")->applyFromArray($style)->getFont()->setBold(true)->setSize(10);
+      $sheet->getStyle("G$next")->applyFromArray($style)->getFont()->setBold(true)->setSize(10);
+      $sheet->getStyle("I$next")->applyFromArray($style)->getFont()->setBold(true)->setSize(10);
+      $sheet->getStyle('E'.$next)->getNumberFormat()->setFormatCode( PHPExcel_Style_NumberFormat::FORMAT_TEXT );
+      $sheet->getStyle('G'.$next)->getNumberFormat()->setFormatCode( PHPExcel_Style_NumberFormat::FORMAT_TEXT );
+      $sheet->getStyle('I'.$next)->getNumberFormat()->setFormatCode( PHPExcel_Style_NumberFormat::FORMAT_TEXT );
+      $sheet->setCellValue('E'.$next, 8);
+      $sheet->setCellValue('G'.$next, $patsev);
+      $sheet->setCellValue('B'.$next, 'TOTAL');
+
+      $perce = $totalall / 8;
+      $percent = round((float)$perce * 100 ) . '%';
+      $sheet->getStyle("I$next")->getFont()->setBold(true);
+      $sheet->setCellValue('I'.$next,$percent);
+
+      $next = $next+1;
 
       $sheet->mergeCells("B$next:J$next");
       $sheet->getStyle("B$next")->applyFromArray($style)->getFont()->setBold(true)->setSize(10);
@@ -1437,14 +1700,17 @@ public function samplecsv(request $request)
       $sheet->getStyle("E$next")->applyFromArray($style3)->getFont()->setSize(10);
       $sheet->getStyle("G$next")->applyFromArray($style3)->getFont()->setSize(10);
       $sheet->getStyle("I$next")->applyFromArray($style3)->getFont()->setSize(10);
-      $sheet->setCellValue('E'.$next, 'TARGET');
-      $sheet->setCellValue('G'.$next, 'ACTUAL');
-      $sheet->setCellValue('I'.$next, '%');
+      $sheet->setCellValue('E'.$next, 'RESIDENTIAL');
+      $sheet->setCellValue('G'.$next, 'OUT-PATIENT');
+      $sheet->setCellValue('I'.$next, 'AFTERCARE');
 
 
-      $service = Services::where('inactive',0)->get();
+      $service = Services::where('inactive',0)->where('parent',0)->get();
       $limit = count($service);
       $index = $next+1;
+      $totalr = 0;
+      $totalo = 0;
+      $totali = 0;
 
       foreach($service as $serv)
       {
@@ -1457,8 +1723,86 @@ public function samplecsv(request $request)
         $sheet->getStyle("G$index")->applyFromArray($style);
         $sheet->getStyle("I$index")->applyFromArray($style);
         $sheet->setCellValue('B'.$index, $serv->name);
+
+        $patsevr = Patients::where('status','Enrolled')->where('department_id',1)->whereMonth('date_admitted',$request->input('months'))->whereYear('date_admitted',$request->input('years'))->join('progress_notes','patients.id','=','progress_notes.patient_id')->where('progress_notes.service_id',$serv->id)->get()->count();
+
+        $sheet->getStyle('E'.$index)->getNumberFormat()->setFormatCode( PHPExcel_Style_NumberFormat::FORMAT_TEXT );
+        $sheet->setCellValue('E'.$index, $patsevr);
+
+        $totalr = $totalr+$patsevr;
+
+        $patsevo = Patients::where('status','Enrolled')->where('department_id',2)->whereMonth('date_admitted',$request->input('months'))->whereYear('date_admitted',$request->input('years'))->join('progress_notes','patients.id','=','progress_notes.patient_id')->where('progress_notes.service_id',$serv->id)->get()->count();
+
+        $sheet->getStyle('G'.$index)->getNumberFormat()->setFormatCode( PHPExcel_Style_NumberFormat::FORMAT_TEXT );
+        $sheet->setCellValue('G'.$index, $patsevo);
+
+        $totalo = $totalo+$patsevo;
+
+        $patsevi = Patients::where('status','Enrolled')->where('department_id',3)->whereMonth('date_admitted',$request->input('months'))->whereYear('date_admitted',$request->input('years'))->join('progress_notes','patients.id','=','progress_notes.patient_id')->where('progress_notes.service_id',$serv->id)->get()->count();
+
+        $sheet->getStyle('I'.$index)->getNumberFormat()->setFormatCode( PHPExcel_Style_NumberFormat::FORMAT_TEXT );
+        $sheet->setCellValue('I'.$index, $patsevi);
+
+        $totali = $totali+$patsevi;
+
         $index++;
       }
+
+      $index = $index;
+
+      $sheet->mergeCells("B$index:D$index");
+      $sheet->mergeCells("E$index:F$index");
+      $sheet->mergeCells("G$index:H$index");
+      $sheet->mergeCells("I$index:J$index");
+      $sheet->getStyle("E$index")->applyFromArray($style)->getFont()->setBold(true)->setSize(10);
+      $sheet->getStyle("G$index")->applyFromArray($style)->getFont()->setBold(true)->setSize(10);
+      $sheet->getStyle("I$index")->applyFromArray($style)->getFont()->setBold(true)->setSize(10);
+      $sheet->getStyle("B$index")->applyFromArray($style)->getFont()->setBold(true)->setSize(10);
+      $sheet->setCellValue('B'.$index, 'TOTAL');
+      $sheet->getStyle('E'.$index)->getNumberFormat()->setFormatCode( PHPExcel_Style_NumberFormat::FORMAT_TEXT );
+      $sheet->setCellValue('E'.$index, $totalr);
+      $sheet->getStyle('G'.$index)->getNumberFormat()->setFormatCode( PHPExcel_Style_NumberFormat::FORMAT_TEXT );
+      $sheet->setCellValue('G'.$index, $totalo);
+      $sheet->getStyle('I'.$index)->getNumberFormat()->setFormatCode( PHPExcel_Style_NumberFormat::FORMAT_TEXT );
+      $sheet->setCellValue('I'.$index, $totali);
+
+      $index = $index+2;
+
+      $sheet->mergeCells("B$index:D$index");
+      $sheet->mergeCells("H$index:J$index");
+      $sheet->setCellValue('B'.$index,'Prepared By: ');
+      $sheet->setCellValue('H'.$index,'Approved By: ');
+
+      $index = $index+2;
+
+      $sheet->mergeCells("B$index:D$index");
+      $sheet->mergeCells("H$index:J$index");
+      $sheet->getStyle("B$index")->getFont()->setBold(true)->setSize(10);
+      $sheet->getStyle("H$index")->getFont()->setBold(true)->setSize(10);
+      $sheet->setCellValue('B'.$index,'STEPHEN CHRISTIAN L. DE LA SERNA');
+      $sheet->setCellValue('H'.$index,'JASMIN T. PERALTA, MD, MPH, DPCAM, FPSMSI');
+
+      $index = $index+1;
+
+      $sheet->mergeCells("B$index:D$index");
+      $sheet->mergeCells("H$index:J$index");
+      $sheet->getStyle("B$index")->getFont()->setSize(10);
+      $sheet->getStyle("H$index")->getFont()->setSize(10);
+      $sheet->getStyle('B'.$index)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER)->setVertical(PHPExcel_Style_Alignment::VERTICAL_TOP);
+      $sheet->getStyle('H'.$index)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER)->setVertical(PHPExcel_Style_Alignment::VERTICAL_TOP);
+      $sheet->setCellValue('B'.$index,'Nurse II');
+      $sheet->setCellValue('H'.$index,'Chief of Hospital II');
+
+      $index = $index+1;
+
+      $sheet->mergeCells("B$index:D$index");
+      $sheet->mergeCells("H$index:J$index");
+      $sheet->getStyle("B$index")->getFont()->setSize(10);
+      $sheet->getStyle("H$index")->getFont()->setSize(10);
+      $sheet->getStyle('B'.$index)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER)->setVertical(PHPExcel_Style_Alignment::VERTICAL_TOP);
+      $sheet->getStyle('H'.$index)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER)->setVertical(PHPExcel_Style_Alignment::VERTICAL_TOP);
+      $sheet->setCellValue('B'.$index,'DOH TRC Cebu City');
+      $sheet->setCellValue('H'.$index,'DOH TRC Cebu City');
 
       })->setFileName($monthname.' '.$yearname.' Accomplishment Report')->download('xlsx');
 
@@ -1989,7 +2333,7 @@ public function samplecsv(request $request)
 
         $sheet->mergeCells("D$index:F$index");
         $sheet->getStyle('D'.$index)->getFont()->setSize(9);
-         $sheet->getStyle('D'.$index)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER)->setVertical(PHPExcel_Style_Alignment::VERTICAL_TOP);  
+        $sheet->getStyle('D'.$index)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER)->setVertical(PHPExcel_Style_Alignment::VERTICAL_TOP);  
         $sheet->setCellValue('D'.$index,'OIC Chief Of Hospital');
 
         $index = $index+2;

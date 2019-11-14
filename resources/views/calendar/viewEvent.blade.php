@@ -74,9 +74,6 @@ select
                 <p style="font-size: 15px"><h5>Start Date:</h5> {{$evt->start_date}}</p>
                 <input style="margin-left:0px" type="text" class="form-control" placeholder="Remarks" name="start-date" id="start-date" value="{{$evt->start_date}}" hidden="hidden">
               </div>
-<!--               <div class="col-md-3">
-                <p style="font-size: 15px"><h5>End Date:</h5> {{$evt->end_date}}</p>
-              </div> -->
                <div class="col-md-2">
                 <p style="font-size: 15px"><h5>Start Time:</h5> {{$evt->start_time}}</p>
 
@@ -84,7 +81,11 @@ select
                <div class="col-md-2">
                 <p style="font-size: 15px"><h5>End Time:</h5><span id="datetime">{{$evt->end_time}}</span></p>
               </div>
-
+              @if($evts[0]->depatment_id != null)
+              <div class="col-md-2">
+                <p style="font-size: 15px"><h5>Department:</h5><span id="datetime">{{$evts[0]->Departments->department_name}}</span></p>
+              </div>
+              @endif
                <input type="hidden" id="department_id" name="department_id" value="{{$evt->department_id}}">
 
           </div>
@@ -107,7 +108,9 @@ select
                                       <div class="form-group">
                                           <select class="selectpicker form-control col-md-6" id="patientList"  name="patientList"data-live-search-placeholder="Search" data-live-search="true" title="Select a Patient" data-hide-disabled="true">
                                           @foreach($patients as $pats_Evt)
+                                            @if($pats_Evt->inactive != 1)
                                             <option value="{{$pats_Evt->id}}">{{ $pats_Evt->lname }}, {{ $pats_Evt->fname }}</option>
+                                            @endif
                                           @endforeach
                                           </select>
                                           <button class="btn btn-success add_patient col-md-1">
@@ -123,7 +126,6 @@ select
                                           <thead>
                                             <tr>
                                               <th height="20px">Name</th>
-                                              <th>Date Last Visited</th>
                                               <th>Contact Number</th>
                                               <th>Action</th>
                                             </tr>
@@ -132,15 +134,17 @@ select
                                                 @foreach($pats as $patients)
                                           <tr id="patient{{$patients->id}}">
                                              <td height="15" style="height: 15px !important;"><a> {{ $patients->patients->lname }}, {{ $patients->patients->fname }}</a></td>
-                                             <td height="15px"><a>{{ $patients->patients->department_id}}</a></td>
                                              <td height="20"><a>{{ $patients->patients->contact}}</a></td>
                                              <td>
+
                                             @if($isEventExpired)
 
                                               @if($patients->status == 0)
-                                            <button class="btn btn-info  open-modal" value="{{$patients->patient_id}}" data-id="{{$patients->id}}" id="attend_btn"  name="attend_btn"><i class="far fa-calendar-check" aria-hidden="true"></i></button>
+                                              <input type="hidden" id="attended_{{$patients->id}}" name="attended_{{$patients->id}}" value="0">                            
+                                            <button class="btn btn-info  open-modal" value="{{$patients->patient_id}}" data-id="{{$patients->id}}" id="attend_btn_{{$patients->id}}"  name="attend_btn_{{$patients->id}}"><i class="far fa-calendar-check" aria-hidden="true"></i></button>
                                             @else
-                                             <button class="btn btn-success  open-modal" value="{{$patients->patient_id}}" data-id="{{$patients->id}}" id="attend_btn"  name="attend_btn"><i class="far fa-calendar-check" aria-hidden="true"></i></button>
+                                            <input type="hidden" id="attended_{{$patients->id}}" name="attended_{{$patients->id}}" value="1">
+                                             <button class="btn btn-success  open-modal" value="{{$patients->patient_id}}" data-id="{{$patients->id}}" id="attend_btn_{{$patients->id}}"  name="attend_btn_{{$patients->id}}"><i class="far fa-calendar-check" aria-hidden="true"></i></button>
                                              @endif
 
                                             @endif
@@ -330,15 +334,24 @@ select
   $(".selectpicker").selectpicker();
 
    $('#linkEditor').on('hidden.bs.modal', function () {
-        //$(this).removeData('bs.modal');
-        console.log('hide');
-        $(this).find('form').trigger("reset")
+
+        $(this).find('form').trigger("reset");
+          $.clearInput();
+            $(this).removeData('bs.modal');
+          $(this).find('input[type=hidden]').val(" ");
+            $.clearFormFields(this);
+            $('.textboxes').hide();
+              $('.select1').hide();
+
+
       });
 
           $('body').on('click', '.open-modal', function () {
               var evt_id = $('#event_id').val();
               $('#evts_id').val(evt_id);
               var depart_id = $("#department_id").val();
+
+              $('#linkeditor_Data').find('input[type=hidden]').val("");
 
 
               console.log($(this).attr("data-id"));
@@ -409,14 +422,9 @@ select
 
     });
 
-     $('#linkEditor').on('hidden.bs.modal', function () {
-
-              $('.textboxes').hide();
-              $('.select1').hide();
-  
-    })
 
     $('#btn-attended').click(function(e){
+
 
           var event_patient = $('#patient_event_id').val();
 
@@ -438,8 +446,6 @@ select
       var eventArr = [];
 
       var checked = $("input[type=checkbox]:checked").length;
-
-      console.log(checked);
 
 
         var length = $("input[type=checkbox]").each(function(){
@@ -473,17 +479,24 @@ select
 
 
                     $("#rec_id_"+data[a].interven_id).val("");
+
+                    alert(data[a].interven_id);
                 }
 
 
                 if(checked > 0){
 
-                      $("#attend_btn").addClass("btn-success").removeClass("btn-info");
+
+                   //  $("#attend_btn").addClass("btn-success").removeClass("btn-info");
+
+                      $("#attend_btn_"+ event_patient).addClass("btn-success").removeClass("btn-info");
 
                 
                 }else{
 
-                      $("#attend_btn").addClass("btn-info").removeClass("btn-success");
+                    //  $("#attend_btn").addClass("btn-info").removeClass("btn-success");
+
+                    $("#attend_btn_"+ event_patient).addClass("btn-info").removeClass("btn-success");
 
                 }
 
@@ -544,8 +557,9 @@ select
             dataType: 'json',
             success: function (data) {
 
-          
+                    location.reload();
 
+      
                  var link = '<tr id="patient' + data[0].id + '"><td>' + data.ref_date + '</td><td>' + + '</td><td>' + data.ref_reason + '</td><td>' + data.ref_by + '</td>';
                 link += '<td><button class="btn btn-info open-modal" value="' + data.id + '">Edit</button>';
                 link += '<button class="btn btn-secondary delete-link" id="btn-accept" name ="btn-accept" value="' + data.id + '">Accept</button>';
@@ -577,14 +591,6 @@ select
             }
         });
 
-// console.log(patient_name);
-// $('button.dropdown-toggle').click();
-
-// $('#patientList').append('<option value="' + patient_id + '">' + patient_name + '</option>');
-
-// $('#patientList').siblings('.dropdown-menu').find('ul.dropdown-menu.inner.show').append('<li><a role="option" class="dropdown-item" aria-disabled="false" tabindex="0" aria-selected="false"><span class="text">' + patient_name + '</span></a></li>');
-//  //$('#patientList').trigger('click');
-           
        ajaxurl = '{{URL::to("delete/patient")}}'+ '/' + patient_id;
         $.ajax({
             type: "DELETE",

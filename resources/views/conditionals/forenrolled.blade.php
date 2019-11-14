@@ -19,12 +19,13 @@
           <div class="col-md-4" style="margin-top: 10px">
                 <button class="btn btn-success" data-patientid="{{$pats->id}}" data-patientdep="{{$pats->department_id}}" data-toggle="modal" data-target="#patientadminGraduate" style="margin-left:10px;height: 60px;width: 90px;margin-top: 10px">Graduate</button><button class="btn btn-warning" style="margin-left: 10px;height: 60px;width: 90px;margin-top: 10px" data-toggle="modal" data-target="#admintransferPatient" data-patientid="{{$pats->id}}" data-patientdep="{{$pats->department_id}}">Transfer</button><button class="btn btn-danger" data-toggle="modal" data-patientdep="{{$pats->department_id}}" data-patientid="{{$pats->id}}" data-target="#patientDismiss" style="margin-left: 10px;height: 60px;width: 90px;margin-top: 10px">Dismiss</button>
           </div>
-          @elseif(Auth::user()->user_role->name == 'Nurse' || Auth::user()->user_role->name == 'Social Worker' || Auth::user()->user_role->name == 'Doctor')
+          @elseif(Auth::user()->user_role->name == 'Nurse' || Auth::user()->user_role->name == 'Social Worker' || Auth::user()->user_role- ]->id && Auth::user()->designation != $psychiatrist[0]->id)
            <div class="col-md-4" style="margin-top: 10px">
     
                 <button class="btn btn-success" data-patientid="{{$pats->id}}" data-patientdep="{{$pats->department_id}}" data-toggle="modal" data-target="#patientGraduate" style="margin-left:10px;height: 60px;width: 90px;margin-top: 10px">Graduate</button><button class="btn btn-warning" style="margin-left: 10px;height: 60px;width: 90px;margin-top: 10px" data-toggle="modal" data-target="#transferPatient" data-patientid="{{$pats->id}}" data-patientdep="{{$pats->department_id}}">Transfer</button><button class="btn btn-danger" data-toggle="modal" data-patientdep="{{$pats->department_id}}" data-patientid="{{$pats->id}}" data-target="#patientDismiss" style="margin-left: 10px;height: 60px;width: 90px;margin-top: 10px">Dismiss</button>
     
           </div>
+          @endif
           @endif
          </div>
       @elseif($pats->status == 'For Graduate')
@@ -81,11 +82,12 @@
           <div class="col-md-4">
           </div>
           <div class="col-md-3" style="margin-top: 10px">
-              @if(Auth::user()->user_role->name == 'Superadmin' || Auth::user()->user_role->name == 'Admin')
+              @if(Auth::user()->user_role->name == 'Superadmin' || Auth::user()->user_role->name == 'Admin' )
               <button class="btn btn-primary" data-patientid="{{$pats->id}}" data-toggle="modal" data-target="#adminreenrollPatient" style="margin-left:60px;height: 60px;width: 90px;margin-top: 10px">Re-enroll</button>
-              @else
+              @elseif(Auth::user()->designation != $dentist[0]->id && Auth::user()->designation != $psychiatrist[0]->id)
               <button class="btn btn-primary" data-patientid="{{$pats->id}}" data-toggle="modal" data-target="#reenrollPatient" style="margin-left:60px;height: 60px;width: 90px;margin-top: 10px">Re-enroll</button>
               @endif
+               
           </div>
          </div>
          @elseif($pats->status == 'Dismissed')
@@ -354,6 +356,7 @@
                                     <td>{{$refer->ref_reason}}</td>
                                     <td>{{$refer->users->fname}} {{$refer->users->lname}}</td>
                               <td>
+                                @if($pats->status == 'Enrolled')
                                 @if($refer->accepted_by)
                                 <button class="btn btn-info view-refer-patient-modal" value="{{$refer->id}}">View
                                   </button>
@@ -367,7 +370,8 @@
                                   </button>
                                   <a href="{{URL::to('pdfreferral/'.$pats->id.'/'.$refer->id)}}" target="_blank"><button class="btn btn-danger print-link" id="btn-ptint" name ="btn-print" value="{{$refer->id}}">Print
                                   </button></a>
-                                @endif 
+                                @endif
+                                @endif
                               </td>
                           </tr>
                           @endforeach
@@ -432,7 +436,7 @@
                                       @if($pat_visit->status == 1 && $pat_visit->date == $today)
                                         <button class="btn btn-success btn-visit" value="edit" id="attend_btn"  name="attend_btn"><i class="far fa-calendar-check" aria-hidden="true"></i></button>
                                         @else
-                                         <button class="btn btn-info btn-visit-view" value="edit" id="btn-visit-view"  name="btn-visit-view"><i class="far fa-calendar-check" aria-hidden="true"></i></button>
+                                         <button class="btn btn-info btn-visit-view" value="edit" id="btn-visit-view" data-id="{{$pat_visit->id}}" name="btn-visit-view"><i class="far fa-calendar-check" aria-hidden="true"></i></button>
                                       @endif
                                     </td>
                          
@@ -600,9 +604,11 @@
               <legend style="color:white;text-indent: 20px;width:900px;margin-bottom: 20px;border-radius: 5px" class="bg bg-dark">Drug Dependency Examination Report</legend>
                 <div style="float:right;margin-bottom: 10px;margin-right: 10px;margin-top: 10px"><a href="{{URL::to('pdfdde/'.$pats->id)}}" target="_blank"><button class="btn btn-danger"><i class="fas fa-fw fa fa-file-pdf"></i>Print</button></a></div>
               @if($pats->status == 'Enrolled')
+              @if(Auth::user()->designation != $dentist[0]->id && Auth::user()->designation != $psychiatrist[0]->id)
                 @if(Auth::user()->user_role->name == 'Superadmin' || Auth::user()->user_role->name == 'Admin' || Auth::user()->user_role->name == 'Doctor')
                 <div style="float:right;margin-bottom: 10px;margin-right: 10px;margin-top: 10px"><button class="btn btn-success" data-toggle="modal" data-target="#ddeFormEdit"><i class="fas fa-fw fa fa-pen"></i>Edit</button></div>
                 @endif
+              @endif
               @endif
                       <div class="container" style="margin-top: 60px;margin-bottom: 30px">
                         <div class="container">

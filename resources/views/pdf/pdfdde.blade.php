@@ -7,12 +7,12 @@
 <style>
 table {
   border-collapse: collapse;
-   padding: 10px;
+   padding: 8px;
 }
 
 table, th, td {
   border: 1px solid black;
-  padding: 8px;
+  padding: 5px;
   vertical-align: top;
   text-align: left;
 }
@@ -90,7 +90,11 @@ table, th, td {
   </tr>
     <tr>
     <td>Birth Order:</td>
+    @if($pats->birthorder != NULL)
     <td>{{NumConvert::numberOrdinal($pats->birthorder)}}</td>
+    @else
+    <td></td>
+    @endif
     <td>Nationality:</td>
     <td>{{$pats->nationality}}</td>
   </tr>
@@ -131,11 +135,11 @@ table, th, td {
     <td>{{$patin->h_present_illness}}</td>
   </tr>
   <tr>
-    <td width="30%" height="4.5%">History of Drug Use:</td>
+    <td width="30%" height="3.5%">History of Drug Use:</td>
     <td>{{$patin->h_drug_abuse}}</td>
   </tr>
   <tr>
-    <td width="30%" height="4.5%">Family/Personal History:</td>
+    <td width="30%" height="3.5%">Family/Personal History:</td>
     <td>{{$patin->famper_history}}</td>
   </tr>
 </table>

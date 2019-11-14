@@ -1,12 +1,12 @@
-
 <div class="modal2 fade" id="linkEditorModal" aria-hidden="true" >
   <div class="modal-dialog">
     <div class="modal-content"  style="width:980px;">
       <div class="modal-header">
         <h4 class="modal-title" id="linkEditorModalLabel"><b>Referal Slip (Two Way Referal System)</b></h4>
       </div>
+        <form id="modalFormData" name="modalFormData" >
+
       <div class="modal-body">
-        <form id="modalFormData" name="modalFormData" class="form-horizontal" novalidate="">
           <table style="width:100%">
             <tr>
               <td style="width:25%">Last Name:</th> 
@@ -16,21 +16,21 @@
             <tr>
               <td style="width:25%">First Name:</td><td style="width:25%"> {{$pats->fname}}</td>
             </tr>
-            <?php $count = 0; ?>
+           <!--  <?php $count = 0; ?>
             @foreach($history as $hist)
               @if($hist->type == 'Enrolled' || $hist->type == 'Enrolled from Transfer' || $hist->type == 'Re-enrolled')
                 @if($hist->deps->department_name == $pats->departments->department_name)
                 <?php $count++; ?>
                   @if($count > 1)
-                  <?php $casex = 'Old'; ?>
+                 // <?php $casex = 'Old'; ?>
                   @else
-                  <?php $casex = 'New'; ?>
+                  //<?php $casex = 'New'; ?>
                   @endif
                 @endif
               @endif
-            @endforeach
+            @endforeach -->
           <tr>
-            <td style="width:25%">Case: {{$casex}}</td>
+            <td style="width:25%">Case: </td>
             <td style="width:25%">Middle initial: {{$pats->mname}}</td>
             <td style="width:25%">Contact Number:</td>
             <td style="width:25%">{{$pats->contact}}</td>
@@ -52,14 +52,16 @@
             <td style="width:25%"><input style="width: 230px;" type="date" value="<?php echo $today; ?>" id="refDate" name="refDate" required></td>
           </tr>
           <tr>
+          <div class="form-label-group" style="margin-top: 20px">
             <td style="width:25%" height="70px">Refered at:</td>
-            <td style="width:25%"><input type="text" style="height:70px; width: 230px;"  id="refAt" name="refAt"  /></td>
+            <td style="width:25%"><input type="text" class="form-control has-error"  autofocus="autofocus" style="height:70px; width: 230px;" id="refAt" name="refAt" required="required"></td>
+          </div>
             <td style="width:25%">Reason for Referral:</td>
-            <td style="width:25%"><input style="height:70px; width: 230px;" type="text" id="reason" name="reason" required="required" /></td>
+            <td style="width:25%"><input style="height:70px; width: 230px;" type="text"  class="form-control" autofocus="autofocus" id="reason" name="reason" required="required"></td>
           </tr>
           <tr>
             <td style="width:25%">Contact Person:</td>
-            <td style="width:25%"><input style="width: 230px;" type="text" id="contactPer" name="contactPer" required="required"></td>
+            <td style="width:25%"><input style="width: 230px;" type="text" class="form-control" autofocus="autofocus" id="contactPer" name="contactPer" required="required"></td>
             <td style="width:25%">Refered by: </td>
             <td style="width:25%"><input  style="width: 230px;" type="text" id="refby" name="refby" value="{{Auth::user()->id}}" hidden="hidden"><input  style="width: 230px;" type="text" id="refby2" name="refby2" value="{{Auth::user()->fname}} {{Auth::user()->lname}}" disabled="disabled"></td>
           </tr>
@@ -79,14 +81,15 @@
               <td style="width:25%"><input style="width: 230px;" type="date" id="returnDate" name="returnDate" ></td>
           </tr>
       </table>
-    </form>
   </div>
   <div class="modal-footer">
-    <button type="button" class="btn btn-primary" id="btn-save" name ="btn-save" value="add">Save changes</button>
+    <button type="submit" class="btn btn-primary"  id="btn-save" name ="btn-save" value="add">Save changes</button>
     <input type="hidden" id="id" name="id" value="0">
     <input type="hidden" id="patient_id" name="patient_id" value="{{$pats->id}}">
     <input type="hidden" id="user_accepted" name="user_accepted" value="{{Auth::user()->id}}">
   </div>
+    </form>
+
   </div>
   </div>
   </div>
@@ -110,7 +113,7 @@
              <tr>
               <td style="width:25%">First Name:</td><td style="width:25%"> {{$pats->fname}}</td>
              </tr>
-              <?php $count = 0; ?>
+            <!--   <?php $count = 0; ?>
                 @foreach($history as $hist)
                   @if($hist->type == 'Enrolled' || $hist->type == 'Enrolled from Transfer' || $hist->type == 'Re-enrolled')
                     @if($hist->deps->department_name == $pats->departments->department_name)
@@ -122,9 +125,9 @@
                       @endif
                     @endif
                   @endif  
-                @endforeach
+                @endforeach -->
                 <tr>
-                  <td style="width:25%">Case: {{$casex}}</td>
+                  <td style="width:25%">Case: </td>
                   <td style="width:25%">Middle initial: {{$pats->mname}}</td>
                   <td style="width:25%">Contact Number:</td>
                   <td style="width:25%">{{$pats->contact}}</td>
@@ -184,11 +187,11 @@
     </div>
   </div>
 
-  <div class="modal2 fade" id="linkEditor" aria-hidden="true" >
-    <div class="modal-dialog">
-      <div class="modal-content"  style="width:980px;">
+  <div class="modal2 fade" id="linkEditor"   tabindex="-1" role="dialog" aria-hidden="true" >
+    <div class="modal-dialog modal-dialog-scrollable" role="document">
+      <div class="modal-content" >
         <div class="modal-header">
-          <h4 class="modal-title" id="linkEditorModalLabel"><b>Add Intervention the Patient Attended</b></h4>
+          <h4 class="modal-title" id="linkEditorModalLabel"><b>Intervention the Patient Attended</b></h4>
         </div>
         <div class="modal-body">
           <form id="linkeditor_Data" name="linkeditor_Data" class="form-horizontal" novalidate="">
@@ -209,8 +212,8 @@
                       </div>
                    @endif
                  @endforeach
-                                    <div class="form-label-group textboxes" id="textboxes_{{$interven->id}}" style="display: none;">
-                                        <input style="margin-left:0px" type="text" class="form-control" placeholder="Remarks" name="remarks_{{$interven->id}}" id="remarks_{{$interven->id}}">
+                      <div class="form-label-group textboxes" id="textboxes_{{$interven->id}}" style="display: none;">
+                            <input style="margin-left:0px" type="text" class="form-control" placeholder="Remarks" name="remarks_{{$interven->id}}" id="remarks_{{$interven->id}}">
                                      </div>
                                    </br>
                                   </div>
@@ -230,6 +233,7 @@
                     </div>
                 </div>
             </div>
+
 
   <div class="modal fade" id="inactiveEditorModal" aria-hidden="true" >
           <div class="modal-dialog">

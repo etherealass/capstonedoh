@@ -85,7 +85,6 @@
                     <option value="{{$des->id}}">{{$des->name}}</option>
                   @endforeach
                     <option value="Others">Others</option>
-                    <option value="0">None</option>
                 </select>
                 </div>
               </div>

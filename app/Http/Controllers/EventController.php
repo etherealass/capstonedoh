@@ -68,6 +68,16 @@ class EventController extends Controller
         }
     }
 
+public function getEvent($patientId) {
+
+
+            $visitIntervens = Visit_interven::where(['patient_event' => $patientId])->get();
+
+
+            return Response::json($visitIntervens);
+        
+    }
+
 
      public function event_save_edit(Request $request){
         
@@ -216,18 +226,15 @@ class EventController extends Controller
 
 
              foreach ($data as $record) {
+
                 if($record['isChecked']){
 
                     $cnt++;
 
                 }
 
-                if($peID == 0){
-
-                        dd('sample');
-
-                }
-                else if (!$record['isChecked'] && $record['rec_id']) {
+                
+                if (!$record['isChecked'] && $record['rec_id']) {
 
                     $rec = Visit_interven::find($record['rec_id']);
                     $rec->delete();
@@ -235,11 +242,9 @@ class EventController extends Controller
                     $items[] =  $rec;
 
 
-
-
                 } else {
 
-                    if ($record['isChecked'] && empty($record['rec_id'])) {
+                    if ($record['isChecked']  && (empty($record['rec_id']) ||  $record['rec_id'] == null)) {
 
                         $rec = new Visit_interven;
 
@@ -257,6 +262,7 @@ class EventController extends Controller
 
 
                     }else if ($record['isChecked'] && $record['rec_id']) {
+
                         $rec = Visit_interven::find($record['rec_id']);
 
                             $rec->patient_event = $record['patient_event_id'];

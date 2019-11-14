@@ -13,6 +13,7 @@ use DB;
 use Calendar;
 use App\Users;
 use App\User_roles;
+use App\User_departments;
 use App\Departments;
 use App\Events;
 use App\Patients;
@@ -42,7 +43,8 @@ class CalendarController extends Controller
        $psychiatrist = User_roles::where('name', 'Physciatrist')->get();
        $users = Users::find(Auth::user()->id);
        $transfer = Transfer_Requests::all();
-      
+       $User_depart = User_departments::where('user_id', Auth::user()->id)->get();
+
       if(Auth::user()->designation != $dentist[0]->id && Auth::user()->designation != $psychiatrist[0]->id){
 
        return view('calendar.viewCalendar')->with('roles',$roles)->with('deps',$deps)->with('users',$users)->with('graduate',$graduate)->with('transfer',$transfer);
@@ -63,14 +65,15 @@ class CalendarController extends Controller
 
     public function event_patient($id)
    {
-          $events = Patients::where('department_id', $id)->get();
+          $events = Patients::where('department_id', $id)->where('status','Enrolled')->get();
 
           return response()->json($events);
 
    }
 
   
-   public function create_event($date){
+   public function create_event(Request $request, $date){
+
 
        $roles = User_roles::where('description','!=','Employee')->get();
        $deps = Departments::all();
@@ -78,9 +81,18 @@ class CalendarController extends Controller
        $interven = Interventions::all();
        $users = Users::find(Auth::user()->id);
        $graduate = Graduate_Requests::all();
-
        $assignee  = Users::with('user_roles')->get();
        $dep = $users->department;
+       $User_depart = User_departments::where('user_id', Auth::user()->id)->get();
+
+        $depts = [];
+
+        foreach ($User_depart as $user_depts) 
+        {
+
+            $depts[] = $user_depts->department_id;
+            
+        }
 
 
         
@@ -100,11 +112,29 @@ class CalendarController extends Controller
 
         }
 
-       return view('calendar.createEvent')->with('roles',$roles)->with('deps',$deps)->with('interven', $interven)->with('patients', $patients)->with('users',$users)->with('transfer',$transfer)->with('graduate',$graduate)->with('date', $date)->with('assignee', $assignee);
+       return view('calendar.createEvent')->with('roles',$roles)->with('deps',$deps)->with('interven', $interven)->with('patients', $patients)->with('users',$users)->with('transfer',$transfer)->with('graduate',$graduate)->with('date', $date)->with('assignee', $assignee)->with('user_dept', $depts);
+     
       
     }
 
     public function add_event(Request $request){
+
+
+       $validation = $this->validate($request, [
+              'title' => 'required',
+              'venue' => 'required',
+        'start_time' => 'date_format:H:i',
+        'end_time' => 'date_format:H:i|after:start_time',
+          ]);
+
+        if(!$validation){
+          
+        $errors = new MessageBag(['start_time' => ['End Time should be later than start time']]);
+           return Redirect::back()->withErrors($errors)->withInput(Input::all());
+        
+
+        }else{
+
 
         $evt = rand();
         $input = $request->all();
@@ -203,11 +233,25 @@ class CalendarController extends Controller
         $roles = User_roles::where('description','!=','Employee')->get();
         $deps = Departments::all();
         $transfer = Transfer_Requests::all();
+        $User_depart = User_departments::where('user_id', Auth::user()->id)->get();
+
+        $depts = [];
+
+        foreach ($User_depart as $user_depts) 
+        {
+
+            $depts[] = $user_depts->department_id;
+            
+        }
  
 
         $users = Users::find(Auth::user()->id);
 
-        return view('superadmin.chooseuser')->with('roles',$roles)->with('deps',$deps)->with('users',$users)->with('graduate',$graduate)->with('transfer',$transfer);
+        return redirect('/showCalendar');
+
+      }
+
+        //view('superadmin.chooseuser')->with('roles',$roles)->with('deps',$deps)->with('users',$users)->with('graduate',$graduate)->with('transfer',$transfer)->with('user_dept', $depts);
 
     }
 
@@ -232,7 +276,16 @@ class CalendarController extends Controller
 
 
 
+        $User_depart = User_departments::where('user_id', Auth::user()->id)->get();
 
+        $depts = [];
+
+        foreach ($User_depart as $user_depts) 
+        {
+
+            $depts[] = $user_depts->department_id;
+            
+        }
 
         $childInterven = ChildInterventions::all();
 
@@ -278,18 +331,18 @@ class CalendarController extends Controller
 
         }
 
-        $patients = Patients::where('department_id', $dept)->whereNotIn('id', $eventPatientIds)->with('departments')->whereNotIn('id', $eventPatientIds)->get();
+        $patients = Patients::where('department_id', $dept)->where('status','Enrolled')->whereNotIn('id', $eventPatientIds)->with('departments')->get();
 
-       if($dept == 2 || $dept == 3){
+       // if($dept == 2 || $dept == 3){
 
-              $patients = Patients::whereNotIn('id', $eventPatientIds)->whereIn('department_id',[2,3])->get();
+       //        $patients = Patients::whereNotIn('id', $eventPatientIds)->whereIn('department_id',[2,3])->get();
 
             
-        }else if(!$dept){
+       //  }else if(!$dept){
 
-            $patients = Patients::whereNotIn('id', $eventPatientIds)->get();
+       //      $patients = Patients::whereNotIn('id', $eventPatientIds)->get();
 
-        }
+       //  }
 
 
 
@@ -324,7 +377,17 @@ class CalendarController extends Controller
         $transfer = Transfer_Requests::all();
         $event_patient = Patient_Event_List::where('event_id', $evt_id)->with('events')->with('patients')->get();
         $assignee = EventAssignee::where('event_id', $id)->with('assignee')->get();
-        $patients = Patients::where('department_id', $dept)->whereNotIn('id', $eventPatientIds)->with('departments')->whereNotIn('id', $eventPatientIds)->get();
+        // $patients = Patients::where('department_id', $dept)->whereNotIn('id', $eventPatientIds)->with('departments')->whereNotIn('id', $eventPatientIds)->get();
+        $User_depart = User_departments::where('user_id', Auth::user()->id)->get();
+
+        $depts = [];
+
+        foreach ($User_depart as $user_depts) 
+        {
+
+            $depts[] = $user_depts->department_id;
+            
+        }
 
 
 
@@ -356,7 +419,7 @@ class CalendarController extends Controller
       
         $users = Users::find(Auth::user()->id);
 
-        return view('calendar.viewEvent')->with('roles' , $roles)->with('deps',$deps)->with('evt' ,$evt)->with('users',$users)->with('pats', $event_patient)->with('intv', $interven)->with('transfer',$transfer)->with('isEventExpired', $isEventExpired)->with('isEventCancelled', $isEventCancelled)->with('isPatientRemove', $isPatientRemove)->with('evts' ,$evts)->with('assignee',  $assignee)->with('patients', $patients);
+        return redirect('view_event/'.$id);
 
 
     }
@@ -410,6 +473,16 @@ class CalendarController extends Controller
       $transfer = Transfer_Requests::all();
       $graduate = Graduate_Requests::all();
       $userss = Patients::where('department_id', Auth::user()->department)->get();
+      $User_depart = User_departments::where('user_id', Auth::user()->id)->get();
+
+        $depts = [];
+
+        foreach ($User_depart as $user_depts) 
+        {
+
+            $depts[] = $user_depts->department_id;
+            
+        }
 
       date_default_timezone_set('Asia/Singapore');
 
@@ -433,7 +506,7 @@ class CalendarController extends Controller
       $chart->labels(['2 days ago', 'Yesterday', 'Today']);
       $chart->dataset('My dataset', 'line', [$users_2_days_ago, $yesterday_users, $today_users]);
 
-      return view('chart', compact('chart'))->with('roles',$roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('graduate',$graduate)->with('pat',$pat)->with('patx',$patx)->with('patz',$patz);
+      return view('chart', compact('chart'))->with('roles',$roles)->with('deps',$deps)->with('users',$users)->with('transfer',$transfer)->with('graduate',$graduate)->with('pat',$pat)->with('patx',$patx)->with('patz',$patz)->with('user_dept', $depts);
 
     }
 

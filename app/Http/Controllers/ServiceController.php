@@ -7,6 +7,7 @@ use Auth;
 use DB;
 use App\Users;
 use App\User_roles;
+use App\User_departments;
 use App\Departments;
 use App\Services;
 use App\Display;
@@ -27,15 +28,25 @@ class ServiceController extends Controller
 		$users = Users::find(Auth::user()->id);
         $transfer = Transfer_Requests::all();
         $graduate = Graduate_Requests::all();
-                $parent = Services::where('parent', 0)->get();
+        $parent = Services::where('parent', 0)->get();
+        $User_depart = User_departments::where('user_id', Auth::user()->id)->get();
+
+        $depts = [];
+
+        foreach ($User_depart as $user_depts) 
+        {
+
+            $depts[] = $user_depts->department_id;
+            
+        }
 
 
 		
 		if(Auth::user()->user_role()->first()->name == 'Superadmin'){
-			return view('superadmin.createservice')->with(['roles' => $roles, 'rolex' => $rolex, 'deps' => $deps, 'users' => $users])->with('transfer',$transfer)->with('graduate',$graduate)->with('parent', $parent);
+			return view('superadmin.createservice')->with(['roles' => $roles, 'rolex' => $rolex, 'deps' => $deps, 'users' => $users])->with('transfer',$transfer)->with('graduate',$graduate)->with('parent', $parent)->with('user_dept', $depts);
 		}
 		elseif(Auth::user()->user_role()->first()->name == 'Admin'){
-			return view('superadmin.createservice')->with(['roles' => $roles, 'rolex' => $rolex, 'deps' => $deps, 'users' => $users])->with('transfer',$transfer)->with('graduate',$graduate)->with('parent', $parent);
+			return view('superadmin.createservice')->with(['roles' => $roles, 'rolex' => $rolex, 'deps' => $deps, 'users' => $users])->with('transfer',$transfer)->with('graduate',$graduate)->with('parent', $parent)->with('user_dept', $depts);
 		}
 		else{
 			return abort(404);
@@ -69,6 +80,16 @@ class ServiceController extends Controller
             $notify_role = Notify::where('service_id', $id)->pluck('role')->toArray();
 
             $notify = Notify::where('service_id', $id)->get();
+            $User_depart = User_departments::where('user_id', Auth::user()->id)->get();
+
+            $depts = [];
+
+            foreach ($User_depart as $user_depts) 
+            {
+
+                $depts[] = $user_depts->department_id;
+            
+            }
 
             if (isset($request->display)){
 
@@ -136,12 +157,23 @@ class ServiceController extends Controller
         $service = Services::all();
         $parent = Services::where('parent', 0)->get();
         $graduate = Graduate_Requests::all();
+        $User_depart = User_departments::where('user_id', Auth::user()->id)->get();
+
+        $depts = [];
+
+        foreach ($User_depart as $user_depts) 
+        {
+
+            $depts[] = $user_depts->department_id;
+            
+        }
 
 
         if(Auth::user()->user_role()->first()->name == 'Superadmin'){
-            return view('superadmin.showservices')->with(['roles' => $roles, 'users' => $users, 'deps' => $deps])->with('transfer',$transfer)->with('services',$service)->with('graduate',$graduate)->with('parent', $parent);
+            return view('superadmin.showservices')->with(['roles' => $roles, 'users' => $users, 'deps' => $deps])->with('transfer',$transfer)->with('services',$service)->with('graduate',$graduate)->with('parent', $parent)->with('user_dept', $depts);
+            
         }else if(Auth::user()->user_role()->first()->name == 'Admin'){
-           return view('superadmin.showservices')->with(['roles' => $roles, 'users' => $users, 'deps' => $deps])->with('transfer',$transfer)->with('services',$service);
+           return view('superadmin.showservices')->with(['roles' => $roles, 'users' => $users, 'deps' => $deps])->with('transfer',$transfer)->with('services',$service)->with('user_dept', $depts)->with('parent', $parent)->with('graduate',$graduate);
         }
     }
 
@@ -184,7 +216,7 @@ class ServiceController extends Controller
     	
 
         	Session::flash('success', 'Service added');
-            return back();
+            return redirect('show_services');
 
         }
 
